@@ -1,0 +1,14 @@
+[09-May-2020 22:42:36 UTC] PHP Parse error:  syntax error, unexpected 'class' (T_CLASS), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' in /home2/khaytech/public_html/dmexchangepro/index.php on line 52
+[21-Jul-2020 14:42:38 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[21-Jul-2020 14:42:38 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[21-Jul-2020 14:43:31 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[06-Aug-2020 23:20:09 UTC] PHP Fatal error:  Class 'PDO' not found in /home2/khaytech/public_html/dmexchangepro/app/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 1259
+[31-Oct-2020 12:15:21 UTC] PHP Fatal error:  Cannot use isset() on the result of an expression (you can use "null !== expression" instead) in /home/visikmnd/test2.visionxcrypto.com/app/app/Http/Controllers/ProductController.php on line 792
+[31-Oct-2020 19:59:12 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\ProductController::loadata() in /home/visikmnd/test2.visionxcrypto.com/app/app/Http/Controllers/ProductController.php on line 268
+[12-Nov-2020 09:06:23 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/visikmnd/test2.visionxcrypto.com/app/app/Http/Controllers/HomeController.php on line 4
