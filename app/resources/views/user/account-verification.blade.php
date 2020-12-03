@@ -6,20 +6,20 @@
 								<ul class="nav nav-tabs settings-nav" role="tablist">
 									<li class="nav-item">
 										<a class="nav-link active" data-toggle="tab" href="#edit-profile2" role="tab" aria-controls="edit-profile2" aria-selected="true">Account Verification</a>
-									</li> 
+									</li>
 									<li class="nav-item">
 										<a class="nav-link " data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="true">KYC Verification</a>
-									</li> 
+									</li>
 									<li class="nav-item">
 										<a class="nav-link" data-toggle="tab" href="#preferences" role="tab" aria-controls="preferences" aria-selected="false">Payment</a>
 									</li>
 								</ul> <!-- /.settings-nav -->
 
 								<div class="tab-content settings-tab-content">
-								
-								
-								
-								
+
+
+
+
 									<div class="tab-pane fade " id="edit-profile" role="tabpanel">
 									    <form action="#" class="left-space-fix bottom-border-style">
 											<div class="block-title font-fix">KYC Verification </div>
@@ -42,17 +42,17 @@
 											@else
 												<li class="single-number-input verified-pending">
 													<div class="number">KYC</div>
-													<button class="verify-status">Unverified</button> 
+													<button class="verify-status">Unverified</button>
 												</li>
 											@endif
 										</ul>
 										</form>
-										
-										
+
+
 										 @if(Auth::user()->verified == 0)
 										<form role="form" method="POST" class="left-space-fix" action="{{ route('document.upload') }}" enctype="multipart/form-data">
 										{{ csrf_field() }}
-											 
+
 
 											<div class="form-group smahll-box">
 												<label for="name" class="title font-fix">Front View</label>
@@ -61,14 +61,14 @@
 
 											<div class="form-group small-box">
 												<label for="bio" class="title font-fix">Back View</label>
-												
-												<input type="file" name="photo2"   class="form-control"   class="font-fix" id="name"> 
+
+												<input type="file" name="photo2"   class="form-control"   class="font-fix" id="name">
 											</div> <!-- /.single-input-group -->
 
 											<div class="single-input-group large-box">
 												<label for="bio" class="title font-fix">Type</label>
 												<select class="theme-select-dropdown" required name="type" >
- 
+
  <option value="Driver's Licence">Driver's Licence</option>
  <option value="International Passport">International Passport</option>
  <option value="National ID Card">National ID Card</option>
@@ -96,10 +96,10 @@
 											<button class="theme-button"><span></span>Save</button>
 										</form>
 										@endif
-										
-									 
-										
-									 
+
+
+
+
 										@if($kyccount > 0)
 										<form action="#" class="left-space-fix">
 											<div class="block-title font-fix">ID Details</div>
@@ -116,17 +116,17 @@
 													<input type="checkbox"  checked id="payout">
 													<label for="payout">ID Number: {{$kyc->number}}</label>
 												</li>
-											 
-											</ul> 
+
+											</ul>
 										</form>
 										@endif
 									</div> <!-- /.tab-pane -->
 
 
- 
-								
+
+
 									<div class="tab-pane fade show active" id="edit-profile2" role="tabpanel">
-										 
+
 										<form action="#" class="left-space-fix bottom-border-style">
 											<div class="block-title font-fix">Email Verification </div>
 											<ul class="user-phone-list">
@@ -138,7 +138,7 @@
 											@else
 												<li class="single-number-input verified-pending">
 													<div class="number">{{Auth::user()->email}}</div>
-													<button class="verify-status">Unverified</button> 
+													<button class="verify-status">Unverified</button>
 												</li>
 											@endif
 											<div class="block-title font-fix">Phone Verification</div>
@@ -150,7 +150,7 @@
 											@else
 												<li class="single-number-input verified-pending">
 													<div class="number">{{Auth::user()->phone}}</div>
-													<button class="verify-status">Unverified</button> 
+													<button class="verify-status">Unverified</button>
 												</li>
 											@endif
 											<div class="block-title font-fix">BVN Verification</div>
@@ -162,12 +162,12 @@
 											@else
 												<li class="single-number-input verified-pending">
 													<div class="number">**********</div>
-													<button class="verify-status">Unverified</button> 
+													<button class="verify-status">Unverified</button>
 												</li>
 											@endif
-											
+
 											</ul>
-											 
+
 										</form>
 										@if(Auth::user()->phone_verify != 1)
 											<form action="#" class="left-space-fix bottom-border-style">
@@ -176,7 +176,7 @@
 											<button type="button" class="theme-button authenticator-enable-button"  data-toggle="modal" data-target="#mobile-verification"><span></span>Verify Phone</button>
 										    </form>
 										@endif
-										
+
 										@if(Auth::user()->email_verify != 1)
 											<form action="#" class="left-space-fix bottom-border-style">
 											<div class="block-title font-fix">Email Verification <span class="status-alert disabled">Unverified</span></div>
@@ -184,8 +184,8 @@
 											<button type="button" class="theme-button authenticator-enable-button" data-toggle="modal" data-target="#email-verification"><span></span>Verify Email</button>
 										</form>
 									    @endif
-										
-										@if(Auth::user()->bvn_verify != 1) 
+
+										@if(Auth::user()->bvn_verify != 1)
 										<form action="#" class="left-space-fix bottom-border-style">
 											<div class="block-title font-fix">BVN Verification <span class="status-alert disabled">Unverified</span></div>
 											<div class="sub-text">Turning this on means we'll verify your Bank Verification Number (BVN). Please enter a valid BVN. Please note you will be charged <b class="text-danger">{{$basic->currrency_sym}}{{number_format($basic->bvn,2)}}</b> as bvn verification fee</div>
@@ -194,8 +194,8 @@
 									    @endif
 									</div> <!-- /.tab-pane -->
 
-	<div class="tab-pane fade" id="preferences" role="tabpanel"> 
-	
+	<div class="tab-pane fade" id="preferences" role="tabpanel">
+
 	<form action="#" class="left-space-fix bottom-border-style">
 											<div class="block-title font-fix">Bank Account Details </div>
 											<ul class="user-phone-list">
@@ -207,23 +207,23 @@
 											@else
 												<li class="single-number-input verified-pending">
 													<div class="number">None</div>
-													<button class="verify-status">Unverified</button> 
+													<button class="verify-status">Unverified</button>
 												</li>
 											@endif
-											
+
 											</ul>
-											 
+
 										</form>
-										
+
 	@if(Auth::user()->bankyes != 1)
 										<form method="post"  class="left-space-fix bottom-border-style" action="{{route('post.banky') }}">
 										@csrf
-										
+
 <script>
 function myFunction() {
   var bank = $("#mybank option:selected").attr('data-bank');
   var bankname = $("#mybank option:selected").attr('data-bankname');
-  
+
   document.getElementById("bankname").value = bankname;
  if(bank ==  0){
   document.getElementById("bank").innerHTML = " ";
@@ -250,10 +250,10 @@ function myFunction() {
 												<!--	<option data-bank="2" value="other"><b>Other Banks</b></option> !-->
 												</select>
 											</div> <!-- /.single-input-group -->
-											
+
 											<div id="bank"></div>
 											<input id="bankname" name="bankname" hidden>
- 
+
 											<button type="submit" class="theme-button"><span></span>Save</button>
 										</form>
 										@endif
@@ -273,25 +273,25 @@ function myFunction() {
 													<input type="checkbox"  checked id="payout">
 													<label for="payout">Account Number: {{Auth::user()->accountno}}</label>
 												</li>
-											 
-											</ul> 
+
+											</ul>
 										</form>
 										@endif
 									</div> <!-- /.tab-pane -->
 
 
- 
+
 								</div> <!-- /.tab-content -->
 							</div> <!-- /.user-settings-content -->
-							
+
 						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
 					</div> <!-- /#dashboard-main-body -->
 				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
 			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
-			
-			
-			
-			
+
+
+
+
 			<!-- Mobile-Verification  Modal -->
 			<div class="modal fade settings-page-modal" id="mobile-verification" tabindex="-1" role="dialog" aria-hidden="true">
 			  	<div class="modal-dialog" role="document">
@@ -312,7 +312,7 @@ function myFunction() {
 								      	<div class="header-sub-title">In order to protect the security of your account, please verify your phone number. We will send you a text message with a verification code that you'll need to enter on the next screen.</div>
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>					
+								        </button>
 								    </div>
 
 								    <div class="modal-body">
@@ -335,7 +335,7 @@ function myFunction() {
 								    </div>
 
 								    <div class="modal-body verification-code-details">
-				        			 
+
 										 <form class="code-verify" action="{{ route('user.sms-verify')}}" method="post">
 										 @csrf
 										  <input type="hidden" name="id" value="{{Auth::user()->id}}">
@@ -350,25 +350,25 @@ function myFunction() {
 				        						</ul>
 				        					</div>
 				        				</form>
-				        				
+
 				      				</div> <!-- /.modal-body -->
 								</div> <!-- /.tab-pane -->
-								
-								
-								
-								
-								
+
+
+
+
+
 							</div> <!-- /.tab-content -->
 						</div> <!-- /.tabs-wrap -->
 			    	</div> <!-- /.modal-content -->
 			  	</div> <!-- /.modal-dialog -->
 			</div> <!-- /#mobile-verification -->
-			
-			
-			
-		
 
-			
+
+
+
+
+
 			<!-- bvn-Verification  Modal -->
 			<div class="modal fade settings-page-modal" id="email-verification" tabindex="-1" role="dialog" aria-hidden="true">
 			  	<div class="modal-dialog" role="document">
@@ -389,28 +389,28 @@ function myFunction() {
 								      	<div class="header-sub-title">In order to prevent Fraud and serve you better, we will need you to verify your bank verification number..</div>
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>					
+								        </button>
 								    </div>
 
 								    <div class="modal-body">
-				        				 
+
 										  <form  class="code-verify" action="{{ route('user.bvn-verify')}}" method="post">
 										  @csrf
 				        					<input id="phone"  name="bvn" placeholder="Enter your code"  type="tel" class="font-fix">
 				        					<button type="submit" class="continue-button theme-button"><span></span>Verify</button>
-				        				</form> 
+				        				</form>
 				      				</div> <!-- /.modal-body -->
 								</div> <!-- /.tab-pane -->
 
 
 
-								 
+
 							</div> <!-- /.tab-content -->
 						</div> <!-- /.tabs-wrap -->
 			    	</div> <!-- /.modal-content -->
 			  	</div> <!-- /.modal-dialog -->
 			</div> <!-- /#bvn-verification -->
-			
+
 			<!-- Email Authentication  Modal -->
 			<div class="modal fade settings-page-modal" id="authenticator-modal" tabindex="-1" role="dialog" aria-hidden="true">
 			  	<div class="modal-dialog" role="document">
@@ -420,7 +420,7 @@ function myFunction() {
 								      	<div class="header-sub-title">In order to protect the security of your account, please verify your email address. We will send you a message with a verification code that you'll need to enter it below.</div>
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>									
+								        </button>
 					    </div>
 
 					    <div class="modal-body verification-code-details">
@@ -429,7 +429,7 @@ function myFunction() {
 				        		<input type="text"  name="sms_code" placeholder="Enter your code"  class="font-fix">
 				        		<div class="button-group clearfix">
 				        			<ul class="clearfix">
-				        				
+
 				        				<li><button class="theme-button"><span></span>Enable</button></li>
 								</form>
 								       <form  action="{{route('user.send-emailVcode') }}" method="post">

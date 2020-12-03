@@ -2,7 +2,7 @@
 @section('content')
    	<!-- ***************** User Content **************** -->
 						<div class="dashboard-user-content investment-panel">
-							<ul class="investment-history clearfix">
+							<ul class="investment-history clearfix mt-lg-5">
 								<li>
 									<div class="inner-warpper">
 										<h6 class="inner-title">Investments</h6>
@@ -99,6 +99,11 @@
 								</div> <!-- /.investment-table-sheet --><br>
 								{{$trans->links()}}
 							</div> <!-- /.investment-list-item-wrapper -->
+
+                            @if(count($trans) ==0)
+                                <div style="margin-bottom: 90px"></div>
+                            @endif
+
 						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
 
 					</div> <!-- /#dashboard-main-body -->

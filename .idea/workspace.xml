@@ -3,8 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/app/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/views/include/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/include/front.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/front.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/invest.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/invest.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/profile.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,11 +130,34 @@
       <updated>1606952584499</updated>
       <workItem from="1606952585768" duration="888000" />
       <workItem from="1606953667250" duration="6810000" />
-      <workItem from="1606961482230" duration="1449000" />
+      <workItem from="1606961482230" duration="2320000" />
+      <workItem from="1606994101269" duration="8485000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="495" y="66" key="RollbackChangesDialog" timestamp="1607001847091">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="495" y="66" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607001847091" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
+          <line>242</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
+          <line>255</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

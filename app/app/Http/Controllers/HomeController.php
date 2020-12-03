@@ -42,7 +42,7 @@ use Image;
 
 use App\UserWallet;
 use App\TimeSetting;
-use App\Invest; 
+use App\Invest;
 use App\Plan;
 
 class HomeController extends Controller
@@ -104,7 +104,7 @@ class HomeController extends Controller
         $data['sdecline'] = Trx::where('user_id', Auth::id())->whereStatus(-2)->whereType(2)->select('main_amo')->sum('main_amo');;
         $data['time'] = Carbon::now();
         $crypt = Currency::all();
-		
+
 		$user = Auth::user();
 		$baseUrl = "https://blockchain.info/";
 			$endpoint = "tobtc?currency=USD&value=1";
@@ -128,7 +128,7 @@ class HomeController extends Controller
         	curl_close($ch);
 			$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
 			$data['invested'] = Invest::where('user_id', Auth::id())->sum('amount');
-        
+
 
         foreach ($crypt as $coin)
 
@@ -152,8 +152,8 @@ class HomeController extends Controller
     	       if($basic->maintain == 1){
         return view('front.maintain', $data);
         }
-		
-	 
+
+
         return view('home', $data);
     }
 
@@ -214,8 +214,8 @@ class HomeController extends Controller
             $user->sms_code = $code;
             $user->save();
             send_sms($user->phone, $code);
-            
-            
+
+
         $baseUrl = "https://www.bulksmsnigeria.com/";
         $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=".$basic->sitename."&to=".$user->phone."&body=".$code."";
         $httpVerb = "GET";
@@ -261,19 +261,19 @@ class HomeController extends Controller
        $user = Auth::user();
 	   $basic = GeneralSettings::first();
 	   $request->validate([
-            'bvn' => 'required', 
+            'bvn' => 'required',
 //
-        ], [ 
-            'number.required' => 'Please enter your bank verification number',  
+        ], [
+            'number.required' => 'Please enter your bank verification number',
         ]);
-		
-		
+
+
 		   if ($basic->bvn > $user->balance) {
              return back()->with("danger", "Insufficient wallet balance. Please deposit more fund and try again");
         }
-		 
-		
-		 
+
+
+
 		$trx = strtoupper(str_random(20));
 		$curl = curl_init();
 
@@ -296,28 +296,28 @@ class HomeController extends Controller
 
 		curl_close($curl);
 		$rep=json_decode($response, true);
-		
+
        if($rep['responsecode'] == 00)
 		{
-			
+
 			$product['user_id'] = Auth::id();
 			$product['firstName'] = $rep['firstName'];
 			$product['lastName'] =  $rep['lastName'];
 			$product['phoneNumber'] =  $rep['phoneNumber'];
 			$product['gender'] = $rep['data']['gender'];
 			$product['dateOfBirth'] = $rep['data']['dateOfBirth'];
-			$product['base64Image'] = $rep['base64Image']; 
-			$product['number'] = $request->bvn; 
+			$product['base64Image'] = $rep['base64Image'];
+			$product['number'] = $request->bvn;
 			Verified::create($product);
-			
+
             $user->bvn_verify = 1;
 			$user->bvn_time = Carbon::now();
 			$user->balance = $user->balance - $basic->bvn;
             $user->save();
-			
-			
+
+
 			return back()->with('success', 'Bank Verification Number has been verfied successfully');
-           
+
         } else {
             session()->flash('danger', 'You Have Entered A Wrong Bank Verification Number');
         }
@@ -375,6 +375,8 @@ class HomeController extends Controller
         $data['page_title'] = "Profile";
         $data['user'] = User::findOrFail($auth->id);
         $data['method'] = Localbank::all();
+        $data['referral'] =  User::whereRefer(Auth::user()->id)->get();
+        $data['page_title'] = "Referral Log";
         return view('user.profile', $data);
     }
 
@@ -442,28 +444,28 @@ class HomeController extends Controller
             return back()->with('danger', $e->getMessage());
         }
     }
-   
+
 	public function changepin(Request $request)
     {
        $this->validate($request,
             [
             'newpin' => 'required|string|max:4',
-            'currentpin' => 'required', 
+            'currentpin' => 'required',
             ]);
 
-         
+
             $user = User::findOrFail(Auth::id());
-			
+
 			if($request->currentpin != $user->withdrawpass)
 			{
 			 return back()->with('error', 'Currenct Withdrawal Pin Is Wrong. Please Try Again.');
-			} 
-              
+			}
+
                 $user->withdrawpass = $request->newpin;
                 $user->save();
 
                 return back()->with('success', 'Withdrawal Pin Updated Successfully.');
-            
+
     }
 
 
@@ -474,7 +476,7 @@ class HomeController extends Controller
 		$data['deposit'] = Deposit::whereUser_id($user->id)->latest()->paginate(10);
         $data['count'] = Deposit::whereUser_id($user->id)->count();
         $data['sum'] = Deposit::whereStatus(1)->whereUser_id($user->id)->sum('amount');
-       
+
         return view('user.deposit', $data);
     }
 
@@ -518,11 +520,11 @@ class HomeController extends Controller
         "Content-Type: application/json"
       ),
     ));
-    
+
     $response = curl_exec($curl);
-    $rep=json_decode($response, true); 
+    $rep=json_decode($response, true);
     $data['list']  = $rep['banklist'];
-    
+
     curl_close($curl);
         return view('user.account-verification', $data);
     }
@@ -619,10 +621,10 @@ class HomeController extends Controller
          if($request->bank == "none"){
           return back()->with('danger', 'Bank Account Not Updated');
          }
-         
+
         $basic = GeneralSettings::first();
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
           CURLOPT_URL => "https://openapi.rubiesbank.io/v1/nameenquiry",
           CURLOPT_RETURNTRANSFER => true,
@@ -638,14 +640,14 @@ class HomeController extends Controller
             "Content-Type: application/json"
           ),
         ));
-        
-        $response = curl_exec($curl); 
-        curl_close($curl); 
-        $rep=json_decode($response, true);  
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $rep=json_decode($response, true);
 
             if($rep['responsecode']) {
             if($rep['responsecode'] == 00) {
-                        $acctname = $rep['accountname']; 
+                        $acctname = $rep['accountname'];
 
                         $user->bank = $request->bankname;
                         $user->accountname = $acctname;
@@ -656,14 +658,14 @@ class HomeController extends Controller
                         return back()->with('success', 'Bank Account Updated Successfuly');
 
             }
-            
-                return back()->with('danger', 'Account Number Not Verified Successfuly');
-          
-          
-            
-            
 
-    }      
+                return back()->with('danger', 'Account Number Not Verified Successfuly');
+
+
+
+
+
+    }
 
     }
 
@@ -759,7 +761,7 @@ class HomeController extends Controller
 
 
         }
- 
+
 
         else {
             $gate = Gateway::findOrFail($request->gateway);
@@ -800,7 +802,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $page_title = "Deposit Preview";
         $auth = Auth::user();
 		$total = $data->charge + $data->amount;
-		
+
 			$baseUrl = "https://api.alternative.me";
 			$endpoint = "/v2/ticker/";
 			$httpVerb = "GET";
@@ -825,19 +827,19 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 			if($data->gateway_id == 513) {
 		    $coinrate  = $rate['data']['1'];
          	$amount = $coinrate['quotes']['USD'];
-         	$rrate = $amount['price']; 
-			$rate = $rrate; 
+         	$rrate = $amount['price'];
+			$rate = $rrate;
 			}
-			
+
 			if($data->gateway_id == 514) {
 			$coinrate  = $rate['data']['1027'];
          	$amount = $coinrate['quotes']['USD'];
-         	$rrate = $amount['price']; 
+         	$rrate = $amount['price'];
 			$rate = $rrate; }
-			
+
 			if($data->gateway_id == 102) {
 			$gatewayData = Gateway::where('id', $data->gateway_id)->first();
-			$perfectval = $gatewayData->val1; 
+			$perfectval = $gatewayData->val1;
 			}
 
         return view('user.payment.preview', compact('data', 'rate','track','total','perfectval','page_title'));
@@ -892,7 +894,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 
 
-            
+
 
 
         $user->balance = $user->balance + $request->amount;
@@ -936,7 +938,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
         if($count > 0){
         $receiver = User::whereUsername($request->username)->first();
- 
+
 
 
         $receiver->balance = $receiver->balance + $amount;
@@ -1039,69 +1041,69 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-   
+
     public function requestwithdrawal(Request $request)
     {
         $this->validate($request, [
             'method_id' => 'required|numeric',
-            'amount' => 'required|numeric|min:1',  
+            'amount' => 'required|numeric|min:1',
         ]);
 		 $user = Auth::user();
-		
+
 		     if ($user->withdrawpass != $request->pin) {
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
         $basic = GeneralSettings::first();
-		
+
 		    if ($request->wallet == "1") {
            $wallet = Auth::user();
         }
 		else{
 			$wallet = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
-		}	
-		
-		
+		}
+
+
         $user = Auth::user();
         $method = WithdrawMethod::findOrFail($request->method_id);
         $ch = $method->fix + round(($request->amount * $method->percent) / 100, $basic->decimal);
         $reAmo = $request->amount + $ch;
 
         if($request->method_id == 1){
-		 
+
 		 $this->validate($request, [
-         'walletaddress' => 'required', 
+         'walletaddress' => 'required',
         ]);
         $pay = $request->walletaddress;
 		}
         if($request->method_id == 2){
-		 
+
 		 $this->validate($request, [
-            'paypaladdress' => 'required', 
+            'paypaladdress' => 'required',
         ]);
         $pay = $request->paypaladdress;
 		}
        if($request->method_id == 3){
-		   
-		   
+
+
 
           session()->flash('success', 'Please proceed with your transfer by filling the form below. ');
 
          return redirect()->route('banktransfer');
-		 
+
 		 $this->validate($request, [
-            'bankname' => 'required', 
-            'accountname' => 'required', 
-            'accountnumber' => 'required', 
+            'bankname' => 'required',
+            'accountname' => 'required',
+            'accountnumber' => 'required',
         ]);
         $pay = "Bank Name: " .$request->paypaladdress. ", Account Name:" .$request->accountname. ", Account Number:" .$request->accountnumber;
 		}
-		
+
 		if($request->method_id == 4){
-		 
+
 		 $this->validate($request, [
-            'cashname' => 'required', 
-            'accountnumber' => 'required', 
-            'accountname' => 'required', 
+            'cashname' => 'required',
+            'accountnumber' => 'required',
+            'accountname' => 'required',
         ]);
         $pay = "Cash App Name: " .$request->cashname. ", Account Name: " .$request->accountname. ", Account Number: " .$request->accountnumber;
 		}
@@ -1167,7 +1169,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     {
         $ww = WithdrawLog::whereId($id)->whereStatus(0)->first();
         $count = WithdrawLog::whereId($id)->whereStatus(0)->count();
-        
+
 		if($count < 1){
 		return back()->with('error', 'There is no withdrawal log with this details');
 
@@ -1249,8 +1251,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
          if ($auth->verified != 2 ){
          return back()->withAlert('You are not eligible to trade cryptocurrency. Please verify your account first');
         }
-		
-		
+
+
         $get['pendbuy'] = Trx::where('status', 1)->where('type', 1)->sum('amount');
 		$get['totalbuy'] = Trx::where('status', 2)->where('type', 1)->sum('amount');
         $get['pendsell'] = Trx::where('status', 1)->where('type', 2)->sum('amount');
@@ -1259,7 +1261,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name','asc')->get();
         $get['bank'] = Bank::whereStatus(1)->orderBy('name','asc')->get();
         $get['page_title'] = "Trade E-Currency";
-		
+
         $get['sell'] = Trx::where('status', '>', 0)->where('type', 2)->paginate(10);
         $get['buy'] = Trx::where('status', '>', 0)->where('type', 1)->paginate(10);
         return view('user.trade', $get);
@@ -1297,7 +1299,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
          $this->validate($request, [
             'wallet' => 'required',
             'rewallet' => 'required',
-            'usd' => 'required', 
+            'usd' => 'required',
             'coin' => 'required',
             'payment' => 'required',
         ]);
@@ -1472,7 +1474,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 
      public function ebuyonlinepost22($id)
-    { 
+    {
          $data = Trx::where('status', 0)->where('trx', $id)->first();
          $method = PaymentMethod::all();
          $page_title = "Purchase Coin";
@@ -1486,17 +1488,17 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
      public function ebuyupload(Request $request)
     {
 
-      
+
 
         $basic = GeneralSettings::first();
         $data = Trx::where('status', 0)->where('trx', $request->trx)->first();
         $count = Trx::where('status', 0)->where('trx', $request->trx)->count();
         $auth = Auth::user();
-		
+
 		if($count < 1){
 			 return back()->with('danger', 'This transaction has expired or does not exist');
 			  }
-			  
+
 	     if($data->main_amo > $auth->balance){
         return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund or try using another payment gateway");
         }
@@ -1511,7 +1513,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $data['image'] = uniqid().'.jpg';
                 $request->photo->move('uploads/payments',$data['image']);
             }
-            
+
         $user = Auth::user();
         $user->balance = $user->balance + $data->main_amo;
         $user->save();
@@ -1546,8 +1548,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         public function sellecoin(Request $request)
     {
          $this->validate($request, [
-            'coin' => 'required', 
-            'usd' => 'required', 
+            'coin' => 'required',
+            'usd' => 'required',
         ]);
 
 
@@ -1556,15 +1558,15 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $currency = Currency::whereId($request->coin)->first();
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
-        
-
-        
-
-        
 
 
 
-         
+
+
+
+
+
+
 
         $charge = $basic->transcharge;
         $usd = $request->usd * $currency->buy;
@@ -2218,10 +2220,10 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
      return back()->with("message", "Your testimonial has been created successfully. Your testimonial will appear on the front page once testimonial is approved");
     }
-	
-	
-	
-	
+
+
+
+
     public function coinvest()
     {
         $data['page_title'] = "Investment Plan";
@@ -2233,7 +2235,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$data['invcomplete'] = Invest::where('user_id', Auth::id())->where('status' ,'!=', 1)->latest()->count();
 		$data['invsum'] = Invest::where('user_id', Auth::id())->sum('amount');
 		$basic = GeneralSettings::first();
-		
+
 		$baseUrl = "https://blockchain.info/";
 			$endpoint = "tobtc?currency=USD&value=1";
 			$httpVerb = "GET";
@@ -2254,7 +2256,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $err     = curl_errno( $ch );
             $errmsg  = curl_error( $ch );
         	curl_close($ch);
-        	
+
         	$baseUrl = "https://api.coingate.com";
 			$endpoint = "/v2/rates/merchant/USD/$basic->currency";
 			$httpVerb = "GET";
@@ -2274,21 +2276,21 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $data['usdrate']  = json_decode(curl_exec( $ch ),true);
             $err     = curl_errno( $ch );
             $errmsg  = curl_error( $ch );
-            
-		
+
+
        return view('user.invest', $data);
     }
 
 
-	
+
     public function coinvestyield($id)
     {
         $data['page_title'] = "Investment Yield";
         $data['invest'] = Invest::where('user_id', Auth::id())->whereId($id)->first();
-        $data['plans'] = Plan::where('id', $data['invest']->plan_id)->first(); 
+        $data['plans'] = Plan::where('id', $data['invest']->plan_id)->first();
         $data['earn'] = UserWallet::whereType('interest_wallet')->where('user_id', Auth::id())->first();
-		$data['trans'] = Investyield::where('user_id', Auth::id())->whereInvest_id($id)->paginate(10); 
-		
+		$data['trans'] = Investyield::where('user_id', Auth::id())->whereInvest_id($id)->paginate(10);
+
 		$baseUrl = "https://blockchain.info/";
 			$endpoint = "tobtc?currency=USD&value=1";
 			$httpVerb = "GET";
@@ -2309,8 +2311,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $err     = curl_errno( $ch );
             $errmsg  = curl_error( $ch );
         	curl_close($ch);
-        	
-        	 
+
+
        return view('user.investyield', $data);
     }
 
@@ -2324,8 +2326,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             'plan_id' => 'required',
             'wallet_type' => 'required',
         ]);
-		
-		
+
+
 		$baseUrl = "https://blockchain.info/";
 			$endpoint = "tobtc?currency=USD&value=1";
 			$httpVerb = "GET";
@@ -2350,9 +2352,9 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$btc = $request->amount * $btcrate;
         $user = User::find(Auth::id());
         $gnl = GeneralSettings::first();
- 
+
         $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
-        if (!$plan) { 
+        if (!$plan) {
              return back()->with("danger", "Invalid Plan Selected!");
         }
 
@@ -2363,35 +2365,35 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             }
 
             if ($request->amount > $plan->maximum) {
-                
+
                 return back()->with("danger", "The Minimum Investment Amount Is $" .number_format($plan->maximum));
             }
         } else {
 
-            if ($request->amount != $plan->fixed_amount) { 
-                
+            if ($request->amount != $plan->fixed_amount) {
+
                 return back()->with("danger", "The Investment Amount must be exactly $" .number_format($plan->fixed_amount));
             }
         }
-		
-		
-		
+
+
+
 		if($request->wallet_type == 1982100101281 ){
 		$userWallet = User::find(Auth::id());
 		}
 		elseif($request->wallet_type < 1982100101281 ){
 		$userWallet = UserWallet::where('user_id', Auth::id())->where('id', $request->wallet_type)->first();
 		}
-       
-		
+
+
 		if($request->wallet_type == 82718271565131 ){
 		$userWallet = User::find(Auth::id());
-		
+
 		$user = User::find(Auth::id());
         $gnl = GeneralSettings::first();
- 
+
         $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
-        if (!$plan) { 
+        if (!$plan) {
              return back()->with("danger", "Invalid Plan Selected!");
         }
 
@@ -2402,23 +2404,23 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             }
 
             if ($request->amount > $plan->maximum) {
-                
+
                 return back()->with("danger", "The Minimum Investment Amount Is $" .number_format($plan->maximum));
             }
         } else {
 
-            if ($request->amount != $plan->fixed_amount) { 
-                
+            if ($request->amount != $plan->fixed_amount) {
+
                 return back()->with("danger", "The Investment Amount must be exactly $" .number_format($plan->fixed_amount));
             }
         }
-		
-		   
+
+
 
         $time_name = TimeSetting::where('time', $plan->times)->first();
         $now = Carbon::now();
- 
- 
+
+
         //start
         if ($plan->interest_status == 1) {
             $interest_amount = ($request->amount * $plan->interest) / 100;
@@ -2427,7 +2429,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         }
         $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
         //end
-		
+
 		$trxx = rand(000000, 999999) . rand(000000, 999999);
 
         if ($plan->fixed_amount == 0) {
@@ -2447,13 +2449,13 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $invest['trx'] = $trxx;
                 $a = Invest::create($invest);
 
-               
+
 				Session::put('Track', $trxx);
-						
+
                 return redirect()->route('paybtcnow')->with("success", "Package Selected Successfully. Please proceed to make ayment to Complete process");
-         
+
             }
-             
+
            return back()->with("danger", "Invalid wallet balance");
 
         } else {
@@ -2473,25 +2475,25 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $data['trx'] = $trxx;
                 $a = Invest::create($data);
 
-                  
-                
-								
+
+
+
 				 Session::put('Track', $trxx);
-						
+
                 return redirect()->route('paybtcnow')->with("success", "Package Selected Successfully. Please proceed to make ayment to Complete process");
             }
 
             return back()->with("danger", "Something went wrong");
         }
 
-		
-		
+
+
 		}
-		
+
 		 if (!$userWallet) {
            return back()->with("danger", "invalid wallet selected");
         }
-		
+
 
         if ($request->amount > $userWallet->balance) {
              return back()->with("danger", "Insufficient wallet balance");
@@ -2503,7 +2505,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $new_balance = $userWallet->balance - $request->amount ;
         $userWallet->balance = $new_balance;
         $userWallet->save();
- 
+
         //start
         if ($plan->interest_status == 1) {
             $interest_amount = ($request->amount * $plan->interest) / 100;
@@ -2530,12 +2532,12 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $invest['trx'] = rand(000000, 999999) . rand(000000, 999999);
                 $a = Invest::create($invest);
 
-               
+
 
 
                 return redirect()->route('coinvest')->with("success", "Investment successful");
             }
-             
+
            return back()->with("danger", "Invalid wallet balance");
 
         } else {
@@ -2555,10 +2557,10 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $data['trx'] = rand(000000, 999999) . rand(000000, 999999);
                 $a = Invest::create($data);
 
-                
 
-                $user->save(); 
-                
+
+                $user->save();
+
                 return redirect()->route('coinvest')->with("success", "Package Purchased Successfully Complete");
             }
 
@@ -2567,7 +2569,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 
     }
-	
+
 	 public function paybtcnow()
     {
         $page_title = 'Pay BTC';
@@ -2592,14 +2594,14 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $err     = curl_errno( $ch );
             $errmsg  = curl_error( $ch );
         	curl_close($ch);
-        	
-        	 
+
+
 		$invest = Invest::where('user_id', Auth::id())->whereTrx($track)->first();
 		$currency  = Currency::whereId(5)->first();
         return view('user.paybtcnow',  compact('page_title', 'btcrate','invest','currency'));
     }
-	
-	
+
+
 
 
     public function interestLog()
@@ -2608,7 +2610,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $trans = Investyield::where('user_id', Auth::id())->wherelatest()->paginate(15);
         return view(activeTemplate() . 'user.interest_log', compact('page_title', 'trans'));
     }
-	
+
 	  public function btcpaynowupload(Request $request)
     {
            $this->validate($request,
@@ -2622,7 +2624,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data = Invest::where('status', 101)->where('trx', $request->trx)->first();
         $auth = Auth::user();
 
-         $data->tnum = $request->trxx; 
+         $data->tnum = $request->trxx;
          $data->btcwallet = $request->btc;
          $data->status = 2;
           if($request->hasFile('photo'))
