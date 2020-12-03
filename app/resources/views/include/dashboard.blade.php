@@ -791,7 +791,12 @@ $("#toast").toast({
 							<!-- Top Bar Action List -->
 							<div class="top-bar-action-list">
 								<ul class="clearfix">
+                                    @if(\Illuminate\Support\Facades\Auth::user()->verified=="")
 									<li class="action-list-item">
+										<a href="{{route('verification')}}" class="invite-button">Upgrade to Level 2</a>
+									</li> <!-- /.action-list-item -->
+                                    @endif
+                                    <li class="action-list-item">
 										<a href="{{route('referral')}}" class="invite-button">Invite Friends</a>
 									</li> <!-- /.action-list-item -->
 									<!-- Balance Figure -->
