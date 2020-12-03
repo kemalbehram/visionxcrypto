@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/app/resources/views/include/front.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/front.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/invest.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/invest.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +124,7 @@
       <option name="presentableId" value="Default" />
       <updated>1606952584499</updated>
       <workItem from="1606952585768" duration="888000" />
-      <workItem from="1606953667250" duration="4777000" />
+      <workItem from="1606953667250" duration="5188000" />
     </task>
     <servers />
   </component>
