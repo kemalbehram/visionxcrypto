@@ -12,13 +12,13 @@
 								<li>
 									<div class="inner-warpper">
 										<h6 class="inner-title">Total Invested</h6>
-										<strong class="figure">{{$basic->currency_sym}}{{number_format($invsum, $basic->decimal)}}</strong>
+										<strong class="figure">${{number_format($invsum, $basic->decimal)}}</strong>
 									</div> <!-- /.inner-warpper -->
 								</li>
 								<li>
 									<div class="inner-warpper">
 										<h6 class="inner-title">Available earnings</h6>
-										<strong class="figure total-earn">{{$basic->currency_sym}}{{number_format($earn->balance, $basic->decimal)}}</strong>
+										<strong class="figure total-earn">${{number_format($earn->balance, $basic->decimal)}}</strong>
 									</div> <!-- /.inner-warpper -->
 								</li>
 								<li>
@@ -46,11 +46,11 @@
 
 								<div class="table-responsive investment-table-sheet">
 									<table class="table">
-										 
+
 										<tbody>
 										@if(count($trans) >0)
 										@foreach($trans as $k=>$data)
-									
+
 										    <tr>
 										      	<td>
 											      <span class="title">Plan</span>
@@ -62,7 +62,7 @@
 											    </td>
 											    <td>
 											      <span class="title">Invested</span>
-											      <div class="info font-fix">{{$basic->currency_sym}}{{number_format($data->amount, $basic->decimal)}}</div>
+											      <div class="info font-fix">${{number_format($data->amount, $basic->decimal)}}</div>
 											    </td>
 											    <td>
 											      <span class="title">Status</span>
@@ -77,7 +77,7 @@
 											    </td>
 											    <td>
 											      <span class="title">Payout Frequency</span>
-											      <div class="info font-fix">{{$basic->currency_sym}} {{__($data->interest)}} / {{__($data->time_name)}}</div>
+											      <div class="info font-fix">$ {{__($data->interest)}} / {{__($data->time_name)}}</div>
 											    </td>
 												 <td>
 											      <span class="title">Epected Yielded</span>
@@ -87,9 +87,9 @@
 											      <span class="title">Total Yields</span>
 											      <div class="info profit">{{__($data->return_rec_time)}} @lang('Times')</div>
 											    </td>
-											   
+
 										    </tr>
-											
+
 											@endforeach
 											@else
 											No Investment Record Found Yet
@@ -106,7 +106,7 @@
 			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
 
 
- 
+
 
 
 
@@ -132,13 +132,13 @@
 								      	<h3 class="title font-fix">New Crypto Investment</h3>
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>					
+								        </button>
 								    </div>
 
 								    <div class="modal-body">
-				        				
-										
-																
+
+
+
 					        				<div class="single-input-wrapper">
 					        					<h6 class="title">Payout Frequency <button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="The amount you want to invest, you can always add funds to your investment at any time."><img src="images/info.png" alt=""></button></h6>
 					        						<div class="dropdown withdraw-method-dropdown">
@@ -146,7 +146,7 @@
 													    <span class="balance-sheet-wrapper selected-currency">
 													    	<span class="withdraw-currency-list clearfix">
 													    		<span class="name font-fix"><img width="50" src="{{url('assets/images/coins2.png')}}" alt=""> Currency</span>
-																 
+
 													    	</span>
 													    </span>
 													</button>
@@ -154,20 +154,20 @@
 
 													function goDoSomethingf(identifier){
 
-													 document.getElementById("name").innerHTML = $(identifier).data('name'); 
-													 document.getElementById("pname").innerHTML = $(identifier).data('name'); 
-													 document.getElementById("planid").value = $(identifier).data('id'); 
-													 document.getElementById("mini").innerHTML = $(identifier).data('mini'); 
-													 document.getElementById("maxi").innerHTML = $(identifier).data('maxi'); 
-													 document.getElementById("interest").innerHTML = $(identifier).data('interest'); 
-													 document.getElementById("duration").innerHTML = $(identifier).data('duration'); 
-													 document.getElementById("cycle").innerHTML = $(identifier).data('cycle'); 
-													 
-													  
+													 document.getElementById("name").innerHTML = $(identifier).data('name');
+													 document.getElementById("pname").innerHTML = $(identifier).data('name');
+													 document.getElementById("planid").value = $(identifier).data('id');
+													 document.getElementById("mini").innerHTML = $(identifier).data('mini');
+													 document.getElementById("maxi").innerHTML = $(identifier).data('maxi');
+													 document.getElementById("interest").innerHTML = $(identifier).data('interest');
+													 document.getElementById("duration").innerHTML = $(identifier).data('duration');
+													 document.getElementById("cycle").innerHTML = $(identifier).data('cycle');
+
+
 													 }
 													 </script>
-													
-													 
+
+
 													<div class="dropdown-menu dropdown-menu-right">
 													    <div class="balance-sheet-wrapper">
 															<ul>
@@ -175,19 +175,19 @@
 															@php
                         $time_name = \App\TimeSetting::where('time', $data->times)->first();
                     @endphp
-																<li onclick="goDoSomethingf(this);" data-interest="{{$data->interest}} @if($data->interest_status == 1) % @else {{$basic->currency_sym}} @endif"    data-name="{{$data->name}}"   data-cycle="{{$time_name->name}}"   data-mini="{{$data->minimum}}" data-maxi="{{$data->maximum}}"  data-duration="@if($data->lifetime_status == 0) {{__($data->repeat_time)}}{{__($time_name->slug)}} @else @lang('Lifetime') @endif"  data-id="{{$data->id}}" class="bitcoin-method clearfix select-currnecy-list">
+																<li onclick="goDoSomethingf(this);" data-interest="{{$data->interest}} @if($data->interest_status == 1) % @else $ @endif"    data-name="{{$data->name}}"   data-cycle="{{$time_name->name}}"   data-mini="{{$data->minimum}}" data-maxi="{{$data->maximum}}"  data-duration="@if($data->lifetime_status == 0) {{__($data->repeat_time)}}{{__($time_name->slug)}} @else @lang('Lifetime') @endif"  data-id="{{$data->id}}" class="bitcoin-method clearfix select-currnecy-list">
 																	<div class="withdraw-currency-list clearfix">
 																		<span class="name font-fix">
-																		 
-																		<img width="40" src="{{url('assets/images/coins2.png')}}" alt=""> 
-																		 
+
+																		<img width="40" src="{{url('assets/images/coins2.png')}}" alt="">
+
 																		{{$data->name}}</span>
-																		 
+
 																	</div>
 																</li>
 															@endforeach
-															
-															</ul> 
+
+															</ul>
 														</div> <!-- /.balance-sheet-wrapper -->
 													</div>
 												</div> <!-- /.withdraw-method-dropdown -->
@@ -195,7 +195,7 @@
 					        				<a href="#" class="add-funds-button continue-button">Continue</a>
 
 					        				<div class="bottom-button-group clearfix">
-					        					<ul class="clearfix"> 
+					        					<ul class="clearfix">
 					        						<li><button class="cancel-action" data-dismiss="modal" aria-label="Close">Cancel</button></li>
 					        					</ul>
 					        				</div>
@@ -212,7 +212,7 @@
 								          <span aria-hidden="true">&times;</span>
 								        </button>
 								    </div>
-									
+
 											<form id="investnow"  action="{{route('coin-vest')}}" method="post">
 										@csrf
 					        				 <input id="planid" hidden name="plan_id">
@@ -221,26 +221,26 @@
 				        					<h6 class="title">amount</h6>
 				        					<div class="input-group-wrapper main-currency">
 				        						<div class="currency-icon">$</div>
-												
+
 									<script type="text/javascript">
 
 													function goDoSomething2(identifier){
 
-													   
+
 													 document.getElementById("ffinalamount").innerHTML = "$"+$(identifier).val() ;
 													 document.getElementById("btc").innerHTML = {{$btcrate}}*$(identifier).val();
 													 total = {{$btcrate}}*$(identifier).val();
 													 document.getElementById("totalbtc").innerHTML = total.toFixed(8)+"BTC";
 													  }
 													 </script>
-													
+
 				        						<input type="number" name="amount" onkeyup="goDoSomething2(this);" placeholder="0.0">
 				        						<div class="currency-name">USD</div>
 				        					</div>
 				        					<div class="input-group-wrapper">
 				        						<div class="cryptocurrency-amount" id="btc" >0.000000</div>
 				        						<select class="theme-select-dropdown">
-													<option value="Value 1">BTC</option> 
+													<option value="Value 1">BTC</option>
 												</select>
 				        					</div>
 				        					<div class="invest-amount-condition">Exchange Rate: $1.00 = {{number_format($btcrate,8)}}BTC</div>
@@ -270,22 +270,22 @@
 				        							</div>
 				        							<div class="payment-time" id="interest" >No Plan Yet</div>
 				        						</li>
-				        						 
+
 				        						<li class="clearfix payment-action-list list-item">
 				        							<div class="currency-name font-fix">
 				        								  Duration
 				        							</div>
 				        							<div class="payment-time" id="duration" >No Plan Yet</div>
 				        						</li>
-				        						 
+
 				        						<li class="clearfix payment-action-list list-item">
 				        							<div class="currency-name font-fix">
 				        								  Payout Cycle
 				        							</div>
 				        							<div class="payment-time" id="cycle" >No Plan Yet</div>
 				        						</li>
-				        						 
-				        						 
+
+
 				        					</ul>
 				        				</div> <!-- /.input-box-wrapper -->
 				        				<a href="#" class="add-funds-button continue-button">Add funds to your investment</a>
@@ -319,17 +319,17 @@
                                         @foreach($wallets as $k=>$data)
                                         <option value="{{$data->id}}"> {{__(str_replace('_',' ',$data->type))}} ({{number_format($data->balance, 2)}} {{__($basic->currency)}})</option>
                                         @endforeach
-										 <option value="1982100101281"> Deposit_Wallet {{$basic->currency_sym}}{{number_format(Auth::user()->balance, $basic->decimal)}}</option>
+										 <option value="1982100101281"> Deposit_Wallet ${{number_format(Auth::user()->balance, $basic->decimal)}}</option>
 										  <option value="82718271565131"> Scan QR Code</option>
                                     </select>
 				        					</div>
 				        				</div> <!-- /.input-box-wrapper -->
 				        				<div class="total-return-figure">
 											<h4 class="title">Total Investment</h4>
-											 
+
 											<h1> <a class="text-white total-return-value usd-return" id="totalbtc" >0.000BTC</a> </h1>
 										</div> <!-- /.total-return-figure -->
- 
+
 				        				<button type="submit"  onclick="event.preventDefault(); document.getElementById('investnow').submit();" class="add-funds-button">Confirm</button>
 				      				</div> <!-- /.modal-body -->
 								</div> <!-- /.tab-pane -->
@@ -341,6 +341,6 @@
 			</div> <!-- /#investment-modal -->
 
 
- 
-			
+
+
 			@endsection

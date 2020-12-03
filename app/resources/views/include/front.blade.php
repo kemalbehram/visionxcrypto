@@ -168,52 +168,52 @@
                       <a class="subnavbtn nav-link">Products</a>
                       <div class="subnav-content">
                           <div class="md:px-6 md:py-8 rounded-md grid-cols-2">
-                              <div class="lg:col-span-1 col-span-2">
-                                  <a href="products" class="flex items-center mb-6 hover:bg-yellow-pale rounded-md duration-500 tracking-normal font-normal p-3" style="margin-right: 50px">
-                                      <div>
-                                          <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0232.PNG" width="30px" class="g-image" style="margin-right: 5px"> All Products</p>
-                                          <p class="text-smoke-dark sub " style="font-size: 10px">View all Our Products</p>
-                                      </div>
-                                  </a>
-
-                                  <a href="products/#dgassets" class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3" style="margin-left: 50px">
-                                      <div class="mr-4" data-v-1105a405>
-{{--                                          <img src="/assets/svg/header-icons/pm.svg" class="g-image" data-v-1105a405>--}}
-                                      </div>
-                                      <div>
-                                          <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0231.PNG" width="30px" class="g-image" style="margin-right: 5px">Digital Assets</p>
-                                          <p class="text-smoke-dark sub" style="font-size: 10px">
-                                              Perfect Money, Bitcion &amp; more.
-                                          </p>
-                                      </div>
-                                  </a>
-
-                                  <a href="products/#vxcard" class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3" style="margin-right: 50px">
-                                      <div class="mr-4" data-v-1105a405>
-{{--                                          <img src="/assets/svg/header-icons/pm.svg" class="g-image" data-v-1105a405>--}}
-                                      </div>
-                                      <div>
-                                          <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0229.PNG" width="30px" class="g-image" style="margin-right: 5px">VX Card</p>
-                                          <p class="text-smoke-dark sub" style="font-size: 10px">
-                                              Physical and Virtual cards <br/>for instant Cash Out!
-                                          </p>
-                                      </div>
-                                  </a>
-
-                                  <a href="products/#vxcard" class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3" style="margin-left: 60px">
-                                      <div class="mr-4" data-v-1105a405>
-{{--                                          <img src="/assets/svg/header-icons/pm.svg" class="g-image" data-v-1105a405>--}}
-                                      </div>
-                                      <div>
-                                          <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0230.PNG" width="30px" class="g-image" style="margin-right: 5px">VX Vault</p>
-                                          <p class="text-smoke-dark sub" style="font-size: 10px">
-                                              Highly secure for you!
-                                          </p>
-                                      </div>
-                                  </a>
-
+                              <div class="row ml-2 mr-2 text-center">
+                              <div class="col-lg-6 col-md-12 text-center">
+                                                                        <a href="products" class="flex items-center mb-6 hover:bg-yellow-pale rounded-md duration-500 tracking-normal font-normal p-3">
+                                                                            <div>
+                                                                                <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0232.PNG" width="30px" class="g-image" style="margin-right: 5px"> All Products</p>
+                                                                                <p class="text-smoke-dark sub " style="font-size: 10px">View all Our Products</p>
+                                                                            </div>
+                                                                        </a>
                               </div>
+                              <div class="col-lg-6 col-md-12">
 
+
+                                                                    <a href="products/#dgassets" class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3">
+                                                                        <div>
+                                                                            <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0231.PNG" width="30px" class="g-image" style="margin-right: 5px">Digital Assets</p>
+                                                                            <p class="text-smoke-dark sub" style="font-size: 10px">
+                                                                                Perfect Money, Bitcion &amp; more.
+                                                                            </p>
+                                                                        </div>
+                                                                    </a>
+                              </div>
+                              <div class="col-lg-6 col-md-12">
+
+
+                                                                    <a href="products/#vxcard" class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3" style="margin-right: 50px">
+                                                                        <div>
+                                                                            <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0229.PNG" width="30px" class="g-image" style="margin-right: 5px">VX Card</p>
+                                                                            <p class="text-smoke-dark sub" style="font-size: 10px">
+                                                                                Physical and Virtual cards <br/>for instant Cash Out!
+                                                                            </p>
+                                                                        </div>
+                                                                    </a>
+                              </div>
+                              <div class="col-lg-6 col-md-12">
+
+
+                                                                    <a href="products/#vxcard" class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3">
+                                                                        <div>
+                                                                            <p class="text-blue-base font-medium main mb-1"><img src="front/img/IMG_0230.PNG" width="30px" class="g-image" style="margin-right: 5px">VX Vault</p>
+                                                                            <p class="text-smoke-dark sub" style="font-size: 10px">
+                                                                                Highly secure for you!
+                                                                            </p>
+                                                                        </div>
+                                                                    </a>
+                              </div>
+                              </div>
                           </div>
                       </div>
                   </div>
