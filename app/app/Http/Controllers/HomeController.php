@@ -316,7 +316,7 @@ class HomeController extends Controller
             $user->save();
 
 
-			return back()->with('success', 'Bank Verification Number has been verfied successfully');
+            return back()->with(['modal'=> 'bvn', 'success'=> 'Bank Verification Number has been verfied successfully']);
 
         } else {
             session()->flash('danger', 'You Have Entered A Wrong Bank Verification Number');
@@ -376,7 +376,6 @@ class HomeController extends Controller
         $data['user'] = User::findOrFail($auth->id);
         $data['method'] = Localbank::all();
         $data['referral'] =  User::whereRefer(Auth::user()->id)->get();
-        $data['page_title'] = "Referral Log";
         return view('user.profile', $data);
     }
 
@@ -655,7 +654,9 @@ class HomeController extends Controller
                         $user->accountno = $request->actnumber;
                         $user->bankcode = $request->bank;
                         $user->save();
-                        return back()->with('success', 'Bank Account Updated Successfuly');
+
+                    return back()->with(['modal'=> 'bank', 'success'=> 'Bank Account Updated successfully']);
+
 
             }
 

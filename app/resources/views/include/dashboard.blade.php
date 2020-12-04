@@ -696,6 +696,7 @@
         <meta property="og:description" content="Your best crypto wallet platform">
         <meta property="og:image" content="{{asset('assets/images/logo/logo.png')}}">
         <script src="{{asset('process/countries.js')}}"></script>
+        <script src="{{asset('assets/js/jquery3.5.1.js')}}"></script>
 
         <!-- For Window Tab Color -->
         <!-- Chrome, Firefox OS and Opera -->
@@ -1041,7 +1042,18 @@
                                                                           alt="" class="svg"> Verification</a></li>
                         </ul>
 
-                        <a href="{{route('referral')}}" class="invite-button">Invite Friends</a>
+                        @if(\Illuminate\Support\Facades\Auth::user()->verified=="")
+                            <li class="action-list-item">
+                                <a href="{{route('verification')}}" class="invite-button">Upgrade to Level 2</a>
+                            </li> <!-- /.action-list-item -->
+                        @else
+                            <li class="action-list-item">
+                                <button class="btn btn-success"
+                                        style="text-align: center; color: #fff; font-size: 1.166em; border:1px solid #dee0e7; border-radius: 5px; line-height: 37px; padding: 0 17px; margin-top: 13px;">
+                                    Verified
+                                </button>
+                            </li> <!-- /.action-list-item -->
+                        @endif
 
                     </div> <!-- /.dashboard-sidebar-navigation --> <!-- ***** End Sidebar **** -->
 

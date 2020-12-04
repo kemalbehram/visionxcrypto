@@ -115,7 +115,7 @@
 
 													<div class="single-input-group large-box">
 												<label for="dob" class="title font-fix">Date Of Birth</label>
-												<input value="{{$user->dob}}"   name="dob" class="font-fix" id="dob">
+												<input value="{{$user->dob}}" name="dob" class="font-fix" id="dob" type="date">
 													</div> <!-- /.single-input-group -->
 													</div>
 
