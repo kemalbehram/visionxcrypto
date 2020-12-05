@@ -1,5 +1,15 @@
 @extends('include.dashboard')
 @section('content')
+
+
+    @if(Session::has('modal'))
+        <script>
+            $(document).ready(function () {
+                $("#successpopup").modal('show');
+            });
+        </script>
+    @endif
+
   <!-- ***************** User Content **************** -->
 						<div class="dashboard-user-content wallet-panel">
 							<div class="row">
@@ -12,7 +22,7 @@
 													<a class="clearfix" href="#">
 														<span class="name font-fix"><img width="50" src="{{url('assets/images/dstv.png')}}" alt="">  </span>
 														<span class="balance-inquery">
-															<span class="currency-title">{{$basic->currency_sym}}{{number_format($dstv,2)}}</span> 
+															<span class="currency-title">{{$basic->currency_sym}}{{number_format($dstv,2)}}</span>
 														</span>
 													</a>
 												</li>
@@ -20,7 +30,7 @@
 													<a class="clearfix" href="#">
 														<span class="name font-fix"><img width="50" src="{{url('assets/images/gotv.jpg')}}" alt="">  </span>
 														<span class="balance-inquery">
-															<span class="currency-title">{{$basic->currency_sym}}{{number_format($gotv,2)}}</span> 
+															<span class="currency-title">{{$basic->currency_sym}}{{number_format($gotv,2)}}</span>
 														</span>
 													</a>
 												</li>
@@ -28,7 +38,7 @@
 													<a class="clearfix" href="#">
 														<span class="name font-fix"><img width="50" src="{{url('assets/images/startimes.jpg')}}" alt="">  </span>
 														<span class="balance-inquery">
-															<span class="currency-title">{{$basic->currency_sym}}{{number_format($startimes,2)}}</span> 
+															<span class="currency-title">{{$basic->currency_sym}}{{number_format($startimes,2)}}</span>
 														</span>
 													</a>
 												</li>
@@ -39,19 +49,19 @@
 											</div>
 										</div> <!-- /.balance-sheet-wrapper -->
 										<ul class="button-group clearfix">
-											<li><button class="deposit-button" data-toggle="modal" data-target="#deposit-modal">Subscribe Now</button></li> 
-							 
+											<li><button class="deposit-button" data-toggle="modal" data-target="#deposit-modal">Subscribe Now</button></li>
+
 										</ul>
 									</div> <!-- /.bg-box -->
 
-									 
+
 								</div> <!-- /.col- -->
-								
-								
-								
-								
-								
-								
+
+
+
+
+
+
 								<div class="col-xl-6">
 									<div class="transactions-history bg-box">
 										<div class="title tooltip-holder">
@@ -87,12 +97,12 @@
 										</div> <!-- /.table-data -->
 									</div> <!-- /.transactions-history -->
 									{{$cabletv->links()}}
-									 
+
 								</div> <!-- /.col- -->
 
-								
+
 							</div> <!-- /.row -->
-							
+
 						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
 					</div> <!-- /#dashboard-main-body -->
 				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
@@ -118,28 +128,28 @@
 									<div class="theme-modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>					
+								        </button>
 								    </div>
-									
+
 													<script type="text/javascript">
 
 													function goDoSomething(identifier){
- 
+
 													 document.getElementById("name").innerHTML = $(identifier).data('name');
 													 document.getElementById("name1").innerHTML = $(identifier).data('name');
 													 document.getElementById("name2").innerHTML = $(identifier).data('name');
-													 document.getElementById("name3").innerHTML = $(identifier).data('type'); 
-													 document.getElementById("deco").value = $(identifier).data('deco'); 
-													 
+													 document.getElementById("name3").innerHTML = $(identifier).data('type');
+													 document.getElementById("deco").value = $(identifier).data('deco');
+
 													 document.getElementById("image").innerHTML = "<img width='40'  src='{{url('assets/images')}}/"+$(identifier).data('image')+"'>";
-													  
+
 
 													 };
-												 
+
 													 </script>
-													 
-													
-													 
+
+
+
 								    <div class="main-container clearfix">
 								    	<div class="details-option">
 								    		<h3 class="main-title">Payment Method</h3>
@@ -150,44 +160,44 @@
 													<li class="single-checkbox" onclick="goDoSomething(this);" data-name="DSTV"  data-deco="DStv" data-type="Smart Card" data-image="dstv.png" >
 														<input type="checkbox" value="dstv" name="decodertype" id="pay-bitcoin" class="pay-check">
 														<label for="pay-bitcoin">
-															<img src="{{url('assets/images/dstv.png')}}" alt=""> 
+															<img src="{{url('assets/images/dstv.png')}}" alt="">
 														</label>
 													</li>
 													<li class="single-checkbox"  onclick="goDoSomething(this);" data-name="GOTV"  data-deco="GOtv" data-type="IUC"  data-image="gotv.jpg" >
 														<input type="checkbox"  name="decodertype"  value="gotv" id="pay-ethereum" class="pay-check">
 														<label for="pay-ethereum">
-															<img src="{{url('assets/images/gotv.jpg')}}" alt=""> 
+															<img src="{{url('assets/images/gotv.jpg')}}" alt="">
 														</label>
 													</li>
 													<li class="single-checkbox"  onclick="goDoSomething(this);" data-type="Decoder"  data-deco="Startimes"  data-name="Startimes" data-image="startimes.jpg" >
 														<input type="checkbox" value="startimes"  name="decodertype"  id="pay-litecoin" class="pay-check">
 														<label for="pay-litecoin">
-															<img src="{{url('assets/images/startimes.jpg')}}" alt=""> 
+															<img src="{{url('assets/images/startimes.jpg')}}" alt="">
 														</label>
 													</li>
 												</ul>
-												
+
 													 <script type="text/javascript">
 													function myAmount() {
-													 var amount = $('#myPhone').val() ; 
+													 var amount = $('#myPhone').val() ;
 
 													  document.getElementById("decodernumber").innerHTML =  amount;
-													  document.getElementById("decodernumber").value =  amount; 
-													   
+													  document.getElementById("decodernumber").value =  amount;
+
 													 };
 													</script>
-													
+
 
 												<div class="wallet-amount payment-amount">
 													<h3 class="main-title">Decoder Number</h3>
 													<div class="input-group-wrapper main-currency">
 														<input type="checkbox" class="cur-check">
 						        						<label for="main-cur">
-						        							 
+
 							        						<input type="number"  name="decodernumber" id="myPhone" onkeyup="myAmount()" >
 							        						<span class="currency-name"><a id="name1"></span>
 						        						</label>
-						        					</div> 
+						        					</div>
 												</div> <!-- /.wallet-amount -->
 
 												<button type="submit" class="theme-button "><span></span>Validate Number</button>
@@ -198,7 +208,7 @@
 								    	<div class="modal-sidebar">
 								    		<div class="summary-content">
 								    			<h4 class="summary-title font-fix">Available Balance</h4>
-								    			<div class="crypto-balance font-fix">{{$basic->currency_sym}}{{number_format(Auth::user()->balance, $basic->decimal)}}</div> 
+								    			<div class="crypto-balance font-fix">{{$basic->currency_sym}}{{number_format(Auth::user()->balance, $basic->decimal)}}</div>
 
 								    			<ul><br>
 								    				<li class="list-item">
@@ -220,7 +230,7 @@
 								    </div> <!-- /.main-container -->
 								</div> <!-- /.tab-pane -->
 
-								 
+
 							</div> <!-- /.tab-content -->
 						</div> <!-- /.tabs-wrap -->
 			    	</div> <!-- /.modal-content -->
@@ -229,7 +239,32 @@
 
 
 
-			 
+  <!-- success  Modal -->
+  <div class="modal fade settings-page-modal" id="successpopup" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="container h-100">
+                  <div class="row justify-content-center h-100 align-items-center text-center">
+                      <div class="col-xl-5 col-md-6">
+
+                          <div class="identity-content">
+                              <img src="{{asset('dash-assets/images/success-tick-dribbble.gif')}}"/>
+                              <h4>Transaction Successful</h4>
+                              <br/>
+                          </div>
+                          <br/>
+
+                          <div class="mb-5">
+                              <a href="{{route('products')}}" class="btn btn-dark pl-5 pr-5">Goto Products</a> <br/><br/> <a href="{{route('home')}}" class="btn btn-success pl-5 pr-5">Goto Dashboard</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- /.modal-content -->
+      </div> <!-- /.modal-dialog -->
+  </div> <!-- /#success-->
+
+
 
 
 @stop

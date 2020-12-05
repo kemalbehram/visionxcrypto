@@ -86,16 +86,16 @@ class ProductController extends Controller
         ]);
 
 		if ($user->withdrawpass != $request->password) {
-		    $user = Auth::user(); 
+		    $user = Auth::user();
             $user->withdrawpass_used = $user->withdrawpass_used + 1;
             $user->save();
-            
-            
+
+
 		    if ($user->withdrawpass_used > 2) {
 		    $user->locked = 1;
             $user->save();
 		    }
-            
+
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
 
@@ -141,8 +141,7 @@ class ProductController extends Controller
      $user->balance = $user->balance - $request->amount;
      $user->save();
 
-
-	return back()->with('success', 'Aitime Purchase of '.$basic->currency_sym.''.$request->amount.' '.$request->network.' was successful.');
+        return back()->with(['modal'=> 'airtime', 'success'=> 'Airtime Purchase of '.$basic->currency_sym.''.$request->amount.' '.$request->network.' was successful.']);
     }
 
 
@@ -175,7 +174,7 @@ class ProductController extends Controller
 		curl_close($curl);
 		$rep=json_decode($response, true);
 
-		
+
 		foreach($rep['MTN'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
@@ -187,9 +186,9 @@ class ProductController extends Controller
         $product['network'] = "MTN";
         $product['status'] = 1;
         Internet::create($product);
-       
+
 		}}
-        
+
 		foreach($rep['9MOBILE'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
@@ -201,9 +200,9 @@ class ProductController extends Controller
         $product['network'] = "9MOBILE";
         $product['status'] = 1;
         Internet::create($product);
-       
+
 		}}
-        
+
 		foreach($rep['AIRTEL'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
@@ -215,9 +214,9 @@ class ProductController extends Controller
         $product['network'] = "AIRTEL";
         $product['status'] = 1;
         Internet::create($product);
-       
+
 		}}
-        
+
 		foreach($rep['GLO'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
@@ -229,15 +228,15 @@ class ProductController extends Controller
         $product['network'] = "GLO";
         $product['status'] = 1;
         Internet::create($product);
-       
+
 		}}
-        
+
          $data['networks'] = Network::whereStatus(1)->get();
-         
+
         $data['page_title'] = "Internet Data";
-		
+
 		 $data['transactions'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(2)->paginate(6);
-		 
+
 		$data['mtn'] = $rep['MTN'];
 		$data['airtel'] = $rep['AIRTEL'];
 		$data['glo'] = $rep['GLO'];
@@ -245,29 +244,29 @@ class ProductController extends Controller
 
         return view('user.rubies.internet', $data);
     }
-    
-     
+
+
 		 public function loadata(Request $request)
     {
         $user = Auth::user();
 	   $request->validate([
             'network' => 'required',
-            'number' => 'required', 
-        ], [ 
+            'number' => 'required',
+        ], [
             'number.required' => 'Please enter your mobile phone number',
             'network.required' => 'Please select a mobile network',
         ]);
-        
+
         	Session::put('number', $request->number);
-			Session::put('network', $request->network); 
+			Session::put('network', $request->network);
 			return redirect()->route('internetstep2');
 
     }
 
- 
+
 		public function internetstep2()
 		{
-  
+
 		$data['number'] = Session::get('number');
 		$network = Session::get('network');
 		$data['network'] = Network::whereCode($network)->first();
@@ -292,16 +291,16 @@ class ProductController extends Controller
 
 
 		if ($user->withdrawpass != $request->password) {
-		    $user = Auth::user(); 
+		    $user = Auth::user();
             $user->withdrawpass_used = $user->withdrawpass_used + 1;
             $user->save();
-            
-            
+
+
 		    if ($user->withdrawpass_used > 2) {
 		    $user->locked = 1;
             $user->save();
 		    }
-            
+
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
 
@@ -327,7 +326,7 @@ class ProductController extends Controller
 	  CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"productcode\": \"$request->plan\",\n    \"mobilenumber\": \"$request->number\",\n    \"telco\": \"$request->network\"\n}",
       CURLOPT_HTTPHEADER => array(
      "Authorization: ".$basic->rubies_secretkey
-	  
+
 	  ),
 	));
 
@@ -353,11 +352,11 @@ class ProductController extends Controller
 	 $user = Auth::user();
      $user->balance = $user->balance - $request->amount;
      $user->save();
-      
+
 	session()->forget('number');
 	session()->forget('network');
 
-    return redirect()->route('internet')->with("success", "internet subscription was successful");
+    return redirect()->route('internet')->with(['modal'=> 'airtime', "success" => "internet subscription was successful"]);
 	}
 	else{
 		return back()->with('danger', 'Sorry, you cant subscribe to internet data at the moment, please try again later.');
@@ -371,9 +370,9 @@ class ProductController extends Controller
 	public function banktransfer()
     {
         $user = Auth::user();
-        
+
         if($user->bankyes != 1){
-        return redirect()->route('verification')->with("danger", "Please setup your payment bank account first before you proceed with bank transfer");    
+        return redirect()->route('verification')->with("danger", "Please setup your payment bank account first before you proceed with bank transfer");
         }
 
         $data['page_title'] = "Bank Tranfer";
@@ -426,11 +425,11 @@ class ProductController extends Controller
 		   if ($total > $user->balance) {
              return back()->with("danger", "Insufficient wallet balance. Please deposit more fund and try again");
            }
-           
-    
+
+
      if($request->bank == 'others'){
-         Session::put('amount', $request->amount); 
-        return redirect()->route('otherbanktransfer')->with("success", "Please enter the bank details of the receiver of fund and click on proceed button when done");    
+         Session::put('amount', $request->amount);
+        return redirect()->route('otherbanktransfer')->with("success", "Please enter the bank details of the receiver of fund and click on proceed button when done");
         }
 
 
@@ -464,8 +463,8 @@ class ProductController extends Controller
 	//Session::put('name', $rep['accountname']);
 	//Session::put('amount', $request->amount);
 	//Session::put('number', $request->number);
-	
-	
+
+
 	Session::put('bank', $user->bank);
 	Session::put('code', $user->bankcode);
 	Session::put('name', $rep['accountname']);
@@ -498,8 +497,8 @@ class ProductController extends Controller
 	public function otherbanktransfer(Request $request)
     {
 
-    $data['page_title'] = "Other Bank Tranfer"; 
-	$data['amount'] = Session::get('amount'); 
+    $data['page_title'] = "Other Bank Tranfer";
+	$data['amount'] = Session::get('amount');
 	$basic = GeneralSettings::first();
 		 $curl = curl_init();
 
@@ -540,20 +539,20 @@ class ProductController extends Controller
         ]);
 
 		if ($user->withdrawpass != $request->password) {
-		    
-		    $user = Auth::user(); 
+
+		    $user = Auth::user();
             $user->withdrawpass_used = $user->withdrawpass_used + 1;
             $user->save();
-            
-            
+
+
 		    if ($user->withdrawpass_used > 2) {
 		    $user->locked = 1;
             $user->save();
 		    }
-            
+
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
-            
+
             $basic = GeneralSettings::first();
             $total = $basic->transcharge + $request->amount;
 		   if ($request->amount > $user->balance) {
@@ -561,7 +560,7 @@ class ProductController extends Controller
         }
 
 		$trx = strtoupper(str_random(20));
-	
+
 
 	$bank = Session::get('bank');
 	$name = Session::get('name');
@@ -607,7 +606,7 @@ class ProductController extends Controller
     Transaction::create($product);
 
 
-	 $user = Auth::user(); 
+	 $user = Auth::user();
      $user->balance = $user->balance - $total;
      $user->save();
 
@@ -629,7 +628,7 @@ class ProductController extends Controller
     {
        $user = Auth::user();
 	   $request->validate([
-            'password' => 'required', 
+            'password' => 'required',
             'bank' => 'required',
             'accountnumber' => 'required',
             'accountname' => 'required',
@@ -644,20 +643,20 @@ class ProductController extends Controller
         ]);
 
 		if ($user->withdrawpass != $request->password) {
-		    $user = Auth::user(); 
+		    $user = Auth::user();
             $user->withdrawpass_used = $user->withdrawpass_used + 1;
             $user->save();
-            
-            
+
+
 		    if ($user->withdrawpass_used > 2) {
 		    $user->locked = 1;
             $user->save();
 		    }
-            
-            
+
+
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
-        
+
             $basic = GeneralSettings::first();
             $total = $basic->transcharge + Session::get('amount');
 
@@ -671,12 +670,12 @@ class ProductController extends Controller
 	$bank = $request->bank;
 	$name = $request->accountname;
 	$amount = Session::get('amount');
-	$number = $request->accountnumber; 
+	$number = $request->accountnumber;
 	$trx = strtoupper(str_random(20));
 
-     
 
-	if ($user->balance >= $total )  
+
+	if ($user->balance >= $total )
 	{
 	$product['user_id'] = Auth::id();
     $product['gateway'] = $bank;
@@ -690,10 +689,10 @@ class ProductController extends Controller
     Transaction::create($product);
 
 
-	 $user = Auth::user(); 
+	 $user = Auth::user();
      $user->balance = $user->balance - $total;
      $user->save();
- 
+
 	session()->forget('amount');
 
 	return redirect()->route('banktransfer')->with("fundsent", "fund transfer was successful. Please wait while we process your transfer");
@@ -837,16 +836,16 @@ class ProductController extends Controller
         ]);
 
 		if ($user->withdrawpass != $request->password) {
-		    $user = Auth::user(); 
+		    $user = Auth::user();
             $user->withdrawpass_used = $user->withdrawpass_used + 1;
             $user->save();
-            
-            
+
+
 		    if ($user->withdrawpass_used > 2) {
 		    $user->locked = 1;
             $user->save();
 		    }
-            
+
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
         	$basic = GeneralSettings::first();
@@ -908,7 +907,7 @@ class ProductController extends Controller
                 session()->forget('number');
                 session()->forget('decoder');
 
-                return redirect()->route('home')->with("success", $product['remark']);
+                return redirect()->route('tvbill')->with(['modal'=> 'tv', "success"=> $product['remark']]);
 
         }else {
             return back()->with('danger', 'We cannot proces your selected subscription plan at the moment. Please Try Again');
@@ -974,7 +973,7 @@ class ProductController extends Controller
         $user = Auth::user();
 
         $data['page_title'] = "Utility Bills";
-		 $data['power'] = Power::whereStatus(1)->get(); 
+		 $data['power'] = Power::whereStatus(1)->get();
 		 $data['powered'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(4)->paginate(6);
 		 $data['sum'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(4)->sum('amount');
         return view('user.rubies.power', $data);
@@ -997,9 +996,9 @@ class ProductController extends Controller
 
 
 		$basic = GeneralSettings::first();
-        		
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
           CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerverification",
           CURLOPT_RETURNTRANSFER => true,
@@ -1014,29 +1013,29 @@ class ProductController extends Controller
             "Authorization: ".$basic->rubies_secretkey
           ),
         ));
-        
+
         $response = curl_exec($curl);
-        
-        curl_close($curl); 
+
+        curl_close($curl);
         $result =json_decode($response, true);
-	  
+
         if(isset($result['message'])){
          return back()->with('danger', 'it seems you have entered a wrong meter number or you have selected a wrong meter. Please check and try again');
         }
-		   
+
         if(isset($result['responsecode'])){
         if($result['responsecode'] == 00){
           Session::put('number', $request->meternumber);
           Session::put('meter', $request->code);
           Session::put('name', $result['customername']);
           return redirect()->route('validatedmeter');
-        } 
+        }
         else{
-           return back()->with('danger', 'We cannot process your request at the moment, please try again later'); 
+           return back()->with('danger', 'We cannot process your request at the moment, please try again later');
             }
         }
-		    
-		    
+
+
 		}
 
 
@@ -1054,8 +1053,8 @@ class ProductController extends Controller
 		else{
 		$data['type'] = "POSTPAID";
 		}
-		
-		
+
+
 
 	    return view('user.rubies.paypower', $data);
 		}
@@ -1073,16 +1072,16 @@ class ProductController extends Controller
         ]);
 
         if ($user->withdrawpass != $request->password) {
-            $user = Auth::user(); 
+            $user = Auth::user();
             $user->withdrawpass_used = $user->withdrawpass_used + 1;
             $user->save();
-            
-            
+
+
 		    if ($user->withdrawpass_used > 2) {
 		    $user->locked = 1;
             $user->save();
 		    }
-            
+
             return back()->with('alert', 'You have entered a wrong transaction pin. Please try again.');
         }
         $power = Power::whereStatus(1)->whereBillercode($request->meter)->first();
@@ -1096,7 +1095,7 @@ class ProductController extends Controller
         $basic = GeneralSettings::first();
         $trx = strtoupper(str_random(6));
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
           CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerpurchase",
           CURLOPT_RETURNTRANSFER => true,
@@ -1113,17 +1112,17 @@ class ProductController extends Controller
             "Authorization: ".$basic->rubies_secretkey
           ),
         ));
-        
+
         $response = curl_exec($curl);
-        
-        curl_close($curl); 
+
+        curl_close($curl);
         $result =json_decode($response, true);
-	  
+
         if(isset($result['message'])){
          return back()->with('danger', $result['message']);
         }
-		   
-         
+
+
         if($result['responsecode'] == 00){
          $product['user_id'] = Auth::id();
             $product['gateway'] = $request->meter;
@@ -1151,37 +1150,37 @@ class ProductController extends Controller
             session()->forget('number');
             session()->forget('name');
 
-            return redirect()->route('utilitybill')->with("success", $product['remark']);
-        } 
+            return redirect()->route('utilitybill')->with(['modal'=> 'power', "success"=> $product['remark']]);
+        }
         else{
-           return back()->with('danger', 'We cannot process your request at the moment, please try again later'); 
+           return back()->with('danger', 'We cannot process your request at the moment, please try again later');
             }
-      
+
     }
-    
+
     	public function instantsms()
 		{
 
-		$data['page_title'] = "Instant SMS"; 
+		$data['page_title'] = "Instant SMS";
 		$data['sms'] = Sms::where('user_id', Auth::id())->paginate(6);
 		$data['sum'] = Sms::where('user_id', Auth::id())->sum('amount');
 	    return view('user.bulksms.index', $data);
 		}
-		
-		
-		
+
+
+
 		 public function sendsmsnow(Request $request)
     {
 
      $request->validate([
             'message' => 'required|string|max:160',
-            'phone' => 'required|string|max:11', 
+            'phone' => 'required|string|max:11',
             ]);
 
         $user = Auth::user();
 
 
-          
+
 
         $basic = GeneralSettings::first();
          if ($user->balance < $basic->smscharge) {
@@ -1190,28 +1189,28 @@ class ProductController extends Controller
 
 
 
-            $message = utf8_encode(urlencode($request->message)); 
+            $message = utf8_encode(urlencode($request->message));
         	 $baseUrl = "https://www.bulksmsnigeria.com/";
             $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=SMS&to=".$request->phone."&body=".$message."";
             $httpVerb = "GET";
             $contentType = "application/json"; //e.g charset=utf-8
             $headers = array (
                 "Content-Type: $contentType",
-    
+
             );
-    
+
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
                 curl_setopt($ch, CURLOPT_HTTPGET, true);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
+
                 $content = json_decode(curl_exec( $ch ),true);
                 $err     = curl_errno( $ch );
                 $errmsg  = curl_error( $ch );
             	curl_close($ch);
-     
+
 
 
 
@@ -1229,7 +1228,7 @@ class ProductController extends Controller
         $user->balance = $user->balance - $basic->smscharge;
         $user->save();
 
-         return back()->with('success', 'Message Sent To Number');
+         return back()->with(['modal'=> 'tv', 'success'=> 'Message Sent To Number']);
 
 
 }

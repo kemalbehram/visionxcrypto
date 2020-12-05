@@ -4,9 +4,14 @@
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/views/include/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/profile.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/bulksms/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/bulksms/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/clubkonnect/cabletv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/clubkonnect/cabletv.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/rubies/airtime.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/rubies/airtime.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/rubies/internet.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/rubies/internet.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/rubies/power.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/rubies/power.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +137,8 @@
       <workItem from="1606994101269" duration="16288000" />
       <workItem from="1607067284896" duration="10215000" />
       <workItem from="1607092430266" duration="43000" />
-      <workItem from="1607093625761" duration="1564000" />
+      <workItem from="1607093625761" duration="2291000" />
+      <workItem from="1607107410518" duration="10990000" />
     </task>
     <servers />
   </component>
@@ -140,42 +146,84 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="495" y="66" key="RollbackChangesDialog" timestamp="1607001847091">
+    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1607130355680">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="495" y="66" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607001847091" />
+    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1607130355680" />
+    <state x="495" y="66" key="RollbackChangesDialog" timestamp="1607130061517">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="495" y="66" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607130061517" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>279</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>293</line>
+          <line>300</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>447</line>
+          <line>454</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>505</line>
+          <line>512</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
+          <line>579</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
+          <line>141</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
+          <line>358</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
+          <line>909</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
+          <line>1152</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>592</line>
+          <line>593</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="postbank" />
           </properties>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
+          <line>258</line>
+          <properties>
+            <option name="className" value="\App\Http\Controllers\HomeController" />
+            <option name="methodName" value="bvnVerify" />
+          </properties>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
+          <line>532</line>
+          <properties>
+            <option name="className" value="\App\Http\Controllers\HomeController" />
+            <option name="methodName" value="kyc2" />
+          </properties>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

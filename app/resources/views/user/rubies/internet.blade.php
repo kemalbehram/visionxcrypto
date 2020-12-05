@@ -1,5 +1,14 @@
 @extends('include.dashboard')
 @section('content')
+
+    @if(Session::has('modal'))
+        <script>
+            $(document).ready(function () {
+                $("#successpopup").modal('show');
+            });
+        </script>
+    @endif
+
  <!-- ***************** User Content **************** -->
 						<div class="dashboard-user-content wallet-panel">
 							<div class="row">
@@ -19,25 +28,25 @@
 													</a>
 												</li>
 											@endforeach
-												 
+
 											</ul>
 											<div class="total-balance clearfix">
 												<div class="balance-title">Total Airtime ≈</div>
 												<div class="balance-figure">{{$basic->currency_sym}}{{number_format(App\Transaction::whereUser_id(Auth::user()->id)->whereType(2)->whereStatus(1)->sum('amount'),2)}}</div>
 											</div>
 										</div> <!-- /.balance-sheet-wrapper -->
-										<ul class="button-group clearfix"> 
+										<ul class="button-group clearfix">
 											<li><button class="withdraw-button theme-button" data-toggle="modal" data-target="#withdraw-modal"><span></span>Recharge</button></li>
 										</ul>
 									</div> <!-- /.bg-box -->
 
-									 
+
 								</div> <!-- /.col- -->
 
 								<div class="col-xl-7">
-									 
 
-									 
+
+
 									<div class="transactions-history completed-transactions-history bg-box">
 										<div class="title tooltip-holder">
 											Completed Transactions
@@ -48,10 +57,10 @@
 										@if(count($transactions) < 1)
 										<center><h2>No Data Subscription Yet</h2></center>
 										@endif
-										
+
 											<table class="table">
 												<tbody>
-												
+
 										        @foreach($transactions as $k=>$data)
 												    <tr role="row" class="single-list">
 												      	<td class="time font-fix">
@@ -63,12 +72,12 @@
 													      	<div class="value">{{$data->trx}}</div>
 													    </td>
 													    <td>
-													    	<div class="heading font-fix"><b>({{$data->gateway}})</b><br>{{$basic->currency_sym}}{{number_format($data->amount,2)}}</div> 
+													    	<div class="heading font-fix"><b>({{$data->gateway}})</b><br>{{$basic->currency_sym}}{{number_format($data->amount,2)}}</div>
 													    </td>
 												    </tr>
 												    @endforeach
-													
-													
+
+
 												</tbody>
 											</table>
 										</div> <!-- /.table-data --><br>
@@ -76,13 +85,13 @@
 									</div> <!-- /.transactions-history -->
 								</div>
 							</div> <!-- /.row -->
-							
+
 						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
 					</div> <!-- /#dashboard-main-body -->
 				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
 			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
-			
-		 
+
+
 
 
 
@@ -104,7 +113,7 @@
 									<div class="theme-modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>					
+								        </button>
 								    </div>
 
 								    <div class="main-container clearfix">
@@ -113,17 +122,17 @@
 												Airtime Recharge
 												<button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Load airime and get recharged instantly."><img src="{{url('assets/images/info.png')}}" alt=""></button>
 											</h3>
-								    	 
+
 								    			<div class="dropdown withdraw-method-dropdown">
 													<button class="dropdown-toggle withdraw-dropdown-button" data-toggle="dropdown">
 													    <span class="balance-sheet-wrapper selected-currency">
 													    	<span class="withdraw-currency-list clearfix">
 													    		<span class="name font-fix"><img width="40"  src="{{url('assets/images/airtime.png')}}" alt=""> Select Network</span>
-																 
+
 													    	</span>
 													    </span>
 													</button>
-													
+
 													<script type="text/javascript">
 
 													function goDoSomething(identifier){
@@ -148,16 +157,16 @@
 													 document.getElementById("plan").innerHTML = "<select id='mySelect' onchange='myFunction1()' name='plan' class='form-control'>@foreach($ninemobile as $k=>$data)<option value='{{ $data['productcode']}} data-amount='34' >{{ $data['name']}}</option>@endforeach</select>";
 													 }
 													 document.getElementById("image").innerHTML = "<img width='40'  src='{{url('assets/images')}}/"+$(identifier).data('image')+"'>";
-													  
+
 
 													 };
-												 
+
 													 </script>
 													<script type="text/javascript">
-													function myAmount() { 
-													 var phone = $('#myphone').val() ;  
-													  document.getElementById("phonenumber").innerHTML =  phone; 
-													  document.getElementById("number").value =  phone; 
+													function myAmount() {
+													 var phone = $('#myphone').val() ;
+													  document.getElementById("phonenumber").innerHTML =  phone;
+													  document.getElementById("number").value =  phone;
 													 };
 													</script>
 													<script type="text/javascript">
@@ -166,8 +175,8 @@
 														 document.getElementById("pricer").innerHTML = amount;
 													 };
 													</script>
-													 
-													 
+
+
 													<div class="dropdown-menu dropdown-menu-right">
 													    <div class="balance-sheet-wrapper">
 															<ul>
@@ -175,7 +184,7 @@
 																<li data-toggle="collapse"  onclick="goDoSomething(this);" data-id="{{$data->code}}" data-image="{{$data->image}}"  data-name="{{$data->name}}" class="bitcoin-method clearfix select-currnecy-list">
 																	<div class="withdraw-currency-list clearfix">
 																		<span class="name font-fix"><img width="40"  src="{{url('assets/images')}}/{{$data->image}}" alt=""> {{$data->name}} Network</span>
-																		 
+
 																	</div>
 																</li>
 															@endforeach
@@ -183,13 +192,13 @@
 														</div> <!-- /.balance-sheet-wrapper -->
 													</div>
 												</div> <!-- /.withdraw-method-dropdown -->
-										 
- 
-												
+
+
+
 												<form method="post"  action="{{route('loadata') }}">
-											    @csrf	
-												 
-												
+											    @csrf
+
+
 												<div class="wallet-amount withdraw-amount">
 													<h3 class="main-title">Phone Number</h3>
 													<div class="row">
@@ -197,7 +206,7 @@
 															<div class="input-group-wrapper main-currency">
 																<input type="checkbox" class="cur-check">
 								        						<label for="wdrw-main-cur">
-								        							 
+
 									        						<input  id="myphone" onkeyup="myAmount()" type="number" placeholder="080********" min="100" >
 									        						<span class="currency-name"><a id="name2"></a></span>
 								        						</label>
@@ -210,13 +219,13 @@
 												</div> <!-- /.wallet-amount -->
 
 												<button class="theme-button"><span></span>Confirm</button>
-								    	 
+
 								    	</div> <!-- /.details-option -->
 
 
 								    	<div class="modal-sidebar">
 								    		<div class="summary-content">
-								    			 
+
 								    			<ul>
 								    				<li class="list-item">
 								    					<div class="sidebar-title">Network</div>
@@ -243,10 +252,10 @@
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
 								        </button>
-								    </div>					
+								    </div>
 
-								    <div class="modal-body"> 
-									 
+								    <div class="modal-body">
+
 							        	</form>
 							      	</div> <!-- /.modal-body -->
 								</div> <!-- /.tab-pane -->
@@ -255,5 +264,30 @@
 			    	</div> <!-- /.modal-content -->
 			  	</div> <!-- /.modal-dialog -->
 			</div> <!-- /#withdraw-modal -->
+
+    <!-- success  Modal -->
+    <div class="modal fade settings-page-modal" id="successpopup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="container h-100">
+                    <div class="row justify-content-center h-100 align-items-center text-center">
+                        <div class="col-xl-5 col-md-6">
+
+                            <div class="identity-content">
+                                <img src="{{asset('dash-assets/images/success-tick-dribbble.gif')}}"/>
+                                <h4>Transaction Successful</h4>
+                                <br/>
+                            </div>
+                            <br/>
+
+                            <div class="mb-5">
+                                <a href="{{route('products')}}" class="btn btn-dark pl-5 pr-5">Goto Products</a> <br/><br/> <a href="{{route('home')}}" class="btn btn-success pl-5 pr-5">Goto Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /#success-->
 
 @stop

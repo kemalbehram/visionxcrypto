@@ -1,5 +1,14 @@
 @extends('include.dashboard')
 @section('content')
+
+    @if(Session::has('modal'))
+        <script>
+            $(document).ready(function () {
+                $("#successpopup").modal('show');
+            });
+        </script>
+    @endif
+
   <!-- ***************** User Content **************** -->
 						<div class="dashboard-user-content payout-panel">
 							<div class="next-payout-box clearfix">
@@ -79,9 +88,9 @@
 								      	<h3 class="title font-fix">New Instant SMS</h3>
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
-								        </button>					
+								        </button>
 								    </div>
-									 
+
 								    <div class="modal-body">
 				        				<form  action="{{route('sendsmsnow')}}" method="post">
 										{{ csrf_field() }}
@@ -93,23 +102,48 @@
 					        					<h6 class="title">Message</h6>
 					        					<input name="message" type="text" placeholder="Enter Message Body">
 					        				</div> <!-- /.single-input-wrapper -->
-					        				  
+
 					        				<button button="submit" class="add-funds-button continue-button">Send SMS</button>
 
-					        				 
+
 				        				</form>
 				      				</div> <!-- /.modal-body -->
 								</div> <!-- /.tab-pane -->
 
 
 
-							 
+
 							</div> <!-- /.tab-content -->
 						</div> <!-- /.tabs-wrap -->
 			    	</div> <!-- /.modal-content -->
 			  	</div> <!-- /.modal-dialog -->
 			</div> <!-- /#investment-modal -->
-			
-			
-			
-			@endsection
+
+  <!-- success  Modal -->
+  <div class="modal fade settings-page-modal" id="successpopup" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="container h-100">
+                  <div class="row justify-content-center h-100 align-items-center text-center">
+                      <div class="col-xl-5 col-md-6">
+
+                          <div class="identity-content">
+                              <img src="{{asset('dash-assets/images/success-tick-dribbble.gif')}}"/>
+                              <h4>Transaction Successful</h4>
+                              <br/>
+                          </div>
+                          <br/>
+
+                          <div class="mb-5">
+                              <a href="{{route('products')}}" class="btn btn-dark pl-5 pr-5">Goto Products</a> <br/><br/> <a href="{{route('home')}}" class="btn btn-success pl-5 pr-5">Goto Dashboard</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- /.modal-content -->
+      </div> <!-- /.modal-dialog -->
+  </div> <!-- /#success-->
+
+
+
+@endsection

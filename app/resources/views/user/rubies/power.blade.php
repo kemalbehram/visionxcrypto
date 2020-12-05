@@ -1,5 +1,14 @@
 @extends('include.dashboard')
 @section('content')
+
+    @if(Session::has('modal'))
+        <script>
+            $(document).ready(function () {
+                $("#successpopup").modal('show');
+            });
+        </script>
+    @endif
+
   <!-- ***************** User Content **************** -->
 
 
@@ -68,7 +77,7 @@
 											    </tr>
 											    @endforeach
 
-											     
+
 											</tbody>
 										</table>
 									</div> <!-- /.table-data -->
@@ -115,7 +124,7 @@
 													 document.getElementById("name1").innerHTML = $(identifier).data('name');
 													 document.getElementById("name2").innerHTML = $(identifier).data('name');
 													 document.getElementById("name3").innerHTML = $(identifier).data('type');
-													 document.getElementById("type").innerHTML = $(identifier).data('metertype'); 
+													 document.getElementById("type").innerHTML = $(identifier).data('metertype');
 													 document.getElementById("code").value = $(identifier).data('code');
 
 													 document.getElementById("image").innerHTML = "<img width='40'  src='{{url('assets/images')}}/"+$(identifier).data('image')+"'>";
@@ -136,13 +145,13 @@
 												@foreach($power as $k=>$data)
 													<li class="single-checkbox" onclick="goDoSomething(this);" data-code="{{$data->billercode}}"  data-name="{{$data->name}}" data-metertype="{{$data->type}}"  data-deco="{{$data->symbol}}" data-type="Meter" data-image="{{$data->image}}" >
 														<input type="checkbox" value="{{$data->billercode}}" name="meter" id="pay-bitcoin{{$data->id}}" class="pay-check">
-														 
+
 														<label for="pay-bitcoin{{$data->id}}">
-														    <b class="text-primary">{{$data->type}}</b>	
+														    <b class="text-primary">{{$data->type}}</b>
 															<img style="width:70px;height:60px;"  src="{{url('assets/images')}}/{{$data->image}}" alt="">
-													       
+
 														</label>
-														
+
 													</li>
 												@endforeach
 
@@ -210,6 +219,31 @@
 			</div> <!-- /#deposite-modal -->
 
 
+
+    <!-- success  Modal -->
+    <div class="modal fade settings-page-modal" id="successpopup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="container h-100">
+                    <div class="row justify-content-center h-100 align-items-center text-center">
+                        <div class="col-xl-5 col-md-6">
+
+                            <div class="identity-content">
+                                <img src="{{asset('dash-assets/images/success-tick-dribbble.gif')}}"/>
+                                <h4>Transaction Successful</h4>
+                                <br/>
+                            </div>
+                            <br/>
+
+                            <div class="mb-5">
+                                <a href="{{route('products')}}" class="btn btn-dark pl-5 pr-5">Goto Products</a> <br/><br/> <a href="{{route('home')}}" class="btn btn-success pl-5 pr-5">Goto Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /#success-->
 
 
 

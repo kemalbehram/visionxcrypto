@@ -867,7 +867,7 @@
                         <!-- Top Bar Action List -->
                         <div class="top-bar-action-list">
                             <ul class="clearfix">
-                                @if(\Illuminate\Support\Facades\Auth::user()->verified=="")
+                                @if(\Illuminate\Support\Facades\Auth::user()->verified=="" || \Illuminate\Support\Facades\Auth::user()->verified==1)
                                     <li class="action-list-item">
                                         <a href="{{route('verification')}}" class="invite-button">Upgrade to Level 2</a>
                                     </li> <!-- /.action-list-item -->

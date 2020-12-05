@@ -574,11 +574,12 @@ class HomeController extends Controller
                 ]);
 
 
+        return back()->with(['modal'=> 'kyc', 'success'=> 'Account Verification Request Sent Successfully.']);
 
 
-          session()->flash('success', 'Account Verification Request Sent Successfully. ');
-
-         return redirect()->route('home');
+//          session()->flash('success', 'Account Verification Request Sent Successfully. ');
+//
+//         return redirect()->route('home');
     }
 
 

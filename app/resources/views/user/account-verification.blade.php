@@ -20,6 +20,14 @@
                         });
                     </script>
                 @endif
+
+                @if (session('modal')=="kyc")
+                    <script>
+                        $(document).ready(function () {
+                            $("#kycpopup").modal('show');
+                        });
+                    </script>
+                @endif
             @endif
 
             <ul class="nav nav-tabs settings-nav" role="tablist">
@@ -580,6 +588,33 @@
                             </ul>
 
                         </div>
+                    </div>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /#bank-success-->
+
+
+    <!-- kyc-success  Modal -->
+    <div class="modal fade settings-page-modal" id="kycpopup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="container h-100">
+                    <div class="row justify-content-center h-100 align-items-center text-center">
+                        <div class="col-xl-5 col-md-6">
+
+                            <div class="identity-content">
+                                <img src="{{asset('dash-assets/images/success_dribbble_gif.gif')}}"/>
+                                <h4>KYC Submited</h4>
+                                <br/>
+                                <p>Congrats! your kyc has been successfully submit. Go to dashboard while we verify your documents.</p>
+                            </div>
+                            <br/>
+
+                            <div class="mb-5">
+                                        <a href="{{route('home')}}" class="btn btn-success pl-5 pr-5">Goto Dashboard</a>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </div> <!-- /.modal-content -->
