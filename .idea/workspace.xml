@@ -3,15 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/include/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/bulksms/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/bulksms/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/clubkonnect/cabletv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/clubkonnect/cabletv.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/rubies/airtime.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/rubies/airtime.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/rubies/internet.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/rubies/internet.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/rubies/power.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/rubies/power.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +130,8 @@
       <workItem from="1607067284896" duration="10215000" />
       <workItem from="1607092430266" duration="43000" />
       <workItem from="1607093625761" duration="2291000" />
-      <workItem from="1607107410518" duration="10990000" />
+      <workItem from="1607107410518" duration="11379000" />
+      <workItem from="1607164391374" duration="17276000" />
     </task>
     <servers />
   </component>
@@ -146,10 +139,22 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="309" y="42" key="#Inspections" timestamp="1607168852238">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="309" y="42" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1607168852238" />
+    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1607174981759">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607174981759" />
     <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1607130355680">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1607130355680" />
+    <state x="480" y="86" key="NewPhpClassDialog" timestamp="1607168874753">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="480" y="86" key="NewPhpClassDialog/0.0.1366.728@0.0.1366.728" timestamp="1607168874753" />
     <state x="495" y="66" key="RollbackChangesDialog" timestamp="1607130061517">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
