@@ -42,44 +42,19 @@ class ProductsController extends Controller
 
 
         if($network=="MTN") {
-            foreach ($rep['MTN'] as $data) {
-                    $product['name'] = $data['name'];
-                    $product['amount'] = $data['amount'];
-                    $product['code'] = $data['productcode'];
-                    $product['amount'] = $data['amount'];
-                    $product['network'] = "MTN";
-            }
+            $product=$rep['MTN'];
         }
 
         if($network=="9MOBILE") {
-            foreach ($rep['9MOBILE'] as $data) {
-                    $product['name'] = $data['name'];
-                    $product['amount'] = $data['amount'];
-                    $product['code'] = $data['productcode'];
-                    $product['amount'] = $data['amount'];
-                    $product['network'] = "9MOBILE";
-            }
+            $product=$rep['9MOBILE'];
         }
 
         if($network=="AIRTEL") {
-            foreach ($rep['AIRTEL'] as $data) {
-                    $product['name'] = $data['name'];
-                    $product['amount'] = $data['amount'];
-                    $product['code'] = $data['productcode'];
-                    $product['amount'] = $data['amount'];
-                    $product['network'] = "AIRTEL";
-            }
+            $product=$rep['AIRTEL'];
         }
 
         if($network=="GLO") {
-            foreach ($rep['GLO'] as $data) {
-                    $product['name'] = $data['name'];
-                    $product['amount'] = $data['amount'];
-                    $product['code'] = $data['productcode'];
-                    $product['amount'] = $data['amount'];
-                    $product['network'] = "GLO";
-                    $product['status'] = 1;
-            }
+            $product=$rep['GLO'];
         }
 
         return response()->json(['status' => 1, 'message' => 'Internet data plans fetched successfully', 'data'=>$product]);
@@ -111,17 +86,22 @@ class ProductsController extends Controller
         $errmsg  = curl_error( $ch );
         curl_close($ch);
 
-        $plans = $content['TV_ID'];
+
+        $tvid = $content->TV_ID;
 
         if($tv=="DSTV") {
-            foreach ($plans['DStv']['PRODUCT'] as $data) {
-                $product['name'] = $data['PACKAGE_NAME'];
-                $product['amount'] = $data['PACKAGE_AMOUNT'];
-                $product['code'] = $data['PACKAGE_ID'];
-            }
+            $plan = $tvid->DStv;
         }
 
-        return response()->json(['status' => 1, 'message' => 'TV plans fetched successfully', 'data'=>$product]);
+        if($tv=="GOTV") {
+            $plan = $tvid->GOtv;
+        }
+
+        if($tv=="STARTIMES") {
+            $plan = $tvid->Startimes;
+        }
+
+        return response()->json(['status' => 1, 'message' => 'TV plans fetched successfully', 'data'=>$plan[0]->PRODUCT]);
     }
 
 }
