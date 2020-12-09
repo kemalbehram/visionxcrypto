@@ -81,7 +81,7 @@ class ProductsController extends Controller
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $content = json_decode(curl_exec( $ch ),true);
+        $content = json_decode(curl_exec( $ch ));
         $err     = curl_errno( $ch );
         $errmsg  = curl_error( $ch );
         curl_close($ch);
