@@ -24,5 +24,6 @@ Route::post('/callback1', 'CallbackController@index')->name('callback1');
 Route::post('signup', [AuthenticateController::class, 'signup'])->name('signup');
 Route::post('login', [AuthenticateController::class, 'login'])->name('login');
 Route::post('verifycode', [AuthenticateController::class, 'verifycode'])->name('verifycode');
+Route::post('resendcode', [AuthenticateController::class, 'resendcode'])->name('resendcode');
 Route::post('forgotpassword', [AuthenticateController::class, 'forgotpassword'])->name('forgotpassword');
 Route::post('fpnewpassword', [AuthenticateController::class, 'forgotpassword_newpassword'])->name('forgotpassword_newpassword');

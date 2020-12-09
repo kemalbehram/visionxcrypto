@@ -81,7 +81,7 @@ class AuthenticateController extends Controller
                 $referUser = User::where('username', $input['referBy'])->first();
             }
 
-            $accountname = "" . $input['firstname'] . " " . $input['lastname'];
+            $accountname =$input['firstname'] . " " . $input['lastname'];
 
 
             $curl = curl_init();
@@ -312,6 +312,35 @@ class AuthenticateController extends Controller
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Unable to verify', 'error' => $validator->errors()]);
+        }
+    }
+
+    public function resendcode(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'email' => 'required'
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->passes()) {
+            $user = User::where('email', $input['email'])->first();
+
+            if (!$user) {
+                return response()->json(['status' => 0, 'message' => 'User does not exist']);
+            }
+
+            $basic = GeneralSettings::first();
+            if ($basic->sms_verification == 1) {
+                $txt = "Your%20phone%20verification%20code%20is:%20$user->sms_code";
+                send_sms($user->phone, $txt);
+            }
+
+            return response()->json(['status' => 1, 'message' => 'Code resent successfully']);
+
+        } else {
+            return response()->json(['status' => 0, 'message' => 'Error in request', 'error' => $validator->errors()]);
         }
     }
 
