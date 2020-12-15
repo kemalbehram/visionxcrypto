@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ValidateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ValidateController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -138,6 +140,15 @@
       <workItem from="1607439514593" duration="918000" />
       <workItem from="1607468706336" duration="543000" />
       <workItem from="1607495549166" duration="1580000" />
+      <workItem from="1607510844631" duration="652000" />
+      <workItem from="1607514493370" duration="39000" />
+      <workItem from="1607528796719" duration="14016000" />
+      <workItem from="1607583688771" duration="17000" />
+      <workItem from="1607753872138" duration="747000" />
+      <workItem from="1607786427436" duration="688000" />
+      <workItem from="1607931268957" duration="81000" />
+      <workItem from="1607940192116" duration="815000" />
+      <workItem from="1607982813028" duration="6974000" />
     </task>
     <servers />
   </component>
@@ -149,14 +160,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="309" y="42" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1607168852238" />
-    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1607174981759">
+    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1608013591269">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607174981759" />
-    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1607130355680">
+    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608013591269" />
+    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1607542383803">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1607130355680" />
+    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1607542383803" />
     <state x="480" y="86" key="NewPhpClassDialog" timestamp="1607168874753">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -235,6 +246,15 @@
             <option name="methodName" value="kyc2" />
           </properties>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
+          <line>1061</line>
+          <properties>
+            <option name="className" value="\App\Http\Controllers\ProductController" />
+            <option name="methodName" value="paypower" />
+          </properties>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

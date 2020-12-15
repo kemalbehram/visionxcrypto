@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Power;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ValidateController extends Controller
@@ -21,11 +22,19 @@ class ValidateController extends Controller
             'decodernumber.required' => 'Please enter a decoder number',
         ]);
 
+        if ($request->decodertype == "DSTV") {
+            $decodertype = "01";
+        } elseif ($request->decodertype == "GOTV") {
+            $decodertype = "02";
+        } else {
+            $decodertype = "03";
+        }
+
         $basic = GeneralSettings::first();
         $baseUrl = "https://www.nellobytesystems.com";
-        $endpoint = "/APIVerifyCableTVV1.0.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&cabletv=".$request->decodertype."&smartcardno=".$request->decodernumber."";
+        $endpoint = "/APIVerifyCableTVV1.0.asp?UserID=" . $basic->clubkonnect_id . "&APIKey=" . $basic->clubkonnect_key . "&cabletv=" . $decodertype . "&smartcardno=" . $request->decodernumber . "";
 
-        $url=$baseUrl.$endpoint;
+        $url = $baseUrl . $endpoint;
         // Perform initialize to validate name on server
         $result = file_get_contents($url);
 
@@ -45,14 +54,67 @@ class ValidateController extends Controller
 
         $content = json_decode(curl_exec( $ch ),true);
         $err     = curl_errno( $ch );
-        $errmsg  = curl_error( $ch );
+        $errmsg = curl_error($ch);
         curl_close($ch);
         $result = implode(', ', (array)$content);
 
-        if ($result == ""){
+        if ($result == "") {
             return response()->json(['status' => 0, 'message' => 'Error validating decoder number. Please Try Again']);
         }
 
-        return response()->json(['status' => 1, 'message' => 'Validated Successfully', 'name'=>$result]);
+        return response()->json(['status' => 1, 'message' => 'Validated Successfully', 'name' => $result]);
+    }
+
+    public function validatemeter(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'meternumber' => 'required',
+            'symbol' => 'required',
+            'type' => 'required',
+
+        ], [
+            'code.required' => 'Please select your meter type',
+            'meternumber.required' => 'Please enter a meter number',
+        ]);
+
+        $cp = Power::where([['symbol', '=', $request->symbol], ['type', '=', $request->type]])->first();
+
+        $basic = GeneralSettings::first();
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerverification",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\n    \"billercode\":\"$cp->billercode\",\n    \"billercustomerid\":\"$request->meternumber\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: " . $basic->rubies_secretkey
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $result = json_decode($response, true);
+
+        if (isset($result['message'])) {
+            return response()->json(['status' => 0, 'message' => 'it seems you have entered a wrong meter number or you have selected a wrong meter. Please check and try again']);
+        }
+
+        if (isset($result['responsecode'])) {
+            if ($result['responsecode'] == 00) {
+                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $result['customername'], 'code' => $cp->billercode]);
+            } else {
+                return response()->json(['status' => 0, 'message' => 'We cannot process your request at the moment, please try again later']);
+            }
+        }
+
     }
 }

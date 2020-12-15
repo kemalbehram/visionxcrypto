@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
-use App\Internet;
-use App\Network;
-use App\Transaction;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -103,5 +99,4 @@ class ProductsController extends Controller
 
         return response()->json(['status' => 1, 'message' => 'TV plans fetched successfully', 'data'=>$plan[0]->PRODUCT]);
     }
-
 }

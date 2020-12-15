@@ -38,5 +38,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('tvplans/{tv}', [ProductsController::class, 'listtv'])->name('listtv');
     Route::post('validatetv', [ValidateController::class, 'validatetv'])->name('validatetv');
     Route::post('buytv', [TransactionController::class, 'buytv'])->name('buydata');
+    Route::post('sendsms', [TransactionController::class, 'sendsms'])->name('sendsms');
+    Route::post('validatemeter', [ValidateController::class, 'validatemeter'])->name('validatemeter');
+    Route::post('paypower', [TransactionController::class, 'paypower'])->name('paypower');
+
 
 });
