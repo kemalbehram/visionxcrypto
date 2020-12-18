@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
@@ -98,5 +99,55 @@ class ProductsController extends Controller
         }
 
         return response()->json(['status' => 1, 'message' => 'TV plans fetched successfully', 'data'=>$plan[0]->PRODUCT]);
+    }
+
+    public function listBanks()
+    {
+        $user = Auth::user();
+
+//        if($user->bankyes != 1){
+//            return redirect()->route('verification')->with("danger", "Please setup your payment bank account first before you proceed with bank transfer");
+//        }
+
+        $basic = GeneralSettings::first();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/banklist",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n    \"request\": \"banklist\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: ".$basic->rubies_secretkey,
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $data=json_decode($response, true);
+
+        return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'data'=>$data]);
+    }
+
+    public function myBank()
+    {
+        $user = Auth::user();
+
+        if($user->bank==""){
+            return response()->json(['status' => 0, 'message' => 'Sorry, no Account details is found']);
+        }
+
+        $bank_name=$user->bank;
+        $bank_code=$user->bankcode;
+        $account_name=$user->accountname;
+        $account_no=$user->accountno;
+
+        return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'bank_name'=>$bank_name, 'bank_code'=>$bank_code, 'account_name'=>$account_name, 'account_no'=>$account_no]);
     }
 }

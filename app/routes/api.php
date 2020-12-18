@@ -33,14 +33,25 @@ Route::post('fpnewpassword', [AuthenticateController::class, 'forgotpassword_new
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('buyairtime', [TransactionController::class, 'buyairtime'])->name('buyairtime');
+
     Route::get('dataplans/{network}', [ProductsController::class, 'listdata'])->name('listdata');
     Route::post('buydata', [TransactionController::class, 'buydata'])->name('buydata');
+
     Route::get('tvplans/{tv}', [ProductsController::class, 'listtv'])->name('listtv');
     Route::post('validatetv', [ValidateController::class, 'validatetv'])->name('validatetv');
     Route::post('buytv', [TransactionController::class, 'buytv'])->name('buydata');
+
     Route::post('sendsms', [TransactionController::class, 'sendsms'])->name('sendsms');
+
     Route::post('validatemeter', [ValidateController::class, 'validatemeter'])->name('validatemeter');
     Route::post('paypower', [TransactionController::class, 'paypower'])->name('paypower');
+
+    Route::get('mybank', [ProductsController::class, 'myBank'])->name('myBank');
+    Route::post('banktransfer', [TransactionController::class, 'banktransfer'])->name('banktransfer');
+
+    Route::get('bankslist', [ProductsController::class, 'listBanks'])->name('listBanks');
+    Route::post('validatebank', [ValidateController::class, 'validatebank'])->name('validatebank');
+    Route::post('otherbanktransfer', [TransactionController::class, 'otherbanktransfer'])->name('otherbanktransfer');
 
 
 });

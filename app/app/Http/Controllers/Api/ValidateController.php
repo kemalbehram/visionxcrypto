@@ -117,4 +117,53 @@ class ValidateController extends Controller
         }
 
     }
+
+    public function validatebank(Request $request)
+    {
+        $user = Auth::user();
+        $basic = GeneralSettings::first();
+         $request->validate([
+              'bankcode' => 'required',
+             'accountno' => 'required',
+          ], [
+              'bank.required' => 'Please select bank name',
+               'amount.required' => 'Please enter amount to transfer',
+               'accountno.required' => 'Please enter account number',
+            ]);
+
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/nameenquiry",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n\t\t\"accountnumber\":\"$request->accountno\",\n\t\t\"bankcode\":\"$request->bankcode\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: ".$basic->rubies_secretkey,
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $rep=json_decode($response, true);
+
+        if($rep['responsecode'] == 00)
+        {
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'data'=>$rep['accountname']]);
+        }
+        elseif($rep['responsecode'] == 11){
+            return response()->json(['status' => 0, 'message' => 'Sorry, Account Number Not Valid.']);
+        }
+        else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, We cannot process this transfer at the moment, please try again later.']);
+        }
+
+    }
 }

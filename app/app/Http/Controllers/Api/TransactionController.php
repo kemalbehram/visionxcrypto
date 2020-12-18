@@ -316,7 +316,7 @@ class TransactionController extends Controller
         $result = json_decode($response, true);
 
         if (isset($result['message'])) {
-            return back()->with('danger', $result['message']);
+            return response()->json(['status' => 0, 'message' => $result['message']]);
         }
 
 
@@ -342,14 +342,143 @@ class TransactionController extends Controller
             $user->balance = $user->balance - $total;
             $user->save();
 
+            return response()->json(['status' => 1, 'message' => $product['remark']]);
 
-            session()->forget('meter');
-            session()->forget('number');
-            session()->forget('name');
-
-            return redirect()->route('utilitybill')->with(['modal' => 'power', "success" => $product['remark']]);
         } else {
-            return back()->with('danger', 'We cannot process your request at the moment, please try again later');
+            return response()->json(['status' => 0, 'message' => 'We cannot process your request at the moment, please try again later']);
+        }
+
+    }
+
+    public function banktransfer(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'bank' => 'required',
+            'name' => 'required',
+            'amount' => 'required',
+            'number' => 'required',
+            'code' => 'required',
+            'narration' => 'required',
+//
+        ], [
+            'password.required' => 'Please enter your transaction password',
+            'naration.required' => 'Please enter transfer naration',
+        ]);
+
+        $basic = GeneralSettings::first();
+        $total = $basic->transcharge + $request->amount;
+        if ($request->amount > $user->balance) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $trx = strtoupper(str_random(20));
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/fundtransfer",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"narration\": \"$request->naration\",\n    \"craccountname\": \"$request->name\",\n    \"bankname\": \"$request->bank\",\n    \"draccountname\": \"$user->fname $user->lname\",\n    \"craccount\": \"$request->number\",\n    \"bankcode\": \"$request->code\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: ".$basic->rubies_secretkey,
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $rep=json_decode($response, true);
+
+        if($rep['responsecode'] == 00)
+        {
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = $request->bank;
+            $product['method'] = $request->name;
+            $product['account_number'] = $request->number;
+            $product['type'] = 5;
+            $product['remark'] = $rep['nibssresponsemessage'];
+            $product['trx'] = $trx;
+            $product['status'] = 1;
+            $product['amount'] = $request->amount;
+            Transaction::create($product);
+
+
+            $user = Auth::user();
+            $user->balance = $user->balance - $total;
+            $user->save();
+
+
+            return response()->json(['status' => 1, 'message' => 'Fund transfer was successful']);
+        }
+        else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transfer at the moment, please try again later.']);
+        }
+
+    }
+
+    public function otherbanktransfer(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'bank' => 'required',
+            'accountnumber' => 'required',
+            'accountname' => 'required',
+            'naration' => 'required',
+            'amount' => 'required',
+//
+        ], [
+            'password.required' => 'Please enter your transaction password',
+            'naration.required' => 'Please enter transfer naration',
+            'bank.required' => 'Please select bank',
+            'accountname.required' => 'Please enter account name',
+            'accountnumber.required' => 'Please enter account number',
+        ]);
+
+
+        $basic = GeneralSettings::first();
+        $total = $basic->transcharge + $request->amount;
+
+        if ($total > $user->balance) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $bank = $request->bank;
+        $name = $request->accountname;
+        $amount = $request->amount;
+        $number = $request->accountnumber;
+        $trx = strtoupper(str_random(20));
+
+
+
+        if ($user->balance >= $total )
+        {
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = $bank;
+            $product['method'] = $name;
+            $product['account_number'] = $number;
+            $product['type'] = 5;
+            $product['remark'] = $request->naration;
+            $product['trx'] = $trx;
+            $product['status'] = 0;
+            $product['amount'] = $amount;
+            Transaction::create($product);
+
+            $user = Auth::user();
+            $user->balance = $user->balance - $total;
+            $user->save();
+
+            return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
+        }
+        else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transfer at the moment, please try again later.']);
         }
 
     }
