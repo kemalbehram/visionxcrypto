@@ -54,21 +54,26 @@ class TransactionController extends Controller
         curl_close($curl);
         $rep=json_decode($response, true);
 
-        $product['user_id'] = Auth::id();
-        $product['gateway'] = $request->network;
-        $product['account_number'] = $request->number;
-        $product['type'] = 1;
-        $product['remark'] = $rep['responsemessage'];
-        $product['trx'] = $trx;
-        $product['status'] = 1;
-        $product['amount'] = $request->amount;
-        Transaction::create($product);
+        if($rep['responsecode'] == 00) {
 
-        $user = Auth::user();
-        $user->balance = $user->balance - $request->amount;
-        $user->save();
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = $request->network;
+            $product['account_number'] = $request->number;
+            $product['type'] = 1;
+            $product['remark'] = $rep['responsemessage'];
+            $product['trx'] = $trx;
+            $product['status'] = 1;
+            $product['amount'] = $request->amount;
+            Transaction::create($product);
 
-        return response()->json(['status' => 1, 'message' => 'Airtime sent successfully']);
+            $user = Auth::user();
+            $user->balance = $user->balance - $request->amount;
+            $user->save();
+
+            return response()->json(['status' => 1, 'message' => 'Airtime sent successfully']);
+        }else{
+            return response()->json(['status' => 0, 'message' => 'Error sending airtime']);
+        }
     }
 
     public function buydata(Request $request)
@@ -113,7 +118,6 @@ class TransactionController extends Controller
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
         $rep=json_decode($response, true);
 
         if($rep['responsecode'] == 00)
@@ -210,7 +214,7 @@ class TransactionController extends Controller
 
             return response()->json(['status' => 1, 'message' => $product['remark']]);
         } else {
-            return response()->json(['status' => 1, 'message' => 'We cannot process your selected subscription plan at the moment. Please Try Again']);
+            return response()->json(['status' => 0, 'message' => 'We cannot process your selected subscription plan at the moment. Please Try Again']);
         }
     }
 
@@ -229,28 +233,7 @@ class TransactionController extends Controller
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
-        $message = utf8_encode(urlencode($request->message));
-        $baseUrl = "https://www.bulksmsnigeria.com/";
-        $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=SMS&to=" . $request->phone . "&body=" . $message . "";
-        $httpVerb = "GET";
-        $contentType = "application/json"; //e.g charset=utf-8
-        $headers = array(
-            "Content-Type: $contentType",
-
-        );
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
-        curl_setopt($ch, CURLOPT_HTTPGET, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $content = json_decode(curl_exec($ch), true);
-        $err = curl_errno($ch);
-        $errmsg = curl_error($ch);
-        curl_close($ch);
-
+       send_sms($request->phone, $request->message);
 
         $tr = strtoupper(str_random(20));
         $w['transaction_id'] = $tr;
@@ -354,11 +337,7 @@ class TransactionController extends Controller
     {
         $user = Auth::user();
         $request->validate([
-            'bank' => 'required',
-            'name' => 'required',
             'amount' => 'required',
-            'number' => 'required',
-            'code' => 'required',
             'narration' => 'required',
 //
         ], [
@@ -368,7 +347,7 @@ class TransactionController extends Controller
 
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
-        if ($request->amount > $user->balance) {
+        if ($total > $user->balance) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -385,7 +364,7 @@ class TransactionController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"narration\": \"$request->naration\",\n    \"craccountname\": \"$request->name\",\n    \"bankname\": \"$request->bank\",\n    \"draccountname\": \"$user->fname $user->lname\",\n    \"craccount\": \"$request->number\",\n    \"bankcode\": \"$request->code\"\n}",
+            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"narration\": \"$request->naration\",\n    \"craccountname\": \"$user->fname $user->lname\",\n    \"bankname\": \"$user->bank\",\n    \"draccountname\": \"$user->fname $user->lname\",\n    \"craccount\": \"$request->accountno\",\n    \"bankcode\": \"$request->bankcode\"\n}",
             CURLOPT_HTTPHEADER => array(
                 "Authorization: ".$basic->rubies_secretkey,
                 "Content-Type: application/json"

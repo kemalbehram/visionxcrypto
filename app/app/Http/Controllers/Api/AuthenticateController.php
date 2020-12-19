@@ -233,7 +233,7 @@ class AuthenticateController extends Controller
 // it into a PHP variable
 
 
-            $baseUrl = "http://www.geoplugin.net/";
+            $baseUrl = "https://www.geoplugin.net/";
             $endpoint = "json.gp?ip=" . $user_ip . "";
             $httpVerb = "GET";
             $contentType = "application/json"; //e.g charset=utf-8
@@ -277,7 +277,7 @@ class AuthenticateController extends Controller
 
 //                User::where(['id'=> auth()->user()->id])->update(['api_token' => $token]);
 
-            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => $user->balance, 'first_name' => $user->fname, 'last_name' => $user->lname, 'profile_path' => 'https://ui-avatars.com/api/?name=' . substr($user->fname, 0, 2) . '&color=7F9CF5&background=EBF4FF']);
+            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => $user->balance, 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Unable to login with errors', 'error' => $validator->errors()]);
