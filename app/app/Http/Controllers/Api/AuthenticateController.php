@@ -233,7 +233,7 @@ class AuthenticateController extends Controller
 // it into a PHP variable
 
 
-            $baseUrl = "https://www.geoplugin.net/";
+            $baseUrl = "http://www.geoplugin.net/";
             $endpoint = "json.gp?ip=" . $user_ip . "";
             $httpVerb = "GET";
             $contentType = "application/json"; //e.g charset=utf-8

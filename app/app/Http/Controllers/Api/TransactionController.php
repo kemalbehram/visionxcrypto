@@ -54,26 +54,21 @@ class TransactionController extends Controller
         curl_close($curl);
         $rep=json_decode($response, true);
 
-        if($rep['responsecode'] == 00) {
+        $product['user_id'] = Auth::id();
+        $product['gateway'] = $request->network;
+        $product['account_number'] = $request->number;
+        $product['type'] = 1;
+        $product['remark'] = $rep['responsemessage'];
+        $product['trx'] = $trx;
+        $product['status'] = 1;
+        $product['amount'] = $request->amount;
+        Transaction::create($product);
 
-            $product['user_id'] = Auth::id();
-            $product['gateway'] = $request->network;
-            $product['account_number'] = $request->number;
-            $product['type'] = 1;
-            $product['remark'] = $rep['responsemessage'];
-            $product['trx'] = $trx;
-            $product['status'] = 1;
-            $product['amount'] = $request->amount;
-            Transaction::create($product);
+        $user = Auth::user();
+        $user->balance = $user->balance - $request->amount;
+        $user->save();
 
-            $user = Auth::user();
-            $user->balance = $user->balance - $request->amount;
-            $user->save();
-
-            return response()->json(['status' => 1, 'message' => 'Airtime sent successfully']);
-        }else{
-            return response()->json(['status' => 0, 'message' => 'Error sending airtime']);
-        }
+        return response()->json(['status' => 1, 'message' => 'Airtime sent successfully']);
     }
 
     public function buydata(Request $request)
