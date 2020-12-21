@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Power;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ValidateController extends Controller
 {
@@ -122,14 +124,24 @@ class ValidateController extends Controller
     {
         $user = Auth::user();
         $basic = GeneralSettings::first();
-         $request->validate([
-              'bankcode' => 'required',
-             'accountno' => 'required',
-          ], [
-              'bank.required' => 'Please select bank name',
-               'amount.required' => 'Please enter amount to transfer',
-               'accountno.required' => 'Please enter account number',
-            ]);
+
+        $input = $request->all();
+        $rules = array(
+            'bankcode' => 'required',
+            'accountno' => 'required',
+        );
+
+        $messages=[
+            'bank.required' => 'Please select bank name',
+            'amount.required' => 'Please enter amount to transfer',
+            'accountno.required' => 'Please enter account number',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
 
 
         $curl = curl_init();
@@ -164,6 +176,45 @@ class ValidateController extends Controller
         else{
             return response()->json(['status' => 0, 'message' => 'Sorry, We cannot process this transfer at the moment, please try again later.']);
         }
+
+    }
+
+    public function validateuser(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'accountid' => 'required',
+        );
+
+        $messages=[
+            'accountid.required' => 'Please enter valid account identifier',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $r=User::where('account_number', '=', $request->accountid)->first();
+
+        if($r){
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$r->fname . " ". $r->lname, 'accountno'=>$r->account_number, 'image'=>$r->image]);
+        }
+
+        $r=User::where('phone', '=', $request->accountid)->first();
+
+        if($r){
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$r->fname . " ". $r->lname, 'accountno'=>$r->account_number, 'image'=>$r->image]);
+        }
+
+        $r=User::where('username', '=', $request->accountid)->first();
+
+        if($r){
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$r->fname . " ". $r->lname, 'accountno'=>$r->account_number, 'image'=>$r->image]);
+        }
+
+        return response()->json(['status' => 0, 'message' => 'Sorry, Account Number Not Valid.']);
 
     }
 }

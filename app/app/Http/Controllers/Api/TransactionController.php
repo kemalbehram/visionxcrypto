@@ -6,25 +6,36 @@ use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Sms;
 use App\Transaction;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
     public function buyairtime(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'network' => 'required',
-            'number' => 'required|integer|min:11|max:11',
+            'number' => 'required|min:10',
             'amount' => 'required|integer|min:100',
-//
-        ], [
+        );
+
+        $messages=[
             'password.required' => 'Please enter your transaction password',
             'number.required' => 'Please enter your mobile phone number',
             'network.required' => 'Please select a mobile network',
             'amount.required' => 'Please enter an amount to buy',
-        ]);
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
 
         if ($request->amount > $user->balance) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
@@ -54,6 +65,11 @@ class TransactionController extends Controller
         curl_close($curl);
         $rep=json_decode($response, true);
 
+        if($rep['responsecode'] != 00)
+        {
+            return response()->json(['status' => 0, 'message' => 'Error while buying Airtime']);
+        }
+
         $product['user_id'] = Auth::id();
         $product['gateway'] = $request->network;
         $product['account_number'] = $request->number;
@@ -74,16 +90,24 @@ class TransactionController extends Controller
     public function buydata(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'plan' => 'required',
             'number' => 'required',
             'amount' => 'required',
             'network' => 'required',
-        ], [
-            'password.required' => 'Please enter your transaction password',
+        );
+
+        $messages=[
             'number.required' => 'Please enter your mobile phone number',
             'plan.required' => 'Please select an internet data plan',
-        ]);
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
 
         $trx = strtoupper(str_random(20));
         $basic = GeneralSettings::first();
@@ -115,8 +139,10 @@ class TransactionController extends Controller
         curl_close($curl);
         $rep=json_decode($response, true);
 
-        if($rep['responsecode'] == 00)
+        if($rep['responsecode'] != 00)
         {
+            return response()->json(['status' => 0, 'message' => 'Server error, please try again later or contact admin if error persist']);
+        }
             $product['user_id'] = Auth::id();
             $product['gateway'] = $request->network;
             $product['account_number'] = $request->number;
@@ -134,25 +160,24 @@ class TransactionController extends Controller
 
 
             return response()->json(['status' => 1, 'message' => 'Internet data sent successfully']);
-        }
-        else{
-            return response()->json(['status' => 0, 'message' => 'Server error, please try again later or contact admin if error persist']);
-        }
-
     }
 
     public function buytv(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'decoder' => 'required',
             'amount' => 'required',
             'number' => 'required',
             'package' => 'required',
-        ], [
-            'password.required' => 'Please enter your transaction password',
-            'package.required' => 'Please select a bouquet',
-        ]);
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
 
         $basic = GeneralSettings::first();
 
@@ -215,11 +240,17 @@ class TransactionController extends Controller
 
     public function sendsms(Request $request)
     {
-
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'message' => 'required|string|max:160',
             'phone' => 'required|string|max:11',
-        ]);
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
 
         $user = Auth::user();
 
@@ -248,17 +279,20 @@ class TransactionController extends Controller
     public function paypower(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'amount' => 'required|integer|min:100',
             'meternumber' => 'required',
             'code' => 'required',
             'type' => 'required',
             'name' => 'required',
-        ], [
-            'password.required' => 'Please enter your transaction password',
-            'amount.required' => 'Please enter an amount',
-        ]);
+        );
 
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
 
         $basic = GeneralSettings::first();
         $total = $basic->electricityfee + $request->amount;
@@ -331,14 +365,18 @@ class TransactionController extends Controller
     public function banktransfer(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'amount' => 'required',
             'narration' => 'required',
-//
-        ], [
-            'password.required' => 'Please enter your transaction password',
-            'naration.required' => 'Please enter transfer naration',
-        ]);
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
 
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
@@ -401,21 +439,20 @@ class TransactionController extends Controller
     public function otherbanktransfer(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $input = $request->all();
+        $rules = array(
             'bank' => 'required',
             'accountnumber' => 'required',
             'accountname' => 'required',
             'naration' => 'required',
             'amount' => 'required',
-//
-        ], [
-            'password.required' => 'Please enter your transaction password',
-            'naration.required' => 'Please enter transfer naration',
-            'bank.required' => 'Please select bank',
-            'accountname.required' => 'Please enter account name',
-            'accountnumber.required' => 'Please enter account number',
-        ]);
+        );
 
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
 
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
@@ -454,7 +491,70 @@ class TransactionController extends Controller
         else{
             return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transfer at the moment, please try again later.']);
         }
+    }
 
+    public function walletransfer(Request $request)
+    {
+        $user = Auth::user();
+        $input = $request->all();
+        $rules = array(
+            'number' => 'required',
+            'naration' => 'required',
+            'amount' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $basic = GeneralSettings::first();
+        $total = $request->amount;
+
+        if ($total > $user->balance) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $amount = $request->amount;
+        $number = $request->number;
+        $trx = strtoupper(str_random(20));
+
+        $r=User::where('account_number', '=',$number)->first();
+
+        if(!$r){
+            return response()->json(['status' => 0, 'message' => 'Recipient did not exist']);
+        }
+
+        if ($user->balance >= $total )
+        {
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = "Wallet Transfer";
+            $product['method'] = $r->fname . " ". $r->lname;
+            $product['account_number'] = $number;
+            $product['type'] = 5;
+            $product['remark'] = $request->naration;
+            $product['trx'] = $trx;
+            $product['status'] = 1;
+            $product['amount'] = $amount;
+            Transaction::create($product);
+
+            $product['user_id'] = $r->id;
+            $product['method'] = $user->fname . " ". $user->lname;
+            $product['account_number'] = $user->account_number;
+            Transaction::create($product);
+
+            $user->balance = $user->balance - $total;
+            $user->save();
+
+            $r->balance = $r->balance + $total;
+            $r->save();
+
+            return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
+        }
+        else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transfer at the moment, please try again later.']);
+        }
     }
 
 }

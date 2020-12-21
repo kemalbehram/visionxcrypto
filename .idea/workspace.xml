@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ValidateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ValidateController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/api.php" afterDir="false" />
@@ -149,21 +149,55 @@
       <workItem from="1607931268957" duration="81000" />
       <workItem from="1607940192116" duration="815000" />
       <workItem from="1607982813028" duration="6974000" />
+      <workItem from="1608040483169" duration="366000" />
+      <workItem from="1608044939892" duration="5000" />
+      <workItem from="1608046917962" duration="5000" />
+      <workItem from="1608113923605" duration="18000" />
+      <workItem from="1608208242920" duration="8832000" />
+      <workItem from="1608262738050" duration="39000" />
+      <workItem from="1608290110028" duration="6174000" />
+      <workItem from="1608305879523" duration="1150000" />
+      <workItem from="1608356346383" duration="77000" />
+      <workItem from="1608378690609" duration="3706000" />
+      <workItem from="1608387956106" duration="191000" />
+      <workItem from="1608398539857" duration="119000" />
+      <workItem from="1608421626971" duration="738000" />
+      <workItem from="1608463917335" duration="3574000" />
+      <workItem from="1608544590494" duration="5387000" />
     </task>
+    <task id="LOCAL-00001" summary="Push work">
+      <created>1608040528391</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1608040528391</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Push work" />
+    <option name="LAST_COMMIT_MESSAGE" value="Push work" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="309" y="42" key="#Inspections" timestamp="1607168852238">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="309" y="42" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1607168852238" />
-    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1608013591269">
+    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1608549640918">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608013591269" />
+    <state x="71" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608549640918" />
+    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1608040526780">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608040526780" />
     <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1607542383803">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -176,6 +210,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="495" y="66" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607130061517" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1608040531796">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608040531796" />
+    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1608421800901">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1608421800901" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -255,6 +297,15 @@
             <option name="methodName" value="paypower" />
           </properties>
           <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
+          <line>408</line>
+          <properties>
+            <option name="className" value="\App\Http\Controllers\ProductController" />
+            <option name="methodName" value="validatebank" />
+          </properties>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

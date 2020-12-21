@@ -216,6 +216,10 @@ class AuthenticateController extends Controller
                 return response()->json(['status' => 0, 'message' => "Invalid credentials. Try again with valid credentials"]);
             }
 
+            if (!Auth::attempt(['username' => request('email'), 'password' => request('password')])) {
+                return response()->json(['status' => 0, 'message' => "Invalid credentials. Try again with valid credentials"]);
+            }
+
             $user = Auth::user();
             $token = Str::random(60);
 
