@@ -150,6 +150,6 @@ class ProductsController extends Controller
 
         $basic = GeneralSettings::first();
 
-        return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'bank_name'=>$bank_name, 'bank_code'=>$bank_code, 'account_name'=>$account_name, 'account_no'=>$account_no, 'charges' => $basic->transcharge]);
+        return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'bank_name'=>$bank_name, 'bank_code'=>$bank_code, 'account_name'=>$account_name, 'account_no'=>$account_no, 'charges' => $basic->transcharge * 1]);
     }
 }
