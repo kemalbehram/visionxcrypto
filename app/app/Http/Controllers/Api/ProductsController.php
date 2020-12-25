@@ -157,6 +157,6 @@ class ProductsController extends Controller
     {
         $user = Auth::user();
 
-        return response()->json(['status' => 1, 'message' => 'Balances fetched successfully', 'naira'=>$user->balance, 'investment'=>'0', 'referral'=>$user->refer,]);
+        return response()->json(['status' => 1, 'message' => 'Balances fetched successfully', 'naira'=>"round($user->balance)", 'investment'=>'0', 'referral'=>"$user->refer",]);
     }
 }
