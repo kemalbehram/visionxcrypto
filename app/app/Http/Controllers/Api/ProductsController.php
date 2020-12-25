@@ -152,4 +152,11 @@ class ProductsController extends Controller
 
         return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'bank_name'=>$bank_name, 'bank_code'=>$bank_code, 'account_name'=>$account_name, 'account_no'=>$account_no, 'charges' => $basic->transcharge * 1]);
     }
+
+    public function myBalance()
+    {
+        $user = Auth::user();
+
+        return response()->json(['status' => 1, 'message' => 'Balances fetched successfully', 'naira'=>$user->balance, 'investment'=>'0', 'referral'=>$user->refer,]);
+    }
 }

@@ -64,7 +64,7 @@ class ValidateController extends Controller
             return response()->json(['status' => 0, 'message' => 'Error validating decoder number. Please Try Again']);
         }
 
-        return response()->json(['status' => 1, 'message' => 'Validated Successfully', 'name' => $result]);
+        return response()->json(['status' => 1, 'message' => 'Validated Successfully', 'name' => $result, 'charges'=>$basic->decoderfee]);
     }
 
     public function validatemeter(Request $request)
@@ -72,7 +72,7 @@ class ValidateController extends Controller
         $user = Auth::user();
         $request->validate([
             'meternumber' => 'required',
-            'symbol' => 'required',
+            'name' => 'required',
             'type' => 'required',
 
         ], [
@@ -80,7 +80,7 @@ class ValidateController extends Controller
             'meternumber.required' => 'Please enter a meter number',
         ]);
 
-        $cp = Power::where([['symbol', '=', $request->symbol], ['type', '=', $request->type]])->first();
+        $cp = Power::where([['name', '=', $request->name], ['type', '=', $request->type]])->first();
 
         $basic = GeneralSettings::first();
 
@@ -112,7 +112,7 @@ class ValidateController extends Controller
 
         if (isset($result['responsecode'])) {
             if ($result['responsecode'] == 00) {
-                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $result['customername'], 'code' => $cp->billercode]);
+                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $result['customername'], 'code' => $cp->billercode, 'charges'=>$basic->electricityfee]);
             } else {
                 return response()->json(['status' => 0, 'message' => 'We cannot process your request at the moment, please try again later']);
             }
@@ -166,9 +166,11 @@ class ValidateController extends Controller
         curl_close($curl);
         $rep=json_decode($response, true);
 
+        $basic = GeneralSettings::first();
+
         if($rep['responsecode'] == 00)
         {
-            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'data'=>$rep['accountname']]);
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$rep['accountname'], 'charges'=>$basic->transcharge]);
         }
         elseif($rep['responsecode'] == 11){
             return response()->json(['status' => 0, 'message' => 'Sorry, Account Number Not Valid.']);

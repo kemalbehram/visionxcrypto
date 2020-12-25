@@ -56,5 +56,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('validateuser', [ValidateController::class, 'validateuser'])->name('validateuser');
     Route::post('wallettransfer', [TransactionController::class, 'walletransfer'])->name('walletransfer');
 
+    Route::get('mybalance', [ProductsController::class, 'myBalance'])->name('myBalance');
+
+
 
 });
