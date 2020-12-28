@@ -112,7 +112,7 @@ class ValidateController extends Controller
 
         if (isset($result['responsecode'])) {
             if ($result['responsecode'] == 00) {
-                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $result['customername'], 'code' => $cp->billercode, 'charges'=>$basic->electricityfee]);
+                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $result['customername'], 'code' => $cp->billercode, 'charges'=>$basic->electricityfee*1]);
             } else {
                 return response()->json(['status' => 0, 'message' => 'We cannot process your request at the moment, please try again later']);
             }
@@ -170,7 +170,7 @@ class ValidateController extends Controller
 
         if($rep['responsecode'] == 00)
         {
-            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$rep['accountname'], 'charges'=>$basic->transcharge]);
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$rep['accountname'], 'charges'=>$basic->transcharge*1]);
         }
         elseif($rep['responsecode'] == 11){
             return response()->json(['status' => 0, 'message' => 'Sorry, Account Number Not Valid.']);
