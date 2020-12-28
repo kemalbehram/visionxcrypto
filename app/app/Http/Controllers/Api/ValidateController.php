@@ -64,7 +64,7 @@ class ValidateController extends Controller
             return response()->json(['status' => 0, 'message' => 'Error validating decoder number. Please Try Again']);
         }
 
-        return response()->json(['status' => 1, 'message' => 'Validated Successfully', 'name' => $result, 'charges'=>$basic->decoderfee]);
+        return response()->json(['status' => 1, 'message' => 'Validated Successfully', 'name' => $result, 'charges'=>$basic->decoderfee*1]);
     }
 
     public function validatemeter(Request $request)
