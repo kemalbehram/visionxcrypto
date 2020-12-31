@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthenticateController;
+use App\Http\Controllers\Api\HistoryController;
+use App\Http\Controllers\Api\OthersController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ValidateController;
@@ -57,6 +59,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('wallettransfer', [TransactionController::class, 'walletransfer'])->name('walletransfer');
 
     Route::get('mybalance', [ProductsController::class, 'myBalance'])->name('myBalance');
+
+    Route::get('showvxcards', [HistoryController::class, 'showVXCs'])->name('showVXCs');
+    Route::get('cardtransactions/{id}', [HistoryController::class, 'transactionsVXC'])->name('transactionsVXC');
+    Route::post('createvxcard', [TransactionController::class, 'createVXC'])->name('createVXC');
+    Route::post('deletevxcard', [TransactionController::class, 'deleteVXC'])->name('deleteVXC');
+    Route::post('fundvxcard', [TransactionController::class, 'fundVXC'])->name('fundVXC');
+
+    Route::get('notifications', [HistoryController::class, 'showNotifications'])->name('showNotifications');
+    Route::get('readnotifications', [OthersController::class, 'readNotifications'])->name('readNotifications');
+
 
 
 

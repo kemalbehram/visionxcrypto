@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Notifications\UsersNotification;
 use App\User;
 use App\UserLogin;
 use App\UserWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -413,6 +415,37 @@ class AuthenticateController extends Controller
             return response()->json(['status' => 1, 'message' => 'User details generated successfully', 'data' => $users]);
         } else {
             return response()->json(['status' => 0, 'message' => 'Your account has been blocked! Kindly contact support']);
+        }
+    }
+
+    public function updatepin(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'oldpin' => 'required',
+            'newpin' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->passes()) {
+            $user = Auth::user();
+
+            if ($user->withdrawpass != $input['oldpin']) {
+                return response()->json(['status' => 0, 'message' => 'Old pin did not match']);
+            }
+
+            $user->withdrawpass = $input['newpin'];
+            $user->save();
+            return response()->json(['status' => 1, 'message' => 'Pin set successfully']);
+
+            $data['title']="Pin Changed";
+            $data['content']="Pin set successfully";
+
+            \Illuminate\Support\Facades\Notification::send(Auth::user(), new UsersNotification($data));
+
+        } else {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
     }
 
