@@ -440,7 +440,7 @@ class AuthenticateController extends Controller
             return response()->json(['status' => 1, 'message' => 'Pin set successfully']);
 
             $data['title']="Pin Changed";
-            $data['content']="Pin set successfully";
+            $data['content']="New Pin set successfully";
 
             \Illuminate\Support\Facades\Notification::send(Auth::user(), new UsersNotification($data));
 

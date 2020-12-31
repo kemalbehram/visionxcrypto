@@ -69,6 +69,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('notifications', [HistoryController::class, 'showNotifications'])->name('showNotifications');
     Route::get('readnotifications', [OthersController::class, 'readNotifications'])->name('readNotifications');
 
+    Route::post('updatepin', [AuthenticateController::class, 'updatepin'])->name('updatepin');
+
 
 
 
