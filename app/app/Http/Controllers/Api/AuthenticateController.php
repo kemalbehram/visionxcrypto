@@ -429,7 +429,7 @@ class AuthenticateController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->passes()) {
-            $user = Auth::user();
+            $user =User::find(Auth::id());
 
             if ($user->withdrawpass != $input['oldpin']) {
                 return response()->json(['status' => 0, 'message' => 'Old pin did not match']);
@@ -441,8 +441,7 @@ class AuthenticateController extends Controller
 
             $data['title']="Pin Changed";
             $data['content']="New Pin set successfully";
-
-            \Illuminate\Support\Facades\Notification::send(Auth::user(), new UsersNotification($data));
+            \Illuminate\Support\Facades\Notification::send($user, new UsersNotification($data));
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);

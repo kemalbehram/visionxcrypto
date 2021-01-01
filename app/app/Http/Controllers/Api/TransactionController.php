@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Notifications\UsersNotification;
 use App\Sms;
 use App\Transaction;
 use App\User;
@@ -496,7 +497,7 @@ class TransactionController extends Controller
 
     public function walletransfer(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $input = $request->all();
         $rules = array(
             'number' => 'required',
@@ -550,6 +551,10 @@ class TransactionController extends Controller
 
             $r->balance = $r->balance + $total;
             $r->save();
+
+            $data['title']="Payment Sent";
+            $data['content']="Your payment has been sent successfully to " . $product['method'];
+            \Illuminate\Support\Facades\Notification::send($user, new UsersNotification($data));
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
         }

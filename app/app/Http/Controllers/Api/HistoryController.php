@@ -40,7 +40,7 @@ class HistoryController extends Controller
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id."/transactions?from=2019-01-01&to=".Carbon::now()->format('y-m-d')."&index=0&size=5",
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id."/transactions?from=2019-01-01&to=".Carbon::now()->format('Y-m-d')."&index=0&size=5",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -60,7 +60,15 @@ class HistoryController extends Controller
 
         $res=json_decode($response, true);
 
-        return response()->json(['status' => 1, 'message' => 'Card transactions fetched successfully', 'data'=>$res->data]);
+        if($res['status']=="success") {
+            if($res['data']=="[]") {
+                return response()->json(['status' => 1, 'message' => 'Card transactions fetched successfully', 'data' => $res['data']]);
+            }else{
+                return response()->json(['status' => 0, 'message' => $res['message']]);
+            }
+        }else{
+            return response()->json(['status' => 0, 'message' => $res['message']]);
+        }
 
     }
 
