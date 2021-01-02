@@ -4,11 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Invest;
+use App\Message;
 use App\Notifications\UsersNotification;
+use App\Plan;
 use App\Sms;
+use App\TimeSetting;
 use App\Transaction;
 use App\User;
+use App\UserWallet;
 use App\VirtualCard;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -552,9 +558,13 @@ class TransactionController extends Controller
             $r->balance = $r->balance + $total;
             $r->save();
 
-            $data['title']="Payment Sent";
-            $data['content']="Your payment has been sent successfully to " . $product['method'];
-            \Illuminate\Support\Facades\Notification::send($user, new UsersNotification($data));
+            Message::create([
+                'user_id' => $user->id,
+                'title' => "Payment Sent",
+                'details' =>"Your payment has been sent successfully to " . $product['method'],
+                'admin' => 1,
+                'status' =>  0
+            ]);
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
         }
@@ -829,5 +839,94 @@ class TransactionController extends Controller
         }
 
     }
+
+    public function createInvestment(Request $request){
+        $input = $request->all();
+        $rules = array(
+            'id' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array (
+            "Content-Type: $contentType",
+
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $btcrate = json_decode(curl_exec( $ch ),true);
+        $err     = curl_errno( $ch );
+        $errmsg  = curl_error( $ch );
+        curl_close($ch);
+
+        $btc = $request->amount * $btcrate;
+        $user = User::find(Auth::id());
+        $gnl = GeneralSettings::first();
+
+        $plan = Plan::where('id', $request->id)->where('status', 1)->first();
+        if (!$plan) {
+            return response()->json(['status' => 0, 'message' => 'Invalid Plan Selected!']);
+        }
+
+        if ($plan->fixed_amount > $user->balance ) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $userWallet = User::find(Auth::id());
+
+        $user = User::find(Auth::id());
+        $gnl = GeneralSettings::first();
+
+        $time_name = TimeSetting::where('time', $plan->times)->first();
+        $now = Carbon::now();
+
+        //start
+        if ($plan->interest_status == 1) {
+            $interest_amount = ($request->amount * $plan->interest) / 100;
+        } else {
+            $interest_amount = $plan->interest;
+        }
+        $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
+        //end
+
+
+        $trxx = rand(000000, 999999) . rand(000000, 999999);
+
+        $data['user_id'] = $user->id;
+        $data['plan_id'] = $plan->id;
+        $data['amount'] = $plan->fixed_amount;
+        $data['interest'] = $interest_amount;
+        $data['period'] = $period;
+        $data['time_name'] = $time_name->name;
+        $data['hours'] = $plan->times;
+        $invest['btcvalue'] = $plan->fixed_amount * $btcrate;
+        $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
+        $data['status'] = 1;
+        $data['capital_status'] = $plan->capital_back_status;
+        $data['trx'] = rand(000000, 999999) . rand(000000, 999999);
+        $a = Invest::create($data);
+
+        $user->balance-=$plan->fixed_amount;
+        $user->save();
+
+        return response()->json(['status' => 1, 'message' => 'Your investment is successful']);
+
+    }
+
 
 }

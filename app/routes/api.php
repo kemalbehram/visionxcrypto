@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\OthersController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ValidateController;
+use App\Http\Controllers\Api\VerificationController;
 use Illuminate\Http\Request;
 
 /*
@@ -70,6 +71,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('readnotifications', [OthersController::class, 'readNotifications'])->name('readNotifications');
 
     Route::post('updatepin', [AuthenticateController::class, 'updatepin'])->name('updatepin');
+
+    Route::post('createInvestment', [TransactionController::class, 'createInvestment'])->name('createInvestment');
+    Route::get('investmentdetails/{id}', [HistoryController::class, 'investmentdetails'])->name('investmentdetails');
+
+    Route::post('verification2a', [VerificationController::class, 'verification2a'])->name('verification2a');
+    Route::post('verification2b', [VerificationController::class, 'verification2b'])->name('verification2b');
+    Route::post('verification3ab', [VerificationController::class, 'verification3ab'])->name('verification3ab');
+
+    Route::get('invoice', [HistoryController::class, 'invoicel5'])->name('invoicel5');
+    Route::get('allinvoice', [HistoryController::class, 'invoice'])->name('invoice');
 
 
 

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
+use App\Invest;
+use App\Investyield;
+use App\Message;
+use App\Plan;
 use App\Transaction;
 use App\User;
+use App\UserWallet;
 use App\VirtualCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,6 +19,24 @@ use Illuminate\Support\Facades\Validator;
 
 class HistoryController extends Controller
 {
+
+    public function invoicel5(){
+        $trans=Transaction::where('user_id', Auth::id())->orderBy('id', 'desc')->limit(5)->get();
+
+        $spent=Transaction::where('user_id', Auth::id())->sum('amount');
+
+
+        return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>Auth::user()->balance, 'trans'=>$trans]);
+    }
+
+    public function invoice(){
+        $trans=Transaction::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+
+        $spent=Transaction::where('user_id', Auth::id())->sum('amount');
+
+
+        return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>Auth::user()->balance, 'trans'=>$trans]);
+    }
 
     public function showVXCs(){
         $cards=VirtualCard::where('user_id', Auth::id())->get();
@@ -73,10 +96,20 @@ class HistoryController extends Controller
     }
 
     public function showNotifications(){
-        $user=User::find(Auth::id());
-        $noti=$user->notifications;
+        $noti=Message::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
         return response()->json(['status' => 1, 'message' => 'Notifications fetched successfully', 'data'=>$noti]);
+    }
+
+    public function investmentdetails($id)
+    {
+        $invest = Invest::where([['user_id', Auth::id()], ['plan_id', $id], ['status', 1]])->orderBy('id', 'desc')->first();
+
+        if($invest){
+            return response()->json(['status' => 1, 'message' => 'Investment fetched successfully', 'data'=>$invest]);
+        }else{
+            return response()->json(['status' => 0, 'message' => 'No Investment']);
+        }
     }
 
 }

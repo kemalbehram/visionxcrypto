@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Message;
 use App\Notifications\UsersNotification;
 use App\User;
 use App\UserLogin;
@@ -439,9 +440,13 @@ class AuthenticateController extends Controller
             $user->save();
             return response()->json(['status' => 1, 'message' => 'Pin set successfully']);
 
-            $data['title']="Pin Changed";
-            $data['content']="New Pin set successfully";
-            \Illuminate\Support\Facades\Notification::send($user, new UsersNotification($data));
+            Message::create([
+                'user_id' => $user->id,
+                'title' => 'Pin Changed',
+                'details' =>'New Pin set successfully',
+                'admin' => 1,
+                'status' =>  0
+            ]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
