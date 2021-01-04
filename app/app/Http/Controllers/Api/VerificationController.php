@@ -21,8 +21,8 @@ class VerificationController extends Controller
         $level2aa = Auth::user()->bvnyes;
         $level2b = Auth::user()->verified;
 
-        $level3a = Verification::where([['user_id', Auth::id()], ['type', 'Proof of Bank History']])->exist();
-        $level3b = Verification::where([['user_id', Auth::id()], ['type', 'Proof of Address']])->exist();
+        $level3a = Verification::where([['user_id', Auth::id()], ['type', 'Proof of Bank History']])->exists();
+        $level3b = Verification::where([['user_id', Auth::id()], ['type', 'Proof of Address']])->exists();
 
         return response()->json(['status' => 1, 'message' => 'Verifications fetched successfully', 'level2a' => $level2a, 'level2b' => $level2b, 'level3a' => $level3a, 'level3b' => $level3b]);
     }
