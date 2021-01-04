@@ -3,18 +3,30 @@
 namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
+use App\Http\Controllers\Controller;
 use App\Message;
 use App\User;
 use App\Verification;
 use App\Verified;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class VerificationController extends Controller
 {
+    public function vstatus()
+    {
+        $level2a = Auth::user()->bvn_verify;
+        $level2aa = Auth::user()->bvnyes;
+        $level2b = Auth::user()->verified;
+
+        $level3a = Verification::where([['user_id', Auth::id()], ['type', 'Proof of Bank History']])->exist();
+        $level3b = Verification::where([['user_id', Auth::id()], ['type', 'Proof of Address']])->exist();
+
+        return response()->json(['status' => 1, 'message' => 'Verifications fetched successfully', 'level2a' => $level2a, 'level2b' => $level2b, 'level3a' => $level3a, 'level3b' => $level3b]);
+    }
+
     public function verification2a(Request $request)
     {
         $input = $request->all();
@@ -127,7 +139,6 @@ class VerificationController extends Controller
         $input = $request->all();
         $rules = array(
             'type' => 'required',
-            'number' => 'required',
             'image1' => 'required',
             'image2' => 'required',
         );
@@ -141,7 +152,7 @@ class VerificationController extends Controller
         $docm['user_id'] = Auth::id();
         $docm['type'] = $request->type;
         $docm['date'] = Carbon::now();
-        $docm['number'] = $request->number;
+        $docm['number'] = " ";
         $docm['status'] = 0;
 
         if($input['image1']) {

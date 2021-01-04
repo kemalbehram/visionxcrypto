@@ -6,13 +6,11 @@ use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Invest;
 use App\Message;
-use App\Notifications\UsersNotification;
 use App\Plan;
 use App\Sms;
 use App\TimeSetting;
 use App\Transaction;
 use App\User;
-use App\UserWallet;
 use App\VirtualCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -420,7 +418,7 @@ class TransactionController extends Controller
         if($rep['responsecode'] == 00)
         {
             $product['user_id'] = Auth::id();
-            $product['gateway'] = $request->bank;
+            $product['gateway'] = "Bank Transfer";
             $product['method'] = $request->name;
             $product['account_number'] = $request->number;
             $product['type'] = 5;

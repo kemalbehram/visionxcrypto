@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('validatemeter', [ValidateController::class, 'validatemeter'])->name('validatemeter');
     Route::post('paypower', [TransactionController::class, 'paypower'])->name('paypower');
 
+    Route::get('transfers', [HistoryController::class, 'transfers'])->name('transfers');
     Route::get('mybank', [ProductsController::class, 'myBank'])->name('myBank');
     Route::post('banktransfer', [TransactionController::class, 'banktransfer'])->name('banktransfer');
 
@@ -78,6 +79,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('verification2a', [VerificationController::class, 'verification2a'])->name('verification2a');
     Route::post('verification2b', [VerificationController::class, 'verification2b'])->name('verification2b');
     Route::post('verification3ab', [VerificationController::class, 'verification3ab'])->name('verification3ab');
+    Route::get('vstatus', [VerificationController::class, 'vstatus'])->name('vstatus');
 
     Route::get('invoice', [HistoryController::class, 'invoicel5'])->name('invoicel5');
     Route::get('allinvoice', [HistoryController::class, 'invoice'])->name('invoice');

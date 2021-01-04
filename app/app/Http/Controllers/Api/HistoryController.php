@@ -3,19 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
+use App\Http\Controllers\Controller;
 use App\Invest;
-use App\Investyield;
 use App\Message;
-use App\Plan;
 use App\Transaction;
-use App\User;
-use App\UserWallet;
 use App\VirtualCard;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class HistoryController extends Controller
 {
@@ -98,17 +92,28 @@ class HistoryController extends Controller
     public function showNotifications(){
         $noti=Message::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
-        return response()->json(['status' => 1, 'message' => 'Notifications fetched successfully', 'data'=>$noti]);
+        return response()->json(['status' => 1, 'message' => 'Notifications fetched successfully', 'data' => $noti]);
     }
 
     public function investmentdetails($id)
     {
         $invest = Invest::where([['user_id', Auth::id()], ['plan_id', $id], ['status', 1]])->orderBy('id', 'desc')->first();
 
-        if($invest){
-            return response()->json(['status' => 1, 'message' => 'Investment fetched successfully', 'data'=>$invest]);
-        }else{
+        if ($invest) {
+            return response()->json(['status' => 1, 'message' => 'Investment fetched successfully', 'data' => $invest]);
+        } else {
             return response()->json(['status' => 0, 'message' => 'No Investment']);
+        }
+    }
+
+    public function transfers()
+    {
+        $trans = Transaction::where([['user_id', Auth::id()], ['plan_id', 'LIKE', '%Transfer%']])->orderBy('id', 'desc')->first();
+
+        if ($trans) {
+            return response()->json(['status' => 1, 'message' => 'Transfers fetched successfully', 'data' => $trans]);
+        } else {
+            return response()->json(['status' => 0, 'message' => 'No transfers found']);
         }
     }
 
