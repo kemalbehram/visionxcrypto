@@ -4,9 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Invest;
+use App\Message;
+use App\Plan;
 use App\Sms;
+use App\TimeSetting;
 use App\Transaction;
 use App\User;
+use App\VirtualCard;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -336,8 +342,8 @@ class TransactionController extends Controller
             $product['user_id'] = Auth::id();
             $product['gateway'] = $request->meter;
             $product['method'] = $request->type;
-            $product['details'] = $request->name . " (Meter Number: " . $request->number . ")";
-            $product['account_number'] = $request->number;
+            $product['details'] = $request->name . " (Meter Number: " . $request->meternumber . ")";
+            $product['account_number'] = $request->meternumber;
             $product['ref'] = $result['cbareference'];
             $product['pin'] = $result['pin']['pinCode'];
             $product['serial'] = $result['pin']['serialNumber'];
@@ -354,7 +360,7 @@ class TransactionController extends Controller
             $user->balance = $user->balance - $total;
             $user->save();
 
-            return response()->json(['status' => 1, 'message' => $product['remark']]);
+            return response()->json(['status' => 1, 'message' => $product['remark'], 'pin'=>$product['pin']]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'We cannot process your request at the moment, please try again later']);
@@ -412,7 +418,7 @@ class TransactionController extends Controller
         if($rep['responsecode'] == 00)
         {
             $product['user_id'] = Auth::id();
-            $product['gateway'] = $request->bank;
+            $product['gateway'] = "Bank Transfer";
             $product['method'] = $request->name;
             $product['account_number'] = $request->number;
             $product['type'] = 5;
@@ -495,7 +501,7 @@ class TransactionController extends Controller
 
     public function walletransfer(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $input = $request->all();
         $rules = array(
             'number' => 'required',
@@ -550,11 +556,375 @@ class TransactionController extends Controller
             $r->balance = $r->balance + $total;
             $r->save();
 
+            Message::create([
+                'user_id' => $user->id,
+                'title' => "Payment Sent",
+                'details' =>"Your payment has been sent successfully to " . $product['method'],
+                'admin' => 1,
+                'status' =>  0
+            ]);
+
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
         }
         else{
             return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transfer at the moment, please try again later.']);
         }
     }
+
+    public function createVXC(Request $request){
+        $user = Auth::user();
+        $input = $request->all();
+        $rules = array(
+            'name' => 'required',
+            'amount' => 'required|integer|min:1',
+            'country' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+
+        $basic = GeneralSettings::first();
+
+        if($input['country']=="NG"){
+            $input['currency']="NGN";
+            $da=$input['amount'];
+        }else{
+            $input['currency']="USD";
+            $da=$input['amount'] * $basic->dollar_rate;
+        }
+
+        $input['address']="333 fremont road";
+        $input['city']="San Francisco";
+        $input['state']="CA";
+        $input['postal_code']="98410";
+
+        $ab=$da+ $basic->card_create_charges;
+
+        if ($ab > $user->balance) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\n    \"currency\": \"".$input['currency']."\",\n    \"amount\": ".$input['amount'].",\n    \"billing_name\": \"".$input['name']."\",\n    \"billing_address\": \"".$input['address']."\",\n    \"billing_city\": \"".$input['city']."\",\n    \"billing_state\": \"".$input['state']."\",\n    \"billing_postal_code\": \"".$input['postal_code']."\",\n    \"billing_country\": \"".$input['country']."\",\n    \"callback_url\": \"https://your-callback-url.com/\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer ". $basic->flutterwave_seckey
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+
+//        $response = '{ "status": "success", "message": "Card created successfully", "data": { "id": "43ec6e92-9eb7-48ad-91c8-7bee425a33cf", "account_id": 65637, "amount": "20,000.00", "currency": "NGN", "card_hash": "43ec6e92-9eb7-48ad-91c8-7bee425a33cf", "card_pan": "5366130699778900", "masked_pan": "536613*******8900", "city": "Lekki", "state": "Lagos", "address_1": "19, Olubunmi Rotimi", "address_2": null, "zip_code": "23401", "cvv": "134", "expiration": "2023-01", "send_to": null, "bin_check_name": null, "card_type": "mastercard", "name_on_card": "Jermaine Graham", "created_at": "2020-01-17T18:33:29.0130255+00:00", "is_active": true, "callback_url": null } }';
+
+        $res=json_decode($response, true);
+
+        if($res['status']=="success") {
+            $trx = strtoupper(str_random(20));
+
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = "Virtual card";
+            $product['account_number'] = $res['data']['masked_pan'];
+            $product['type'] = 1;
+            $product['remark'] = "Virtual card created successfully";
+            $product['trx'] = $trx;
+            $product['status'] = 1;
+            $product['amount'] = $request->amount;
+
+            Transaction::create($product);
+
+            $user->balance = $user->balance - $da - $basic->card_create_charges;
+            $user->save();
+
+            $input['user_id'] = Auth::id();
+            $input['pan'] = $res['data']['card_pan'];
+            $input['masked_pan'] = $res['data']['masked_pan'];
+            $input['cvv'] = $res['data']['cvv'];
+            $input['card_id'] = $res['data']['id'];
+            $input['expiration'] = $res['data']['expiration'];
+            $input['type'] = $res['data']['card_type'];
+
+            VirtualCard::create($input);
+
+            return response()->json(['status' => 1, 'message' => 'Virtual card created successfully.']);
+
+        }else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transaction at the moment, please try again later.']);
+        }
+
+    }
+
+    public function deleteVXC(Request $request){
+        $input = $request->all();
+        $rules = array(
+            'id' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $card=VirtualCard::find($request->id);
+
+        if(!$card){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->user_id != Auth::id()){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->status == "terminated"){
+            return response()->json(['status' => 0, 'message' => 'Card already terminated']);
+        }
+
+        $basic = GeneralSettings::first();
+        $user = Auth::user();
+
+        if ($basic->card_terminate_charges > $user->balance) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id."/terminate",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "PUT",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer ".$basic->flutterwave_seckey
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+
+//        $response='{ "status": "success", "message": "Card funded successfully", "data": null }';
+
+        $res=json_decode($response, true);
+
+        if($res['status']=="success") {
+            $card->status="terminated";
+            $card->save();
+
+            $user->balance = $user->balance - $basic->card_terminate_charges;
+            $user->save();
+
+            return response()->json(['status' => 1, 'message' => 'Virtual card terminated successfully.']);
+
+        }else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transaction at the moment, please try again later.']);
+        }
+    }
+
+
+    public function fundVXC(Request $request){
+        $input = $request->all();
+        $rules = array(
+            'id' => 'required',
+            'amount' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $card=VirtualCard::find($request->id);
+        $user=Auth::user();
+        $basic = GeneralSettings::first();
+
+        if(!$card){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->user_id != Auth::id()){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->status == "terminated"){
+            return response()->json(['status' => 0, 'message' => 'Card already terminated']);
+        }
+
+        if($card->currency=="NGN"){
+            $da=$input['amount'];
+        }else{
+            $da=$input['amount'] * $basic->dollar_rate;
+        }
+
+        if ($da > $user->balance ) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+
+//
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id."/fund",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n    \"debit_currency\": \"".$card->currency."\",\n    \"amount\": ".$input['amount']."\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer $basic->flutterwave_seckey"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+
+//        $response='{ "status": "success", "message": "Card funded successfully", "data": null }';
+
+        $res=json_decode($response, true);
+
+        if($res['status']=="success") {
+            $trx = strtoupper(str_random(20));
+
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = "Fund Virtual card";
+            $product['account_number'] = $card->masked_pan;
+            $product['type'] = 1;
+            $product['remark'] = "Virtual card credited successfully with " .$card->currency. $input['amount'];
+            $product['trx'] = $trx;
+            $product['status'] = 1;
+            $product['amount'] = $da;
+
+            Transaction::create($product);
+
+            $user->balance = $user->balance - $da;
+            $user->save();
+
+            $card->amount=$card->amount+$input['amount'];
+            $card->save();
+            return response()->json(['status' => 1, 'message' => 'Fund of '.$input['amount'].' has been added successfully.']);
+        }else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transaction at the moment, please try again later.']);
+        }
+
+    }
+
+    public function createInvestment(Request $request){
+        $input = $request->all();
+        $rules = array(
+            'id' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array (
+            "Content-Type: $contentType",
+
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $btcrate = json_decode(curl_exec( $ch ),true);
+        $err     = curl_errno( $ch );
+        $errmsg  = curl_error( $ch );
+        curl_close($ch);
+
+        $btc = $request->amount * $btcrate;
+        $user = User::find(Auth::id());
+        $gnl = GeneralSettings::first();
+
+        $plan = Plan::where('id', $request->id)->where('status', 1)->first();
+        if (!$plan) {
+            return response()->json(['status' => 0, 'message' => 'Invalid Plan Selected!']);
+        }
+
+        if ($plan->fixed_amount > $user->balance ) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $userWallet = User::find(Auth::id());
+
+        $user = User::find(Auth::id());
+        $gnl = GeneralSettings::first();
+
+        $time_name = TimeSetting::where('time', $plan->times)->first();
+        $now = Carbon::now();
+
+        //start
+        if ($plan->interest_status == 1) {
+            $interest_amount = ($request->amount * $plan->interest) / 100;
+        } else {
+            $interest_amount = $plan->interest;
+        }
+        $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
+        //end
+
+
+        $trxx = rand(000000, 999999) . rand(000000, 999999);
+
+        $data['user_id'] = $user->id;
+        $data['plan_id'] = $plan->id;
+        $data['amount'] = $plan->fixed_amount;
+        $data['interest'] = $interest_amount;
+        $data['period'] = $period;
+        $data['time_name'] = $time_name->name;
+        $data['hours'] = $plan->times;
+        $invest['btcvalue'] = $plan->fixed_amount * $btcrate;
+        $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
+        $data['status'] = 1;
+        $data['capital_status'] = $plan->capital_back_status;
+        $data['trx'] = rand(000000, 999999) . rand(000000, 999999);
+        $a = Invest::create($data);
+
+        $user->balance-=$plan->fixed_amount;
+        $user->save();
+
+        return response()->json(['status' => 1, 'message' => 'Your investment is successful']);
+
+    }
+
 
 }

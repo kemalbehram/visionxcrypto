@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
+use App\Message;
+use App\Notifications\UsersNotification;
 use App\User;
 use App\UserLogin;
 use App\UserWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -277,7 +280,7 @@ class AuthenticateController extends Controller
 
 //                User::where(['id'=> auth()->user()->id])->update(['api_token' => $token]);
 
-            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass]);
+            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Unable to login with errors', 'error' => $validator->errors()]);
@@ -413,6 +416,40 @@ class AuthenticateController extends Controller
             return response()->json(['status' => 1, 'message' => 'User details generated successfully', 'data' => $users]);
         } else {
             return response()->json(['status' => 0, 'message' => 'Your account has been blocked! Kindly contact support']);
+        }
+    }
+
+    public function updatepin(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'oldpin' => 'required',
+            'newpin' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->passes()) {
+            $user =User::find(Auth::id());
+
+            if ($user->withdrawpass != $input['oldpin']) {
+                return response()->json(['status' => 0, 'message' => 'Old pin did not match']);
+            }
+
+            $user->withdrawpass = $input['newpin'];
+            $user->save();
+            return response()->json(['status' => 1, 'message' => 'Pin set successfully']);
+
+            Message::create([
+                'user_id' => $user->id,
+                'title' => 'Pin Changed',
+                'details' =>'New Pin set successfully',
+                'admin' => 1,
+                'status' =>  0
+            ]);
+
+        } else {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
     }
 

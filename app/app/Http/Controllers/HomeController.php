@@ -3,47 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Bank;
+use App\Banky;
 use App\BuyMoney;
+use App\Cryptowallet;
 use App\Currency;
 use App\Deposit;
 use App\ExchangeMoney;
-use App\PaymentMethod;
-use App\Localbank;
+use App\Faq;
 use App\Gateway;
 use App\GeneralSettings;
-use App\SellMoney;
-use App\Trx;
-use App\Faq;
-use App\Verified;
-use App\Verification;
-use App\WithdrawLog;
-use App\Banky;
-use App\Message;
-use App\Transfer;
-use App\UserLogin;
-use App\Post;
-use App\Testimonial;
-use App\WithdrawMethod;
-use Illuminate\Http\Request;
-use App\Cryptowallet;
-use App\Lib\coinPayments;
-use App\Lib\BlockIo;
-use App\Lib\CoinPaymentHosted;
-use Auth;
-use App\User;
+use App\Invest;
 use App\Investyield;
+use App\Localbank;
+use App\Message;
+use App\PaymentMethod;
+use App\Plan;
+use App\Post;
+use App\SellMoney;
+use App\Testimonial;
+use App\TimeSetting;
+use App\Transfer;
+use App\Trx;
+use App\User;
+use App\UserLogin;
+use App\UserWallet;
+use App\Verification;
+use App\Verified;
+use App\WithdrawLog;
+use App\WithdrawMethod;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
-use Session;
 use Image;
+use Session;
 
-
-use App\UserWallet;
-use App\TimeSetting;
-use App\Invest;
-use App\Plan;
 
 class HomeController extends Controller
 {

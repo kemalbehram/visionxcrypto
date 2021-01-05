@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AuthenticateController;
+use App\Http\Controllers\Api\HistoryController;
+use App\Http\Controllers\Api\OthersController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ValidateController;
+use App\Http\Controllers\Api\VerificationController;
 use Illuminate\Http\Request;
 
 /*
@@ -46,6 +49,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('validatemeter', [ValidateController::class, 'validatemeter'])->name('validatemeter');
     Route::post('paypower', [TransactionController::class, 'paypower'])->name('paypower');
 
+    Route::get('transfers', [HistoryController::class, 'transfers'])->name('transfers');
     Route::get('mybank', [ProductsController::class, 'myBank'])->name('myBank');
     Route::post('banktransfer', [TransactionController::class, 'banktransfer'])->name('banktransfer');
 
@@ -57,6 +61,29 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('wallettransfer', [TransactionController::class, 'walletransfer'])->name('walletransfer');
 
     Route::get('mybalance', [ProductsController::class, 'myBalance'])->name('myBalance');
+
+    Route::get('showvxcards', [HistoryController::class, 'showVXCs'])->name('showVXCs');
+    Route::get('cardtransactions/{id}', [HistoryController::class, 'transactionsVXC'])->name('transactionsVXC');
+    Route::post('createvxcard', [TransactionController::class, 'createVXC'])->name('createVXC');
+    Route::post('deletevxcard', [TransactionController::class, 'deleteVXC'])->name('deleteVXC');
+    Route::post('fundvxcard', [TransactionController::class, 'fundVXC'])->name('fundVXC');
+
+    Route::get('notifications', [HistoryController::class, 'showNotifications'])->name('showNotifications');
+    Route::get('readnotifications', [OthersController::class, 'readNotifications'])->name('readNotifications');
+
+    Route::post('updatepin', [AuthenticateController::class, 'updatepin'])->name('updatepin');
+
+    Route::post('createInvestment', [TransactionController::class, 'createInvestment'])->name('createInvestment');
+    Route::get('investmentdetails/{id}', [HistoryController::class, 'investmentdetails'])->name('investmentdetails');
+
+    Route::post('verification2a', [VerificationController::class, 'verification2a'])->name('verification2a');
+    Route::post('verification2b', [VerificationController::class, 'verification2b'])->name('verification2b');
+    Route::post('verification3ab', [VerificationController::class, 'verification3ab'])->name('verification3ab');
+    Route::get('vstatus', [VerificationController::class, 'vstatus'])->name('vstatus');
+
+    Route::get('invoice', [HistoryController::class, 'invoicel5'])->name('invoicel5');
+    Route::get('allinvoice', [HistoryController::class, 'invoice'])->name('invoice');
+
 
 
 
