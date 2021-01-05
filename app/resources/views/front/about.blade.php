@@ -64,13 +64,15 @@ We work to achieve strict and uncompromised levels of security to enhance safety
             <div class="row">
               <div class="col-lg-3 my-auto">
                 <div class="title_section mb-0">
-                  <p>Trusted by -</p>
+                  <p>Partners -</p>
                 </div>
               </div>
               <div class="col-lg-9 ml-auto my-auto">
                 <div class="item_tto">
                   <img src="{{asset('front/img/logos/uber.png')}}" alt="">
                   <img src="{{asset('front/img/logos/netflix.png')}}" alt="">
+                  <img src="{{asset('front/img/logos/rubies.png')}}" alt="">
+                  <img src="{{asset('front/img/logos/flutter.png')}}" alt="">
                   <!--<img src="{{asset('front/img/logos/google.png')}}" alt="">
                   <img src="{{asset('front/img/logos/aust.png')}}" alt="">-->
                 </div>
@@ -217,7 +219,7 @@ We work to achieve strict and uncompromised levels of security to enhance safety
         </section>
         <!-- End. faq_one_inner -->
 
-        <!-- Start team_overlay_style -->
+        <!-- Start team_overlay_style 
         <section class="team_overlay_style margin-b-7">
           <div class="container">
             <div class="row">
@@ -226,7 +228,7 @@ We work to achieve strict and uncompromised levels of security to enhance safety
                   <h2>Meet the team.</h2>
                 </div>
               </div>
-            </div>
+            </div>-->
             <!--<div class="row">
               <div class="col-lg-3">
                 <div class="item_group" data-aos="fade-up" data-aos-delay="0">

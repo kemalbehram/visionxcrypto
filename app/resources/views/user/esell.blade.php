@@ -1,78 +1,82 @@
-@extends('include.dashboard')
-
+@extends('include.userdashboard')
 @section('content')
+<!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-						<!-- ***************** User Content **************** -->
-						<div class="dashboard-user-content performance-panel">
-							<div class="performance-chart-wrapper"> 
-									 <div class="dashbsoard-user-content payout-panel">
-							<div class="next-payout-box clearfix">
-								<div class="title font-fix">Preview Trade</div>
-								<div class="payout-date">{{$data->currency->name}}</div>
-								<img src="images/coins.png" alt="" class="coins">
-							</div> </div> <!-- /.next-payout-box -->
+				<div class="container-fluid">
+					<div class="inner-body">
 
-								
-							<div class="fund-information-table table-responsive">
-								<table class="table">
-									<tbody>
-									    <tr>
-										    <td>
-										    	<div class="title">Coin Name</div>
-										    	<div class="text font-fix">{{$data->currency->name}}</div>
-										    </td>
-										    <td>
-										    	<div class="title">Amount In USD</div>
-										    	<div class="text font-fix">${{number_format($data->amount, $basic->decimal)}}</div>
-										    </td>
-										    <td>
-										    	<div class="title">Amount In {{$basic->currency}}</div>
-										    	<div class="text font-fix">{{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}</div>
-										    </td>
-										    <td>
-										    	<div class="title">Our Rate</div>
-										    	<div class="text font-fix profit-balance">$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->buy, $basic->decimal)}}</div>
-										    </td>
-									    </tr>
-									    <tr>
-										    <td>
-										    	<div class="title">Bank Name</div>
-										    	<div class="text font-fix">{{$data->bankname}}</div>
-										    </td>
-										    <td>
-										    	<div class="title">Account Number</div>
-										    	<div class="text font-fix">{{$data->accountnumber}}</div>
-										    </td>
-										    <td>
-										    	<div class="title">Account Name</div>
-										    	<div class="text font-fix">{{$data->accountname}}</div>
-										    </td>
-										    <td>
-										    	<div class="title">Activation Time</div>
-										    	<div class="text font-fix loss-balance">30Mins</div>
-										    </td>
-									    </tr>
-									</tbody>
-								</table>
-							</div> <!-- /.fund-information-table --><br><br>
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Sell Coin</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Sell Coin</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
+
+						<!-- Row -->
+						<div class="row row-sm">
+						 
+						
+						<div class="col-md-12">
+								<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
+									<div class="header-text mb-0">
+										<div class="container-fluid p-5">
+											<div class="text-left text-white background-text">
+												<h4 class="mb-3 tx-30 font-weight-semibold">Sell {{$data->currency->name}}</h4>
+												<p class="tx-18 mb-5 text-white-50"> {{$basic->sitename}} will not be liable to any loss arising from you crediting a wromg wallet address other than the one provided on this platform. Only send your coin to the wallet address shown in the next screen. Will will not call you to sell to another wallet adddress. <br>You can cancel this operation by clicking <a href="{{ route('ebuydel',$data->trx) }}">here</a></p>
+											</div>
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 d-block mx-auto">
+													<div class="item-search-tabs mb-6 background-text">
+														<div class="buy-sell">
+															<div class="form row mx-auto justify-content-center d-flex p-4">
+																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
+																<label class="text-white-50">Amount</label>
+																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$ {{number_format($data->amount, $basic->decimal)}}">
+																</div>
+																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
+																<label class="text-white-50">Our Rate</label>
+																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->sell, $basic->decimal)}}">
+																
+																</div>
+																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
+																	<i class="cf cf-{{$data->currency->icon}} exchange-icon tx-30 text-white inline-block"></i>
+																</div>
+																<div class="form-group  col-xl-6 col-lg-6 col-md-12 mb-0">
+																<label class="text-white-50">Your Payment Account</label>
+																	<input type="text" class="form-control mb-4 mb-lg-0" id="text6" readonly value="Naira Wallet">
+																</div>
+																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
+																<label class="text-white-50">What You Get</label>
+																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="{{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}">
+																
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="text-center background-text">
+														<a href="{{ route('esellscan',$data->trx) }}" class="btn btn-warning pl-6 pr-6 pt-2 pb-2 mx-auto float-left mt-5">CONTINUE</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div><!-- /header-text -->
+								</div>
+							</div>
 							
-							 <li class='notice list-group-item'>
-                Do not pay below the {{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}.
-            </li>
-            <li class="notice list-group-item">
-                Ensure you verify your bank account details properly before proceeding
-            </li>
-             
-            <li class="notice list-group-item">
-                 {{$basic->sitename}} will not be liable to any loss arising from providing wrong account details. Only send your coin to the wallet address shown in the next screen. Will will not call you to sell to another wallet adddress.
-            </li><br>
-							<a href="{{ route('esellscan',$data->trx) }}"><button class="btn btn-info add-funds-button continue-button">Proceed </button></a><br><br><br><br><br><br><br>
-						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
-					</div> <!-- /#dashboard-main-body -->
-				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
-			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
+							 
+						</div>
+						<!-- End Row -->
 
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
 			
-			
-			
-@endsection
+@stop

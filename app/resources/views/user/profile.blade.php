@@ -1,311 +1,355 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 
 @section('content')
-<!-- ***************** User Content **************** -->
-						<div class="dashboard-user-content settings-panel">
-							<div class="user-settings-content">
-								<ul class="nav nav-tabs settings-nav" role="tablist">
-									<li class="nav-item">
-										<a class="nav-link active" data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="true">Edit Profile</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">Password</a>
-									</li>
-									<!--<li class="nav-item">
-										<a class="nav-link" data-toggle="tab" href="#preferences" role="tab" aria-controls="preferences" aria-selected="false">Payment</a>
-									</li>
-									!-->
-									<li class="nav-item">
-										<a class="nav-link" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security</a>
-									</li>
+<<!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-									<li class="nav-item">
-										<a class="nav-link" data-toggle="tab" href="#referral" role="tab" aria-controls="referral" aria-selected="false">Referral</a>
-									</li>
-								</ul> <!-- /.settings-nav -->
+				<div class="container-fluid">
+					<div class="inner-body">
 
-								<div class="tab-content settings-tab-content">
-									<div class="tab-pane fade show active" col="" id="edit-profile" role="tabpanel">
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Settings</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Settings</li>
+								</ol>
+							</div>
+						</div>
+						<!-- End Page Header -->
 
-
-
-										{!! Form::open(['method'=>'post','role'=>'form', 'class'=>'left-space-fix' ,'name' =>'editForm', 'files'=>true]) !!}
-											<div class="single-input-group large-box">
-												<div class="member-status clearfix">
-													<div class="member-info">
-																										 @if( file_exists(Auth::User()->image))
-												<img src="{{asset(Auth::user()->image)}}" alt="" class="user-img">
+						<div class="row square">
+							<div class="col-lg-12 col-md-12">
+								<div class="card custom-card">
+									<div class="card-body">
+										<div class="panel profile-cover">
+											
+												 @if( file_exists(Auth::User()->image))
+												<img src="{{asset(Auth::user()->image)}}" alt="" width="50" class="img-sm">
 												@else
-												<img src="{{url('assets/user/images/user-default.png')}}" alt="" class="user-img">
+												<img src="{{url('assets/user/images/user-default.png')}}" alt="" width="50" class="img-sm">
 											    @endif
-														<div class="name">
-															<h3 class="name-title font-fix">{{$user->fname}} {{$user->Lname}}</h3>
-															<div class="profile-photo">
-																<button class="font-fix">Edit profile photo</button>
-																<input type="file" id="avatar" name="image" accept="image/png, image/jpeg">
+												<br><br><br>
+												
+												<h3 class="h3">{{$user->fname}} {{$user->lname}}</h3>
+											    <br>
+											
+												 
+										</div>
+										<div class="profile-tab tab-menu-heading">
+											<nav class="nav main-nav-line p-3 tabs-menu profile-nav-line bg-gray-100">
+												
+												<a class="nav-link active" data-toggle="tab" href="#edit">Profile</a>
+												<a class="nav-link" data-toggle="tab" href="#timeline">Password</a>
+												<a class="nav-link" data-toggle="tab" href="#gallery">Security</a> 
+											</nav>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Row -->
+						<div class="row row-sm">
+							<div class="col-lg-12 col-md-12">
+								<div class="card custom-card main-content-body-profile">
+									<div class="tab-content">
+										
+										<div class="main-content-body tab-pane p-4 border-top-0 active" id="edit">
+											<div class="card-body border">
+												<div class="mb-4 main-content-label">Personal Information</div>
+												 
+												{!! Form::open(['method'=>'post','role'=>'form', 'class'=>'form-horizontal' ,'name' =>'editForm', 'files'=>true]) !!}
+										
+													<div class="mb-4 main-content-label">Name</div>
+													
+													 
+												
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">User Name</label>
 															</div>
-														</div> <!-- /.name -->
-													</div> <!-- /.member-info -->
+															<div class="col-md-9">
+																<input type="text" class="form-control" readonly placeholder="User Name" value="{{$user->username}}">
+															</div>
+														</div>
+													</div>
+													
 
-													<div class="font-fix member-badge basic-badge">{{$user->username}}</div>
-												</div> <!-- /.member-status -->
-											</div> <!-- /.single-input-group -->
-
-											<div class="single-input-group large-box">
-												<label for="name" class="title font-fix">First Name</label>
-												<input type="text" name="fname"    type="text" value="{{$user->fname}}"  class="font-fix" id="name">
-											</div>
-
-											<div class="single-input-group large-box">
-												<label for="lname" class="title font-fix">Last Name</label>
-												<input type="text" name="lname"    type="text" value="{{$user->lname}}"  class="font-fix" id="lname">
-											</div> <!-- /.single-input-group -->
-
-
-											<div class="single-input-group large-box">
-												<label for="email" class="title font-fix">Email</label>
-												<input name="email" type="email"  value="{{$user->email}}"class="font-fix" id="email">
-											</div> <!-- /.single-input-group -->
-
-
-											<div class="single-input-group large-box">
-												<label for="email" class="title font-fix">Phone Number</label>
-												<input value="{{$user->phone}}"  name="phone"  class="font-fix" id="email">
-											</div> <!-- /.single-input-group -->
-
-
-											<div class="single-input-group large-box">
-												<div class="row">
-													<div class="col-sm-4 col-12">
-														<div class="single-input-group">
-															<label for="gender" class="title font-fix">Gender</label>
-															<select class="theme-select-dropdown" id="gender">
+													
+													
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">First Name</label>
+															</div>
+															<div class="col-md-9">
+																<input   class="form-control" placeholder="First Name" name="fname"    type="text" value="{{$user->fname}}" >
+															</div>
+														</div>
+													</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">last Name</label>
+															</div>
+															<div class="col-md-9">
+																<input type="text" class="form-control" placeholder="Last Name" name="lname"    type="text" value="{{$user->lname}}" >
+															</div>
+														</div>
+													</div>
+													
+													<div class="mb-4 main-content-label">Contact Info</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Email<i>(required)</i></label>
+															</div>
+															<div class="col-md-9">
+																<input type="email" class="form-control" name="email" placeholder="Email" readonly value="{{$user->email}}">
+															</div>
+														</div>
+													</div>
+													
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Phone</label>
+															</div>
+															<div class="col-md-9">
+																<input type="tel" value="{{$user->phone}}"  name="phone"  class="form-control" placeholder="phone number" value="+234 804 6544 4755">
+															</div>
+														</div>
+													</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Address</label>
+															</div>
+															<div class="col-md-9">
+																<textarea class="form-control" value="{{$user->address}}"  name="address" rows="2" placeholder="Address">{{$user->address}}</textarea>
+															</div>
+														</div>
+													</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">City</label>
+															</div>
+															<div class="col-md-9">
+																<textarea class="form-control" value="{{$user->city}}"  name="city" rows="2" placeholder="Address">{{$user->city}}</textarea>
+															</div>
+														</div>
+													</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Zip Code</label>
+															</div>
+															<div class="col-md-9">
+																<textarea class="form-control" value="{{$user->zip_code}}"  name="zip_code"  rows="2" placeholder="Zip Code">{{$user->zip_code}}</textarea>
+															</div>
+														</div>
+													</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Country</label>
+															</div>
+															<div class="col-md-9">
+																<textarea class="form-control" value="Nigeria" disabled  name="country" rows="2" placeholder="Address">Nigeria</textarea>
+															</div>
+														</div>
+													</div>
+													<div class="mb-4 main-content-label">ABOUT YOURSELF</div>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Gender</label>
+															</div>
+															<div class="col-md-9">
+																<select class="form-control select2" name="gender">
 																<option value="Male">Male</option>
 																<option value="Female">Female</option>
 															</select>
-														</div> <!-- /.single-input-group -->
-													</div> <!-- /.col- -->
-
-													<div class="col-sm-8 col-12">
-														<div class="single-input-group">
-															<label for="country" class="title font-fix">Country</label>
-															<input id="country" value="Nigeria" disabled  name="country" type="text">
-														</div> <!-- /.single-input-group -->
-													</div> <!-- /.col- -->
-
-														<div class="col-12">
-													<div class=" single-input-group large-box">
-												<label for="address" class="title font-fix">Address</label>
-												<input value="{{$user->address}}"  name="address" class="font-fix" id="address">
-													</div> <!-- /.single-input-group -->
-
-
-													<div class="single-input-group large-box">
-												<label for="city" class="title font-fix">City</label>
-												<input value="{{$user->city}}"  name="city" class="font-fix" id="city">
-													</div> <!-- /.single-input-group -->
-
-
-													<div class="single-input-group large-box">
-												<label for="city" class="title font-fix">Zip Code</label>
-												<input value="{{$user->zip_code}}"  name="zip_code" class="font-fix" id="city">
-													</div> <!-- /.single-input-group -->
-
-
-
-													<div class="single-input-group large-box">
-												<label for="dob" class="title font-fix">Date Of Birth</label>
-												<input value="{{$user->dob}}" name="dob" class="font-fix" id="dob" type="date">
-													</div> <!-- /.single-input-group -->
+															</div>
+														</div>
 													</div>
-
-												<button type="submit" class="theme-button"><span></span>Save</button>
-												</div> <!-- /.row -->
-
-											</div> <!-- /.single-input-group -->
-
-										</form>
-
-									</div> <!-- /.tab-pane -->
-
-
-
-									<div class="tab-pane fade" id="password" role="tabpanel">
-										<form method="post" class="left-space-fix" action="{{route('user.change-password') }}">
-										@csrf
-											<div class="single-input-group small-box">
-												<label for="old-password" class="title font-fix">old password</label>
-												<input name="current_password" type="password" class="font-fix" id="old-password">
-											</div> <!-- /.single-input-group -->
-
-											<div class="single-input-group small-box">
-												<label for="new-password" name="password"class="title font-fix">New Password</label>
-												<input  name="password" type="password" class="font-fix" id="new-password">
-											</div> <!-- /.single-input-group -->
-
-											<div class="single-input-group small-box">
-												<label for="confirm-password" class="title font-fix">Confirm new password</label>
-												<input  name="password_confirmation"  type="password" class="font-fix" id="confirm-password">
-											</div> <!-- /.single-input-group -->
-											<button class="theme-button"><span></span>Change Password</button>
-										</form>
-									</div> <!-- /.tab-pane -->
-
-                                    <div class="tab-pane fade" id="referral" role="tabpanel">
-                                        <div class="payout-panel mx-lg-5">
-                                            <div class="next-payout-box clearfix">
-                                                <div class="title font-fix">Referral System</div>
-                                                <div class="payout-date">{{count($referral)}} Referral</div>
-                                                <img src="images/coins.png" alt="" class="coins">
-                                            </div> <!-- /.next-payout-box -->
-
-                                            <div class="single-input-group small-box">
-                                                <label for="new-password" class="title font-fix">Your Referral Link</label>
-                                                <input value="{{ route('refer.register',auth::user()->username) }}" readonly class="form-control" id="new-password">
-                                            </div>
-                                            <br>
-                                            <ul class="share-links"><li>Share with : <br></li> <li><a href="http://www.facebook.com/share.php?u={{ route('refer.register',auth::user()->username) }}&amp;title={{$gnl->title}} Referral Link"><em class="fa fa-facebook-f btn btn-info"> Share Referral Link On Facebook</em></a></li><br><li><a href="https://api.whatsapp.com/send/?text={{ route('refer.register',auth::user()->username) }}"><em class="fa fa-whatsapp btn  btn-success"> Share Referral Link On Whatsapp</em></a></li></ul>
-                                            <hr><br>
-                                            <div class="payout-history-wrapper">
-
-                                                <div class="payout-single-table">
-                                                    <div class="table-responsive table-data">
-                                                        <table class="table">
-                                                            <tbody>
-
-                                                            @if(count($referral) >0)
-                                                                @foreach($referral as $k=>$data)
-                                                                    <tr role="row">
-                                                                        <td>
-                                                                            <div class="title">Status</div>
-                                                                            @if($data->status == 1)
-                                                                                <div class="value font-fix payment-status paid">Active</div>
-                                                                            @else
-                                                                                <div class="value font-fix payment-status open">Inactive</div>
-                                                                            @endif
-
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="title">Date Registered</div>
-                                                                            <div class="value font-fix">{{ date('d M Y',strtotime($data->created_at))}}</div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="title">Username</div>
-                                                                            <div class="value font-fix"><img src="images/bitcoin2.png" alt="" class="currency-icon"> {{$data->username}}</div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="title">Last Login</div>
-                                                                            <div class="value font-fix">{{ date('d M Y',strtotime($data->login_time))}}</div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="title">Country</div>
-                                                                            <div class="value font-fix payout-amount">{{$data->country}}</div>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            @else
-                                                                <center><b>	No Refered User Yet At The Moment </b></center><br><br><br><br>
-                                                                <br><br><br><br><br><br><br><br><br><br><br><br>
-                                                            @endif
-
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div> <!-- /.table-data -->
-                                                </div> <!-- /.payout-single-table -->
-                                            </div> <!-- /.payout-history-wrapper -->
-
-                                        </div>
-                                    </div>
-
-									<div class="tab-pane fade" id="preferences" role="tabpanel">
-
-									</div> <!-- /.tab-pane -->
-
-									<div class="tab-pane fade" id="security" role="tabpanel">
-
-										<!--
-										<form action="#" class="left-space-fix bottom-border-style">
-											<div class="block-title font-fix">Two-Factor Authentication <span class="status-alert disabled">Disabled</span></div>
-											<div class="sub-text">Turning this on means we'll send you a security code to your phone number when you logging in.</div>
-											<button type="button" class="theme-button authenticator-enable-button" data-toggle="modal" data-target="#authenticator-modal"><span></span>Enable Authenticator</button>
-										</form>
-										!-->
-
-										<form action="#" class="left-space-fix bottom-border-style">
-											<div class="block-title font-fix">Wallet PIN <span class="status-alert enabled">Enabled</span></div>
-											<div class="sub-text">For additional security, you can choose a Wallet PIN that is asked whenever you want withdraw funds from your account. (Your Default Pin is 1234)</div>
-											<button type="button" class="theme-button wallet-pin-button" data-toggle="modal" data-target="#wallet-pin-modal"><span></span>Update</button>
-										</form>
-
-										<div class="left-space-fix">
-											<div class="block-title font-fix">Close Account</div>
-											<div class="sub-text">Closing your Cryonik account deletes all the investment data associated with it. <span class="warning-text">This cannot be undone. </span> </div>
-
-											<button class="close-acount-button">Close Account</button>
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Date of Birth</label>
+															</div>
+															<div class="col-md-9">
+																<input type="date" class="form-control" placeholder="date" value="{{$user->dob}}" name="dob" >
+															</div>
+														</div>
+													</div>
+													
+													<div class="form-group ">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																<label class="form-label">Profile Picture</label>
+															</div>
+															<div class="col-md-9">
+																<div class="input-group file-browser">
+													<input type="text" class="form-control border-right-0 browse-file" placeholder="Upload Avatar" readonly>
+													<label class="input-group-btn">
+														<span class="btn btn-primary">
+															Browse <input type="file"  name="image" accept="image/png, image/jpeg" style="display: none;" multiple>
+														</span>
+													</label>
+												</div>
+															</div>
+														</div>
+													</div>
+													
+													<div class="form-group mb-0">
+														<div class="row row-sm">
+															<div class="col-md-3">
+																
+															</div>
+															<div class="col-md-9">
+																<div class="custom-controls-stacked">
+																	<br><button type="submit" class="btn btn-primary ml-auto">Update Profile</button><br><br>
+																</div>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
 										</div>
-									</div> <!-- /.tab-pane -->
-								</div> <!-- /.tab-content -->
-							</div> <!-- /.user-settings-content -->
-
-						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
-					</div> <!-- /#dashboard-main-body -->
-				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
-			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
-
-
-
-
-
-			<!-- Two-Factor Authentication  Modal -->
-			<div class="modal fade settings-page-modal" id="authenticator-modal" tabindex="-1" role="dialog" aria-hidden="true">
-			  	<div class="modal-dialog" role="document">
-			    	<div class="modal-content">
-			    		<div class="theme-modal-header">
-					      	<h3 class="title font-fix">Enable Two-Factor Authentication</h3>
-					      	<div class="header-sub-title">Enter the code you receive by sms</div>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					    </div>
-
-					    <div class="modal-body verification-code-details">
-				        	<form action="#" class="code-verify">
-				        		<input type="text" placeholder="Enter your code" class="font-fix">
-				        		<div class="button-group clearfix">
-				        			<ul class="clearfix">
-				        				<li><button class="resend-code">Resend Code</button></li>
-				        				<li><button class="theme-button"><span></span>Enable</button></li>
-				        			</ul>
-				        		</div>
-				        	</form>
-				      	</div> <!-- /.modal-body -->
-			    	</div> <!-- /.modal-content -->
-			  	</div> <!-- /.modal-dialog -->
-			</div> <!-- /#authenticator-modal -->
-
-
-			<!-- Wallet PIN  Modal -->
-			<div class="modal fade settings-page-modal" id="wallet-pin-modal" tabindex="-1" role="dialog"  aria-hidden="true">
-			  	<div class="modal-dialog" role="document">
-			    	<div class="modal-content">
-			    		<div class="theme-modal-header">
-					      	<h3 class="title font-fix">Update your withdraw PIN</h3>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					    </div>
-
-					    <div class="modal-body">
-							<form method="post" class="wallet-pin-form" action="{{route('user.change-pin') }}">
+										
+										<div class="main-content-body  tab-pane border-top-0" id="timeline">
+										
+											<div class="border p-4">
+												<div class="main-content-body main-content-body-profile">
+													
+										<div class="main-content-body tab-pane p-4 border-top-0 active" id="edit">
+										<div class="mb-4 main-content-label">Change Password</div>
+											<div class="card-body border">
+												<div class="mb-4 main-content-label">Old Password</div>
+											 
+												<form method="post" class="form-horizontal" action="{{route('user.change-password') }}">
+												@csrf
+													<div class="form-group ">
+														<div class="row row-sm">
+														<div class="col-md-9">
+																<input   class="form-control" placeholder="Currenct PAssowrd" name="current_password" type="password">
+															</div>
+														</div>
+													</div>
+													
+													
+													<div class="mb-4 main-content-label">New Password</div>
+												<form class="form-horizontal">
+													<div class="form-group ">
+														<div class="row row-sm">
+														<div class="col-md-9">
+																<input name="password" type="password" class="form-control" placeholder="Enter New Password">
+															</div>
+														</div>
+													</div>
+													
+													<div class="mb-4 main-content-label">Confirm New Password</div>
+												<form class="form-horizontal">
+													<div class="form-group ">
+														<div class="row row-sm">
+														<div class="col-md-9">
+																<input name="password_confirmation"  type="password" class="form-control" placeholder="Confirm Password">
+															</div>
+														</div>
+													</div>
+													
+													<div class="form-group mb-0">
+														<div class="row row-sm">
+															
+															<div class="col-md-9">
+																<div class="custom-controls-stacked">
+																	<br><button type="submit" class="btn btn-primary ml-auto">Change Password</button><br><br>
+																</div>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+													<!-- main-profile-body -->
+												</div>
+											</div>
+										</div>
+										
+										
+										<div class="main-content-body p-4 border tab-pane border-top-0" id="gallery">
+											
+										<div class="main-content-body tab-pane p-4 border-top-0 active" id="edit">
+										<div class="mb-4 main-content-label">Update your transaction PIN</div>
+											<div class="card-body border">
+												  
+												<form method="post" class="form-horizontal" action="{{route('user.change-pin') }}">
 							@csrf
-				        		<input type="number" name="currentpin" placeholder="Current Pin"  maxlength="4" class="font-fix">
-								<br>
-				        		<input type="number" name="newpin" placeholder="New Pin"  maxlength="4" class="font-fix">
-				        		<button class="theme-button"><span></span>Enable</button>
-				        	</form>
-				      	</div> <!-- /.modal-body -->
-			    	</div> <!-- /.modal-content -->
-			  	</div> <!-- /.modal-dialog -->
-			</div> <!-- /#wallet-pin-modal -->
+													 
+													
+													
+													<div class="mb-4 main-content-label">Current Pin</div>
+												 
+													<div class="form-group ">
+														<div class="row row-sm">
+														<div class="col-md-9">
+																<input type="number" name="currentpin" placeholder="Current Pin"  maxlength="4" class="form-control" placeholder="****" >
+															</div>
+														</div>
+													</div>
+													<br>
+													
+													
+													<div class="mb-4 main-content-label">New Pin</div>
+												 
+													<div class="form-group ">
+														<div class="row row-sm">
+														<div class="col-md-9">
+																<input type="number" name="newpin"  maxlength="4" class="form-control" placeholder="****" >
+															</div>
+														</div>
+													</div>
+													
+													 
+													<div class="form-group mb-0">
+														<div class="row row-sm">
+															
+															<div class="col-md-9">
+																<div class="custom-controls-stacked">
+																	<br><button type="submit" class="btn btn-primary ml-auto">Change Pin</button><br><br>
+																</div>
+															</div>
+														</div>
+														</form>
+                                                            <br><br><div class="mb-4 main-content-label">Close Account</div>
+															<p>Closing your Vision-X Crypto account deletes all the investment data associated with it. This cannot be undone.</p>
+														<div class="form-group ">
+															<div class="col-md-9"> </div>
+															<br><a class="btn btn-primary ml-auto">Close Account</a><br><br>
+														</div>
+													</div>
+														
+													</div>
+												</form>
+											</div>
+										</div>
+													<!-- main-profile-body -->
+												</div>
+											</div>
+										</div>	
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End Row -->
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
 @endsection

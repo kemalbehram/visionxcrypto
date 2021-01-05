@@ -1,153 +1,125 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 
-@section('content')
-<div class="dashboard-user-content performance-panel">
-							<div class="performance-chart-wrapper"> 
-									 <div class="dashbsoard-user-content payout-panel">
-							<div class="next-payout-box clearfix">
-								<div class="title font-fix">Preview Trade</div>
-								<div class="payout-date">{{$data->currency->name}}</div>
-								<img src="images/coins.png" alt="" class="coins">
-							</div> </div> <!-- /.next-payout-box --><div class="content-area card"><div class="card-innr"><center>
-  <h6 class="text-danger">Please read carefully before you pay into our {{$data->currency->name}} address</h6></center>
-        <ul class='list-group text-secondary'>
-            <li class='notice list-group-item'>
-                Do not pay below {{round($data->amount / $data->currency->price,8)}} {{$data->currency->symbol}} (${{number_format($data->amount, $basic->decimal)}} ).
-            </li>
+@section('content') 
+<!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-            <li class="notice list-group-item">
-             {{$basic->sitename}} will not be responsible for funding a wrong account number provided by you
-            </li>
+				<div class="container-fluid">
+					<div class="inner-body">
 
-        </ul></div>
-<div class="content-area card"><div class="card-innr"><div class="card-head"></div>
-<center>
-<h5 class="card-title card-title-md">Order details ({{$data->currency->name}})</h5>
-@if($data->currency->id != 11)<center><img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{$data->currency->payment_id}}&choe=UTF-8\" style='width:100px;' /></center>
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Make Payment</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Make ayment</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
+
+						<!-- Row -->
+						<div class="row row-sm">
+					 
+				
+							 
+							<div class="col-lg-12 col-xl-12 col-md-12">
+							
+								<div class="card custom-card">
+									<div class="card-body">
+										<form>
+											<div class="form-group mb-0"> <label>Wallet Address</label>
+												<div class="input-group"> <input type="text" readonly class="form-control coupon" value="{{$data->currency->payment_id}}"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Copy</button> </span> </div>
+											</div>
+											
+											<br>
+											<center><img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{$data->currency->payment_id}}&choe=UTF-8\" style='width:100px;' />
+											<br>
+											<span class="dt-type-md badge badge-outline badge-info badge-sm"><i class = "fa fa-spinner fa-spin"></i>&nbsp;Awaiting</span>
+											</center>
+										    
+										</form>
+									</div>
+								</div>
+								<div class="card custom-card cart-details">
+									<div class="card-body">
+										<h5 class="mb-3 font-weight-bold tx-14">PAYMENT SUMMARY</h5>
+										<dl class="dlist-align">
+											<dt>Amount To Sell:</dt>
+											<dd class="text-right ml-auto">${{number_format($data->amount, $basic->decimal)}}</dd>
+										</dl>
+										
+										
+										<dl class="dlist-align">
+											<dt>Total Units:</dt>
+											<dd class="text-right text-danger ml-auto">@if($data->currency->symbol == "PM")
+{{$data->currency->symbol}}{{number_format($data->getamo, 2)}}
 @else
-Perfect Money Account: {{$data->currency->payment_id}}
+{{$data->currency->symbol}}{{number_format($data->getamo, 8)}}
+@endif</dd>
+										</dl>
+										 
+										<hr>
+										<dl class="dlist-align">
+											<dt>You Get:</dt>
+											<dd class="text-right  ml-auto"><strong>{{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}</strong></dd>
+										</dl>
+										<dl class="dlist-align">
+											<dt class="">Payment Method</dt>
+											<dd class="text-right ml-auto">Naira Wallet</dd>
+										</dl>
 
-@endif
+ <small class="text-info"><p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br></small>										
+										
 
-<br>
-<span class="dt-type-md badge badge-outline badge-info badge-sm"><i class = "fa fa-spinner fa-spin"></i>&nbsp;Awaiting</span>
-</center>
-
-<div class="col-12">
-@if($data->currency->id != 11)
-<div class="card-text center"><p>Please pay <strong>{{round($data->amount / $data->currency->price,8)}} {{$data->currency->symbol}} (${{number_format($data->amount, $basic->decimal)}} )</strong> to the wallet address below or scan the wallet QR Code above to initiate payment form your wallet app. Please note; do not send below ${{number_format($data->amount, $basic->decimal)}}. We only credit what you send</p></div>
-@else
-
-<div class="card-text"><p>Please send <strong>{{round($data->amount / $data->currency->price,8)}} {{$data->currency->symbol}} (${{number_format($data->amount, $basic->decimal)}} )</strong> to the Perfect Money account below. Please note; do not send below ${{number_format($data->amount, $basic->decimal)}}. We only credit what you send</p></div>
-@endif
-
-
-<div class="referral-form"><br>
-@if($data->currency->id != 11)
-<div class="d-flex justify-content-between align-items-center"><h6 class="mb-0 font-bold">Wallet Address</h6><a href="#" class="link link-primary link-ucap">Copy</a></div><div class="copy-wrap mgb-1-5x mgt-1-5x"><span class="copy-feedback"></span> <input type="text" class="form-control" value="{{$data->currency->payment_id}}" disabled><button class="copy-trigger copy-clipboard" data-clipboard-text="{{$data->currency->payment_id}}"><em class="ti ti-files"></em></button></div>
-@endif
-
-
- <div class="note note-plane note-danger note-sm pdt-1x pl-0"><p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br></div>
-<!-- .copy-wrap --></div><ul class="share-links"><li> <a href="#" data-toggle="modal" data-target="#pay-confirm""><span class="btn btn-info">Process Payment</span></a><br><br></li> </ul></div></div>
-
-
-
-
-</div></div>
-
-
-</div></div> </div>                             </div></div></div><!-- .container --></div>
- 
-
-
-<!-- Withdraw  Modal -->
-			<div class="modal fade wallet-page-modal" id="pay-confirm" tabindex="-1" role="dialog" aria-hidden="true">
-			  	<div class="modal-dialog" role="document">
-			    	<div class="modal-content">
-				    	<div class="tabs-wrap">
-							<ul class="nav nav-tabs modal-navs-two" id="myTabTwo" role="tablist">
-								<li class="nav-item">
-								  <a class="nav-link active" id="withdraw-panel-tab" data-toggle="tab" href="#withdraw-panel" role="tab" aria-controls="withdraw-panel" aria-selected="true"></a>
-								</li>
-								<li class="nav-item">
-								  <a class="nav-link" id="wallet-pin-tab" data-toggle="tab" href="#wallet-pin" role="tab" aria-controls="wallet-pin" aria-selected="false"></a>
-								</li>
-							</ul>
-							<div class="tab-content" id="myTabContentTwo">
-								<div class="tab-pane fade show active" id="withdraw-panel" role="tabpanel" aria-labelledby="withdraw-panel-tab">
-									<div class="theme-modal-header">
-								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								          <span aria-hidden="true">&times;</span>
-								        </button>					
-								    </div>
-
-								    <div class="main-container clearfix">
-								    	<div class="details-option">
-								    		<h3 class="main-title tooltip-holder">
-												Upload Proof Of Payment
-												<button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Please fill the form below to uload yor proof of payment."><img src="{{url('assets/images/info.png') }}" alt=""></button>
-											</h3> 
-											<form role="form" method="POST"  action="{{ route('esellupload') }}" class="withdraw-action-form" enctype="multipart/form-data">
-											{{ csrf_field() }}
-								    			 
-
-												 
-												
-												
-												<div class="withdraw-address">
+										
+										<div aria-multiselectable="true" class="accordion" id="accordion" role="tablist">
+											<div class="card">
+												<div class="card-header" id="headingOne" role="tab">
+												<button aria-controls="collapseOne" aria-expanded="false" data-toggle="collapse" href="#collapseOne" class="step-btn btn btn-primary btn-block">Procedd </button>
 													 
-													<textarea name="trxx"  placeholder="Enter Trasaction Nnmber " ></textarea>
 												</div>
-
- 
-												
-												<div class="wallet-amount withdraw-amount">
-													  <label  class="input-item-label">Upload Payment Screenshot</label>
+												<div aria-labelledby="headingOne" class="collapse " data-parent="#accordion" id="collapseOne" role="tabpanel">
+													<div class="card-body">
+														<form role="form" method="POST"  action="{{ route('esellupload') }}"  enctype="multipart/form-data">
+											{{ csrf_field() }}
+											<div class="withdraw-address">
 													 
-															<div class="input-group-wrapper main-currency">
-																<input name="photo" type="file"   class="cur-check">
-								        						 
-								        					</div>
-														 
-												</div> <!-- /.wallet-amount -->
-												<input name="trx" hidden value="{{$data->trx}}">
-												<button type="submit" class="theme-button continue-button-two"><span></span>Proceed</button>
-								    		</form>
-								    	</div> <!-- /.details-option -->
+													<textarea name="trxx"  class="form-control" placeholder="Enter Trasaction Nnmber " ></textarea>
+												</div><br>
+												 
+												<div class="input-group file-browser">
+													<input type="text" class="form-control border-right-0 browse-file" placeholder="Upload Proof Of Payment" readonly>
+													<label class="input-group-btn">
+														<span class="btn btn-primary">
+															Browse <input type="file" name="photo"  style="display: none;" multiple>
+														</span>
+													</label>
+												</div> 
+								    			 
+											<input name="trx" hidden value="{{$data->trx}}">
+										<div class="step-footer">
+											<button type="submit" class="step-btn btn btn-primary">Submit </button>
+										</div>
+										</form>
+													</div>
+												</div>
+											</div>
+											 
+										</div><!-- accordion -->
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End Row -->
+
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
 
 
-								    	<div class="modal-sidebar">
-								    		<div class="summary-content">
-								    			<h4 class="summary-title font-fix">Amount</h4>
-								    			<div class="crypto-balance font-fix">{{round($data->amount / $data->currency->price,8)}}{{$data->currency->symbol}} </div>
-
-								    			<ul>
-								    				<li class="list-item">
-								    					<div class="sidebar-title">Currency</div>
-								    					<div class="value font-fix">{{$data->currency->name}}</div>
-								    				</li>
-								    				<li class="list-item">
-								    					<div class="sidebar-title">Transaction Number</div>
-								    					<div class="value font-fix">{{$data->trx}}</div>
-								    				</li>
-								    				<li class="list-item">
-								    					<div class="sidebar-title">Processing Time</div>
-								    					<div class="value font-fix">Processed in 10 Mins</div>
-								    				</li>
-								    			</ul>
-												
-												
-								    			<button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Please noe that all offline payment remains pending unil confirmed on our server."><img src="{{asset('assets/images/help.png')}}" alt="">Trade Help</button>
-								    		</div> <!-- /.summary-content -->
-								    	</div> <!-- /.modal-sidebar -->
-								    </div> <!-- /.main-container -->
-								</div> <!-- /.tab-pane -->
-
-								 
-							</div> <!-- /.tab-content -->
-						</div> <!-- /.tabs-wrap -->
-			    	</div> <!-- /.modal-content -->
-			  	</div> <!-- /.modal-dialog -->
-			</div> <!-- /#withdraw-modal -->
 @endsection

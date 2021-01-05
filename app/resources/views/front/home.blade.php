@@ -15,7 +15,7 @@
                   </div>
                   <h1 class="c-white">Built For Convenience!</h1>
                   <p>
-                    The way forward... <br />
+                    Easy User Experience and Responsive payment. <br />
                     
                   </p>
                   <div class="form-row">
@@ -171,7 +171,7 @@
                 <a href="register" class="btn btn_md_primary z-index-2 c-white scale bg-orange-red effect-letter rounded-8">
                   Sign up
                 </a>
-                <img class="illustration d-sm-none d-lg-block" src="{{asset('front/img/tecno.png')}}" width="460" />
+                <img class="illustration d-sm-none d-lg-block" src="{{asset('front/img/tecno.png')}}"  class="img img-thumbnail" style="border:none" />
               </div>
               <div class="col-lg-6 ml-sm-auto">
                 <div class="row">
@@ -230,7 +230,7 @@
               <div class="col-lg-3 order-1 order-lg-1 my-auto">
                 <div class="item-feat" data-aos="fade-up" data-aos-delay="0">
                   <div class="icon-iim transform-r-15">
-                    <img src="{{asset('front/img/icons/sheet.svg')}}" />
+                    <img src="{{asset('front/img/icons/discount.svg')}}" />
                   </div>
                   <h3>VX Vault</h3>
                   <p>
@@ -239,7 +239,7 @@
                 </div>
                 <div class="item-feat" data-aos="fade-up" data-aos-delay="100">
                   <div class="icon-iim">
-                    <img src="{{asset('front/img/icons/archive.svg')}}" />
+                    <img src="{{asset('front/img/icons/cryptocurrency.svg')}}" />
                   </div>
                   <h3>Digital Assets</h3>
                   <p>
@@ -248,12 +248,12 @@
                 </div>
               </div>
               <div class="col-md-8 col-lg-4 order-3 order-lg-2 mx-auto" data-aos="fade-up" data-aos-delay="0">
-                <img class="app--crypto" src="{{asset('front/img/app-crypto.png')}}" />
+                <img class="app--crypto" src="{{asset('front/img/app-crypto.png')}}"  class="img img-thumbnail" style="border:none"/>
               </div>
               <div class="col-lg-3 order-2 order-lg-3 my-auto">
                 <div class="item-feat text-lg-right" dir="rtl" data-aos="fade-up" data-aos-delay="0">
                   <div class="icon-iim">
-                    <img src="{{asset('front/img/icons/physics.svg')}}" />
+                    <img src="{{asset('front/img/icons/note.svg')}}" />
                   </div>
                   <h3>Bill Payments</h3>
                   <p>
@@ -262,7 +262,7 @@
                 </div>
                 <div class="item-feat text-lg-right" dir="rtl" data-aos="fade-up" data-aos-delay="100">
                   <div class="icon-iim">
-                    <img src="{{asset('front/img/icons/user.svg')}}" />
+                    <img src="{{asset('front/img/icons/phone.svg')}}" />
                   </div>
                   <h3>Airtime Top-up</h3>
                   <p>Stay Connected anytime
@@ -325,7 +325,7 @@
                 <div class="tab-content img--tabs slide_bottom" id="v-pills-tabContent">
                   <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                     aria-labelledby="v-pills-home-tab">
-                      <img src="{{asset('front/img/cardhome.png')}}" alt="" width="390" height="410"/>
+                      <img src="{{asset('front/img/cardhome.png')}}"  class="img img-thumbnail" style="border:none"/>
                   </div>
                   </div>
                 </div>
@@ -345,14 +345,14 @@
               <!-- img -->
               <div class="col-md-8 col-lg-6 mx-auto">
                 <div class="images" data-aos="fade-up" data-aos-delay="0">
-                  <img src="{{asset('front/img/securelock.png')}}" alt="" />
+                  <img src="{{asset('front/img/securelock.png')}}"  class="img img-thumbnail" style="border:none"/>
                 </div>
               </div>
               <!-- text -->
               <div class="col-md-10 col-lg-6 ml-auto">
                 <div class="title_sections">
                   <div class="before_title">
-                   <!--  <span>Upgrade 👌</span>-->
+                   <!--  <span>Upgrade ðŸ‘Œ</span>-->
                   </div>
                   <h2>Your security is our highest priority</h2>
                   <p>
@@ -446,14 +446,14 @@
                 <div class="tab-content img--tabs slide_bottom" id="v-pills-tabContent">
                   <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                     aria-labelledby="v-pills-home-tab">
-                    <img class="--img" src="{{asset('front/img/tv.png')}}" alt="" />
+                    <img class="--img" src="{{asset('front/img/tv.png')}}"  class="img img-thumbnail" style="border:none" />
                   </div>
                   <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                    <img class="--img" src="{{asset('front/img/tv.png')}}" alt="" />
+                    <img class="--img" src="{{asset('front/img/tv.png')}}" class="img img-thumbnail" style="border:none"/>
                   </div>
                   <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                     aria-labelledby="v-pills-messages-tab">
-                    <img class="--img" src="{{asset('front/img/tv.png')}}" alt="" />
+                    <img class="--img" src="{{asset('front/img/tv.png')}}"  class="img img-thumbnail" style="border:none" />
                   </div>
                 </div>
               </div>
@@ -527,6 +527,184 @@
           </div>
         </section>
         <!-- End. Support Service  -->
+        
+        
+        
+        
+        
+        <!-- Start test_monials__workspace -->
+        <section class="test_monials__workspace margin-t-2 padding-t-10" id="Testimonial">
+          <div class="container-fluid">
+            <div class="box__others">
+              <div class="row">
+                <div class="col-lg-5 pl-lg-0">
+                  <div class="img__people">
+                      <img src="{{asset('front/img/workspace/others.png')}}"  class="img img-thumbnail" style="border:none"/>
+                    <div class="col-lg-5 item_title">
+                      <div class="title_sections">
+                        <div class="before_title">
+                          <span class="c-orange-red">Testimonial</span>
+                        </div>
+                        <h2>What Our Clients Say</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 my-lg-auto mx-auto">
+                  <div class="people__say">
+                    <div class="swiper-container gallery-top swipe_circle">
+                      <!-- item Users -->
+                      <div class="person_thumbs">
+                        <div class="swiper-wrapper">
+                          <div class="swiper-slide">
+                            <img class="pagination rounded-circle" src="../../front/img/persons/04.png" />
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="pagination rounded-circle" src="../../front/img/persons/15.png" />
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="pagination rounded-circle" src="../../front/img/persons/03.png" />
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="pagination rounded-circle" src="../../front/img/persons/02.png" />
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="pagination rounded-circle" src="../../front/img/persons/01.png" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- item content -->
+                      <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                          <div class="img__user">
+                            <img src="../../front/img/persons/04.png" alt="">
+                          </div>
+                          <div class="username👨">
+                            <h4>Debbi Amanda</h4>
+                            <span>Business Owner</span>
+                          </div>
+                          <div class="content col-md-8 mx-auto text-center">
+                            "Impressed with master class support of the team and really look forward for the
+                            future.Really, really well made! Love that each component is handmade and customised.
+                            Great
+                            Work!"
+                          </div>
+                          <div class="stars__rate">
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div class="img__user">
+                            <img src="../../front/img/persons/15.png" alt="">
+                          </div>
+                          <div class="username👨">
+                            <h4>Tola Jacbos</h4>
+                            <span>Student</span>
+                          </div>
+                          <div class="content col-md-8 mx-auto text-center">
+                            "Impressed with master class support of the team and really look forward for the
+                            future.Really, really well made! Love that each component is handmade and customised.
+                            Great
+                            Work!"
+                          </div>
+                          <div class="stars__rate">
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div class="img__user">
+                            <img src="../../front/img/persons/03.png" alt="">
+                          </div>
+                          <div class="username👨">
+                            <h4>Omolara Makinde</h4>
+                            <span>Business Woman</span>
+                          </div>
+                          <div class="content col-md-8 mx-auto text-center">
+                            "Impressed with master class support of the team and really look forward for the
+                            future.Really, really well made! Love that each component is handmade and customised.
+                            Great
+                            Work!"
+                          </div>
+                          <div class="stars__rate">
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div class="img__user">
+                            <img src="../../front/img/persons/02.png" alt="">
+                          </div>
+                          <div class="username👨">
+                            <h4>David Amare</h4>
+                            <span>Crypto Trader</span>
+                          </div>
+                          <div class="content col-md-8 mx-auto text-center">
+                            "Impressed with master class support of the team and really look forward for the
+                            future.Really, really well made! Love that each component is handmade and customised.
+                            Great
+                            Work!"
+                          </div>
+                          <div class="stars__rate">
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div class="img__user">
+                            <img src="../../front/img/persons/01.png" alt="">
+                          </div>
+                          <div class="username👨">
+                            <h4>John Omokafe</h4>
+                            <span>Landlord</span>
+                          </div>
+                          <div class="content col-md-8 mx-auto text-center">
+                            "Impressed with master class support of the team and really look forward for the
+                            future.Really, really well made! Love that each component is handmade and customised.
+                            Great
+                            Work!"
+                          </div>
+                          <div class="stars__rate">
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                            <i class="tio star"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="simple__particles">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                    <!-- End Swiper -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End. test_monials__workspace -->
+        
+        
+        
 	
 		
 		<!-- Comodo Secured --><br></br><br></br><br></br><br></br>
@@ -535,7 +713,7 @@
             <div class="row">
               <div class="col-md-9 col-lg-7">
                 <div class="title_sections mb-1 mb-lg-auto">
-                  <h2 class="c-white">Secured by COMODO SSL</h2>
+                  <h2 class="c-white">Secured by Sectigo SSL</h2>
                   <p>
                     Your security is our highest priority
                   </p>

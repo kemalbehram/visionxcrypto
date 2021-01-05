@@ -10,7 +10,7 @@
               <div class="col-md-8 col-lg-5">
                 <div class="banner_title_inner margin-b-4">
                   <h1 class="c-white" data-aos="fade-up" data-aos-delay="0">
-                    Contact us
+                    Have an issue?
                   </h1>
                   <p data-aos="fade-up" data-aos-delay="100">
                     Any questions or remarks? Just write us a message!
@@ -27,7 +27,7 @@
                       </div>
 
                       <div class="link_item selecr_mark" data-aos="fade-up" data-aos-delay="300">
-                        <a href="mailto:support@mail.com">
+                        <a href="mailto:support@visionxcrypto.com">
                           <i class="tio email"></i>
                           support@visionxcrypto.com
                         </a>
@@ -74,7 +74,7 @@
                     <div class="form-group">
                       <label>Email address</label>
                       <div class="input_group">
-                        <input type="email" name="email" class="form-control" placeholder="ex. john@mail.com">
+                        <input type="email" name="email" class="form-control" placeholder="ex. Adewale@mail.com">
                         <i class="tio online"></i>
                       </div>
                     </div>

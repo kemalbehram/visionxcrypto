@@ -1,74 +1,112 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 @section('content')
-  <!-- ***************** User Content **************** -->
-						<div class="dashboard-user-content payout-panel">
-							<div class="next-payout-box clearfix">
-								<div class="title font-fix">Total Withdrawal </div>
-								<div class="payout-date">{{$basic->currency_sym}}{{number_format($sum, $basic->decimal)}}</div>
-								<img src="images/coins.png" alt="" class="coins">
-							</div> <!-- /.next-payout-box -->
+  <!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-							<div class="payout-history-wrapper">
-								<div class="clearfix">
-									<div class="payout-history-title">Withdrawal history <button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="The amount you want to invest, you can always add funds to your investment at any time."><img src="images/info.png" alt=""></button></div>
+				<div class="container-fluid">
+					<div class="inner-body">
 
-									<div class="total-payout-count font-fix">All Withdrawal: <span>{{$count}}</span></div>
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Withdrawal History</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Withdrawal History</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
+						<!-- Row -->
+						<div class="row row-sm">
+							<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+								<div class="card custom-card">
+									<div class="card-body">
+										<div class="card-order ">
+											<label class="main-content-label mb-3 pt-1">Processsed Withdrawal</label>
+											<h2 class="text-right card-item-icon card-icon">
+											<i class="mdi mdi-wallet icon-size float-left text-primary"></i><span class="font-weight-bold">${{number_format($sum, $basic->decimal)}}</span></h2>
+											 
+										</div>
+									</div>
 								</div>
+							</div>
+							<!-- COL END -->
+							<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+								<div class="card custom-card">
+									<div class="card-body">
+										<div class="card-order">
+											<label class="main-content-label mb-3 pt-1">Pending Withdrawal</label>
+											<h2 class="text-right"><i class="mdi mdi-wallet icon-size float-left text-warning"></i><span class="font-weight-bold">${{number_format($wpend, $basic->decimal)}}</span></h2>
+											 
+										</div>
+									</div>
+								</div>
+							</div>
+							 
+						</div>
+						<!-- End Row -->
 
-								<div class="payout-single-table">
-									<div class="table-responsive table-data">
-										<table class="table">
-											<tbody>
-											@if(count($withdraw) >0)
-											@foreach($withdraw as $k=>$data)
-											    <tr role="row">
-											      	<td>
-												      	<div class="title">Status</div>
-														@if($data->status == 2)
-														<div class="value font-fix payment-status paid">Approved</div>
-														@elseif($data->status == 1)
-														<div class="value font-fix payment-status open">Pending</div>
+
+						<!-- row -->
+						<div class="row row-sm">
+							<div class="col-md-12 col-lg-12 col-xl-12">
+								<div class="card custom-card transcation-crypto">
+									<div class="card-header border-bottom-0">
+										<div class="main-content-label">Wallet Transfer History</div> 
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table" id="example1">
+												<thead>
+													<tr>
+														<th class="wd-1"></th>
+														<th>TRX ID</th>
+														<th>Date</th> 
+														<th>Gateway</th> 
+														<th>Total</th>
+														<th>Status</th>
+													</tr>
+												</thead>
+												<tbody>
+													@foreach($withdraw as $k=>$data)
+													<tr class="border-bottom">
+														<td>
+															<span class="crypto-icon bg-primary-transparent mr-3 my-auto">
+																<i class="fa fa-bank text-primary"></i>
+															</span>
+														</td>
+														<td class="font-weight-bold">{{isset($data->transaction_id ) ? $data->transaction_id  : 'N/A'}}</td>
+														<td>{!! date(' D, d/M/Y', strtotime($data->created_at)) !!}</td> 
+														<td class="text-info font-weight-bold">{{isset($data->method->name) ? $data->method->name : 'N/A'}}</td> 
+														<td class="text-success font-weight-bold">${{number_format($data->amount, $basic->decimal)}}</td>
+														<td>
+														@if($data->status == 1)
+														<span class="text-success font-weight-semibold">PENDING</span>
+														@elseif($data->status == 2)
+														<span class="text-success font-weight-semibold">COMPLETED</span>
+														@elseif($data->status == 0)
+														<span class="text-WARNING font-weight-semibold">PENDING</span>
 														@elseif($data->status == -2)
-														<div class="value font-fix payment-status open">Declined</div>
+														<span class="text-danger font-weight-semibold">DECLINED</span>
 														@endif
 
-					        							
-												    </td>
-												    <td>
-												    	<div class="title">Transaction ID</div>
-												      	<div class="value font-fix">{{isset($data->transaction_id ) ? $data->transaction_id  : 'N/A'}}</div>
-												    </td>
-												    <td>
-												      	<div class="title">Payment Method</div>
-												      	<div class="value font-fix"><img src="images/bitcoin2.png" alt="" class="currency-icon"> {{isset($data->method->name) ? $data->method->name : 'N/A'}}</div>
-												    </td>
-												    <td>
-												      	<div class="title">Date</div>
-												      	<div class="value font-fix">{!! date(' d/M/Y', strtotime($data->created_at)) !!}</div>
-												    </td>
-												    <td>
-												    	<div class="title">Amount</div>
-					        							<div class="value font-fix payout-amount">{{$basic->currency_sym}}{{number_format($data->amount, $basic->decimal)}}</div>
-												    </td>
-											    </tr>
-												 @endforeach
-												 @else
-												 <b>No Withdrawal Log At The Moment</b><br><br><br><br><br><br><br><br><br>
-											 </b><br><br><br><br><br><br><br><br><br>
-											 
-												 @endif
-												
-
-											    
-											</tbody>
-										</table>
-										 {{$withdraw->links()}}
-									</div> <!-- /.table-data -->
-								</div> <!-- /.payout-single-table -->
-							</div> <!-- /.payout-history-wrapper -->
-
-						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
-					</div> <!-- /#dashboard-main-body -->
-				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
-			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
+														
+														</td>
+													</tr>
+													 @endforeach
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!-- Row End -->
+							</div>
+						</div>
+						<!-- Row End -->
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
 @stop

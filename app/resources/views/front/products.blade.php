@@ -30,110 +30,168 @@
 
 
 
-        <!-- Start features__workspace -->
-        <section class="service__workspace features__workspace padding-py-12" id="Services">
-          <div class="container" id="vxcard">
-
-            <div class="row">
-              <div class="col-md-8 col-lg-4">
-                <div class="title_sections_inner mb-0">
-                  <div class="before_title">
-                    <span class="c-orange-red">  </span>
-                  </div>
-                  <h2>VIRTUAL CARD</h2>
-                  <p> Make transactions anywhere anytime instantly, through Ecommerce or Online Stores around the globe.
-                  </p>
-
+        <!-- Section Service -->
+        <section class="serv_app padding-t-12">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-5 mb-4 mb-lg-0">
+                <div class="  ">
+                  <img id="animate2" src="{{asset('front/img/tradebtc.png')}}" class="img img-thumbnail" style="border:none"/>
+                 
                 </div>
               </div>
-              <div class="col-lg-6 ml-auto mt-4 mt-lg-0">
-                <div class="row">
-                  <img class="logo" src="{{asset('front/img/pic-3.png')}}" alt="logo" style="width:334px;height:300px;" />
+              <div class="col-lg-5 my-auto mx-auto">
+                <div class="title_sections mb-0">
+				<div class="before_title">
+                  <span>Digital</span>
+                    <span class="c-black">Assets</span>
+					</div>
+                  <h2>Trade Bitcoin With Convinience</h2>
+                  <p>
+                    Enjoy crypto trade with us either on Btc, Eth, or Pm at the best rates and fast transaction process with full convinience and confidence anytime, anywhere.
+                  </p>
+                  <a href="register" class="btn btn_lg_primary effect-letter rounded-8 margin-t-4 bg-dark c-white">
+                    Get Started</a>
                 </div>
               </div>
             </div>
           </div>
-
-
-		  <br><br><br><br><br><br>
-
-
-		  <div class="container" id="dgassets">
-
-            <div class="row">
-              <div class="col-md-8 col-lg-4">
-                <div class="title_sections_inner mb-0">
-                  <div class="before_title">
-                    <span class="c-orange-red">   </span>
-                  </div>
-                  <h2>DIGITAL ASSETS</h2>
-                  <p> Bitcoin, Ethereum, Perfect money.
-                  </p>
-
-                </div>
-              </div>
-              <div class="col-lg-6 ml-auto mt-4 mt-lg-0">
-                <div class="row">
-                  <img class="logo" src="{{asset('front/img/coin1.png')}}" alt="logo" style="width:500px;height:118px;" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-		  <br><br><br><br><br><br>
-
-
-		  <div class="container">
-
-            <div class="row">
-              <div class="col-md-8 col-lg-4">
-                <div class="title_sections_inner mb-0">
-                  <div class="before_title">
-                    <span class="c-orange-red">   </span>
-                  </div>
-                  <h2>BILL PAYMENTS</h2>
-                  <p> Instant Virtual Top Up, DSTV subscription, GOtv Subscription, Electricity bills, Hotel Bookings, Airtime to cash, Instant sms.
-                  </p>
-
-                </div>
-              </div>
-              <div class="col-lg-6 ml-auto mt-4 mt-lg-0">
-                <div class="row">
-                  <img class="logo" src="{{asset('front/img/currency.png')}}" alt="logo" style="width:500px;height:118px;" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-		  <br><br><br><br><br><br>
-
-
-		  <div class="container">
-
-            <div class="row">
-              <div class="col-md-8 col-lg-4">
-                <div class="title_sections_inner mb-0">
-                  <div class="before_title">
-                    <span class="c-orange-red">  </span>
-                  </div>
-                  <h2>VX VAULT</h2>
-                  <p> Build your investment and earn countless reward.
-                  </p>
-
-                </div>
-              </div>
-              <div class="col-lg-6 ml-auto mt-4 mt-lg-0">
-                <div class="row">
-                  <img class="logo" src="{{asset('front/img/vault.png')}}" alt="logo" style="width:600px;height:280px;" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-
         </section>
-        <!-- End. features__workspace -->
+        <!-- End. serv_app -->
+		
+		
+		
+      
+		
+		
+		
+		
+        <!-- Section Service -->
+        <section class="serv_app padding-t-12">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-5 my-auto order-2 order-lg-1">
+                <div class="title_sections mb-0">
+                  <div class="before_title">
+                    <span>Virtual</span>
+                    <span class="c-black">Card</span>
+                  </div>
+                  <h2>Make Online payments anywhere anytime</h2>
+                  <p>
+                   Get access to make transactions easy and convinient anywhere anytime instantly, through e-commerce and online platforms around the globe such as
+				   Netflix, iTunes, Amazon, Facebook and so much more.
+                  </p>
+				  <a href="register" class="btn btn_lg_primary effect-letter rounded-8 margin-t-4 bg-dark c-white">
+                    Get Started</a>
+                  <div class="app_smartphone margin-t-4">
+                    
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5 mx-auto mb-4 mb-lg-0 order-1 order-lg-1">
+                <div class="   ">
+                  <img id="animate3" src="{{asset('front/img/cardprod.png')}}"  class="img img-thumbnail" style="border:none"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End. serv_app -->
+		
+		
+		
+		<!-- Section Service -->
+        <section class="serv_app padding-t-12">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-5 mb-4 mb-lg-0">
+                <div class="  ">
+                  <img id="animate2" src="{{asset('front/img/cabletv.png')}}" class="img img-thumbnail" style="border:none" />
+                </div>
+              </div>
+              <div class="col-lg-5 my-auto mx-auto">
+                <div class="title_sections mb-0">
+				<div class="before_title">
+                  <span>Bill</span>
+                    <span class="c-black"> Payments</span>
+					</div>
+                  <h2>Pay bills on the go!</h2>
+                  <p>
+                    We ensure you do not miss any action with our Instant Virtual Top Up for your DStv subscription, GOtv Subscription, Electricity bills, Instant sms and more.
+                  </p>
+                  <a href="register" class="btn btn_lg_primary effect-letter rounded-8 margin-t-4 bg-dark c-white">
+                    Get Started</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End. serv_app -->
+		
+		
+		
+		<!-- Section Service -->
+        <section class="serv_app padding-t-12">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-5 my-auto order-2 order-lg-1">
+                <div class="title_sections mb-0">
+                  <div class="before_title">
+                    <span>Airtime</span>
+                    <span class="c-black">Top Up</span>
+                  </div>
+                  <h2>Stay connected anywhere anytime</h2>
+                  <p>
+                   Purchase airtime or data to keep you always connected with friends and family with just one click.
+                  </p>
+				  <a href="register" class="btn btn_lg_primary effect-letter rounded-8 margin-t-4 bg-dark c-white">
+                    Get Started</a>
+                  <div class="app_smartphone margin-t-4">
+                    
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5 mx-auto mb-4 mb-lg-0 order-1 order-lg-1">
+                <div class="   ">
+                  <img id="animate3" src="{{asset('front/img/airtime.png')}}" class="img img-thumbnail" style="border:none" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End. serv_app -->
+		
+		
+		
+		<!-- Section Service -->
+        <section class="serv_app padding-t-12">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-5 mb-4 mb-lg-0">
+                <div class="  ">
+                  <img id="animate2" src="{{asset('front/img/vault.png')}}"  class="img img-thumbnail" style="border:none"/>
+                </div>
+              </div>
+              <div class="col-lg-5 my-auto mx-auto">
+                <div class="title_sections mb-0">
+				<div class="before_title">
+                  <span>VX</span>
+                    <span class="c-black">VAULT</span>
+					</div>
+                  <h2>Plan, Save and Invest</h2>
+                  <p>
+                    VX Vault made just for you. Invest today and earn Extra rewards, No banking officials, no tedious documents process,just swift and easy steps with full convinience.
+                  </p>
+                  <a href="register" class="btn btn_lg_primary effect-letter rounded-8 margin-t-4 bg-dark c-white">
+                    Get Started</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End. serv_app -->
 
 
 

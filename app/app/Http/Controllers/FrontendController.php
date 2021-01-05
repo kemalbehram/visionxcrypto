@@ -77,7 +77,7 @@ class FrontendController extends Controller
    public function career()
     {
         $basic = GeneralSettings::first();
-        $data['page_title'] = "Products";
+        $data['page_title'] = "Career";
 
         if($basic->maintain == 1){
         return view('front.maintain', $data);
@@ -89,7 +89,7 @@ class FrontendController extends Controller
   public function moneylaunder()
     {
         $basic = GeneralSettings::first();
-        $data['page_title'] = "Products";
+        $data['page_title'] = "AML Policy";
 
         if($basic->maintain == 1){
         return view('front.maintain', $data);
@@ -101,7 +101,28 @@ class FrontendController extends Controller
     public function blog()
     {
         $data['page_title'] = "Blogs";
-        $data['blogs'] = Post::where('status', 1)->whereNotify(0)->latest()->get();
+        
+        $data['cat'] = Category::all();
+        $data['blogs'] = Post::where('status', 1)->latest()->paginate(6);
+        return view('front.blog', $data);
+    }
+
+    public function searchblog(Request $request)
+    {
+         $request->validate([
+            'category' => 'required',
+            'search' => 'required',
+        ]);
+        $data['page_title'] = "Blogs";
+        
+        $data['cat'] = Category::all();
+        $data['blogs'] = Post::whereCat_id($request->category)->where('details', 'LIKE', "%{$request->search}%")->latest()->paginate(6);
+        
+        
+        $count = Post::whereCat_id($request->category)->where('details', 'LIKE', "%{$request->search}%")->count();
+        if($count < 1){
+         return back()->with('alert', 'This Post Does Not Exist !!');
+        }
         return view('front.blog', $data);
     }
 
@@ -110,6 +131,8 @@ class FrontendController extends Controller
     {
         $data['page_title'] = "Blogs";
         $data['blog'] = Post::whereId($id)->first();
+        
+        $data['blogs'] = Post::where('status', 1)->inRandomOrder()->take(4)->get();
         return view('front.blogview', $data);
     }
 

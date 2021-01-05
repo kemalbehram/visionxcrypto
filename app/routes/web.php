@@ -51,6 +51,7 @@ Route::get('/privacy', 'FrontendController@privacy')->name('privacy');
 Route::get('/security', 'FrontendController@security')->name('security');
 Route::get('/career', 'FrontendController@career')->name('career');
 Route::get('/blog', 'FrontendController@blog')->name('blog');
+Route::post('/searchblog', 'FrontendController@searchblog')->name('searchblog');
 Route::get('/blog/{id}', 'FrontendController@blogview')->name('blogview');
 Route::get('/maintain', 'FrontendController@maintain')->name('maintain');
 Route::post('/contactSubmit', 'FrontendController@contactSubmit')->name('contact.submit');
@@ -127,6 +128,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/fundvisionxcard', 'VirtualCardController@fund')->name('fundvcard');
         Route::post('/createvisionxcard', 'VirtualCardController@create')->name('createvcard');
         Route::get('/visionxcard', 'VirtualCardController@show')->name('showvcard');
+        Route::get('/visionx_card', 'VirtualCardController@index')->name('vxcard');
 
 
         //user Deposit
@@ -178,10 +180,13 @@ Route::group(['prefix' => 'user'], function () {
 
 		//invest
 
+        Route::get('new-invest', 'HomeController@newinvest')->name('newinvest');
+        Route::get('newcoinvest/{id}', 'HomeController@newcoinvest')->name('newcoinvest');
         Route::get('coinvestyield/{id}', 'HomeController@coinvestyield')->name('coinvestyield');
         Route::get('coin-vest', 'HomeController@coinvest')->name('coinvest');
         Route::post('coinvest', 'HomeController@buyPlan')->name('coin-vest');
 		Route::get('paybtcnow', 'HomeController@paybtcnow')->name('paybtcnow');
+		Route::get('withdrawinvest', 'HomeController@withdrawinvest')->name('withdrawinvest');
         Route::post('btcpaynowupload', 'HomeController@btcpaynowupload')->name('btcpaynowupload');
 
 
@@ -191,6 +196,7 @@ Route::group(['prefix' => 'user'], function () {
          Route::post('create', 'HomeController@postmessage')->name('post.message');
          Route::get('create_testimonial', 'HomeController@usertest')->name('user.testimonial');
          Route::post('create_testimonial', 'HomeController@posttestimonial')->name('post.testimonial');
+         Route::get('sent', 'HomeController@sent')->name('sent');
          Route::get('inbox', 'HomeController@inbox')->name('inbox');
          Route::get('notifications', 'HomeController@notifications')->name('notifications');
          Route::get('inbox/{id}', 'HomeController@inboxview')->name('inbox-view');

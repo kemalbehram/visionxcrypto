@@ -67,7 +67,7 @@
 
               <div class="box--signup">
                 <div class="title">
-                 Login to Visionxcrypto.
+                 Login to Vision-X Crypto.
                 </div>
                 
                 <form  method="POST" action="{{ route('login') }}" class="sign-up-form" autocomplete="off">
@@ -90,8 +90,8 @@
                          
                       <div class="col-12 terms">
                         <p>
-                          By clicking on the Signin button, you agree to
-                          Visionxcrypto.
+                          By clicking on the login button, you agree to
+                          Vision-X Crypto.
                           <a href="privacy-policy">terms and conditions.</a>
                         </p>
                       </div>

@@ -49,6 +49,14 @@ class VirtualCardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+	 
+	 
+    public function index(){
+         
+		$data['page_title'] = "Virtual Card";
+
+        return view('user.visionx_card', $data);
+    }
 
     public function create(Request $request){
         $input=$request->all();
@@ -156,6 +164,8 @@ class VirtualCardController extends Controller
     public function show(){
         $data['cards']=VirtualCard::where('user_id', Auth::id())->get();
         $data['i']=1;
+		
+		$data['page_title'] = "Virtual Card";
 
         return view('user.visionxcard', $data);
     }

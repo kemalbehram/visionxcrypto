@@ -1,96 +1,109 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 @section('content')
- <!-- ***************** User Content **************** -->
-  <form method="post"  action="{{route('completeotherbanktransfer') }}">
-  @csrf 
-						<div class="dashboard-user-content payout-panel">
-							
-			<!-- Investment  Modal -->
-			<div class="modsal fadse" id="investment-modal" tabindex="-1" role="dialog" aria-hidden="true">
-			  	<div class="modal-dialog" role="document">
-			    	<div class="modal-content">
-				    	<div class="tabs-wrap"> 
-							<div class="tab-content" id="myTabContent">
-								<div class="tab-pane fade show active" id="invest-name" role="tabpanel" aria-labelledby="invest-name-tab">
-									<div class="theme-modal-header">
-								      	<h3 class="title font-fix">Preview Other Bank Transfer</h3>
-								       <br>				
-								    </div>
+ <!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-								    <div class="modal-body"> 
-										
-										<div class="tab-pane fades" id="new-invest-amount" role="tabpanel" aria-labelledby="new-invest-amount-tab">
-									 
-								   
-								        				<div class="total-return-figure">
-															<h4 class="title">Amount</h4>
-															<span class="return-value">{{$basic->currency_sym}}<strong class="total-return-value usd-return">{{number_format($amount,2)}}</strong></span>
-														</div>
+				<div class="container-fluid">
+					<div class="inner-body">
 
-													 
-								</div> <!-- /.tab-pane -->
-				        					<div class="single-input-wrapper">
-					        					<h6 class="title">Bank Name</h6>
-					        					<select name="bank" id='mySelect' onchange='myFunction()' class="theme-select-dropdown">
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Preview Bank Transfer</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Preview Bank Transfer</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
+						 <form method="post"  action="{{route('completeotherbanktransfer') }}">
+  ``					@csrf 
+						<!-- Row-->
+						<div class="row">
+							<div class="col-md-12">
+								<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
+									<div class="header-text mb-0">
+										<div class="container-fluid p-5">
+											<div class="text-left text-white background-text">
+												<h1 class="mb-3 tx-50 font-weight-semibold">Bank Transfer</h1>
+												<p class="tx-18 mb-5 text-white-50">Please note you will be charged {{$basic->currency_sym}} {{number_format($basic->transcharge,2)}} transfer fee for fund transfer to anothr bank</p>
+											</div>
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 d-block mx-auto">
+													<div class="item-search-tabs mb-6 background-text">
+														<div class="buy-sell">
+															<div class="form row mx-auto justify-content-center d-flex p-4">
+																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
+																	<select name="bank" id='mySelect' onchange='myFunction()' class="form-control select2 custom-select br-md-0">
 												 <option disabled selected >Select Bank Name</option>
 										    	@foreach($rep['banklist'] as $k=>$data)
 												<option data-name="{{$data['bankname']}}" value="{{$data['bankname']}}">{{$data['bankname']}}</option> 
 												@endforeach  
 												</select>
-					        				</div> <!-- /.single-input-wrapper -->
-				        					<div class="single-input-wrapper">
-					        					<h6 class="title">Account Number</h6>
-					        					<input type="number" required name="accountnumber" placeholder="Enter Account Number">
-					        				</div> <!-- /.single-input-wrapper -->
-					        				 
-					        				<div class="single-input-wrapper">
-					        					<h6 class="title">Account Name   <button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="Account Name Of Beneficiary."><img src="{{url('assets/images/info.png')}}" alt=""></button></h6>
-					        					<input type="text" required name="accountname" placeholder="Enter Account Name" class="end-date"  >
-					        					 
-					        				</div> <!-- /.single-input-wrapper -->
-
-					        				<a href="#" class="add-funds-button continue-button" data-toggle="modal" data-target="#myModal">PROCEED WITH TRANSFER</a>
-
-					        				  
-				      				</div> <!-- /.modal-body -->
-									
-										
-								</div> <!-- /.tab-pane -->
-
-
-
-							 
-							</div> <!-- /.tab-content -->
-						</div> <!-- /.tabs-wrap -->
-			    	</div> <!-- /.modal-content -->
-			  	</div> <!-- /.modal-dialog -->
-			</div> <!-- /#investment-modal -->
-
-			</div> <!-- /#investment-modal -->
- 
-			<div class="tab-pane modal fade card" id="myModal" role="dialog" >
-			           
-								    <div class="theme-modal-header">
-								      	<h3 class="title font-fix"><a href="" class="back-button-two"><img src="{{url('assets/images/left-arrow.png')}}" alt=""> &nbsp;</a></h3>
-								     
-								    </div>					
-
-							
-								<div class="row"> 
-								<div class="col-12 "> 
-								    <div class="modal-body "> 
-										<div  class="withdraw-pin-form" >
-										 
-							        		<h3 class="title font-fix">Enter Transaction PIN</h3>
-							        		<input type="tel" placeholder="****" maxlength="4" name="password" class="font-fix"><br>
-							        		<h3 class="title font-fix">Enter Transfer Narration</h3>
-							        		<input type="text" placeholder="Please Enter Narration" name="naration" class="font-fix">
-							        		 <br>
-											 <b class="text-info">Please note you will be charged {{$basic->currency_sym}} {{number_format($basic->transcharge,2)}} transfer fee for this transfer</b>
-							        			 <br>	 <br><button class="theme-button"><span></span>Confirm</button>
+																</div>
+																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
+																	<input type="text" class="form-control mb-4 mb-lg-0" type="number" required name="accountnumber" placeholder="Enter Account Number">
+																</div>
+																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
+																	<i class=" fa fa-bank exchange-icon tx-30 text-white inline-block"></i>
+																</div>
+																<div class="form-group  col-xl-6 col-lg-6 col-md-12 mb-0">
+																	<input type="text" class="form-control mb-4 mb-lg-0" required name="accountname" placeholder="Enter Account Name" >
+																</div>
+																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
+																	<input type="text" class="form-control mb-4 mb-lg-0" i disabled="" value="{{$basic->currency_sym}}{{number_format($amount,2)}}">
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="text-center background-text">
+														<a href="#" data-toggle="modal" data-target="#myModal" class="btn btn-warning pl-6 pr-6 pt-2 pb-2 mx-auto float-left mt-5">TRANSFER NOW</a>
+													</div>
+												</div>
 											</div>
-							        
-							      	</div> <!-- /.modal-body -->
-								</div></div></div> <!-- /.tab-pane -->
-	</form>
+										</div>
+									</div><!-- /header-text -->
+								</div>
+							</div> 
+							</div>
+						</div>
+						<!-- Row End -->
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
+			
+			
+			
+
+<!-- Deposit  Modal --> 
+			<div class="modal" id="myModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content modal-content-demo">
+						<div class="modal-header">
+							<h6 class="modal-title">Bank Transfer</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="modal-body">
+							<h6>Enter Transaction Pin</h6>
+							<!-- Select2 -->
+							<input type="tel" placeholder="****" maxlength="4" name="password" class="form-control">
+							<br>
+							<h6>Enter Narration</h6>
+							<!-- Select2 -->
+							<input placeholder="Please Enter Narration" name="naration"   type="test"  class="form-control">
+						        						
+							<!-- Select2 -->
+						 </div>
+						<div class="modal-footer">
+							<button type="submit" class="btn ripple btn-primary" type="button">Proceed With Transfer</button>
+							<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			</form>
+			<!-- End Select2 modal -->
+
 @stop

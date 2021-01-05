@@ -1,153 +1,140 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 
 @section('content')
-<div class="dashboard-user-content performance-panel">
-							<div class="performance-chart-wrapper"> 
-									 <div class="dashbsoard-user-content payout-panel">
-							<div class="next-payout-box clearfix">
-								<div class="title font-fix">Preview Investment</div>
-								<div class="payout-date">Bitcoin</div>
-								<img src="images/coins.png" alt="" class="coins">
-							</div> </div> <!-- /.next-payout-box --><div class="content-area card"><div class="card-innr"><center>
-  <h6 class="text-danger">Please read carefully before you pay into our BTC wallet address</h6></center>
-        <ul class='list-group text-secondary'>
-            <li class='notice list-group-item'>
-                Do not send below {{round($invest->amount * $btcrate,8)}} BTC (${{number_format($invest->amount, $basic->decimal)}} ).
-            </li>
+<<!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-            <li class="notice list-group-item">
-             {{$basic->sitename}} will not be responsible for funding a wrong account number provided by you
-            </li>
+				<div class="container-fluid">
+					<div class="inner-body">
 
-        </ul></div>
-<div class="content-area card"><div class="card-innr"><div class="card-head"></div>
-<center>
-<h5 class="card-title card-title-md">Order details (BTC)</h5>
- <center><img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{$currency->payment_id}}&choe=UTF-8\" style='width:100px;' /></center>
- 
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Bitcoin</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Bitcoin</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
 
-<br>
-<span class="dt-type-md badge badge-outline badge-info badge-sm"><i class = "fa fa-spinner fa-spin"></i>&nbsp;Awaiting</span>
-</center>
-
-<div class="col-12">
- 
-<div class="card-text"><p>Please send <strong>{{round($invest->amount * $btcrate,8)}} BTC (${{number_format($invest->amount, $basic->decimal)}} )</strong> to the Bitcoin Address below. Please note; do not send below ${{number_format($invest->amount, $basic->decimal)}}. We only place investment based on what you send</p></div>
- 
-
-<div class="referral-form"><br>
- 
-<div class="d-flex justify-content-between align-items-center"><h6 class="mb-0 font-bold">Wallet Address</h6><a href="#" class="link link-primary link-ucap">Copy</a></div><div class="copy-wrap mgb-1-5x mgt-1-5x"><span class="copy-feedback"></span> <input type="text" class="form-control" value="{{$currency->payment_id}}" disabled><button class="copy-trigger copy-clipboard" data-clipboard-text="{{$currency->payment_id}}"><em class="ti ti-files"></em></button></div>
- 
-
-
- <div class="note note-plane note-danger note-sm pdt-1x pl-0"><p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br></div>
-<!-- .copy-wrap --></div><ul class="share-links"><li> <a href="#" data-toggle="modal" data-target="#pay-confirm""><span class="btn btn-info">I Have Paid</span></a><br><br></li> </ul></div></div>
-
-
-
-
-</div></div>
-
-
-</div></div> </div>                             </div></div></div><!-- .container --></div>
- 
-
-
-<!-- Withdraw  Modal -->
-			<div class="modal fade wallet-page-modal" id="pay-confirm" tabindex="-1" role="dialog" aria-hidden="true">
-			  	<div class="modal-dialog" role="document">
-			    	<div class="modal-content">
-				    	<div class="tabs-wrap">
-							<ul class="nav nav-tabs modal-navs-two" id="myTabTwo" role="tablist">
-								<li class="nav-item">
-								  <a class="nav-link active" id="withdraw-panel-tab" data-toggle="tab" href="#withdraw-panel" role="tab" aria-controls="withdraw-panel" aria-selected="true"></a>
-								</li>
-								<li class="nav-item">
-								  <a class="nav-link" id="wallet-pin-tab" data-toggle="tab" href="#wallet-pin" role="tab" aria-controls="wallet-pin" aria-selected="false"></a>
-								</li>
-							</ul>
-							<div class="tab-content" id="myTabContentTwo">
-								<div class="tab-pane fade show active" id="withdraw-panel" role="tabpanel" aria-labelledby="withdraw-panel-tab">
-									<div class="theme-modal-header">
-								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								          <span aria-hidden="true">&times;</span>
-								        </button>					
-								    </div>
-
-								    <div class="main-container clearfix">
-								    	<div class="details-option">
-								    		<h3 class="main-title tooltip-holder">
-												Upload Proof Of Payment
-												<button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Please fill the form below to uload yor proof of payment."><img src="{{url('assets/images/info.png') }}" alt=""></button>
-											</h3> 
-											<form role="form" method="POST"  action="{{ route('btcpaynowupload') }}" class="withdraw-action-form" enctype="multipart/form-data">
-											{{ csrf_field() }}
-								    			 
-
-												 
-												
-												
-												<div class="withdraw-address">
+						<!-- Row -->
+						<div class="row row-sm">
+							<div class="col-lg-12 col-md-12">
+								<div class="card custom-card productdesc">
+									<div class="card-body h-100">
+										<div class="row">
+											<div class="col-xl-6 col-lg-12 col-md-12">
+												<div class="row">
 													 
-													<textarea name="trxx"  placeholder="Enter Transaction Hash Number " ></textarea>
+													<div class="col-md-10 offset-md-1 col-sm-12 col-12">
+														<div class="product-carousel">
+															<div id="carousel" class="carousel slide" data-ride="false">
+																<div class="carousel-inner">
+																	<div class="carousel-item active"><img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{$currency->payment_id}}&choe=UTF-8\" alt="QRCODE" class="img-fluid mx-auto d-block">
+																		
+<br>
+																	<div class="form-group mb-0">  
+												<div class="input-group"> <input    class="form-control coupon" value="{{$currency->payment_id}}"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon"><i class="fa fa-copy"></i></button> </span> </div>
+											</div>
+																		
+																	</div>
+																	 
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12">
+												<div class="mt-4 mb-4">
+                                                    <h4 class="mt-1 mb-3">Amount in BTC/USD</h4>
+
+                                                     
+													<h5 class="mb-2">USD : <b>${{number_format($invest->amount, $basic->decimal)}}</b></h5>
+
+													<h5 class="mb-2">BTC : <b>{{round($invest->amount * $btcrate,8)}} BTC</b></h5> 
+													<h6 class="mt-4 fs-16 text-danger">Please read carefully before you pay into our BTC wallet address</h6>
+													<p class="text-danger">{{$basic->sitename}} will not be responsible for you funding a wrong Bitcoin Wallet Address</p>
+											
+													<p class="text-info">Please ensure you sent eaxctly <strong>{{round($invest->amount * $btcrate,8)}} BTC (${{number_format($invest->amount, $basic->decimal)}} )</strong> to our specified Bitcoin Address alone. Please note; do not send below ${{number_format($invest->amount, $basic->decimal)}}. We only place investment based on what you send</p>
+													</div>
+													<p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br>
+												<div class="text-center mt-4 mb-4 btn-list">
+																			<a href="#" data-toggle="modal" data-target="#pay-confirm" class="btn ripple btn-primary"><i class="fe fe-check"> </i>I Have Paid</a> 
+																		</div>
+												 
+											</div>
+										</div>
+										
+								</div>
+							</div>
+						</div>
+						<!-- End Row -->
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
+			
+			
+			
+			<!-- Select2 modal -->
+			<form role="form" method="POST"  action="{{ route('btcpaynowupload') }}" enctype="multipart/form-data">
+			{{ csrf_field() }}
+								    			
+			<div class="modal" id="pay-confirm">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content modal-content-demo">
+						<div class="modal-header">
+							<h6 class="modal-title">Proof Of Payment</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="modal-body"> 
+							<!-- Select2 -->
+							<div class="withdraw-address">
+							 <small>Please Enter The Transaction Hash Code Gotten After Sending BTC</small>						 
+													<textarea name="trxx" class="form-control" placeholder="Enter Transaction Hash Number " ></textarea>
 												</div>
 
-												
+												<br>
 												<div class="withdraw-address">
 													 <small>Enter The BTC address You Are Sending From</small>
-													<textarea name="btc"  placeholder="BTC Wallet address" ></textarea>
+													<textarea name="btc" class="form-control" placeholder="BTC Wallet address" ></textarea>
+												</div>
+
+<br>
+												<div class="withdraw-address">
+													 <small>Upload Proof Of Payment Screenshot</small>
+													<div class="input-group file-browser">
+													<input type="text" class="form-control border-right-0 browse-file" placeholder="choose" readonly>
+													<label class="input-group-btn">
+														<span class="btn btn-primary">
+															Browse <input  name="photo" type="file" style="display: none;" multiple>
+														</span>
+													</label>
+												</div>
 												</div>
 
  
-												
-												<div class="wallet-amount withdraw-amount">
-													  <label  class="input-item-label">Upload Payment Screenshot</label>
-													 
-															<div class="input-group-wrapper main-currency">
-																<input name="photo" type="file"   class="cur-check">
-								        						 
-								        					</div>
-														 
-												</div> <!-- /.wallet-amount -->
+							
+							
+							<!-- Select2 -->
+							 
+						</div>
+						<div class="modal-footer">
+						
 												<input name="trx" hidden value="{{$invest->trx}}">
 												<input name="btcvalue" hidden value="{{round($invest->amount * $btcrate,8)}}">
-												<button type="submit" class="theme-button continue-button-two"><span></span>Proceed</button>
-								    		</form>
-								    	</div> <!-- /.details-option -->
+							<button class="btn ripple btn-primary" type="submit">Proceed</button>
+							<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			</form>
+			<!-- End Select2 modal -->
 
 
-								    	<div class="modal-sidebar">
-								    		<div class="summary-content">
-								    			<h4 class="summary-title font-fix">Amount</h4>
-								    			<div class="crypto-balance font-fix">{{round($invest->amount * $btcrate,8)}}BTC </div>
 
-								    			<ul>
-								    				<li class="list-item">
-								    					<div class="sidebar-title">Currency</div>
-								    					<div class="value font-fix">{{$currency->name}}</div>
-								    				</li>
-								    				<li class="list-item">
-								    					<div class="sidebar-title">Transaction Number</div>
-								    					<div class="value font-fix">{{$invest->trx}}</div>
-								    				</li>
-								    				<li class="list-item">
-								    					<div class="sidebar-title">Processing Time</div>
-								    					<div class="value font-fix">Processed in 10 Mins</div>
-								    				</li>
-								    			</ul>
-												
-												
-								    			<button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Please noe that all offline payment remains pending unil confirmed on our server."><img src="{{asset('assets/images/help.png')}}" alt="">Trade Help</button>
-								    		</div> <!-- /.summary-content -->
-								    	</div> <!-- /.modal-sidebar -->
-								    </div> <!-- /.main-container -->
-								</div> <!-- /.tab-pane -->
-
-								 
-							</div> <!-- /.tab-content -->
-						</div> <!-- /.tabs-wrap -->
-			    	</div> <!-- /.modal-content -->
-			  	</div> <!-- /.modal-dialog -->
-			</div> <!-- /#withdraw-modal -->
 @endsection

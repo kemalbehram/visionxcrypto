@@ -1,8 +1,8 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 
 @section('content')
 
-    <style>
+ <style>
         .wrapperme {
             display: flex;
             justify-content: center;
@@ -73,53 +73,75 @@
             }
         }
     </style>
-<!-- ***************** User Content **************** -->
-						<div class="dashboard-user-content settings-panel">
-							<div class="user-settings-content">
-								<ul class="nav nav-tabs settings-nav" role="tablist">
-									<li class="nav-item">
-										<a class="nav-link active" data-toggle="tab" href="#virtual" role="tab" aria-controls="virtual" aria-selected="true">Virtual Card</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" data-toggle="tab" href="#physical" role="tab" aria-controls="physical" aria-selected="false">Physical Card</a>
-									</li>
-								</ul> <!-- /.settings-nav -->
 
-								<div class="tab-content settings-tab-content">
-									<div class="tab-pane fade show active" col="" id="virtual" role="tabpanel">
+   <!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-                                        <div class="col-12">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addnewcard"><i class="fa fa-plus"></i> Add New Card</button>
-                                            <br />
-                                        <table class="table table-responsive table-striped">
-                                            <thead>
-                                            <th>SN</th>
-                                            <th>Card Number</th>
-                                            <th>Card Name</th>
-                                            <th>Card Type</th>
-                                            <th>Card Expiry</th>
-                                            <th>Card Amount</th>
-                                            <th>Card Status</th>
-                                            <th>Date Created</th>
-                                            <th>Action</th>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($cards as $card)
-                                            <tr>
-                                            <td>{{$i++}}</td>
-                                            <td>{{$card->masked_pan}}</td>
-                                            <td>{{$card->name}}</td>
-                                            <td>{{$card->type}}</td>
-                                            <td>{{$card->expiration}}</td>
-                                            <td>
-                                                @if($card->currency=='NGN')
-                                                    &#x20A6;
-                                                @else
-                                                    $
-                                                @endif
-                                                {{$card->amount}}</td>
-                                            <td>
-                                                @if($card->status == 'active')
+				<div class="container-fluid">
+					<div class="inner-body">
+
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Virtual Card</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashbooard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Virtual Card</li>
+								</ol>
+							</div>
+							<div class="d-flex">
+								<div class="justify-content-center">
+									 
+									<button type="button" data-toggle="modal" data-target="#addnewcard" class="btn btn-primary my-2 btn-icon-text">
+									  <i class="fe fe-download-cloud mr-2"></i> Create New Card
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- End Page Header -->
+
+						<!-- Row -->
+						<div class="row row-sm">
+							<div class="col-lg-12 col-xl-12 col-md-12">
+								<div class="card custom-card">
+									<div class="card-header">
+										<h5 class="mb-3 font-weight-bold tx-14">Virtual Cards</h5>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table border table-hover text-nowrap table-shopping-cart mb-0">
+												<thead class="text-muted">
+													<tr class="small text-uppercase">
+														<th scope="col">Card</th>
+														<th scope="col">Status</th>
+														<th scope="col" class="wd-120">Creation Date</th>
+														<th scope="col" class="wd-120">Expiry Date</th>
+														<th scope="col" class="wd-120">Balance</th>
+														<th scope="col" class="text-center " >Action</th>
+													</tr>
+												</thead>
+												<tbody>
+												@if(count($cards) > 0)
+												 @foreach($cards as $card)
+													<tr>
+														<td>
+															<div class="media">
+																<div class="card-aside-img">
+																	<img src="{{url('/')}}/assets/assets/img/pngs/cardproduct.png" alt="img" class="img-sm">
+																</div>
+																<div class="media-body my-auto">
+																	<div class="card-item-desc mt-0">
+																		<h6 class="font-weight-semibold mt-0 text-uppercase">{{$card->masked_pan}}</h6>
+																		<dl class="card-item-desc-1">
+																		  <dt>{{$card->name}} </dt>
+																		  <dd>{{$card->type}}</dd>
+																		</dl>
+																	</div>
+																</div>
+															</div>
+														</td>
+														<td>
+															@if($card->status == 'active')
                                                     <span class="badge badge-success">
                                                         <i class="fa fa-check fa-s"></i> @lang('active')</span>
                                                 @elseif($card->status == 'disabled')
@@ -128,17 +150,35 @@
                                                @else
                                                     <span class="badge badge-danger">@lang($card->status)</span>
                                                 @endif
-                                            </td>
-                                            <td>{{$card->created_at}}</td>
-                                                <td>
-                                                    @if($card->status!='terminated')
-                                                    <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#cardview{{$card->id}}">View</button> <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#topup{{$card->id}}">Fund Card</button> <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{$card->id}}">Terminate</button>
-                                                        @endif
-                                                </td>
-                                            </tr>
-
-
-                                            <!-- Fundcard  Modal -->
+														</td>
+														<td>{{$card->created_at}}</td>
+														<td>
+															{{$card->expiration}}
+														</td>
+														<td>
+															<div class="price-wrap"> <span class="price font-weight-bold tx-16"> @if($card->currency=='NGN')
+                                                    &#x20A6;
+                                                @else
+                                                    $
+                                                @endif
+                                                {{$card->amount}}</span></div>
+														</td>
+														<td class="text-center">
+														@if($card->status!='terminated')
+														<div class="dropdown">
+		<button aria-expanded="false" aria-haspopup="true" class="btn ripple btn-primary dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" type="button">Action <i class="fas fa-caret-down ml-1"></i></button>
+		<div  class="dropdown-menu tx-13">
+			<a class="dropdown-item"  data-toggle="modal" data-target="#cardview{{$card->id}}" href="#">View Card</a>
+			<a class="dropdown-item" data-toggle="modal" data-target="#topup{{$card->id}}" href="#">Fund Card</a>
+			<a class="dropdown-item"  data-toggle="modal" data-target="#delete{{$card->id}}" href="#">Delete Card</a>
+		</div>
+	</div>
+														@endif
+														</td>
+													</tr>
+													
+													
+													<!-- Fundcard  Modal -->
                                             <div class="modal fade settings-page-modal" id="topup{{$card->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -291,30 +331,31 @@
                                                 </div> <!-- /.modal-dialog -->
                                             </div> <!-- /#show-modal -->
 
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                        </div>
+													
+													
+													
+												@endforeach 
+												@else
+												You dot have any virtual card at the moment. Please proceed to click on the create button above to vreate a virtual acard
+												@endif
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							 
+						</div>
+						<!-- End Row -->
 
-
-									</div> <!-- /.tab-pane -->
-
-
-
-									<div class="tab-pane fade" id="physical" role="tabpanel">
-                                        <img src="{{asset('assets/images/cardsoon.png')}}" alt="" class="payout-icon">
-
-									</div> <!-- /.tab-pane -->
-
-							</div> <!-- /.user-settings-content -->
-
-						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
-					</div> <!-- /#dashboard-main-body -->
-
-
-
-
-
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
+			
+			
+			
+			
 <!-- New Card Modal -->
 <div class="modal fade" id="addnewcard" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">

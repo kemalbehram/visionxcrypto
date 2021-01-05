@@ -195,7 +195,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         } else {
             $data['page_title'] = "Authorization";
-             return redirect()->route('verification');
+              return view('user.authorization', $data);
         }
     }
 
@@ -661,7 +661,7 @@ class HomeController extends Controller
 
             }
 
-                return back()->with('danger', 'Account Number Not Verified Successfuly');
+                return back()->with('danger', 'Account Number Not Verified Successfuly. Please check the account number and try again.');
 
 
 
@@ -844,7 +844,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 			$perfectval = $gatewayData->val1;
 			}
 
-        return view('user.payment.preview', compact('data', 'rate','track','total','perfectval','page_title'));
+        return view('user.payment.preview', compact('data', 'rate','track','total','page_title'));
     }
 
 
@@ -1216,13 +1216,16 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $errmsg  = curl_error( $ch );
         	curl_close($ch);
         $data['pdep'] = Deposit::whereUser_id($user->id)->whereStatus(0)->sum('amount');
+        $data['tdep'] = Deposit::whereUser_id($user->id)->whereStatus(1)->sum('amount');
         $data['pdepositlog'] = Deposit::whereUser_id($user->id)->whereStatus(2)->get();
         $data['pwithdrawlog'] = WithdrawLog::whereUser_id($user->id)->whereStatus(1)->get();
         $data['pwith'] = WithdrawLog::whereUser_id($user->id)->whereStatus(1)->sum('amount');
         $data['twith'] = WithdrawLog::whereUser_id($user->id)->whereStatus(2)->sum('amount');
+        $data['activeinv'] = Invest::whereUser_id($user->id)->whereStatus(1)->count();
+        $data['endinv'] = Invest::whereUser_id($user->id)->whereStatus(0)->count();
         $data['withdrawgate'] = WithdrawMethod::whereStatus(1)->get();
 		$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
-        $data['page_title'] = "Transaction Log";
+        $data['page_title'] = "My Wallet";
 		$data['gates'] = Gateway::whereStatus(1)->orderBy('name','asc')->get();
         return view('user.my-wallet', $data);
     }
@@ -1240,9 +1243,10 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
    public function withdrawLog()
     {
         $user = Auth::user();
-        $data['withdraw'] = WithdrawLog::whereUser_id($user->id)->latest()->paginate(10);
+        $data['withdraw'] = WithdrawLog::whereUser_id($user->id)->latest()->get();
         $data['count'] = WithdrawLog::whereUser_id($user->id)->count();
-        $data['sum'] = WithdrawLog::whereStatus(1)->whereUser_id($user->id)->sum('amount');
+        $data['sum'] = WithdrawLog::whereStatus(2)->whereUser_id($user->id)->sum('amount');
+        $data['wpend'] = WithdrawLog::whereStatus(1)->whereUser_id($user->id)->sum('amount');
         $data['page_title'] = "Withdraw Log";
         return view('user.withdraw-log', $data);
     }
@@ -1264,8 +1268,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $get['bank'] = Bank::whereStatus(1)->orderBy('name','asc')->get();
         $get['page_title'] = "Trade E-Currency";
 
-        $get['sell'] = Trx::where('status', '>', 0)->where('type', 2)->paginate(10);
-        $get['buy'] = Trx::where('status', '>', 0)->where('type', 1)->paginate(10);
+        $get['trade'] = Trx::where('status', '>', 0)->latest()->paginate(5); 
         return view('user.trade', $get);
     }
 
@@ -1502,7 +1505,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 			  }
 
 	     if($data->main_amo > $auth->balance){
-        return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund or try using another payment gateway");
+        return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund into your wallet and try again");
         }
 
          $data->amountpaid = $data->main_amo;
@@ -1517,7 +1520,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             }
 
         $user = Auth::user();
-        $user->balance = $user->balance + $data->main_amo;
+        $user->balance = $user->balance - $data->main_amo;
         $user->save();
 
 
@@ -1531,7 +1534,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 ]);
 
          $data->save();
-         return redirect()->route('home')->with("success", "  Your coin purchase was successful. Please wait while we process your request");
+         return redirect()->route('trade')->with("success", "  Your coin purchase was successful. Please wait while we process your request");
 
     }
       public function trxdel($id)
@@ -1701,7 +1704,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 ]);
 
          $data->save();
-         return redirect()->route('home')->with("success", "  Your coin sale was successful");
+         return redirect()->route('trade')->with("success", "  Your coin sale was successful. Please wait while we process your transaction");
 
     }
 
@@ -2138,7 +2141,23 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     {     $auth = Auth::user();
         $data['page_title'] = "Inbox";
         $data['inbox']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->paginate(6);
-        $data['sent']=  Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at','desc')->paginate(6);
+        $data['sent']=  Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at','desc')->count();
+        $data['total']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->count();
+        $data['unread']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at','desc')->count();
+        $data['read']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at','desc')->count();
+       $data['count']=  Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at','desc')->count();
+         return view('user.inbox', $data);
+    }
+
+
+    public function sent()
+    {     $auth = Auth::user();
+        $data['page_title'] = "Outbox";
+        $data['inbox']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->paginate(6); 
+        $data['sent']=  Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at','desc')->count();
+        $data['total']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->count();
+        $data['unread']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at','desc')->count();
+        $data['read']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at','desc')->count();
        $data['count']=  Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at','desc')->count();
          return view('user.inbox', $data);
     }
@@ -2225,6 +2244,50 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 
 
+    public function newinvest()
+    {
+       
+        $data['page_title'] = "New Investment";
+        $data['plans'] = Plan::where('status', 1)->latest()->get();
+		
+       return view('user.new-invest', $data);
+	}
+
+
+    public function newcoinvest($id)
+    {
+       
+        $data['page_title'] = "New Investment";
+        $data['plan'] = Plan::where('status', 1)->whereId($id)->first(); 
+        $data['wallets'] = UserWallet::where('user_id', Auth::id())->whereType('interest_wallet')->get();
+		$baseUrl = "https://blockchain.info/";
+			$endpoint = "tobtc?currency=USD&value=1";
+			$httpVerb = "GET";
+			$contentType = "application/json"; //e.g charset=utf-8
+			$headers = array (
+				"Content-Type: $contentType",
+
+        );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
+            $err     = curl_errno( $ch );
+            $errmsg  = curl_error( $ch );
+        	curl_close($ch);
+
+
+		
+       return view('user.new-investment', $data);
+	}
+
+
+
 
     public function coinvest()
     {
@@ -2232,7 +2295,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['plans'] = Plan::where('status', 1)->latest()->get();
         $data['wallets'] = UserWallet::where('user_id', Auth::id())->whereType('interest_wallet')->get();
         $data['earn'] = UserWallet::whereType('interest_wallet')->where('user_id', Auth::id())->first();
-		$data['trans'] = Invest::where('user_id', Auth::id())->latest()->paginate(5);
+		$data['trans'] = Invest::where('user_id', Auth::id())->latest()->get();
 		$data['invcount'] = Invest::where('user_id', Auth::id())->latest()->count();
 		$data['invcomplete'] = Invest::where('user_id', Auth::id())->where('status' ,'!=', 1)->latest()->count();
 		$data['invsum'] = Invest::where('user_id', Auth::id())->sum('amount');
@@ -2319,6 +2382,46 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
+    public function withdrawinvest()
+    {
+        $data['page_title'] = "Investment Withdrawal";
+           $user = Auth::user();
+		$baseUrl = "https://blockchain.info/";
+		$endpoint = "tobtc?currency=USD&value=1";
+		$httpVerb = "GET";
+		$contentType = "application/json"; //e.g charset=utf-8
+		$headers = array (
+				"Content-Type: $contentType",
+
+        );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
+            $err     = curl_errno( $ch );
+            $errmsg  = curl_error( $ch );
+        	curl_close($ch);
+        $data['pdep'] = Deposit::whereUser_id($user->id)->whereStatus(0)->sum('amount');
+        $data['tdep'] = Deposit::whereUser_id($user->id)->whereStatus(1)->sum('amount');
+        $data['pdepositlog'] = Deposit::whereUser_id($user->id)->whereStatus(2)->get();
+        $data['pwithdrawlog'] = WithdrawLog::whereUser_id($user->id)->whereStatus(1)->get();
+        $data['pwith'] = WithdrawLog::whereUser_id($user->id)->whereStatus(1)->sum('amount');
+        $data['twith'] = WithdrawLog::whereUser_id($user->id)->whereStatus(2)->sum('amount');
+        $data['activeinv'] = Invest::whereUser_id($user->id)->whereStatus(1)->count();
+        $data['endinv'] = Invest::whereUser_id($user->id)->whereStatus(0)->count();
+        $data['withdrawgate'] = WithdrawMethod::whereStatus(1)->get();
+		$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
+        $data['page_title'] = "Withdraw Investment";
+		$data['gates'] = Gateway::whereStatus(1)->orderBy('name','asc')->get();		
+       return view('user.withdrawvest', $data);
+    }
+
+
 
     public function buyPlan(Request $request)
     {
@@ -2354,6 +2457,27 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$btc = $request->amount * $btcrate;
         $user = User::find(Auth::id());
         $gnl = GeneralSettings::first();
+        $basic = GeneralSettings::first();
+        
+        
+        $baseUrl = "https://api.coingate.com";
+			$endpoint = "/v2/rates/merchant/USD/$basic->currency";
+			$httpVerb = "GET";
+			$contentType = "application/json"; //e.g charset=utf-8
+			$headers = array (
+				"Content-Type: $contentType",
+
+        );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $localrate  = json_decode(curl_exec( $ch ),true);
+            $payamount = $localrate * $request->amount;
 
         $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
         if (!$plan) {
@@ -2383,7 +2507,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		if($request->wallet_type == 1982100101281 ){
 		$userWallet = User::find(Auth::id());
 		}
-		elseif($request->wallet_type < 1982100101281 ){
+		elseif($request->wallet_type < 200000000 ){
 		$userWallet = UserWallet::where('user_id', Auth::id())->where('id', $request->wallet_type)->first();
 		}
 
@@ -2497,14 +2621,14 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         }
 
 
-        if ($request->amount > $userWallet->balance) {
+        if ($payamount > $userWallet->balance) {
              return back()->with("danger", "Insufficient wallet balance");
         }
 
         $time_name = TimeSetting::where('time', $plan->times)->first();
         $now = Carbon::now();
 
-        $new_balance = $userWallet->balance - $request->amount ;
+        $new_balance = $userWallet->balance - $payamount ;
         $userWallet->balance = $new_balance;
         $userWallet->save();
 

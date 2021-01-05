@@ -54,7 +54,8 @@ class ProductController extends Controller
   public function products()
     {
         $user = Auth::user();
-
+		$data['networks'] = Network::whereStatus(1)->get();
+		$data['power'] = Power::whereStatus(1)->get();
         $data['page_title'] = "Products";
         return view('user.products', $data);
     }
@@ -65,7 +66,7 @@ class ProductController extends Controller
 
         $data['page_title'] = "Airtime Recharge";
 		 $data['networks'] = Network::whereStatus(1)->get();
-		 $data['transactions'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(1)->paginate(6);
+		 $data['transactions'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->latest()->whereType(1)->get();
         return view('user.rubies.airtime', $data);
     }
 
@@ -126,7 +127,9 @@ class ProductController extends Controller
 	$response = curl_exec($curl);
 	curl_close($curl);
 	$rep=json_decode($response, true);
-
+    
+	if($rep['responsecode'] == 00)
+	{
 	$product['user_id'] = Auth::id();
     $product['gateway'] = $request->network;
     $product['account_number'] = $request->number;
@@ -141,8 +144,10 @@ class ProductController extends Controller
      $user->balance = $user->balance - $request->amount;
      $user->save();
 
-        return back()->with(['modal'=> 'airtime', 'success'=> 'Airtime Purchase of '.$basic->currency_sym.''.$request->amount.' '.$request->network.' was successful.']);
+        return back()->with(['modal'=> 'airtime', 'success'=> 'Airtime Purchase of '.$basic->currency_sym.''.$request->amount.' was successful.']);
     }
+	return back()->with("danger", "We cant process your request at the moment. Please try again later");
+	}
 
 
 
@@ -235,7 +240,7 @@ class ProductController extends Controller
 
         $data['page_title'] = "Internet Data";
 
-		 $data['transactions'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(2)->paginate(6);
+		 $data['transactions'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->latest()->whereType(2)->get();
 
 		$data['mtn'] = $rep['MTN'];
 		$data['airtel'] = $rep['AIRTEL'];
@@ -266,7 +271,8 @@ class ProductController extends Controller
 
 		public function internetstep2()
 		{
-
+		
+        $data['page_title'] = "Internet Data";
 		$data['number'] = Session::get('number');
 		$network = Session::get('network');
 		$data['network'] = Network::whereCode($network)->first();
@@ -974,8 +980,9 @@ class ProductController extends Controller
 
         $data['page_title'] = "Utility Bills";
 		 $data['power'] = Power::whereStatus(1)->get();
-		 $data['powered'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(4)->paginate(6);
+		 $data['powered'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(4)->latest()->get();
 		 $data['sum'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(4)->sum('amount');
+		 $data['count'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->whereType(4)->count();
         return view('user.rubies.power', $data);
     }
 
@@ -986,10 +993,10 @@ class ProductController extends Controller
 		 $user = Auth::user();
 	   $request->validate([
             'meternumber' => 'required',
-            'code' => 'required',
+            'meter' => 'required',
 
         ], [
-            'code.required' => 'Please select your meter type',
+            'meter.required' => 'Please select your service provider',
             'meternumber.required' => 'Please enter a meter number',
         ]);
 
@@ -1026,7 +1033,7 @@ class ProductController extends Controller
         if(isset($result['responsecode'])){
         if($result['responsecode'] == 00){
           Session::put('number', $request->meternumber);
-          Session::put('meter', $request->code);
+          Session::put('meter', $request->meter);
           Session::put('name', $result['customername']);
           return redirect()->route('validatedmeter');
         }
@@ -1162,8 +1169,9 @@ class ProductController extends Controller
 		{
 
 		$data['page_title'] = "Instant SMS";
-		$data['sms'] = Sms::where('user_id', Auth::id())->paginate(6);
+		$data['sms'] = Sms::where('user_id', Auth::id())->latest()->get();
 		$data['sum'] = Sms::where('user_id', Auth::id())->sum('amount');
+		$data['count'] = Sms::where('user_id', Auth::id())->count();
 	    return view('user.bulksms.index', $data);
 		}
 

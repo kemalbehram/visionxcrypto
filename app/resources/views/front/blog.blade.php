@@ -21,7 +21,32 @@
                 </div>
               </div>
             </div>
-            
+             <div class="filter_form" data-aos="fade-up" data-aos-delay="200">
+              <form role="form" class="row" method="POST" action="{{ route('searchblog') }}" >
+               {{ csrf_field() }}
+                <div class="col-md-6 col-lg-3">
+                  <div class="simple_search">
+                    <div class="form-group">
+                      <div class="input_group">
+                        <input type="search" name="search" class="form-control" placeholder="Type your search word">
+                        <i class="tio search"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-2">
+                  <div class="form-group">
+                    <select name="category" class="form-control custom-select" id="exampleFormControlSelect1">
+                        
+                      <option selected disabled>Select Category</option>
+                      @foreach($cat as $data)
+                      <option value="{{$data->id}}">{{$data->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </section>
         <!-- End banner_about -->
@@ -53,9 +78,13 @@
                     <a href="{{route('blogview',$data->id)}}">
                       <div class="person mb-0 media">
                           @if( file_exists($data->image))
-                        <img src="{{asset($data->image)}}" alt="">
+                        <!--<img src="{{asset($data->image)}}" alt=""> -->
+                        
+                        <img src="{{asset('front/img/favicon.png')}}" alt="">
                         @else
-                        <img src="{{url('/')}}/front/img/blog.jpg" alt="">
+                        <!--<img src="{{url('/')}}/front/img/blog.jpg" alt=""> -->
+                        
+                        <img src="{{asset('front/img/favicon.png')}}" alt="">
                         @endif
                         <div class="media-body">
                           <div class="txt">
@@ -71,8 +100,12 @@
               </div>
 
                @endforeach
+               
             </div>
+             {{$blogs->links()}}
           </div>
+          
+         
         </section>
         <!-- End. box_news_gray -->
 

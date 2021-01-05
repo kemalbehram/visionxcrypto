@@ -146,8 +146,8 @@
 
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand c-white" href="{{url('/')}}">
-                        <img class="logo" src="{{asset('front/img/logo1.png')}}" alt="logo"
-                             style="width:200px;height:35px;"/>
+                        <img class="logo" src="{{asset('front/img/newlogo.png')}}" alt="logo"
+                             style="width:230px;height:75px;"/>
                     </a>
                     <button class="navbar-toggler menu ripplemenu" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -164,81 +164,11 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto nav-pills">
 
-                            {{--                  <li class="nav-item">--}}
-                            {{--                  <a class="nav-link" href="{{route('product')}}">Products</a>--}}
-                            {{--                </li>--}}
-                            <li class="nav-item">
-                                <div class="subnav">
-                                    <a class="subnavbtn nav-link">Products</a>
-                                    <div class="subnav-content">
-                                        <div class="md:px-6 md:py-8 rounded-md grid-cols-2">
-                                            <div class="row ml-2 mr-2 text-center">
-                                                <div class="col-lg-6 col-md-12 text-center">
-                                                    <a href="products"
-                                                       class="flex items-center mb-6 hover:bg-yellow-pale rounded-md duration-500 tracking-normal font-normal p-3">
-                                                        <div>
-                                                            <p class="text-blue-base font-medium main mb-1"><img
-                                                                    src="front/img/IMG_0232.PNG" width="30px"
-                                                                    class="g-image" style="margin-right: 5px"> All
-                                                                Products</p>
-                                                            <p class="text-smoke-dark sub " style="font-size: 10px">View
-                                                                all Our Products</p>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="col-lg-6 col-md-12 text-center">
-
-
-                                                    <a href="products/#dgassets"
-                                                       class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3">
-                                                        <div>
-                                                            <p class="text-blue-base font-medium main mb-1"><img
-                                                                    src="front/img/IMG_0231.PNG" width="30px"
-                                                                    class="g-image" style="margin-right: 5px">Digital
-                                                                Assets</p>
-                                                            <p class="text-smoke-dark sub" style="font-size: 10px">
-                                                                Perfect Money, Bitcion &amp; more.
-                                                            </p>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="col-lg-6 col-md-12 text-center">
-
-
-                                                    <a href="products/#vxcard"
-                                                       class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3">
-                                                        <div>
-                                                            <p class="text-blue-base font-medium main mb-1"><img
-                                                                    src="front/img/IMG_0229.PNG" width="30px"
-                                                                    class="g-image" style="margin-right: 5px">VX Card
-                                                            </p>
-                                                            <p class="text-smoke-dark sub" style="font-size: 10px">
-                                                                Physical and Virtual cards <br/>for instant Cash Out!
-                                                            </p>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="col-lg-6 col-md-12 text-center">
-
-
-                                                    <a href="products/#vxcard"
-                                                       class="flex items-center hover:bg-red-pale rounded-md duration-500 tracking-normal font-normal p-3">
-                                                        <div>
-                                                            <p class="text-blue-base font-medium main mb-1"><img
-                                                                    src="front/img/IMG_0230.PNG" width="30px"
-                                                                    class="g-image" style="margin-right: 5px">VX Vault
-                                                            </p>
-                                                            <p class="text-smoke-dark sub" style="font-size: 10px">
-                                                                Highly secure for you!
-                                                            </p>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                                           <li class="nav-item">
+                                            <a class="nav-link" href="{{route('product')}}">Products</a>               </li>
+                            
+                            
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('rates')}}">Rates</a>
                             </li>
@@ -293,11 +223,11 @@
                     <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
                         <div class="item_about">
                             <a class="logo" href="{{url('/')}}">
-                                <img class="logo" src="{{asset('front/img/logo33.png')}}" alt="logo"
-                                     style="width:200px;height:40px;"/>
+                                <img class="logo" src="{{asset('front/img/newlogo2.png')}}" alt="logo"
+                                     style="width:230px;height:75px;"/>
                             </a>
                             <p>
-                                The way forward....
+                                Easy User Experience and Responsive payment.
                             </p>
                             <div class="address">
                                 <span>Registered with CAC</span>
@@ -429,9 +359,9 @@
                                     <img src="{{asset('front/img/gif/avatar.png')}}"/>
                                 </div>
                                 <div class="title">
-                                    <h4>Visionxcrypto.</h4>
+                                    <h4>Vision-X Crypto</h4>
                                     <p>
-                                        Welcome back,<br/>
+                                        Welcomes you back,<br/>
                                         Please sign in
                                     </p>
                                 </div>
@@ -461,7 +391,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="#" class="btn mt-2 font-s-12 font-w-400 c-gray p-0">Forgot
+                                                <a href="resetpass" class="btn mt-2 font-s-12 font-w-400 c-gray p-0">Forgot
                                                     Passowrd?</a>
                                             </div>
                                             <div class="col-12 mt-4">
