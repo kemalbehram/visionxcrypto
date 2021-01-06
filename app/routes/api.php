@@ -78,7 +78,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('verification2a', [VerificationController::class, 'verification2a'])->name('verification2a');
     Route::post('verification2b', [VerificationController::class, 'verification2b'])->name('verification2b');
-    Route::post('verification3ab', [VerificationController::class, 'verification3ab'])->name('verification3ab');
+    Route::post('verification3a', [VerificationController::class, 'verification3ab'])->name('verification3ab');
+    Route::post('verification3b', [VerificationController::class, 'verification3ab'])->name('verification3ab');
     Route::get('vstatus', [VerificationController::class, 'vstatus'])->name('vstatus');
 
     Route::get('invoice', [HistoryController::class, 'invoicel5'])->name('invoicel5');
