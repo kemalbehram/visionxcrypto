@@ -112,12 +112,12 @@ class HistoryController extends Controller
 
     public function transfers()
     {
-        $trans = Transaction::where([['user_id', Auth::id()], ['gateway', 'LIKE', '%Transfer%']])->orderBy('id', 'desc')->first();
+        $trans = Transaction::where([['user_id', Auth::id()], ['gateway', 'LIKE', '%Transfer%']])->orderBy('id', 'desc')->get();
 
-        if ($trans) {
-            return response()->json(['status' => 1, 'message' => 'Transfers fetched successfully', 'data' => $trans]);
-        } else {
+        if ($trans->isEmpty()) {
             return response()->json(['status' => 0, 'message' => 'No transfers found']);
+        } else {
+            return response()->json(['status' => 1, 'message' => 'Transfers fetched successfully', 'data' => $trans]);
         }
     }
 
