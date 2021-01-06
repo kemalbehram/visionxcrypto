@@ -57,6 +57,8 @@ class OthersController extends Controller
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
 
+        $user = User::findOrFail(Auth::user()->id);
+
         if($input['image']) {
             $filename = time() . '_' . Auth::user()->username . '.jpg';
             $location = 'assets/images/user/' . $filename;
@@ -69,13 +71,16 @@ class OthersController extends Controller
             if ($file_data != "") {
                 // storing image in storage/app/public Folder
 //                \Storage::disk('public')->put($file_name, base64_decode($file_data));
-                \File::put(storage_path(). '../../' . $location, base64_decode($file_data));
+                \File::put(storage_path(). '../' . $location, base64_decode($file_data));
 
                 //Storage::put('/' . $file_name, $file_data, 'public');
             }
         }
 
-        return response()->json(['status' => 1, 'message' => 'Profile Picture submitted successfully']);
+
+        $user->fill($in)->save();
+
+        return response()->json(['status' => 1, 'message' => 'Profile Picture submitted successfully', 'image' => $user->image]);
     }
 
 }
