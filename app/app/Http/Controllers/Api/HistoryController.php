@@ -92,6 +92,10 @@ class HistoryController extends Controller
     public function showNotifications(){
         $noti=Message::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
+        if($noti->isEmpty()){
+            return response()->json(['status' => 0, 'message' => 'No Notifications yet']);
+        }
+
         return response()->json(['status' => 1, 'message' => 'Notifications fetched successfully', 'data' => $noti]);
     }
 

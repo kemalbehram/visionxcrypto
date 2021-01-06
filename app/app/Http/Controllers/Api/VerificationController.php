@@ -165,7 +165,7 @@ class VerificationController extends Controller
             if ($file_data != "") {
                 // storing image in storage/app/public Folder
 //                \Storage::disk('public')->put($file_name, base64_decode($file_data));
-                \File::put(storage_path('../../') . $file_name, base64_decode($file_data));
+                \File::put(storage_path('../../kyc/') . $file_name, base64_decode($file_data));
 
                 //Storage::put('/' . $file_name, $file_data, 'public');
             }
@@ -182,7 +182,7 @@ class VerificationController extends Controller
             if ($file_data != "") {
                 // storing image in storage/app/public Folder
 //                \Storage::disk('public')->put($file_name, base64_decode($file_data));
-                 \File::put(storage_path('../../') . $file_name, base64_decode($file_data));
+                 \File::put(storage_path('../../kyc/') . $file_name, base64_decode($file_data));
 
                 //Storage::put('/' . $file_name, $file_data, 'public');
             }
@@ -228,7 +228,7 @@ class VerificationController extends Controller
         $docm['status'] = 0;
 
         if($input['image']) {
-            $docm['image'] = uniqid().'.jpg';
+            $docm['image1'] = uniqid().'.jpg';
             $file_data = $input['image'];
             //generating unique file name;
             $file_name = $docm['image'];
@@ -237,7 +237,7 @@ class VerificationController extends Controller
             if ($file_data != "") {
                 // storing image in storage/app/public Folder
 //                \Storage::disk('public')->put($file_name, base64_decode($file_data));
-                \File::put(storage_path(). '../../kyc/' . $file_name, base64_decode($file_data));
+                \File::put(storage_path('../../kyc/') . $file_name, base64_decode($file_data));
 
                 //Storage::put('/' . $file_name, $file_data, 'public');
             }
