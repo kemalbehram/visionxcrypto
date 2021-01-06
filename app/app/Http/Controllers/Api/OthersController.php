@@ -71,7 +71,7 @@ class OthersController extends Controller
             if ($file_data != "") {
                 // storing image in storage/app/public Folder
 //                \Storage::disk('public')->put($file_name, base64_decode($file_data));
-                \File::put(storage_path(). '../' . $location, base64_decode($file_data));
+                \File::put(storage_path('../../') . $location, base64_decode($file_data));
 
                 //Storage::put('/' . $file_name, $file_data, 'public');
             }
