@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('vstatus', [VerificationController::class, 'vstatus'])->name('vstatus');
 
     Route::get('invoice', [HistoryController::class, 'invoicel5'])->name('invoicel5');
+    Route::get('invoice/{month}/{year}', [HistoryController::class, 'invoicemy'])->name('invoicemy');
     Route::get('allinvoice', [HistoryController::class, 'invoice'])->name('invoice');
 
     Route::post('password', [OthersController::class, 'password'])->name('password');
