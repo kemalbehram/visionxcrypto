@@ -128,6 +128,14 @@ class VerificationController extends Controller
 
             return response()->json(['status' => 1, 'message' => 'Verification successful']);
 
+            Message::create([
+                'user_id' => $user->id,
+                'title' => 'BVN Submited',
+                'details' =>'Your BVN has been validated successfully.',
+                'admin' => 1,
+                'status' =>  0
+            ]);
+
         } else {
             return response()->json(['status' => 0, 'message' => 'You Have Entered A Wrong Bank Verification Number']);
         }
@@ -228,12 +236,12 @@ class VerificationController extends Controller
         $docm['status'] = 0;
 
         if($input['image']) {
-            $docm['image1'] = uniqid().'.jpg';
+            $docm['image1'] = uniqid().'.pdf';
             $file_data = $input['image'];
             //generating unique file name;
-            $file_name = $docm['image'];
-            @list($type, $file_data) = explode(';', $file_data);
-            @list(, $file_data) = explode(',', $file_data);
+            $file_name = $docm['image1'];
+//            @list($type, $file_data) = explode(';', $file_data);
+//            @list(, $file_data) = explode(',', $file_data);
             if ($file_data != "") {
                 // storing image in storage/app/public Folder
 //                \Storage::disk('public')->put($file_name, base64_decode($file_data));
