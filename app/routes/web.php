@@ -542,5 +542,5 @@ Route::post('user-password/reset', 'User\ResetPasswordController@reset');
 
 Route::get('covira', function (){
     return view('front.covira');
-} );
+} )->name('front.covira');
 

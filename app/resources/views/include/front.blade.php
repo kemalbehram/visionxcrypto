@@ -166,9 +166,9 @@
 
                                            <li class="nav-item">
                                             <a class="nav-link" href="{{route('product')}}">Products</a>               </li>
-                            
-                            
-                            
+
+
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('rates')}}">Rates</a>
                             </li>
@@ -240,9 +240,7 @@
                             <h4>Learn more</h4>
                             <a class="nav-link" href="{{route('blog')}}">Blog</a>
                             <a class="nav-link" href="{{route('blog')}}">Press</a>
-                            <a class="nav-link"
-                               href="https://graphics.reuters.com/CHINA-HEALTH-MAP/0100B59S39E/index.html"
-                               target="_blank">Covid-19</a>
+                            <a class="nav-link" href="{{route('front.covira')}}">Covid-19</a>
                             <a class="nav-link" href="{{route('contact-us')}}">Help Center</a>
 
                         </div>
