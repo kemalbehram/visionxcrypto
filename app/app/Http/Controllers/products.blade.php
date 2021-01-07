@@ -358,22 +358,15 @@ function myFunctionpower() {
 																
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
 																
-																		<script>
-function myFunctioncabletv() { 
- var deco = $("#mySelected2 option:selected").attr('data-deco');  
- document.getElementById("deco").value = deco; 
-   
- };
-</script>											
-																	<select name="decoder"  id="mySelected2" onchange="myFunctioncabletv()" class="form-control select2  custom-select br-md-0">
+															 													 
+																	<select name="decoder"  class="form-control select2  custom-select br-md-0">
 																		 
-																		<option   data-deco="DStv"  value="dstv" >DSTV</option>
-																		<option  data-deco="GOtv" value="gotv" >GOTV</option>
-																		<option  data-deco="Startimes" value="startimes" >Startimes</option>
+																		<option   value="dstv" >DSTV</option>
+																		<option  value="gotv" >GOTV</option>
+																		<option  value="startimes" >Startimes</option>
 																		  
 																	</select>
 																</div>
-																<input id="deco" name="deco" hidden>
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
 																	<i class=" pe-7s-light exchange-icon tx-30 text-white inline-block"></i>
 																</div>

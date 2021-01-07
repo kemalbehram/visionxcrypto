@@ -32,8 +32,24 @@ class HistoryController extends Controller
         return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>Auth::user()->balance, 'trans'=>$trans]);
     }
 
+    public function invoicemy($month, $year){
+        $trans=Transaction::where([['user_id', Auth::id()], ['created_at', 'LIKE', "%".$year."-".$month."%"] ])->orderBy('id', 'desc')->get();
+
+        $spent=Transaction::where('user_id', Auth::id())->sum('amount');
+
+        if($trans->isEmpty()){
+            return response()->json(['status' => 0, 'message' => 'Transactions not found', 'spent'=>$spent, 'balance'=>Auth::user()->balance]);
+        }
+
+        return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>Auth::user()->balance, 'trans'=>$trans]);
+    }
+
     public function showVXCs(){
         $cards=VirtualCard::where('user_id', Auth::id())->get();
+
+        if($cards->isEmpty()){
+            return response()->json(['status' => 0, 'message' => 'No virtual cards found']);
+        }
 
         return response()->json(['status' => 1, 'message' => 'Cards fetched successfully', 'data'=>$cards]);
     }
@@ -78,7 +94,7 @@ class HistoryController extends Controller
         $res=json_decode($response, true);
 
         if($res['status']=="success") {
-            if($res['data']=="[]") {
+            if($res['data']!="[]") {
                 return response()->json(['status' => 1, 'message' => 'Card transactions fetched successfully', 'data' => $res['data']]);
             }else{
                 return response()->json(['status' => 0, 'message' => $res['message']]);

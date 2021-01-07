@@ -1,60 +1,66 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 @section('content')
- <!-- ***************** User Content **************** -->
-						<div class="dashboard-user-content payout-panel">
-							<div class="next-payout-box clearfix">
-								<div class="title font-fix">Total:</div>
-								<div class="payout-date">{{count($activity)}} Sessions</div>
-								<img src="images/coins.png" alt="" class="coins">
-							</div> <!-- /.next-payout-box -->
+ <!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-							<div class="payout-history-wrapper">
-								<div class="clearfix">
- 								</div>
+				<div class="container-fluid">
+					<div class="inner-body">
 
-								<div class="payout-single-table">
-									<div class="table-responsive table-data">
-										<table class="table">
-											<tbody>
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">Activities Log</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Activities Log</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
+ 
+
+						<!-- Row -->
+						<div class="row row-sm">
+							<div class="col-lg-12">
+								<div class="card custom-card">
+									<div class="card-body">
+										<div>
+											<h6 class="main-content-label mb-1">Activity Log</h6>
+											<p class="text-muted card-sub-title">Login activities on your account</p>
+										</div>
+										<div class="table-responsive border">
+											<table class="table  text-nowrap text-md-nowrap table-striped mg-b-0">
+												<thead>
+													<tr> 
+														<th>Location</th>
+														<th>Info</th>
+														<th>Date</th>
+														<th>IP Address</th>
+													</tr>
+												</thead>
+												<tbody>
 												@foreach($activity as $k=>$data)
-											    <tr role="row">
-											      	<td>
-												      	<div class="title">Status</div>
-					        							<div class="value font-fix payment-status paid">Login</div>
-												    </td>
-												    <td>
-												    	<div class="title">Location</div>
-												      	<div class="value font-fix">{{$data->location}}</div>
-												    </td>
-												    <td>
-												      	<div class="title">Info</div>
-												      	<div class="value font-fix"> {{$data->details}}</div>
-												    </td>
-												    <td>
-												      	<div class="title">Date</div>
-												      	<div class="value font-fix">{{ Carbon\Carbon::parse($data->created_at)->diffForHumans() }}</div>
-												    </td>
-												    <td>
-												    	<div class="title">IP</div>
-					        							<div class="value font-fix payout-amount">{{$data->user_ip}}</div>
-												    </td>
-											    </tr>
-												@endforeach
-												
+													<tr> 
+														<td>{{$data->location}}</td>
+														<td>{{$data->details}}</td>
+														<td>{{ Carbon\Carbon::parse($data->created_at)->diffForHumans() }}</td>
+														<td>{{$data->user_ip}}</td>
+													</tr>
+												@endforeach 
+												</tbody>
+											</table>
+										</div>
+										{{$activity->links()}}
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End Row -->
 
-											    
-											</tbody>
-										</table>
-									</div> <!-- /.table-data -->
-								</div> <!-- /.payout-single-table -->
-								{{$activity->links()}}
-							</div> <!-- /.payout-history-wrapper -->
-
-						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
-					</div> <!-- /#dashboard-main-body -->
-				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
-			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
-
-			
-			
+					 
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
 @stop
