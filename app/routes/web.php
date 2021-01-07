@@ -93,7 +93,8 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('veribank', 'HomeController@veribank')->name('veri.bank');
     Route::get('validate/{id}', 'HomeController@validatebank')->name('bank.vvalidate');
 
-        Route::group(['middleware' => ['auth','CheckStatus']], function() {
+    Route::group(['middleware' => ['auth','CheckStatus']], function() {
+        Route::post('/darkmode', 'HomeController@darkmode')->name('darkmode');
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/user-faq', 'HomeController@faqs')->name('user.faq');
         Route::get('user/daily/rewards', 'HomeController@daily')->name('userDailyBonus');
@@ -174,61 +175,61 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('verification', 'HomeController@kyc')->name('verification');
         Route::post('verification2', 'HomeController@kyc2')->name('document.upload');
 
-         //Bank
+        //Bank
         Route::get('bank', 'HomeController@bank')->name('bank');
         Route::post('bank', 'HomeController@postbank')->name('post.banky');
 
-		//invest
+        //invest
 
         Route::get('new-invest', 'HomeController@newinvest')->name('newinvest');
         Route::get('newcoinvest/{id}', 'HomeController@newcoinvest')->name('newcoinvest');
         Route::get('coinvestyield/{id}', 'HomeController@coinvestyield')->name('coinvestyield');
         Route::get('coin-vest', 'HomeController@coinvest')->name('coinvest');
         Route::post('coinvest', 'HomeController@buyPlan')->name('coin-vest');
-		Route::get('paybtcnow', 'HomeController@paybtcnow')->name('paybtcnow');
-		Route::get('withdrawinvest', 'HomeController@withdrawinvest')->name('withdrawinvest');
+        Route::get('paybtcnow', 'HomeController@paybtcnow')->name('paybtcnow');
+        Route::get('withdrawinvest', 'HomeController@withdrawinvest')->name('withdrawinvest');
         Route::post('btcpaynowupload', 'HomeController@btcpaynowupload')->name('btcpaynowupload');
 
 
 
         //Message
-         Route::get('create_message', 'HomeController@messages')->name('createmessage');
-         Route::post('create', 'HomeController@postmessage')->name('post.message');
-         Route::get('create_testimonial', 'HomeController@usertest')->name('user.testimonial');
-         Route::post('create_testimonial', 'HomeController@posttestimonial')->name('post.testimonial');
-         Route::get('sent', 'HomeController@sent')->name('sent');
-         Route::get('inbox', 'HomeController@inbox')->name('inbox');
-         Route::get('notifications', 'HomeController@notifications')->name('notifications');
-         Route::get('inbox/{id}', 'HomeController@inboxview')->name('inbox-view');
-         Route::get('inbox/delete/{id}', 'HomeController@inboxdelete')->name('inbox-delete');
+        Route::get('create_message', 'HomeController@messages')->name('createmessage');
+        Route::post('create', 'HomeController@postmessage')->name('post.message');
+        Route::get('create_testimonial', 'HomeController@usertest')->name('user.testimonial');
+        Route::post('create_testimonial', 'HomeController@posttestimonial')->name('post.testimonial');
+        Route::get('sent', 'HomeController@sent')->name('sent');
+        Route::get('inbox', 'HomeController@inbox')->name('inbox');
+        Route::get('notifications', 'HomeController@notifications')->name('notifications');
+        Route::get('inbox/{id}', 'HomeController@inboxview')->name('inbox-view');
+        Route::get('inbox/delete/{id}', 'HomeController@inboxdelete')->name('inbox-delete');
 
 
 
 
 
         //Trade
-         Route::post('/buy-ecoin', 'HomeController@buyecoin')->name('buyecoin');
-         Route::get('/ebuy-online', 'HomeController@ebuyonlinePreview')->name('user.ebuy');
-         Route::get('/ebuy-submit/{id}', 'HomeController@ebuyonlinepost')->name('ebuypost');
-         Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepay')->name('ebuypost2');
-         Route::get('/ebuy-del/{id}', 'HomeController@ebuydel')->name('ebuydel');
-         Route::get('/ebuy-pay', 'HomeController@ebuyonlinepost2')->name('ebuypost2');
-         Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepost22')->name('ebuypost22');
-         Route::post('/ebuy-upload', 'HomeController@ebuyupload')->name('ebuyupload');
+        Route::post('/buy-ecoin', 'HomeController@buyecoin')->name('buyecoin');
+        Route::get('/ebuy-online', 'HomeController@ebuyonlinePreview')->name('user.ebuy');
+        Route::get('/ebuy-submit/{id}', 'HomeController@ebuyonlinepost')->name('ebuypost');
+        Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepay')->name('ebuypost2');
+        Route::get('/ebuy-del/{id}', 'HomeController@ebuydel')->name('ebuydel');
+        Route::get('/ebuy-pay', 'HomeController@ebuyonlinepost2')->name('ebuypost2');
+        Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepost22')->name('ebuypost22');
+        Route::post('/ebuy-upload', 'HomeController@ebuyupload')->name('ebuyupload');
 
 
-         Route::get('/trx-del/{id}', 'HomeController@trxdel')->name('trxdel');
+        Route::get('/trx-del/{id}', 'HomeController@trxdel')->name('trxdel');
 
-         Route::post('/sell-ecoin', 'HomeController@sellecoin')->name('sellecoin');
+        Route::post('/sell-ecoin', 'HomeController@sellecoin')->name('sellecoin');
 
-         Route::get('/esell-online', 'HomeController@esellonlinePreview')->name('user.esell');
-         Route::get('/esell-submit/{id}', 'HomeController@esellonlinepost')->name('esellpost');
-         Route::get('/esell-pay', 'HomeController@esellonlinepay')->name('esellpost2');
-         Route::get('/esell-pay/{id}', 'HomeController@esellscan2')->name('esellpost22');
-         Route::get('/esell-scan', 'HomeController@esellscan')->name('esellscan');
+        Route::get('/esell-online', 'HomeController@esellonlinePreview')->name('user.esell');
+        Route::get('/esell-submit/{id}', 'HomeController@esellonlinepost')->name('esellpost');
+        Route::get('/esell-pay', 'HomeController@esellonlinepay')->name('esellpost2');
+        Route::get('/esell-pay/{id}', 'HomeController@esellscan2')->name('esellpost22');
+        Route::get('/esell-scan', 'HomeController@esellscan')->name('esellscan');
 
-         Route::get('/esell-del/{id}', 'HomeController@eselldel')->name('eselldel');
-         Route::post('/esell-upload', 'HomeController@esellupload')->name('esellupload');
+        Route::get('/esell-del/{id}', 'HomeController@eselldel')->name('eselldel');
+        Route::post('/esell-upload', 'HomeController@esellupload')->name('esellupload');
 
 
 
@@ -317,25 +318,25 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 
 
-	//Plans
+    //Plans
 
 
-        Route::get('time-setting', 'TimeSettingController@index')->name('time-setting');
-        Route::post('time-store', 'TimeSettingController@store')->name('time-store');
-        Route::put('time-setting/{id}', 'TimeSettingController@update')->name('time-update');
-        Route::delete('time-setting/{id}', 'TimeSettingController@destroy')->name('time-destroy');
+    Route::get('time-setting', 'TimeSettingController@index')->name('time-setting');
+    Route::post('time-store', 'TimeSettingController@store')->name('time-store');
+    Route::put('time-setting/{id}', 'TimeSettingController@update')->name('time-update');
+    Route::delete('time-setting/{id}', 'TimeSettingController@destroy')->name('time-destroy');
 
-        Route::get('plan-setting', 'PlanController@index')->name('plan-setting');
-        Route::get('plan-setting/edit/{id}', 'PlanController@edit')->name('plan-edit');
-        Route::get('plan-setting/create', 'PlanController@create')->name('plan-create');
-        Route::post('plan-setting/create', 'PlanController@store')->name('plan-store');
-        Route::put('plan-setting/update/{id}', 'PlanController@update')->name('plan-update');
-        Route::get('userslan', 'PlanController@userslan')->name('userslan');
-        Route::get('pendingplan', 'PlanController@pendingplan')->name('pendingplan');
-        Route::get('investapprove/{id}', 'PlanController@investapprove')->name('investapprove');
-        Route::get('investreject/{id}', 'PlanController@investreject')->name('investreject');
-        Route::get('investdelete/{id}', 'PlanController@investdelete')->name('investdelete');
-        Route::get('investview/{id}', 'PlanController@investview')->name('investview');
+    Route::get('plan-setting', 'PlanController@index')->name('plan-setting');
+    Route::get('plan-setting/edit/{id}', 'PlanController@edit')->name('plan-edit');
+    Route::get('plan-setting/create', 'PlanController@create')->name('plan-create');
+    Route::post('plan-setting/create', 'PlanController@store')->name('plan-store');
+    Route::put('plan-setting/update/{id}', 'PlanController@update')->name('plan-update');
+    Route::get('userslan', 'PlanController@userslan')->name('userslan');
+    Route::get('pendingplan', 'PlanController@pendingplan')->name('pendingplan');
+    Route::get('investapprove/{id}', 'PlanController@investapprove')->name('investapprove');
+    Route::get('investreject/{id}', 'PlanController@investreject')->name('investreject');
+    Route::get('investdelete/{id}', 'PlanController@investdelete')->name('investdelete');
+    Route::get('investview/{id}', 'PlanController@investview')->name('investview');
 
 
     // General Settings
@@ -354,7 +355,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/profile', 'AdminController@updateProfile')->name('admin.profile');
 
     Route::resource('currency','CurrencyController');
-     Route::get('/activate-coin/{id}', 'CurrencyController@activate')->name('activatecoin');
+    Route::get('/activate-coin/{id}', 'CurrencyController@activate')->name('activatecoin');
     Route::get('/deactivate-coin/{id}', 'CurrencyController@deactivate')->name('deactivatecoin');
     Route::get('/delete-coin/{id}', 'CurrencyController@delete')->name('deletecoin');
     Route::post('/post-coin/', 'CurrencyController@post')->name('postcoin');
@@ -374,7 +375,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/deposit/view/{id}', 'DepositController@view')->name('deposit.view');
     Route::get('/deposit/{deposit}/delete', 'DepositController@destroy')->name('deposit.destroy');
 
-   //Transfer
+    //Transfer
     Route::get('/transfer/requests', 'DepositController@transfer')->name('transfer.log');
     Route::get('/transfer/delete/{id}', 'DepositController@transferdelete')->name('transfer.delete');
     Route::get('/transfer/{id}', 'DepositController@transferview')->name('transfer.view');
@@ -468,7 +469,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     //Email & SMS Template
     Route::get('/sms-email', 'EtemplateController@index')->name('email.template');
     Route::post('/template-update', 'EtemplateController@update')->name('template.update');
- //Sms Api
+    //Sms Api
     Route::get('/sms-api', 'EtemplateController@smsApi')->name('sms.api');
     Route::post('/sms-update', 'EtemplateController@smsUpdate')->name('sms.update');
 
