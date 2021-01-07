@@ -37,6 +37,9 @@ class HistoryController extends Controller
 
         $spent=Transaction::where('user_id', Auth::id())->sum('amount');
 
+        if($trans->isEmpty()){
+            return response()->json(['status' => 0, 'message' => 'Transactions not found', 'spent'=>$spent, 'balance'=>Auth::user()->balance]);
+        }
 
         return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>Auth::user()->balance, 'trans'=>$trans]);
     }
@@ -91,7 +94,7 @@ class HistoryController extends Controller
         $res=json_decode($response, true);
 
         if($res['status']=="success") {
-            if($res['data']=="[]") {
+            if($res['data']!="[]") {
                 return response()->json(['status' => 1, 'message' => 'Card transactions fetched successfully', 'data' => $res['data']]);
             }else{
                 return response()->json(['status' => 0, 'message' => $res['message']]);
