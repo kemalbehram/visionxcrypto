@@ -278,9 +278,9 @@ class AuthenticateController extends Controller
                 'api_token' => $token,
             ])->save();
 
-//                User::where(['id'=> auth()->user()->id])->update(['api_token' => $token]);
+            $noti=Message::where([['user_id', Auth::id()], ['status',0]])->orderBy('id', 'desc')->exists();
 
-            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified]);
+            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified, 'notification'=>$noti]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Unable to login with errors', 'error' => $validator->errors()]);

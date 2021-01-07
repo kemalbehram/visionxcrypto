@@ -77,7 +77,7 @@ class TransactionController extends Controller
         }
 
         $product['user_id'] = Auth::id();
-        $product['gateway'] = $request->network;
+        $product['gateway'] = $request->network . " airtime";
         $product['account_number'] = $request->number;
         $product['type'] = 1;
         $product['remark'] = $rep['responsemessage'];
@@ -150,7 +150,7 @@ class TransactionController extends Controller
             return response()->json(['status' => 0, 'message' => 'Server error, please try again later or contact admin if error persist']);
         }
             $product['user_id'] = Auth::id();
-            $product['gateway'] = $request->network;
+            $product['gateway'] = $request->network . " data";
             $product['account_number'] = $request->number;
             $product['method'] = $request->name;
             $product['type'] = 2;
