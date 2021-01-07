@@ -540,3 +540,7 @@ Route::post('user-password/email', 'User\ForgotPasswordController@sendResetLinkE
 Route::get('user-password/reset/{token}', 'User\ResetPasswordController@showResetForm')->name('user.password.reset');
 Route::post('user-password/reset', 'User\ResetPasswordController@reset');
 
+Route::get('covira', function (){
+    return view('front.covira');
+} );
+
