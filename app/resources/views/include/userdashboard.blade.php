@@ -847,7 +847,7 @@
         $unread = \App\Message::whereUser_id(Auth::user()->id)->whereAdmin(1)->whereStatus(0)->latest()->take(5)->get();
 
     @endphp
-	<body class="main-body leftmenu ddark-theme">
+	<body class="main-body leftmenu @if(Auth::user()->darkmode == 1 ) dark-theme @endif">
 	 <div id="toast"></div>
 		<!-- Loader -->
 		<div id="global-loader">
@@ -1083,10 +1083,14 @@
 								</a>
 							</div>
 						</div>
-						<div class="dropdown d-md-flex header-settings">
-							<a href="#" class="nav-link icon" data-toggle="sidebar-right" data-target=".sidebar-right">
-								<i class="fe fe-align-right header-icons"></i>
-							</a>
+						<div class="dropdown d-md-flex header-settings"  onclick="event.preventDefault(); document.getElementById('darkmode-form').submit();">
+						<label class="custom-switch">
+														<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description">@if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif</span>
+													</label>
+						 <form id="darkmode-form" action="{{ route('darkmode') }}" method="POST"
+                                                          style="display: none;">{{ csrf_field() }}</form>
 						</div>
 						<button class="navbar-toggler navresponsive-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
 							aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
@@ -1165,9 +1169,15 @@
 							</div>
 						</div>
 						<div class="dropdown  header-settings">
-							<a href="#" class="nav-link icon" data-toggle="sidebar-right" data-target=".sidebar-right">
-								<i class="fe fe-align-right header-icons"></i>
-							</a>
+							<div class="dropdown d-md-flex header-settings"  onclick="event.preventDefault(); document.getElementById('darkmode-form').submit();">
+						<label class="custom-switch">
+														<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description">@if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif</span>
+													</label>
+						 <form id="darkmode-form" action="{{ route('darkmode') }}" method="POST"
+                                                          style="display: none;">{{ csrf_field() }}</form>
+						</div>
 						</div>
 						</div>
 					</div>
