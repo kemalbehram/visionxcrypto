@@ -46,7 +46,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 						<!-- Page Header -->
 						<div class="page-header">
 							<div>
-								<h2 class="main-content-title tx-24 mg-b-5">Good Morning!</h2>
+								<h2 class="main-content-title tx-24 mg-b-5">Hello!!</h2>
 								
 							</div>
 							
@@ -157,18 +157,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 								<div class="row row-sm">
 									<div class="col-sm-12 col-lg-12 col-xl-12">
 										<div class="card custom-card overflow-hidden">
-											<div class="card-header border-bottom-0">
-												<div>
-													<label class="main-content-label tx-13 font-weight-bold mb-1">Bitcoin Price Chart</label> <span class="d-block tx-12 mb-0 text-muted">Stay updated with the trend</span>
-												</div>
-											</div>
-											<div class="card-body pl-0">
-												<div class>
-													<div class="container">
-													   <canvas id="chartLine" class="chart-dropshadow2 ht-250"></canvas>
-													</div>
-												</div>
-											</div>
+											<div style="height:560px; background-color: #FFFFFF; overflow:hidden; box-sizing: border-box; border: 1px solid #56667F; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #56667F;padding:1px;padding: 0px; margin: 0px; width: 100%;"><div style="height:540px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=chart&theme=light&coin_id=859&pref_coin_id=1505" width="100%" height="536px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #FFFFFF; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="#" target="_blank" style="font-weight: 500; color: #FFFFFF; text-decoration:none; font-size:11px">Bitcoin Prices</a>&nbsp;by {{$basic->sitename}}</div></div>
 										</div>
 									</div><!-- col end -->
 									<!-- col end -->
@@ -208,7 +197,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											<p> * Instant Payout settlement <i class="fas fa-check"style="color:green" ></i></p>
 											
 											<br>
-											<button class="btn btn-primary ml-auto">Buy Bitcoin</button><br><br><br>
+											<a href="{{route('trade')}}"><button class="btn btn-primary ml-auto">Buy Bitcoin</button></a><br><br><br>
 													
 													</div>
 													
@@ -290,10 +279,58 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											<label class="main-content-label mb-2 pt-2">Verification Level</label>
 											<span class="d-block tx-12 mb-2 text-muted">No verification, No Enjoyment</span>
 											
+											 @php
+							  if(Auth::user()->bankyes == 1 ){
+								 
+							  $a = 1; }
+							 if(Auth::user()->bankyes != 1 ){
+							
+							 $a = 0;
+							}
+							 
+							 if(Auth::user()->bvn_verify == 1 ){
+							 $b = 1; }
+							  if(Auth::user()->bvn_verify != 1 ){
+							 
+							 $b = 0;
+							 }
+							 if(Auth::user()->verified == 2 ){
+							  
+							 $c = 1; }
+							 if(Auth::user()->verified != 2 ){
+							 $c = 0;
+							}
+							  
+							@endphp
+							 
+							 @php
+							 $stars = $a + $b + $c;
+							 @endphp
+							 
+							 @if($stars == 1)
+							 <p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
+											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
+											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
 											
-											<p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
+							 @elseif($stars == 2)
+							 
+							 <p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
+											
+							 @elseif($stars == 3)
+							 
+							 <p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
+											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
+											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
+											
+							 @else
+							 
+							<p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
+											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
+											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
+											
+							 @endif
 											
 										</div>
 									</div>
