@@ -1,5 +1,5 @@
 @extends('include.front')
-@section('content') 
+@section('content')
 
 		 <!-- Stat main -->
       <main data-spy="scroll" data-target="#navbar-example2" data-offset="0">
@@ -16,7 +16,7 @@
                   <h1 class="c-white">Built For Convenience!</h1>
                   <p>
                     Easy User Experience and Responsive payment. <br />
-                    
+
                   </p>
                   <div class="form-row">
                     <div class="col-md-8 form-group input_subscribe dark mb-0">
@@ -274,7 +274,7 @@
         </section>
         <!-- End. feature_app -->
 
-        
+
 
         <!-- VX Debit card Service -->
         <section class="tabs_works tabs_service padding-t-12" id="Prodcts">
@@ -335,8 +335,8 @@
           </div>
         </section>
         <!-- End. Tabs Service -->
-		
-		
+
+
 
         <!-- Start Features -->
         <section class="features_section upgrade_item padding-t-12 bg-white position-relative z-index-1">
@@ -394,9 +394,9 @@
           </div>
         </section>
         <!-- End Features -->
-		
-		
-		
+
+
+
 		<!-- Bill payment Service -->
         <section class="tabs_works tabs_service padding-t-12" id="Prodcts">
           <div class="container">
@@ -462,8 +462,8 @@
           </div>
         </section>
         <!-- End. Tabs Service -->
-		
-		
+
+
 
         <!-- Start Support Service  -->
         <section class="services_section support_item padding-t-12" id="Support">
@@ -527,11 +527,11 @@
           </div>
         </section>
         <!-- End. Support Service  -->
-        
-        
-        
-        
-        
+
+
+
+
+
         <!-- Start test_monials__workspace -->
         <section class="test_monials__workspace margin-t-2 padding-t-10" id="Testimonial">
           <div class="container-fluid">
@@ -557,19 +557,19 @@
                       <div class="person_thumbs">
                         <div class="swiper-wrapper">
                           <div class="swiper-slide">
-                            <img class="pagination rounded-circle" src="../../front/img/persons/04.png" />
+                            <img class="pagination rounded-circle" src="../../front/img/persons/debbie.png" />
                           </div>
                           <div class="swiper-slide">
-                            <img class="pagination rounded-circle" src="../../front/img/persons/15.png" />
+                            <img class="pagination rounded-circle" src="../../front/img/persons/tola.png" />
                           </div>
                           <div class="swiper-slide">
-                            <img class="pagination rounded-circle" src="../../front/img/persons/03.png" />
+                            <img class="pagination rounded-circle" src="../../front/img/persons/omolare.png" />
                           </div>
                           <div class="swiper-slide">
-                            <img class="pagination rounded-circle" src="../../front/img/persons/02.png" />
+                            <img class="pagination rounded-circle" src="../../front/img/persons/david.png" />
                           </div>
                           <div class="swiper-slide">
-                            <img class="pagination rounded-circle" src="../../front/img/persons/01.png" />
+                            <img class="pagination rounded-circle" src="../../front/img/persons/john.png" />
                           </div>
                         </div>
                       </div>
@@ -577,7 +577,7 @@
                       <div class="swiper-wrapper">
                         <div class="swiper-slide">
                           <div class="img__user">
-                            <img src="../../front/img/persons/04.png" alt="">
+                            <img src="../../front/img/persons/debbie.png" alt="">
                           </div>
                           <div class="username👨">
                             <h4>Debbi Amanda</h4>
@@ -599,7 +599,7 @@
                         </div>
                         <div class="swiper-slide">
                           <div class="img__user">
-                            <img src="../../front/img/persons/15.png" alt="">
+                            <img src="../../front/img/persons/tola.png" alt="">
                           </div>
                           <div class="username👨">
                             <h4>Tola Jacbos</h4>
@@ -621,7 +621,7 @@
                         </div>
                         <div class="swiper-slide">
                           <div class="img__user">
-                            <img src="../../front/img/persons/03.png" alt="">
+                            <img src="../../front/img/persons/omolare.png" alt="">
                           </div>
                           <div class="username👨">
                             <h4>Omolara Makinde</h4>
@@ -643,7 +643,7 @@
                         </div>
                         <div class="swiper-slide">
                           <div class="img__user">
-                            <img src="../../front/img/persons/02.png" alt="">
+                            <img src="../../front/img/persons/david.png" alt="">
                           </div>
                           <div class="username👨">
                             <h4>David Amare</h4>
@@ -665,7 +665,7 @@
                         </div>
                         <div class="swiper-slide">
                           <div class="img__user">
-                            <img src="../../front/img/persons/01.png" alt="">
+                            <img src="../../front/img/persons/john.png" alt="">
                           </div>
                           <div class="username👨">
                             <h4>John Omokafe</h4>
@@ -702,11 +702,11 @@
           </div>
         </section>
         <!-- End. test_monials__workspace -->
-        
-        
-        
-	
-		
+
+
+
+
+
 		<!-- Comodo Secured --><br></br><br></br><br></br><br></br>
         <section class="simplecontact_section tryit_now padding-py-6">
           <div class="container">
@@ -725,10 +725,10 @@
             </div>
           </div>
         </section>
-		
-		
-		
-		
+
+
+
+
       </main>
       <!-- end main -->
     </div>
