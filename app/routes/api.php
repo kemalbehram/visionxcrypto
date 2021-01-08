@@ -64,9 +64,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('showvxcards', [HistoryController::class, 'showVXCs'])->name('showVXCs');
     Route::get('cardtransactions/{id}', [HistoryController::class, 'transactionsVXC'])->name('transactionsVXC');
+    Route::get('cardamount/{id}', [HistoryController::class, 'getVXC'])->name('getVXC');
     Route::post('createvxcard', [TransactionController::class, 'createVXC'])->name('createVXC');
     Route::post('deletevxcard', [TransactionController::class, 'deleteVXC'])->name('deleteVXC');
     Route::post('fundvxcard', [TransactionController::class, 'fundVXC'])->name('fundVXC');
+    Route::post('withdrawvxcard', [TransactionController::class, 'withdrawVXC'])->name('withdrawVXC');
 
     Route::get('notifications', [HistoryController::class, 'showNotifications'])->name('showNotifications');
     Route::get('readnotifications', [OthersController::class, 'readNotifications'])->name('readNotifications');

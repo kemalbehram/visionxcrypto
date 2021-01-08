@@ -838,6 +838,77 @@ class TransactionController extends Controller
 
     }
 
+    public function withdrawVXC(Request $request){
+        $input = $request->all();
+        $rules = array(
+            'id' => 'required',
+            'amount' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $card=VirtualCard::find($request->id);
+        $user=Auth::user();
+        $basic = GeneralSettings::first();
+
+        if(!$card){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->user_id != Auth::id()){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->status == "terminated"){
+            return response()->json(['status' => 0, 'message' => 'Card already terminated']);
+        }
+
+        if($card->currency=="NGN"){
+            $da=$input['amount'];
+        }else{
+            $da=$input['amount'] * $basic->dollar_rate;
+        }
+
+//
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id."/withdraw",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n    \"amount\": ".$input['amount']."\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer $basic->flutterwave_seckey"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+
+//        $response='{ "status": "success", "message": "Card funded successfully", "data": null }';
+
+        $res=json_decode($response, true);
+
+        if($res['status']=="success") {
+
+            return response()->json(['status' => 1, 'message' => 'Withdrawal of '.$input['amount'].' was successfully.']);
+        }else{
+            return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transaction at the moment, please try again later.']);
+        }
+
+    }
+
     public function createInvestment(Request $request){
         $input = $request->all();
         $rules = array(

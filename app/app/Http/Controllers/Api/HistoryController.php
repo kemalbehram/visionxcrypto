@@ -105,6 +105,53 @@ class HistoryController extends Controller
 
     }
 
+    public function getVXC($id){
+
+        $card=VirtualCard::find($id);
+        $basic = GeneralSettings::first();
+
+        if(!$card){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->user_id != Auth::id()){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->status == "terminated"){
+            return response()->json(['status' => 0, 'message' => 'Card already terminated']);
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer $basic->flutterwave_seckey"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $res=json_decode($response, true);
+
+        if($res['status']=="success") {
+            return response()->json(['status' => 1, 'message' => 'Card details fetched successfully', 'amount' => $res['data']['amount'], 'currency' => $res['data']['currency']]);
+        }else{
+            return response()->json(['status' => 0, 'message' => $res['message']]);
+        }
+
+    }
+
     public function showNotifications(){
         $noti=Message::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
