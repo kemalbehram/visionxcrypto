@@ -822,7 +822,7 @@ class TransactionController extends Controller
             $product['remark'] = "Virtual card credited successfully with " .$card->currency. $input['amount'];
             $product['trx'] = $trx;
             $product['status'] = 1;
-            $product['amount'] = $da;
+            $product['amount'] = $input['amount'];
 
             Transaction::create($product);
 
@@ -867,11 +867,6 @@ class TransactionController extends Controller
             return response()->json(['status' => 0, 'message' => 'Card already terminated']);
         }
 
-        if($card->currency=="NGN"){
-            $da=$input['amount'];
-        }else{
-            $da=$input['amount'] * $basic->dollar_rate;
-        }
 
 //
         $curl = curl_init();
@@ -901,6 +896,28 @@ class TransactionController extends Controller
         $res=json_decode($response, true);
 
         if($res['status']=="success") {
+
+            $trx = strtoupper(str_random(20));
+
+            $product['user_id'] = Auth::id();
+            $product['gateway'] = "Virtual card withdrawal";
+            $product['account_number'] = $card->masked_pan;
+            $product['type'] = 1;
+            $product['remark'] = "Virtual card fund withdrawal successfully";
+            $product['trx'] = $trx;
+            $product['status'] = 1;
+            $product['amount'] = $request->amount;
+
+            Transaction::create($product);
+
+            if($card->currency=="NGN"){
+                $da=$input['amount'];
+            }else{
+                $da=$input['amount'] * $basic->dollar_rate;
+            }
+
+            $user->balance = $user->balance + $da;
+            $user->save();
 
             return response()->json(['status' => 1, 'message' => 'Withdrawal of '.$input['amount'].' was successfully.']);
         }else{
