@@ -725,7 +725,7 @@
 
 		<!-- Mutipleselect css-->
 		<link rel="stylesheet" href="{{url('/')}}/assets/assets/plugins/multipleselect/multiple-select.css">
-		
+
 
 		<!-- Sidemenu css-->
 		<link href="{{url('/')}}/assets/assets/css/sidemenu/sidemenu.css" rel="stylesheet">
@@ -871,12 +871,12 @@
 				</div>
 				<div class="main-sidebar-body">
 					<ul class="nav">  <br><br>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('home')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-grid sidemenu-icon"></i><span class="sidemenu-label">Dashboard</span></a>
 						</li>
 						<br>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('my-wallet')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-wallet sidemenu-icon"></i><span class="sidemenu-label">Wallet</span></a>
 						</li>
@@ -892,11 +892,11 @@
 						<li class="nav-item">
 							<a class="nav-link with-sub" href="#"><span class="shape1"></span><span class="shape2"></span><i class="ti-shopping-cart-full sidemenu-icon"></i><span class="sidemenu-label">Payment Log</span><i class="angle fe fe-chevron-right"></i></a>
 							<ul class="nav-sub">
-							 
+
 								<li class="nav-sub-item">
 									<a class="nav-sub-link" href="{{route('airtime')}}">Airtime</a>
 								</li>
-								
+
 								<li class="nav-sub-item">
 									<a class="nav-sub-link" href="{{route('internet')}}">Internet Data</a>
 								</li>
@@ -909,30 +909,30 @@
 								<li class="nav-sub-item">
 									<a class="nav-sub-link" href="{{route('instantsms')}}">SMS</a>
 								</li>
-								 
+
 							</ul>
 						</li>
 						<br>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('vxcard')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-credit-card sidemenu-icon"></i><span class="sidemenu-label">VX Card</span></a>
 						</li>
 						<br>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('profile')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-settings sidemenu-icon"></i><span class="sidemenu-label">Settings</span></a>
 						</li>
 						<br>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('verification')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-shield sidemenu-icon"></i><span class="sidemenu-label">Verification</span></a>
 						</li>
 						<br>
-						
-						
-						
-						 
-						
+
+
+
+
+
 				</div>
 			</div>
 			<!-- End Sidemenu -->
@@ -949,72 +949,72 @@
 							<a href=" "><img src="{{url('/')}}/assets/assets/img/brand/logo-light.png" class="mobile-logo-dark" alt="logo"></a>
 						</div>
 						<div class="input-group">
-							
+
 							 @php
 							  if(Auth::user()->bankyes == 1 ){
-								 
+
 							  $a = 1; }
 							 if(Auth::user()->bankyes != 1 ){
-							
+
 							 $a = 0;
 							}
-							 
+
 							 if(Auth::user()->bvn_verify == 1 ){
 							 $b = 1; }
 							  if(Auth::user()->bvn_verify != 1 ){
-							 
+
 							 $b = 0;
 							 }
 							 if(Auth::user()->verified == 2 ){
-							  
+
 							 $c = 1; }
 							 if(Auth::user()->verified != 2 ){
 							 $c = 0;
 							}
-							  
+
 							@endphp
-							 
+
 							 @php
 							 $stars = $a + $b + $c;
 							 @endphp
-							 
+
 							 @if($stars == 1)
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 @elseif($stars == 2)
-							 
+
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 @elseif($stars == 3)
-							 
+
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 @else
-							 
+
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 @endif
-							 
-							 
+
+
 
 						</div>
 					</div>
 					<div class="main-header-right">
-						
+
 						<div class="  ">
 							<a href="#" class="">
 									<span class="avatar  mr-3 align-self-center bg-transparent"><img src="{{url('/')}}/assets/assets/img/flags/nigeria.svg" alt="img"></span>
-									
+
 								</a>
-							
+
 						</div>
 						<div class="dropdown d-md-flex">
 							<a class="nav-link icon full-screen-link" href="">
@@ -1041,14 +1041,14 @@
 									</div>
 									</a>
 									@endforeach
-									 
+
 								</div>
 								<div class="dropdown-footer">
 									<a href="{{route('inbox')}}">View All Notifications</a>
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="dropdown main-profile-menu">
 							<a class="d-flex" href="">
 								<span class="main-img-user" >
@@ -1064,7 +1064,7 @@
 									<h6 class="main-notification-title">{{Auth::user()->username}}</h6>
 									<p class="main-notification-text">Member</p>
 								</div>
-								  
+
 								<a class="dropdown-item" href="{{route('profile')}}">
 									<i class="fe fe-settings"></i> Account Settings
 								</a>
@@ -1185,7 +1185,7 @@
 			</div>
 			<!-- Mobile-header closed -->
 			@yield('content')
-			
+
 				<!-- Main Footer-->
 			<div class="main-footer text-center">
 				<div class="container">
@@ -1355,13 +1355,13 @@
 
 		<!-- Custom js -->
 		<script src="{{url('/')}}/assets/assets/js/custom.js"></script>
-		
-		<!-- Internal Data Table js -->  
+
+		<!-- Internal Data Table js -->
 		<script src="{{url('/')}}/assets/assets/plugins/owl-carousel/owl.carousel.js"></script>
-		
-		
+
+
 		<script src="{{url('/')}}/assets/assets/plugins/datatable/jquery.dataTables.min.js"></script>
-		<script src="{{url('/')}}/assets/assets/plugins/datatable/dataTables.bootstrap4.min.js"></script>		
+		<script src="{{url('/')}}/assets/assets/plugins/datatable/dataTables.bootstrap4.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/datatable/dataTables.responsive.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/datatable/fileexport/dataTables.buttons.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/datatable/fileexport/buttons.bootstrap4.min.js"></script>
@@ -1372,24 +1372,26 @@
 		<script src="{{url('/')}}/assets/assets/plugins/datatable/fileexport/buttons.print.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/datatable/fileexport/buttons.colVis.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/js/table-data.js"></script>
-		
+
 		<script src="{{url('/')}}/assets/assets/plugins/checkout-jquery-steps/jquery.steps.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/js/checkout-jquery-steps.js"></script>
 		<!-- Select2 js-->
 		<script src="{{url('/')}}/assets/assets/plugins/select2/js/select2.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/js/select2.js"></script>
-		
+
 		<script src="{{url('/')}}/assets/assets/plugins/raphael/raphael.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/morris.js/morris.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/js/crypto-buysell.js"></script>
 		<script src="{{url('/')}}/assets/assets/js/form-elements.js"></script>
-		
-		
+
+
 		<script src="{{url('/')}}/assets/assets/plugins/raphael/raphael.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/morris.js/morris.min.js"></script>
 
 		<!-- Internal Apexchart js-->
 		<script src="{{url('/')}}/assets/assets/js/apexcharts.js"></script>
+
+		<script src="{{url('/')}}/assets/js/vcard.js"></script>
 
 		<!-- Internal Polyfills js-->
 		<script src="{{url('/')}}/assets/assets/plugins/polyfill/polyfill.min.js"></script>
@@ -1524,69 +1526,69 @@
                         type: 'error',
                         message: '{{ $errors->first('email') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->has('password'))
-                 
+
                     <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('password') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->has('currency'))
-                  
+
                     <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('country') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->has('address'))
-                    
+
                     <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('address') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->has('zip_code'))
-                    <script > 
+                    <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('zip_code') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->has('current_password'))
-               
+
                     <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('currenct_password') }}'
-                    }); 
+                    });
                     </script>
                     @endif
                     @if ($errors->has('password_confirmation'))
-                     
+
                     <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('password_confirmation') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->has('city'))
-                  
+
                     <script >
                     $("#toast").toast({
                         type: 'error',
                         message: '{{ $errors->first('city') }}'
                     });
-                    </script> 
+                    </script>
                     @endif
                     @if ($errors->any())
                     @foreach ($errors->all() as $error)

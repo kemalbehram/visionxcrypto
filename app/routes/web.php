@@ -125,11 +125,12 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/paypower', 'ProductController@paypower')->name('paypower');
         Route::get('/instantsms', 'ProductController@instantsms')->name('instantsms');
         Route::post('/sendsmsnow', 'ProductController@sendsmsnow')->name('sendsmsnow');
+        Route::get('carddetails/{id}', 'VirtualCardController@carddetails')->name('user.carddetails');
+        Route::get('cardtransactions/{id}', 'VirtualCardController@cardtransactions')->name('user.cardtransactions');
         Route::post('/deletevisionxcard', 'VirtualCardController@delete')->name('deletevcard');
         Route::post('/fundvisionxcard', 'VirtualCardController@fund')->name('fundvcard');
         Route::post('/createvisionxcard', 'VirtualCardController@create')->name('createvcard');
         Route::get('/visionxcard', 'VirtualCardController@show')->name('showvcard');
-        Route::get('/visionx_card', 'VirtualCardController@index')->name('vxcard');
 
 
         //user Deposit
@@ -540,7 +541,7 @@ Route::post('user-password/email', 'User\ForgotPasswordController@sendResetLinkE
 Route::get('user-password/reset/{token}', 'User\ResetPasswordController@showResetForm')->name('user.password.reset');
 Route::post('user-password/reset', 'User\ResetPasswordController@reset');
 
-Route::get('covira', function (){
+Route::get('vxcovid', function (){
     return view('front.covira');
 } )->name('front.covira');
 

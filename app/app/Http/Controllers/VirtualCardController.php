@@ -49,13 +49,13 @@ class VirtualCardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-	 
-	 
+
+
     public function index(){
-         
+
 		$data['page_title'] = "Virtual Card";
 
-        return view('user.visionx_card', $data);
+        return view('user.visionxcardnew', $data);
     }
 
     public function create(Request $request){
@@ -120,7 +120,7 @@ class VirtualCardController extends Controller
         $response = curl_exec($curl);
 
         curl_close($curl);
-        
+
 
 //        $response = '{ "status": "success", "message": "Card created successfully", "data": { "id": "43ec6e92-9eb7-48ad-91c8-7bee425a33cf", "account_id": 65637, "amount": "20,000.00", "currency": "NGN", "card_hash": "43ec6e92-9eb7-48ad-91c8-7bee425a33cf", "card_pan": "5366130699778900", "masked_pan": "536613*******8900", "city": "Lekki", "state": "Lagos", "address_1": "19, Olubunmi Rotimi", "address_2": null, "zip_code": "23401", "cvv": "134", "expiration": "2023-01", "send_to": null, "bin_check_name": null, "card_type": "mastercard", "name_on_card": "Jermaine Graham", "created_at": "2020-01-17T18:33:29.0130255+00:00", "is_active": true, "callback_url": null } }';
 
@@ -164,10 +164,10 @@ class VirtualCardController extends Controller
     public function show(){
         $data['cards']=VirtualCard::where('user_id', Auth::id())->get();
         $data['i']=1;
-		
+
 		$data['page_title'] = "Virtual Card";
 
-        return view('user.visionxcard', $data);
+        return view('user.visionxcardnew', $data);
     }
 
 
@@ -342,6 +342,78 @@ class VirtualCardController extends Controller
         }
 
     }
+
+
+    public function carddetails($id){
+        $card=VirtualCard::find($id);
+
+
+        if(!$card){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->user_id != Auth::id()){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->status == "terminated"){
+            return response()->json(['status' => 0, 'message' => 'Card already terminated']);
+        }
+
+        return response()->json(['status' => 1, 'message' => 'Cards fetched successfully', 'data'=>$card]);
+    }
+
+    public function cardtransactions($id){
+
+        $card=VirtualCard::find($id);
+        $basic = GeneralSettings::first();
+
+        if(!$card){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->user_id != Auth::id()){
+            return response()->json(['status' => 0, 'message' => 'Card does not exist']);
+        }
+
+        if($card->status == "terminated"){
+            return response()->json(['status' => 0, 'message' => 'Card already terminated']);
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $basic->	flutterwave_url."/virtual-cards/".$card->card_id."/transactions?from=2019-01-01&to=".Carbon::now()->format('Y-m-d')."&index=0&size=5",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer $basic->flutterwave_seckey"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $res=json_decode($response, true);
+
+        if($res['status']=="success") {
+            if($res['data']!="[]") {
+                return response()->json(['status' => 1, 'message' => 'Card transactions fetched successfully', 'data' => $res['data']]);
+            }else{
+                return response()->json(['status' => 0, 'message' => $res['message']]);
+            }
+        }else{
+            return response()->json(['status' => 0, 'message' => $res['message']]);
+        }
+
+    }
+
 
 
 }
