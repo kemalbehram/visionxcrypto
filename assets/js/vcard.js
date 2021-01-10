@@ -39,7 +39,7 @@ function showCardtrnx(str) {
                     for (var i = 0; i < blist.length; i++) {
                         htm+= "<tr> <td>"+blist[i]['narration']+"</td> <td>"+blist[i]['amount']+"</td> <td>"+blist[i]['created_at']+"</td> </tr>";
                     }
-                    document.getElementById("translist").innerHTML=html;
+                    document.getElementById("translist").innerHTML=htm;
 
                     document.getElementById("transtable").style.display="block";
                     document.getElementById("sac").style.display="none";
