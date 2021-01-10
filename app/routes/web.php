@@ -130,7 +130,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/deletevisionxcard', 'VirtualCardController@delete')->name('deletevcard');
         Route::post('/fundvisionxcard', 'VirtualCardController@fund')->name('fundvcard');
         Route::post('/createvisionxcard', 'VirtualCardController@create')->name('createvcard');
-        Route::get('/visionxcard', 'VirtualCardController@show')->name('showvcard');
+        Route::get('/visionxcard', 'VirtualCardController@show')->name('vxcard');
 
 
         //user Deposit
