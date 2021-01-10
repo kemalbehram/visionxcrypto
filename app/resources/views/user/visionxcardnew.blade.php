@@ -44,11 +44,11 @@
                                                 <form method="post" action="{{route('fundvcard') }}">
                                                     @csrf
                                                     <div class="form-group">
-                                                        <input class="form-control" id="fid" value="{{$card->id}}" type="hidden">
-                                                        <input class="form-control" placeholder="Enter Amount" type="number" required>
+                                                        <input class="form-control" id="fid" name="id" value="{{$card->id}}" type="hidden">
+                                                        <input class="form-control" name="amount" placeholder="Enter Amount" type="number" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <input class="form-control" placeholder="Pin" maxlength="4" type="text" required>
+                                                        <input class="form-control" name="password" placeholder="Pin" maxlength="4" type="text" required>
                                                     </div>
                                                     <button class="btn ripple btn-primary btn-block">Submit</button>
                                                 </form>
@@ -111,7 +111,7 @@
                                 <label class="main-content-label mb-2 pt-1">Card details & Settings</label>
                             </div>
                             <div class="product-timeline card-body pt-3 mt-1"><br>
-                                <form class="form-horizontal">
+                                <form method="post" action="{{route('deletevcard') }}" class="form-horizontal">
                                     <div class="form-group ">
                                         <div class="row row-sm">
                                             <div class="col-md-3">
@@ -167,16 +167,14 @@
                                                         <button class="btn ripple btn-danger ml-auto pd-x-20" data-toggle="dropdown">Delete Card</button>
                                                         <div class="dropdown-menu">
                                                             <h6 class="dropdown-title text-center mb-4">Delete Card</h6>
-                                                            <form method="post" action="{{route('deletevcard') }}">
-                                                                @csrf
-                                                                <div class="form-group">
-                                                                    <input type="hidden" name="id" id="cardid" class="form-control">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <input class="form-control" placeholder="Pin" name="password" maxlength="4" type="text" required>
-                                                                </div>
-                                                                <button type="submit" class="btn ripple btn-primary btn-block">Submit</button>
-                                                            </form>
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="id" id="cardid" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input class="form-control" placeholder="Pin" name="password" maxlength="4" type="text" required>
+                                                            </div>
+                                                            <button class="btn ripple btn-primary btn-block">Submit</button>
                                                         </div>
                                                     </div>
 
