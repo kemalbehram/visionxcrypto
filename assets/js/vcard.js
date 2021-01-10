@@ -35,9 +35,11 @@ function showCardtrnx(str) {
                     document.getElementById("cardtrans").innerHTML = "You have no card transactions.";
                 }else {
                     var blist = rep['data'];
+                    var htm="";
                     for (var i = 0; i < blist.length; i++) {
-                        document.getElementById("translist").innerHTML = "<tr> <td>"+blist[i]['product']+"</td> <td>"+blist[i]['amount']+"</td> <td>"+blist[i]['created_at']+"</td> </tr>";
+                        htm+= "<tr> <td>"+blist[i]['narration']+"</td> <td>"+blist[i]['amount']+"</td> <td>"+blist[i]['created_at']+"</td> </tr>";
                     }
+                    document.getElementById("translist").innerHTML=html;
 
                     document.getElementById("transtable").style.display="block";
                     document.getElementById("sac").style.display="none";
