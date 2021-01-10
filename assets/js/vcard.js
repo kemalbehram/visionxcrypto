@@ -37,7 +37,7 @@ function showCardtrnx(str) {
                     var blist = rep['data'];
                     var htm="";
                     for (var i = 0; i < blist.length; i++) {
-                        htm+= "<tr> <td>"+blist[i]['narration']+"</td> <td>"+blist[i]['amount']+"</td> <td>"+blist[i]['created_at']+"</td> </tr>";
+                        htm+= "<tr> <td>"+blist[i]['product']+"</td> <td>"+blist[i]['amount']+"</td> <td>"+blist[i]['created_at']+"</td> </tr>";
                     }
                     document.getElementById("translist").innerHTML=htm;
 

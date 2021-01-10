@@ -162,7 +162,7 @@ class VirtualCardController extends Controller
     }
 
     public function show(){
-        $data['cards']=VirtualCard::where('user_id', Auth::id())->get();
+        $data['cards']=VirtualCard::where([['user_id', Auth::id()], ['status', 'active']])->get();
         $data['i']=1;
 
 		$data['page_title'] = "Virtual Card";
