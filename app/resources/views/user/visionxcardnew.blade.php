@@ -199,7 +199,7 @@
                                     <p id="cardtrans">Select a card</p>
                                 </div>
 
-                                <div class="table-responsive" style="display: none">
+                                <div id="transtable" class="table-responsive" style="display: none">
                                     <table class="table text-nowrap text-md-nowrap table-striped mg-b-0">
                                         <thead>
                                         <tr>
