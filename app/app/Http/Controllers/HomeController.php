@@ -78,22 +78,22 @@ class HomeController extends Controller
         var_dump($createAddress);
 
     }
-	
+
 	public function darkmode()
-    { 
+    {
         $auth = Auth::user();
-		
+
 		if($auth->darkmode == 1){
 		$auth->darkmode = 0;
 		$auth->save();
-		 return back()->withSuccess('Light mode activated');	
+		 return back()->withSuccess('Light mode activated');
 			}
 		else{
 			$auth->darkmode = 1;
 			$auth->save();
-		 return back()->withSuccess('Dark mode activated');		
-		}	
-        
+		 return back()->withSuccess('Dark mode activated');
+		}
+
     }
 
 
@@ -1285,7 +1285,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $get['bank'] = Bank::whereStatus(1)->orderBy('name','asc')->get();
         $get['page_title'] = "Trade E-Currency";
 
-        $get['trade'] = Trx::where('status', '>', 0)->latest()->paginate(5); 
+        $get['trade'] = Trx::where('status', '>', 0)->latest()->paginate(5);
         return view('user.trade', $get);
     }
 
@@ -1655,33 +1655,33 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     public function esellscan()
     {
-		
+
 		$getamount = Session::get('putamount');
         $gettime = Session::get('timestamp');
         $gettrx = Session::get('puttrx');
         $getaddress = Session::get('putaddress');
-		  
+
 		if (Carbon::parse($gettime)->addMinutes(15) > Carbon::now() && $gettime != '') {
-        
+
 		$address = $getaddress;
 		$btcvalue = $getamount;
-		 
-		
+
+
         return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
         } else{
-			
-			
+
+
         $track = Session::get('Track');
         $data = Trx::where('status', 0)->where('trx', $track)->first();
         $currency = Currency::where('id', $data->currency_id)->first();
         $page_title = "Sales Preview";
         $auth = Auth::user();
 
-         
-	      
-        
-			
-		 
+
+
+
+
+
 		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -1693,23 +1693,23 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		  CURLOPT_FOLLOWLOCATION => true,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15','suceess_url' => url("/api/sellcallback")),
+		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15','notify_url' => url("/api/sellcallback")),
 		));
-		 
+
 		$response = curl_exec($curl);
 		$reply = json_decode($response,true);
-		
+
 		$address = $reply['data']['address'];
 		$btcvalue = $reply['data']['total_amount']['BTC'];
-		
+
 		Session::put('puttrx', $data->trx);
 		Session::put('amount', $data->amount);
 		Session::put('timestamp', Carbon::now());
 		Session::put('putamount', $btcvalue);
 		Session::put('putaddress', $address);
-		
+
 		 }
-		
+
         return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
     }
 
@@ -1772,20 +1772,20 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                     'status' =>  0
                 ]);
 
-         
+
          return redirect()->route('trade')->with("success", "  Your coin sale was successful. Please wait while we process your transaction");
 
     }
-	
-	
+
+
 	   public function esellcallback(Request $request)
-    { 
-	
+    {
+
         $basic = GeneralSettings::first();
         $data = Trx::where('status', 0)->where('trx', $request->trx)->first();
-        $auth = Auth::user();       
+        $auth = Auth::user();
 		$data->save();
-		
+
 		$baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -2252,7 +2252,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     public function sent()
     {     $auth = Auth::user();
         $data['page_title'] = "Outbox";
-        $data['inbox']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->paginate(6); 
+        $data['inbox']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->paginate(6);
         $data['sent']=  Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at','desc')->count();
         $data['total']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->count();
         $data['unread']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at','desc')->count();
@@ -2345,19 +2345,19 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     public function newinvest()
     {
-       
+
         $data['page_title'] = "New Investment";
         $data['plans'] = Plan::where('status', 1)->latest()->get();
-		
+
        return view('user.new-invest', $data);
 	}
 
 
     public function newcoinvest($id)
     {
-       
+
         $data['page_title'] = "New Investment";
-        $data['plan'] = Plan::where('status', 1)->whereId($id)->first(); 
+        $data['plan'] = Plan::where('status', 1)->whereId($id)->first();
         $data['wallets'] = UserWallet::where('user_id', Auth::id())->whereType('interest_wallet')->get();
 		$baseUrl = "https://blockchain.info/";
 			$endpoint = "tobtc?currency=USD&value=1";
@@ -2381,7 +2381,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         	curl_close($ch);
 
 
-		
+
        return view('user.new-investment', $data);
 	}
 
@@ -2516,7 +2516,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['withdrawgate'] = WithdrawMethod::whereStatus(1)->get();
 		$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
         $data['page_title'] = "Withdraw Investment";
-		$data['gates'] = Gateway::whereStatus(1)->orderBy('name','asc')->get();		
+		$data['gates'] = Gateway::whereStatus(1)->orderBy('name','asc')->get();
        return view('user.withdrawvest', $data);
     }
 
@@ -2557,8 +2557,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $user = User::find(Auth::id());
         $gnl = GeneralSettings::first();
         $basic = GeneralSettings::first();
-        
-        
+
+
         $baseUrl = "https://api.coingate.com";
 			$endpoint = "/v2/rates/merchant/USD/$basic->currency";
 			$httpVerb = "GET";
