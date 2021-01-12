@@ -48,6 +48,11 @@ class CallbackController extends Controller
 	public function sellcallback(Request $request)
     {
         $input = $request->all();
+
+        if (!isset($input['name'])){
+            return 'empty request';
+        }
+
         $trade = Trx::where('trx', $input['name'])->whereStatus(0)->first();
 		$user = User::where('id', $trade->user_id)->first();
 
