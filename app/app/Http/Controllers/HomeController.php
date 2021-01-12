@@ -1655,15 +1655,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     public function esellscan()
     {
-        $track = Session::get('Track');
-        $data = Trx::where('status', 0)->where('trx', $track)->first();
-        $currency = Currency::where('id', $data->currency_id)->first();
-        $page_title = "Sales Preview";
-        $auth = Auth::user();
-
-         
-	      
-        $getamount = Session::get('putamount');
+		
+		$getamount = Session::get('putamount');
         $gettime = Session::get('timestamp');
         $gettrx = Session::get('puttrx');
         $getaddress = Session::get('putaddress');
@@ -1676,6 +1669,17 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		
         return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
         } else{
+			
+			
+        $track = Session::get('Track');
+        $data = Trx::where('status', 0)->where('trx', $track)->first();
+        $currency = Currency::where('id', $data->currency_id)->first();
+        $page_title = "Sales Preview";
+        $auth = Auth::user();
+
+         
+	      
+        
 			
 		 
 		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
@@ -1699,6 +1703,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$btcvalue = $reply['data']['total_amount']['BTC'];
 		
 		Session::put('puttrx', $data->trx);
+		Session::put('amount', $data->amount);
 		Session::put('timestamp', Carbon::now());
 		Session::put('putamount', $btcvalue);
 		Session::put('putaddress', $address);
