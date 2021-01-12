@@ -1701,7 +1701,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$reply = json_decode($response,true);
 
 		$address = $reply['data']['address'];
-		$btcvalue = $reply['data']['total_amount']['BTC'];
+		$btcvalue = $reply['data']['total_amount']['TCN'];
+//		$btcvalue = $reply['data']['total_amount']['BTC'];
 
 		Session::put('puttrx', $data->trx);
 		Session::put('amount', $data->amount);
