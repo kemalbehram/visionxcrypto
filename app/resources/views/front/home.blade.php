@@ -584,10 +584,7 @@
                             <span>Business Owner</span>
                           </div>
                           <div class="content col-md-8 mx-auto text-center">
-                            "Impressed with master class support of the team and really look forward for the
-                            future.Really, really well made! Love that each component is handmade and customised.
-                            Great
-                            Work!"
+                            "since I started using Vision-X Crypto services  i have  witnessed  a tremendous  growth  in my business ..I was really wowed by this !!"
                           </div>
                           <div class="stars__rate">
                             <i class="tio star"></i>
@@ -606,10 +603,7 @@
                             <span>Student</span>
                           </div>
                           <div class="content col-md-8 mx-auto text-center">
-                            "Impressed with master class support of the team and really look forward for the
-                            future.Really, really well made! Love that each component is handmade and customised.
-                            Great
-                            Work!"
+                            "paying my school bills is just with a click I don't need to go back to the lengthy queues"
                           </div>
                           <div class="stars__rate">
                             <i class="tio star"></i>
@@ -628,10 +622,7 @@
                             <span>Business Woman</span>
                           </div>
                           <div class="content col-md-8 mx-auto text-center">
-                            "Impressed with master class support of the team and really look forward for the
-                            future.Really, really well made! Love that each component is handmade and customised.
-                            Great
-                            Work!"
+                            " i receive  all my business  payments  through Vision-X  because  it makes payment  fast and easy especially  with the simple  layout of the app"
                           </div>
                           <div class="stars__rate">
                             <i class="tio star"></i>
@@ -650,10 +641,7 @@
                             <span>Crypto Trader</span>
                           </div>
                           <div class="content col-md-8 mx-auto text-center">
-                            "Impressed with master class support of the team and really look forward for the
-                            future.Really, really well made! Love that each component is handmade and customised.
-                            Great
-                            Work!"
+                            "Really happy with the support team and enjoyed every trade of my bitcoin with this platform, they are the best"
                           </div>
                           <div class="stars__rate">
                             <i class="tio star"></i>
@@ -672,10 +660,7 @@
                             <span>Landlord</span>
                           </div>
                           <div class="content col-md-8 mx-auto text-center">
-                            "Impressed with master class support of the team and really look forward for the
-                            future.Really, really well made! Love that each component is handmade and customised.
-                            Great
-                            Work!"
+                            "they have revolutionized payments now i can get my rents faster without  any delay from my tenants"
                           </div>
                           <div class="stars__rate">
                             <i class="tio star"></i>
