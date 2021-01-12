@@ -26,6 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/callback1', 'CallbackController@index')->name('callback1');
+Route::post('/sellcallback', 'CallbackController@sellcallback')->name('sellcallback');
 
 Route::post('signup', [AuthenticateController::class, 'signup'])->name('signup');
 Route::post('login', [AuthenticateController::class, 'login'])->name('login');

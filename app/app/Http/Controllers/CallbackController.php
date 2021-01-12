@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Trx;
 use App\Deposit;
 use Illuminate\Support\Str;
 use App\GeneralSettings;
@@ -39,6 +40,28 @@ class CallbackController extends Controller
         }
         else{
             return "User not found";
+        }
+    }
+	
+	
+	
+	public function sellcallback(Request $request)
+    {
+        $input = $request->all();
+        $trade = Trx::where('trx', $input['name'])->whereStatus(0)->first();
+		$user = User::where('id', $trade->user_id)->first();
+       
+        if ($trade) {
+            $trade-status = 1;
+            $trade->save();
+        }
+		
+		if($user){
+			$user->balance += $trade->main_amo;
+			$user->save();
+			}
+        else{
+            return "User or transaction not found";
         }
     }
 

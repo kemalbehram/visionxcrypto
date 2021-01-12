@@ -13,7 +13,7 @@
 								<h2 class="main-content-title tx-24 mg-b-5">Make Payment</h2>
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Make ayment</li>
+									<li class="breadcrumb-item active" aria-current="page">Make payment</li>
 								</ol>
 							</div>
 							 
@@ -31,11 +31,11 @@
 									<div class="card-body">
 										<form>
 											<div class="form-group mb-0"> <label>Wallet Address</label>
-												<div class="input-group"> <input type="text" readonly class="form-control coupon" value="{{$data->currency->payment_id}}"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Copy</button> </span> </div>
+												<div class="input-group"> <input type="text" readonly class="form-control coupon" value="{{$address}}"> <span class="input-group-append"> <a class="btn btn-primary btn-apply coupon">Copy</a> </span> </div>
 											</div>
 											
-											<br>
-											<center><img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{$data->currency->payment_id}}&choe=UTF-8\" style='width:100px;' />
+											<br> 
+											<center><img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{'bitcoin:'.$address.'?amount='.$btcvalue}}&choe=UTF-8\" style='width:190px;' />
 											<br>
 											<span class="dt-type-md badge badge-outline badge-info badge-sm"><i class = "fa fa-spinner fa-spin"></i>&nbsp;Awaiting</span>
 											</center>
@@ -57,7 +57,7 @@
 											<dd class="text-right text-danger ml-auto">@if($data->currency->symbol == "PM")
 {{$data->currency->symbol}}{{number_format($data->getamo, 2)}}
 @else
-{{$data->currency->symbol}}{{number_format($data->getamo, 8)}}
+{{$data->currency->symbol}}{{$btcvalue}}
 @endif</dd>
 										</dl>
 										 
@@ -73,8 +73,14 @@
 
  <small class="text-info"><p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br></small>										
 										
-
+										<form role="form" method="POST"  action="{{ route('esellcallback') }}">
+										{{ csrf_field() }}
+																		    			 
+										<input name="trx" hidden value="{{$data->trx}}">
+										<button type="submit" class="step-btn btn btn-primary btn-block">Proceed </button>
+										</form>
 										
+										<!--
 										<div aria-multiselectable="true" class="accordion" id="accordion" role="tablist">
 											<div class="card">
 												<div class="card-header" id="headingOne" role="tab">

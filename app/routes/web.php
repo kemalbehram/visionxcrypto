@@ -267,6 +267,14 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('exchange','HomeController@exchange')->name('exchange');
 
         Route::get('transactions','HomeController@transactions')->name('transaction');
+
+        //Newlyaddred Sell Callback
+        Route::post('/esellcallback', 'HomeController@esellcallback')->name('esellcallback');
+
+        Route::get('vxprime', function (){
+            return view('user.vxprime');
+        })->name('user.vxprime');
+
     });
 
 });

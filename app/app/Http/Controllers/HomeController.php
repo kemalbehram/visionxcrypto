@@ -1657,9 +1657,55 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     {
         $track = Session::get('Track');
         $data = Trx::where('status', 0)->where('trx', $track)->first();
+        $currency = Currency::where('id', $data->currency_id)->first();
         $page_title = "Sales Preview";
         $auth = Auth::user();
-        return view('user.esellscan', compact('data', 'page_title'));
+
+         
+	      
+        $getamount = Session::get('putamount');
+        $gettime = Session::get('timestamp');
+        $gettrx = Session::get('puttrx');
+        $getaddress = Session::get('putaddress');
+		  
+		if (Carbon::parse($gettime)->addMinutes(15) > Carbon::now() && $gettime != '') {
+        
+		$address = $getaddress;
+		$btcvalue = $getamount;
+		 
+		
+        return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
+        } else{
+			
+		 
+		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl,
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15','suceess_url' => url("/api/sellcallback")),
+		));
+		 
+		$response = curl_exec($curl);
+		$reply = json_decode($response,true);
+		
+		$address = $reply['data']['address'];
+		$btcvalue = $reply['data']['total_amount']['BTC'];
+		
+		Session::put('puttrx', $data->trx);
+		Session::put('timestamp', Carbon::now());
+		Session::put('putamount', $btcvalue);
+		Session::put('putaddress', $address);
+		
+		 }
+		
+        return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
     }
 
 
@@ -1703,13 +1749,14 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $page_title = "Sold Coin";
          $auth = Auth::user();
 
-         $data->tnum = $request->trxx;
-         $data->status = 1;
+        $data->tnum = $request->trxx;
+        $data->status = 1;
           if($request->hasFile('photo'))
             {
                 $data['image'] = uniqid().'.jpg';
                 $request->photo->move('uploads/payments',$data['image']);
             }
+		$data->save();
 
 
              Message::create([
@@ -1720,8 +1767,38 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                     'status' =>  0
                 ]);
 
-         $data->save();
+         
          return redirect()->route('trade')->with("success", "  Your coin sale was successful. Please wait while we process your transaction");
+
+    }
+	
+	
+	   public function esellcallback(Request $request)
+    { 
+	
+        $basic = GeneralSettings::first();
+        $data = Trx::where('status', 0)->where('trx', $request->trx)->first();
+        $auth = Auth::user();       
+		$data->save();
+		
+		$baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl,
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','suceess_url' => url("/api/sellcallback")),
+		));
+
+		$response = curl_exec($curl);
+
+		curl_close($curl);
+		return $response;
 
     }
 
