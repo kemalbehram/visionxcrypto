@@ -12,7 +12,7 @@ use App\GeneralSettings;
 class CallbackController extends Controller
 {
 
- 
+
 
     public function index(Request $request)
     {
@@ -25,8 +25,8 @@ class CallbackController extends Controller
         if ($u) {
             $u->balance += $total;
             $u->save();
-            
-            
+
+
              $depo['user_id'] = $u->id;
              $depo['gateway_id'] = 0;
              $depo['amount'] = $input['amount'];
@@ -35,27 +35,27 @@ class CallbackController extends Controller
              $depo['trx'] = $trx;
              $depo['status'] = 1;
              Deposit::create($depo);
-             
+
             return "Wallet Credited";
         }
         else{
             return "User not found";
         }
     }
-	
-	
-	
+
+
+
 	public function sellcallback(Request $request)
     {
         $input = $request->all();
         $trade = Trx::where('trx', $input['name'])->whereStatus(0)->first();
 		$user = User::where('id', $trade->user_id)->first();
-       
+
         if ($trade) {
-            $trade-status = 1;
+            $trade->status = 1;
             $trade->save();
         }
-		
+
 		if($user){
 			$user->balance += $trade->main_amo;
 			$user->save();
