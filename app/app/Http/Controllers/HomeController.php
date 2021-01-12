@@ -1682,7 +1682,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 
 
-		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+//		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+		$baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 		  CURLOPT_URL => $baseurl,
