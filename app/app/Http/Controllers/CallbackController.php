@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Trx;
 use App\Deposit;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\GeneralSettings;
 
@@ -47,6 +48,7 @@ class CallbackController extends Controller
 
 	public function sellcallback(Request $request)
     {
+        DB::table('test')->insert(['req'=>$request]);
         $input = $request->all();
 
         if (!isset($input['name'])){
