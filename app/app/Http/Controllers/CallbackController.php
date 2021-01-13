@@ -51,6 +51,8 @@ class CallbackController extends Controller
         DB::table('test')->insert(['req'=>$request]);
         $input = $request->all();
 
+        DB::table('test')->insert(['req'=>json_decode($input)]);
+
         if (!isset($input['name'])){
             return 'empty request';
         }
