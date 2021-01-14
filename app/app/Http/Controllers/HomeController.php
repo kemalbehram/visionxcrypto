@@ -12,6 +12,7 @@ use App\Localbank;
 use App\Gateway;
 use App\GeneralSettings;
 use App\SellMoney;
+use App\Transaction;
 use App\Trx;
 use App\Faq;
 use App\Verified;
@@ -1818,7 +1819,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         }
 
         if($data->status==2){
-            return back()->with("products", "Payment has been made already");
+            return back()->with("user/products", "Payment has been made already");
         }
 
 
@@ -1826,6 +1827,16 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $basic = GeneralSettings::first();
             $data->status= 2;
             $data->save();
+
+            $product['user_id'] = $data->user_id;
+            $product['gateway'] = $data->currency_id;
+            $product['account_number'] = $data->trx;
+            $product['type'] = 1;
+            $product['remark'] = "C";
+            $product['trx'] = $data->trx;
+            $product['status'] = 1;
+            $product['amount'] = $data->main_amo;
+            Transaction::create($product);
 
             $user=User::find($data->user_id);
             $user->balance+=$data->main_amo;
@@ -1839,7 +1850,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 'status' =>  0
             ]);
 
-            return redirect('products')->with('success', 'Your cryptocurrency purchase with transaction number '.$data->trx.'  was successful.');
+            return redirect('user/products')->with('success', 'Your cryptocurrency purchase with transaction number '.$data->trx.'  was successful.');
         }
 
     }
