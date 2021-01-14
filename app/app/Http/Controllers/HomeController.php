@@ -1678,8 +1678,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         } else{
 
 
-//		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
-		$baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
+		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+//		$baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 		  CURLOPT_URL => $baseurl,
@@ -1690,7 +1690,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		  CURLOPT_FOLLOWLOCATION => true,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$5s1pl64ibsMQ1waqpBTrM.vsIWoZSio.6S/hWaTzDnMOeFsOZ8Gau','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
+		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
 		));
 
 		$response = curl_exec($curl);
@@ -1699,10 +1699,11 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 		$address = $reply['data']['address'];
 		$invoiceid = $reply['data']['invoice_id'];
-		$btcvalue = $reply['data']['total_amount']['TCN'];
-//		$btcvalue = $reply['data']['total_amount']['BTC'];
+//		$btcvalue = $reply['data']['total_amount']['TCN'];
+		$btcvalue = $reply['data']['total_amount']['BTC'];
 
             $data->action=$invoiceid;
+            $data->gateway=$currency->symbol;
             $data->save();
 
 		Session::put('puttrx', $data->trx);
@@ -1789,8 +1790,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $auth = Auth::user();
 		$data->save();
 
-        //		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/get-invoice";
-        $baseurl = "https://coinremitter.com/api/v3/TCN/get-invoice";
+        		$baseurl = "https://coinremitter.com/api/v3/".$data->gateway."/get-invoice";
+//        $baseurl = "https://coinremitter.com/api/v3/TCN/get-invoice";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 		  CURLOPT_URL => $baseurl,
@@ -1801,7 +1802,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		  CURLOPT_FOLLOWLOCATION => true,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$5s1pl64ibsMQ1waqpBTrM.vsIWoZSio.6S/hWaTzDnMOeFsOZ8Gau','password' => 'visionxcrypto','invoice_id' => $data->action),
+		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','invoice_id' => $data->action),
 		));
 
         $response = curl_exec($curl);
