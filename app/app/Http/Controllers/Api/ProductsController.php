@@ -161,9 +161,13 @@ class ProductsController extends Controller
         return response()->json(['status' => 1, 'message' => 'Balances fetched successfully', 'naira'=>round($user->balance), 'investment'=>'0', 'referral'=>"$user->refer",]);
     }
 
-    public function getRate($currency, $type)
+    public function getRate($currencyid, $type)
     {
-        $cur=Currency::where('name',$currency)->first();
+        $cur=Currency::find($currencyid);
+
+        if(!$cur){
+            return response()->json(['status' => 0, 'message' => 'Invalid params']);
+        }
 
         if($type=="sell"){
             $rate=$cur->sell;

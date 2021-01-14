@@ -1038,7 +1038,7 @@ class TransactionController extends Controller
 
         $auth = Auth::user();
         $basic = GeneralSettings::first();
-        $currency = Currency::where('name',$input['currency'])->first();
+        $currency = Currency::find($input['currencyid']);
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
         $charge = $basic->transcharge;
@@ -1077,7 +1077,7 @@ class TransactionController extends Controller
 
         $input = $request->all();
         $rules = array(
-            'currency' => 'required',
+            'currencyid' => 'required',
             'usd' => 'required',
         );
 
@@ -1089,7 +1089,7 @@ class TransactionController extends Controller
 
         $auth = Auth::user();
         $basic = GeneralSettings::first();
-        $currency = Currency::whereId($request->coin)->first();
+        $currency = Currency::find($input['currencyid']);
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
 
