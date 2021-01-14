@@ -94,5 +94,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('uploadpicture', [OthersController::class, 'uploadprofile'])->name('uploadprofile');
 
 
+    Route::get('getrate/{currency}/{type}', [ProductsController::class, 'getRate'])->name('getRate');
+
+    Route::post('buycrypto', [TransactionController::class, 'buycrypto'])->name('buycrypto');
+
+    Route::post('sellcrypto', [TransactionController::class, 'sellcrypto'])->name('sellcrypto');
+
+    Route::post('lockaccount', [OthersController::class, 'lockaccount'])->name('lockaccount');
+
+
 
 });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Currency;
+use App\Gateway;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Invest;
@@ -10,6 +12,7 @@ use App\Plan;
 use App\Sms;
 use App\TimeSetting;
 use App\Transaction;
+use App\Trx;
 use App\User;
 use App\VirtualCard;
 use Carbon\Carbon;
@@ -1011,6 +1014,131 @@ class TransactionController extends Controller
         $user->save();
 
         return response()->json(['status' => 1, 'message' => 'Your investment is successful']);
+
+    }
+
+    public function buycrypto(Request $request)
+    {
+        $user = Auth::user();
+
+        $input = $request->all();
+        $rules = array(
+            'currency' => 'required',
+            'usd' => 'required',
+            'wallet' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+
+
+        $auth = Auth::user();
+        $basic = GeneralSettings::first();
+        $currency = Currency::where('name',$input['currency'])->first();
+        $trx = rand(000000, 999999) . rand(000000, 999999);
+
+        $charge = $basic->transcharge;
+        $usd = $request->usd * $currency->sell;
+        $topay = $usd + $charge;
+        $get = $request->usd/$currency->price;
+
+        if ($topay > $user->balance ) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        $buy['currency_id'] = $currency->id;
+        $buy['amount'] =  $request->usd;
+        $buy['main_amo'] = $topay;
+        $buy['charge'] = $charge;
+        $buy['price'] = $currency->price;
+        $buy['getamo'] = $get;
+        $buy['user_id'] = Auth::id();
+        $buy['type'] = 1;
+        $buy['wallet'] = $request->wallet;
+        $buy['rate'] = $currency->sell;
+        $buy['bank'] = $request->bank;
+        $buy['remark'] = $request->comment;
+        $buy['status'] = 0;
+        $buy['trx'] = $trx;
+        Trx::create($buy)->trx;
+
+        return response()->json(['status' => 1, 'message' => 'Transaction is successful']);
+
+    }
+
+    public function sellcrypto(Request $request)
+    {
+
+        $user = Auth::user();
+
+        $input = $request->all();
+        $rules = array(
+            'currency' => 'required',
+            'usd' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $auth = Auth::user();
+        $basic = GeneralSettings::first();
+        $currency = Currency::whereId($request->coin)->first();
+        $trx = rand(000000, 999999) . rand(000000, 999999);
+
+
+        $charge = $basic->transcharge;
+        $usd = $request->usd * $currency->buy;
+        $topay = $usd + $charge;
+
+
+        $buy['currency_id'] = $currency->id;
+        $buy['amount'] =  $request->usd;
+        $buy['main_amo'] = $topay;
+        $buy['charge'] = $charge;
+        $buy['price'] = $currency->price;
+        $buy['user_id'] = Auth::id();
+        $buy['type'] = 2;
+        $buy['bank'] = 0;
+        $buy['bankname'] = "VisionX";
+        $buy['accountname'] = $auth->username;
+        $buy['accountnumber'] = $auth->account_number;
+        $buy['rate'] = $currency->buy;
+        $buy['status'] = 0;
+        $buy['trx'] = $trx;
+
+        Trx::create($buy)->trx;
+
+
+//		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+        $baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$5s1pl64ibsMQ1waqpBTrM.vsIWoZSio.6S/hWaTzDnMOeFsOZ8Gau','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response,true);
+
+        $address = $reply['data']['address'];
+        $btcvalue = $reply['data']['total_amount']['TCN'];
+//		$btcvalue = $reply['data']['total_amount']['BTC'];
+
+        return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue]);
 
     }
 

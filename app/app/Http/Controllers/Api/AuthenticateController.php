@@ -280,6 +280,12 @@ class AuthenticateController extends Controller
 
             $noti=Message::where([['user_id', Auth::id()], ['status',0]])->orderBy('id', 'desc')->exists();
 
+            $basic = GeneralSettings::first();
+
+            if($user->locked==1){
+                return response()->json(['status' => 0, 'message' => 'Account has been locked. Kindly contact support']);
+            }
+
             return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified, 'notification'=>$noti]);
 
         } else {

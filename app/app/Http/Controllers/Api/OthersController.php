@@ -83,4 +83,11 @@ class OthersController extends Controller
         return response()->json(['status' => 1, 'message' => 'Profile Picture submitted successfully', 'image' => $user->image]);
     }
 
+    public function lockaccount(){
+        $user = Auth::user();
+        $user->withdrawpass_used = 3;
+        $user->locked = 1;
+        $user->save();
+    }
+
 }

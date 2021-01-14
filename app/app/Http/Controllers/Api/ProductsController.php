@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Currency;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Transaction;
@@ -158,5 +159,18 @@ class ProductsController extends Controller
         $user = Auth::user();
 
         return response()->json(['status' => 1, 'message' => 'Balances fetched successfully', 'naira'=>round($user->balance), 'investment'=>'0', 'referral'=>"$user->refer",]);
+    }
+
+    public function getRate($currency, $type)
+    {
+        $cur=Currency::where('name',$currency)->first();
+
+        if($type=="sell"){
+            $rate=$cur->sell;
+        }else{
+            $rate=$cur->buy;
+        }
+
+        return response()->json(['status' => 1, 'message' => 'Rates fetched successfully', 'rate'=>$rate*1]);
     }
 }
