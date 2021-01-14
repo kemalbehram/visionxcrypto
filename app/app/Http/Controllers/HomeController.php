@@ -1666,6 +1666,9 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$address = $getaddress;
 		$btcvalue = $getamount;
 
+            $track = Session::get('Track');
+            $data = Trx::where('status', 0)->where('trx', $track)->first();
+
 
         return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
         } else{
@@ -1802,12 +1805,16 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		  CURLOPT_FOLLOWLOCATION => true,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','invoice_id' => $data->action),
+		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$5s1pl64ibsMQ1waqpBTrM.vsIWoZSio.6S/hWaTzDnMOeFsOZ8Gau','password' => 'visionxcrypto','invoice_id' => $data->action),
 		));
 
         $response = curl_exec($curl);
         $reply = json_decode($response,true);
         curl_close($curl);
+
+        if (!isset($reply['data']['status_code'])){
+            return back()->with("danger", "An error occur. Contact server admin");
+        }
 
         $status = $reply['data']['status_code'];
 
