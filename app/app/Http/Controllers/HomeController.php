@@ -1703,7 +1703,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 		$btcvalue = $reply['data']['total_amount']['BTC'];
 
             $data->action=$invoiceid;
-            $data->gateway=$currency->symbol;
+            $data->method=$currency->symbol;
             $data->save();
 
 		Session::put('puttrx', $data->trx);
@@ -1790,7 +1790,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $auth = Auth::user();
 		$data->save();
 
-        		$baseurl = "https://coinremitter.com/api/v3/".$data->gateway."/get-invoice";
+        		$baseurl = "https://coinremitter.com/api/v3/".$data->method."/get-invoice";
 //        $baseurl = "https://coinremitter.com/api/v3/TCN/get-invoice";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
