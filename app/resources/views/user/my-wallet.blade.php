@@ -15,15 +15,15 @@
 									<li class="breadcrumb-item active" aria-current="page">Wallet</li>
 								</ol>
 							</div>
-							
+
 						</div>
 						<!-- End Page Header -->
 
 						<!-- row -->
-						
+
 						<div class="row row-sm">
 						<div class="col-xl-6 col-lg-12 col-md-12">
-						
+
 							<form method="post" action="{{route('update.transfer') }}">
 										@csrf
 										<div class="card custom-card wallet">
@@ -38,7 +38,7 @@
 														<span class="text-uppercase tx-14 mt-4 text-muted">Available Fund</span>
 														<div class="d-flex my-auto"><h4 class="mt-1 mb-0">{{number_format(Auth::user()->balance, $basic->decimal)}}</h4><span class="mt-auto ml-2">{{$basic->currency}}</span></div>
 													</div>
-													<img src="{{url('/')}}/assets/assets/img/pngs/qrcode.png" class="wd-50 ht-50  my-auto ml-auto float-right" alt="">
+
 												</div>
 												<div class="input-group my-4">
 													<span class="input-group-addon-left bg-light"><i class="fe fe-user"></i></span>
@@ -48,7 +48,7 @@
 													<span class="input-group-addon-left bg-light">{{$basic->currency_sym}}</span>
 													<input type="number" required class="form-control input-lg" type="number" name="amount"  placeholder="{{$basic->currency_sym}} 1000">
 												 </div>
-												 
+
 												<div class="row mt-4">
 													<div class="col-6">
 														<button type="submit" class="btn btn-block btn-primary">Transfer</button>
@@ -81,21 +81,21 @@
 													<span class="input-group-addon-left bg-light">{{$basic->currency_sym}}</span>
 													<input name="amount"  required type="text" placeholder="{{$basic->currency_sym}} 0.00" class="form-control input-lg">
 												</div>
-												
+
 												<div class="input-group my-4">
 													<span class="input-group-addon-left bg-light"><i class="fa fa-bank"></i></span>
 													<select name="bank" id='mySelect' required onchange='myFunction()' class="form-control input-lg select">
 												 <option disabled selected >Select Bank Name</option>
 												 @if(Auth::user()->bankyes == 1)
-												 <option data-name="{{Auth::user()->bank}}" value="{{Auth::user()->bankcode}}">{{Auth::user()->bank}}(Account #: {{Auth::user()->accountno}})</option> 
+												 <option data-name="{{Auth::user()->bank}}" value="{{Auth::user()->bankcode}}">{{Auth::user()->bank}}(Account #: {{Auth::user()->accountno}})</option>
 												 @endif
 												 <option value="others">Other Bank</option>
-											 
+
 												</select>
 												</div>
-												
+
 											<input id="bank" hidden name="bankname">
-												 
+
 												<div class="row mt-4">
 													<div class="col-6">
 														<button type="submit" class="btn btn-block btn-primary">Proceed</button>
@@ -108,14 +108,14 @@
 										</div>
 										</form>
 									</div><!-- End col -->
-						
-						
-						
-						
-						
+
+
+
+
+
 						<!--
 							<div class="col-xxl-8 col-xl-12 col-lg-12 col-md-12">
-							
+
 							<form method="post" action="{{route('update.transfer') }}">
 										@csrf
 								<div class="card custom-card">
@@ -135,8 +135,8 @@
 												<img src="{{url('/')}}/assets/assets/img/pngs/qrcode.png" alt="qrcode" class="ht-100 float-right">
 											</div>
 										</div>
-										
-										
+
+
 										<div class="row mt-3 crypto-wallet">
 											<div class="col-md-10">
 												<p>Amount</p>
@@ -145,14 +145,14 @@
 												</div>
 											</div>
 										</div>
-										
-										
+
+
 									</div>
-									
-									
-									
-									
-										
+
+
+
+
+
 										</div><br>
 								</div>
 								</form>
@@ -225,7 +225,7 @@
 															<span class="crypto-icon bg-primary-transparent mr-3">
 																<i class="fa fa-spinner spinner text-primary"></i>
 															</span>
-															<h5 class="my-auto">{{$activeinv}}</h5> 
+															<h5 class="my-auto">{{$activeinv}}</h5>
 														</div>
 													</div>
 													<div class="col-md-6 mt-3 mt-md-0">
@@ -234,7 +234,7 @@
 															<span class="crypto-icon bg-success-transparent mr-3">
 																<i class="fe fe-pie-chart text-success"></i>
 															</span>
-															<h5 class="my-auto">{{$endinv}}</h5> 
+															<h5 class="my-auto">{{$endinv}}</h5>
 														</div>
 													</div>
 												</div>
@@ -249,8 +249,8 @@
 											</div>
 										</div>
 									</div><!-- End col -->
-									
-									
+
+
 									<div class="col-xl-6 col-lg-12 col-md-12">
 										<div class="card custom-card wallet">
 											<div class="card-body">
@@ -270,11 +270,11 @@
 													<span class="input-group-addon-left bg-light"><i class="si si-present"></i></span>
 													<input type="text" class="form-control input-lg" name="amount" id="referal-wallet">
 												</div>
-												
+
 												<div class="row">
 													<div class="col-md-12 mt-3 mt-md-0">
 														<p class="text-uppercase tx-13 text-primary mb-1">You can convert the available Bonus in your bonus wallet into spendable cash. Please enter the amount of bonus to convert and click on the convert button to proceed</p>
-														 
+
 													</div>
 												</div>
 												<div class="row mt-4">
@@ -286,8 +286,8 @@
 											</div>
 										</div>
 									</div><!-- End col -->
-									
-									
+
+
 								</div>
 								<!-- Row End -->
 							</div>
@@ -318,13 +318,13 @@
 								<option value="bank" >
 								Bank Deposit
 								</option>
-						    
+
 							</select>
 							<br>
 							<h6>Enter Amount</h6>
 							<!-- Select2 -->
 							<input placeholder="0.00" id="amount" onkeyup="myAmount2()"  type="number" name="amount"  class="form-control">
-						        						
+
 							<!-- Select2 -->
 						 </div>
 						<div class="modal-footer">
@@ -338,5 +338,5 @@
 			<!-- End Select2 modal -->
 
 
- 
+
 			@endsection

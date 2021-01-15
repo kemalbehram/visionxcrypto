@@ -94,7 +94,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('validate/{id}', 'HomeController@validatebank')->name('bank.vvalidate');
 
     Route::group(['middleware' => ['auth','CheckStatus']], function() {
-        Route::post('/darkmode', 'HomeController@darkmode')->name('darkmode');
+        Route::get('/darkmode', 'HomeController@darkmode')->name('darkmode');
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/user-faq', 'HomeController@faqs')->name('user.faq');
         Route::get('user/daily/rewards', 'HomeController@daily')->name('userDailyBonus');

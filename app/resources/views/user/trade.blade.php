@@ -25,7 +25,7 @@
 							<div class="col-md-12">
 								<div style="height:560px; background-color: #FFFFFF; overflow:hidden; box-sizing: border-box; border: 1px solid #56667F; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #56667F;padding:1px;padding: 0px; margin: 0px; width: 100%;"><div style="height:540px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=chart&theme=light&coin_id=859&pref_coin_id=1505" width="100%" height="536px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #FFFFFF; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="#" target="_blank" style="font-weight: 500; color: #FFFFFF; text-decoration:none; font-size:11px">Bitcoin Prices</a>&nbsp;by {{$basic->sitename}}</div></div>
 							<br></div>
-							
+
 							<div class="col-lg-12 col-xl-6  col-md-12">
 							<form method="POST"  action="{{ route('buyecoin') }}">
 												@csrf
@@ -39,19 +39,19 @@
 												<p class="tx-16 text-muted mb-2">Our buy rate</p>
 												<h3 id="buy">0.00<span class="text-success tx-15 ml-2">NGN</span></h3>
 											</div>
-											
+
 										</div>
 																	<script>
-																	function myFunctionbuy() { 
-																	 
+																	function myFunctionbuy() {
+
 																	var usd = $('#usd').val() ;
-																	 var buy = $("#mySelect option:selected").attr('data-buy'); 
-																	 var bname = $("#mySelect option:selected").attr('data-bname'); 
-																	 document.getElementById("buy").innerHTML = "{{$basic->currency_sym}}"+buy; 
-																	 document.getElementById("bname").innerHTML = "Enter Your "+bname+" Wallet Address"; 
-																	 document.getElementById("bcoin").innerHTML = bname; 
-																	 document.getElementById("bget").value = usd*buy; 
-																	  
+																	 var buy = $("#mySelect option:selected").attr('data-buy');
+																	 var bname = $("#mySelect option:selected").attr('data-bname');
+																	 document.getElementById("buy").innerHTML = "{{$basic->currency_sym}}"+buy;
+																	 document.getElementById("bname").innerHTML = "Enter Your "+bname+" Wallet Address";
+																	 document.getElementById("bcoin").innerHTML = bname;
+																	 document.getElementById("bget").value = usd*buy;
+
 																	 };
 																	</script>
 										<div class="form-group">
@@ -91,12 +91,12 @@
 										<p style="color:red">*Ensure your enter the correct <a id="bcoin">wallet</a> address.</p>
 										<p style="color:red">*Minimum trade amount accepted is $50.</p>
 										<label class="main-content-label mt-4 mb-4">payment method</label>
-										 
+
 											<div class="payment-type d-flex">
 												<input type="radio" name="payment" id="credit" value="1" checked><label class="credit-label payment-cards four ml-0 col" for="credit"><span class="d-none d-md-block">Naira Wallet</span><img src="{{url('/')}}/assets/assets/img/visa.png" alt="visa"></label>
 												</div>
 											<button type="submit" class="btn btn-primary btn-lg btn-block mt-4">Buy Now</button>
-										
+
 									</div>
 								</div>
 								</form>
@@ -116,14 +116,14 @@
 											</div>
 										</div>
 										<script>
-																	function myFunctionsell() { 
-																	 
+																	function myFunctionsell() {
+
 																	var usd = $('#usds').val() ;
-																	 var sell = $("#mySelect2 option:selected").attr('data-sell'); 
-																	 var sname = $("#mySelect2 option:selected").attr('data-sname'); 
-																	 document.getElementById("sell").innerHTML = "{{$basic->currency_sym}}"+sell;  
-																	 document.getElementById("sget").value = usd*sell; 
-																	  
+																	 var sell = $("#mySelect2 option:selected").attr('data-sell');
+																	 var sname = $("#mySelect2 option:selected").attr('data-sname');
+																	 document.getElementById("sell").innerHTML = "{{$basic->currency_sym}}"+sell;
+																	 document.getElementById("sget").value = usd*sell;
+
 																	 };
 																	</script>
 										<div class="form-group">
@@ -156,7 +156,7 @@
 										<br>
 										<p style="color:red">*Your fund will be credited into your Naira wallet as soon as your transaction as been confirmed.</p>
 										<p style="color:red">*Minimum trade amount accepted is $50.</p><br>
-										<label class="main-content-label mt-4 mb-4">Credit payment method</label>
+										<label class="main-content-label mt-4 mb-4">Credit payment destination</label>
 										<a class="payment-form form">
 											<div class="payment-type d-flex">
 												<input type="radio" name="radio3" id="credit" value="credit" checked><label class="credit-label payment-cards four ml-0 col" for="credit"><span class="d-none d-md-block">Naira Wallet</span><img src="{{url('/')}}/assets/assets/img/visa.png" alt="visa"></label>
@@ -185,7 +185,7 @@
 														<th>ID</th>
 														<th>Type</th>
 														<th>Currrency</th>
-														<th>Amount (USD)</th>   
+														<th>Amount (USD)</th>
 														<th>Status</th>
 														<th>Date</th>
 													</tr>
@@ -202,7 +202,7 @@
 														@endif</td>
 														<td><i class="cc BTC-alt text-warning"></i> {{isset($data->currency->name) ? $data->currency->name : 'N/A'}}</td>
 														<td><i class="cc BTC-alt text-warning"></i> ${{number_format($data->amount, $basic->decimal)}}</td>
-														 
+
 														<td>
 														@if($data->status == 2)
 														<span class="badge badge-success-light badge-pill">Successful</span>
@@ -215,7 +215,7 @@
 											@else
 											<b>No Transaction Log At The Moment</b>
 											@endif
-													 
+
 												</tbody>
 											</table>
 										</div>

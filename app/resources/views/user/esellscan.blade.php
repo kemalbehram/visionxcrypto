@@ -67,17 +67,17 @@
 											<dd class="text-right  ml-auto"><strong>{{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}</strong></dd>
 										</dl>
 										<dl class="dlist-align">
-											<dt class="">Payment Method</dt>
+											<dt class="">Payment Channel</dt>
 											<dd class="text-right ml-auto">Naira Wallet</dd>
 										</dl>
 
- <small class="text-info"><p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br></small>
+ <small class="text-info"><p>Your fund will be credited into your Naira wallet as soon as your transaction as been confirmed.</p><br></small>
 
 										<form role="form" method="POST"  action="{{ route('esellcallback') }}">
 										{{ csrf_field() }}
 
 										<input name="trx" hidden value="{{$data->trx}}">
-										<button type="submit" class="step-btn btn btn-primary btn-block">Proceed </button>
+										<button type="submit" class="step-btn btn btn-primary btn-block">Confirm </button>
 										</form>
 
 										<!--

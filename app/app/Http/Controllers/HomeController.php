@@ -87,12 +87,14 @@ class HomeController extends Controller
 		if($auth->darkmode == 1){
 		$auth->darkmode = 0;
 		$auth->save();
-		 return back()->withSuccess('Light mode activated');
+            return response()->json(['status' => 1, 'message' => 'Light mode activated']);
+//		 return back()->withSuccess('Light mode activated');
 			}
 		else{
 			$auth->darkmode = 1;
 			$auth->save();
-		 return back()->withSuccess('Dark mode activated');
+            return response()->json(['status' => 1, 'message' => 'Dark mode activated']);
+//		 return back()->withSuccess('Dark mode activated');
 		}
 
     }
@@ -979,7 +981,6 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                     'amount' => round($amount,$basic->decimal),
                     'charge' => 0,
                     'type' => '-',
-                    'reffer' => 1,
                     'action' => "Transfer",
                     'title' => 'Transfer fund to '. $request->username ,
                     'trx' => $tr

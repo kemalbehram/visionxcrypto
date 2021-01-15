@@ -24,25 +24,25 @@
 								<div class="card custom-card">
 									<div class="card-body">
 										<div class="panel profile-cover">
-											
+
 												 @if( file_exists(Auth::User()->image))
 												<img src="{{asset(Auth::user()->image)}}" alt="" width="50" class="img-sm">
 												@else
 												<img src="{{url('assets/user/images/user-default.png')}}" alt="" width="50" class="img-sm">
 											    @endif
 												<br><br><br>
-												
+
 												<h3 class="h3">{{$user->fname}} {{$user->lname}}</h3>
 											    <br>
-											
-												 
+
+
 										</div>
 										<div class="profile-tab tab-menu-heading">
 											<nav class="nav main-nav-line p-3 tabs-menu profile-nav-line bg-gray-100">
-												
+
 												<a class="nav-link active" data-toggle="tab" href="#edit">Profile</a>
 												<a class="nav-link" data-toggle="tab" href="#timeline">Password</a>
-												<a class="nav-link" data-toggle="tab" href="#gallery">Security</a> 
+												<a class="nav-link" data-toggle="tab" href="#gallery">Security</a>
 											</nav>
 										</div>
 									</div>
@@ -55,17 +55,17 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="card custom-card main-content-body-profile">
 									<div class="tab-content">
-										
+
 										<div class="main-content-body tab-pane p-4 border-top-0 active" id="edit">
 											<div class="card-body border">
 												<div class="mb-4 main-content-label">Personal Information</div>
-												 
+
 												{!! Form::open(['method'=>'post','role'=>'form', 'class'=>'form-horizontal' ,'name' =>'editForm', 'files'=>true]) !!}
-										
+
 													<div class="mb-4 main-content-label">Name</div>
-													
-													 
-												
+
+
+
 													<div class="form-group ">
 														<div class="row row-sm">
 															<div class="col-md-3">
@@ -76,17 +76,17 @@
 															</div>
 														</div>
 													</div>
-													
 
-													
-													
+
+
+
 													<div class="form-group ">
 														<div class="row row-sm">
 															<div class="col-md-3">
 																<label class="form-label">First Name</label>
 															</div>
 															<div class="col-md-9">
-																<input   class="form-control" placeholder="First Name" name="fname"    type="text" value="{{$user->fname}}" >
+																<input   class="form-control" placeholder="First Name" name="fname" type="text" value="{{$user->fname}}" readonly >
 															</div>
 														</div>
 													</div>
@@ -96,11 +96,11 @@
 																<label class="form-label">last Name</label>
 															</div>
 															<div class="col-md-9">
-																<input type="text" class="form-control" placeholder="Last Name" name="lname"    type="text" value="{{$user->lname}}" >
+																<input type="text" class="form-control" placeholder="Last Name" name="lname"    type="text" value="{{$user->lname}}" readonly >
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="mb-4 main-content-label">Contact Info</div>
 													<div class="form-group ">
 														<div class="row row-sm">
@@ -112,14 +112,14 @@
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="form-group ">
 														<div class="row row-sm">
 															<div class="col-md-3">
 																<label class="form-label">Phone</label>
 															</div>
 															<div class="col-md-9">
-																<input type="tel" value="{{$user->phone}}"  name="phone"  class="form-control" placeholder="phone number" value="+234 804 6544 4755">
+																<input type="tel" value="{{$user->phone}}"  name="phone"  class="form-control" placeholder="phone number" value="+234 804 6544 4755"  @if($user->phone!="") readonly @endif>
 															</div>
 														</div>
 													</div>
@@ -129,7 +129,7 @@
 																<label class="form-label">Address</label>
 															</div>
 															<div class="col-md-9">
-																<textarea class="form-control" value="{{$user->address}}"  name="address" rows="2" placeholder="Address">{{$user->address}}</textarea>
+																<textarea class="form-control" value="{{$user->address}}"  name="address" rows="2" placeholder="Address" @if($user->address!="") readonly @endif>{{$user->address}}</textarea>
 															</div>
 														</div>
 													</div>
@@ -139,7 +139,7 @@
 																<label class="form-label">City</label>
 															</div>
 															<div class="col-md-9">
-																<textarea class="form-control" value="{{$user->city}}"  name="city" rows="2" placeholder="Address">{{$user->city}}</textarea>
+																<textarea class="form-control" value="{{$user->city}}"  name="city" rows="2" placeholder="Address" @if($user->city!="") readonly @endif>{{$user->city}}</textarea>
 															</div>
 														</div>
 													</div>
@@ -149,7 +149,7 @@
 																<label class="form-label">Zip Code</label>
 															</div>
 															<div class="col-md-9">
-																<textarea class="form-control" value="{{$user->zip_code}}"  name="zip_code"  rows="2" placeholder="Zip Code">{{$user->zip_code}}</textarea>
+																<textarea class="form-control" value="{{$user->zip_code}}"  name="zip_code"  rows="2" placeholder="Zip Code" @if($user->zip_code!="") readonly @endif>{{$user->zip_code}}</textarea>
 															</div>
 														</div>
 													</div>
@@ -159,7 +159,7 @@
 																<label class="form-label">Country</label>
 															</div>
 															<div class="col-md-9">
-																<textarea class="form-control" value="Nigeria" disabled  name="country" rows="2" placeholder="Address">Nigeria</textarea>
+																<textarea class="form-control" value="Nigeria" disabled  name="country" rows="2" placeholder="Address" >Nigeria</textarea>
 															</div>
 														</div>
 													</div>
@@ -183,11 +183,11 @@
 																<label class="form-label">Date of Birth</label>
 															</div>
 															<div class="col-md-9">
-																<input type="date" class="form-control" placeholder="date" value="{{$user->dob}}" name="dob" >
+																<input type="date" class="form-control" placeholder="date" value="{{$user->dob}}" name="dob" @if($user->dob!="") readonly @endif >
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="form-group ">
 														<div class="row row-sm">
 															<div class="col-md-3">
@@ -205,11 +205,11 @@
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="form-group mb-0">
 														<div class="row row-sm">
 															<div class="col-md-3">
-																
+
 															</div>
 															<div class="col-md-9">
 																<div class="custom-controls-stacked">
@@ -221,17 +221,17 @@
 												</form>
 											</div>
 										</div>
-										
+
 										<div class="main-content-body  tab-pane border-top-0" id="timeline">
-										
+
 											<div class="border p-4">
 												<div class="main-content-body main-content-body-profile">
-													
+
 										<div class="main-content-body tab-pane p-4 border-top-0 active" id="edit">
 										<div class="mb-4 main-content-label">Change Password</div>
 											<div class="card-body border">
 												<div class="mb-4 main-content-label">Old Password</div>
-											 
+
 												<form method="post" class="form-horizontal" action="{{route('user.change-password') }}">
 												@csrf
 													<div class="form-group ">
@@ -241,8 +241,8 @@
 															</div>
 														</div>
 													</div>
-													
-													
+
+
 													<div class="mb-4 main-content-label">New Password</div>
 												<form class="form-horizontal">
 													<div class="form-group ">
@@ -252,7 +252,7 @@
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="mb-4 main-content-label">Confirm New Password</div>
 												<form class="form-horizontal">
 													<div class="form-group ">
@@ -262,10 +262,10 @@
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="form-group mb-0">
 														<div class="row row-sm">
-															
+
 															<div class="col-md-9">
 																<div class="custom-controls-stacked">
 																	<br><button type="submit" class="btn btn-primary ml-auto">Change Password</button><br><br>
@@ -280,21 +280,21 @@
 												</div>
 											</div>
 										</div>
-										
-										
+
+
 										<div class="main-content-body p-4 border tab-pane border-top-0" id="gallery">
-											
+
 										<div class="main-content-body tab-pane p-4 border-top-0 active" id="edit">
 										<div class="mb-4 main-content-label">Update your transaction PIN</div>
 											<div class="card-body border">
-												  
+
 												<form method="post" class="form-horizontal" action="{{route('user.change-pin') }}">
 							@csrf
-													 
-													
-													
+
+
+
 													<div class="mb-4 main-content-label">Current Pin</div>
-												 
+
 													<div class="form-group ">
 														<div class="row row-sm">
 														<div class="col-md-9">
@@ -303,10 +303,10 @@
 														</div>
 													</div>
 													<br>
-													
-													
+
+
 													<div class="mb-4 main-content-label">New Pin</div>
-												 
+
 													<div class="form-group ">
 														<div class="row row-sm">
 														<div class="col-md-9">
@@ -314,11 +314,11 @@
 															</div>
 														</div>
 													</div>
-													
-													 
+
+
 													<div class="form-group mb-0">
 														<div class="row row-sm">
-															
+
 															<div class="col-md-9">
 																<div class="custom-controls-stacked">
 																	<br><button type="submit" class="btn btn-primary ml-auto">Change Pin</button><br><br>
@@ -330,10 +330,10 @@
 															<p>Closing your Vision-X Crypto account deletes all the investment data associated with it. This cannot be undone.</p>
 														<div class="form-group ">
 															<div class="col-md-9"> </div>
-															<br><a class="btn btn-primary ml-auto">Close Account</a><br><br>
+															<br><a class="btn btn-primary ml-auto" style="color: red">Close Account</a><br><br>
 														</div>
 													</div>
-														
+
 													</div>
 												</form>
 											</div>
@@ -341,7 +341,7 @@
 													<!-- main-profile-body -->
 												</div>
 											</div>
-										</div>	
+										</div>
 										</div>
 									</div>
 								</div>

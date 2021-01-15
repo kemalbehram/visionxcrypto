@@ -726,6 +726,9 @@
 		<!-- Mutipleselect css-->
 		<link rel="stylesheet" href="{{url('/')}}/assets/assets/plugins/multipleselect/multiple-select.css">
 
+        <!-- Internal Sweet-Alert css-->
+        <link href="{{url('/')}}/assets/assets/plugins/sweet-alert/sweetalert.css" rel="stylesheet">
+        <script src="{{url('/')}}/assets/assets/plugins/sweet-alert/sweetalert.min.js"></script>
 
 		<!-- Sidemenu css-->
 		<link href="{{url('/')}}/assets/assets/css/sidemenu/sidemenu.css" rel="stylesheet">
@@ -847,7 +850,7 @@
         $unread = \App\Message::whereUser_id(Auth::user()->id)->whereAdmin(1)->whereStatus(0)->latest()->take(5)->get();
 
     @endphp
-	<body class="main-body leftmenu @if(Auth::user()->darkmode == 1 ) dark-theme @endif">
+	<body id="mainbody" class="main-body leftmenu @if(Auth::user()->darkmode == 1 ) dark-theme @endif">
 	 <div id="toast"></div>
 		<!-- Loader -->
 		<div id="global-loader">
@@ -1017,9 +1020,9 @@
 
 						</div>
 						<div class="dropdown d-md-flex">
-							<a class="nav-link icon full-screen-link" href="">
-								<i class="fe fe-maximize fullscreen-button fullscreen header-icons"></i>
-								<i class="fe fe-minimize fullscreen-button exit-fullscreen header-icons"></i>
+							<a class="nav-link icon" data-effect="effect-fall" data-toggle="modal" href="#myqr">
+								<i class="fe fe-maximize header-icons"></i>
+{{--								<i class="fe fe-minimize fullscreen-button exit-fullscreen header-icons"></i>--}}
 							</a>
 						</div>
 						<div class="dropdown main-header-notification">
@@ -1083,14 +1086,14 @@
 								</a>
 							</div>
 						</div>
-						<div class="dropdown d-md-flex header-settings"  onclick="event.preventDefault(); document.getElementById('darkmode-form').submit();">
+						<div id="dlm" class="dropdown d-md-flex header-settings"  onclick="darklightmode({{Auth::user()->darkmode}})">
 						<label class="custom-switch">
 														<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
 														<span class="custom-switch-indicator"></span>
-														<span class="custom-switch-description">@if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif</span>
+														<span class="custom-switch-description">
+{{--                                                            @if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif--}}
+                                                        </span>
 													</label>
-						 <form id="darkmode-form" action="{{ route('darkmode') }}" method="POST"
-                                                          style="display: none;">{{ csrf_field() }}</form>
 						</div>
 						<button class="navbar-toggler navresponsive-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
 							aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
@@ -1169,14 +1172,16 @@
 							</div>
 						</div>
 						<div class="dropdown  header-settings">
-							<div class="dropdown d-md-flex header-settings"  onclick="event.preventDefault(); document.getElementById('darkmode-form').submit();">
+							<div id="dlm2" class="dropdown d-md-flex header-settings"  onclick="darklightmode2({{Auth::user()->darkmode}})">
+{{--							<div id="dlm" class="dropdown d-md-flex header-settings"  onclick="event.preventDefault(); document.getElementById('darkmode-form').submit();">--}}
 						<label class="custom-switch">
 														<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
 														<span class="custom-switch-indicator"></span>
-														<span class="custom-switch-description">@if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif</span>
+														<span class="custom-switch-description">
+{{--                                                            @if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif--}}
+                                                        </span>
 													</label>
-						 <form id="darkmode-form" action="{{ route('darkmode') }}" method="POST"
-                                                          style="display: none;">{{ csrf_field() }}</form>
+
 						</div>
 						</div>
 						</div>
@@ -1311,6 +1316,21 @@
 		</div>
 		<!-- End Page -->
 
+     <!-- Modal effects -->
+     <div class="modal" id="myqr">
+         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+             <div class="modal-content modal-content-demo">
+                 <div class="modal-header">
+                     <h6 class="modal-title">Send money to me via my QR</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                 </div>
+                 <div class="modal-body">
+                     <img src="https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl={{'visionx:'.\Illuminate\Support\Facades\Auth::user()->account_number}}&choe=UTF-8\" style='width:190px;' />
+                 </div>
+             </div>
+         </div>
+     </div>
+     <!-- End Modal effects-->
+
 		<!-- Back-to-top -->
 		<a href="#top" id="back-to-top"><i class="fe fe-arrow-up"></i></a>
 
@@ -1355,6 +1375,11 @@
 
 		<!-- Custom js -->
 		<script src="{{url('/')}}/assets/assets/js/custom.js"></script>
+
+
+     <!-- Internal Sweet-Alert js-->
+     <script src="{{url('/')}}/assets/assets/plugins/sweet-alert/sweetalert.min.js"></script>
+     <script src="{{url('/')}}/assets/assets/plugins/sweet-alert/jquery.sweet-alert.js"></script>
 
 		<!-- Internal Data Table js -->
 		<script src="{{url('/')}}/assets/assets/plugins/owl-carousel/owl.carousel.js"></script>

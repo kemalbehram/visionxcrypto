@@ -22,7 +22,7 @@ function showCard(str) {
     }
 }
 
-function showCardtrnx(str) {
+function showCardtrnx() {
     if (str.length == 0) {
         document.getElementById("txtHint").innerHTML = "";
         return;
@@ -50,4 +50,62 @@ function showCardtrnx(str) {
         xmlhttp.open("GET", "cardtransactions/" + str, true);
         xmlhttp.send();
     }
+}
+
+function darklightmode(state) {
+
+    document.getElementById("mainbody").removeAttribute("class");
+
+    if(state==0){
+        document.getElementById("mainbody").setAttribute("class", "main-body leftmenu dark-theme");
+    }else{
+        document.getElementById("mainbody").setAttribute("class", "main-body leftmenu");
+    }
+
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200){
+                var rep=JSON.parse(this.responseText);
+                document.getElementById("dlm").setAttribute("onclick", "darklightmode("+!state+")");
+
+            }
+        };
+        xmlhttp.open("GET", "darkmode", true);
+        xmlhttp.send();
+}
+
+
+function darklightmode2(state) {
+
+    document.getElementById("mainbody").removeAttribute("class");
+
+    if(state==0){
+        document.getElementById("mainbody").setAttribute("class", "main-body leftmenu dark-theme");
+    }else{
+        document.getElementById("mainbody").setAttribute("class", "main-body leftmenu");
+    }
+
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200){
+                var rep=JSON.parse(this.responseText);
+                document.getElementById("dlm2").setAttribute("onclick", "darklightmode2("+!state+")");
+
+            }
+        };
+        xmlhttp.open("GET", "darkmode", true);
+        xmlhttp.send();
+}
+
+function sweetsuccess() {
+    swal(
+        {
+            title: 'Well done!',
+            text: 'You clicked the button!',
+            type: 'success',
+            confirmButtonColor: '#57a94f'
+        }
+    )
 }

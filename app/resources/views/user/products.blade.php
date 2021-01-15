@@ -1,6 +1,20 @@
 @extends('include.userdashboard')
 @section('content')
-   
+
+    @if(Session::has('modal'))
+    <script>
+        swal(
+            {
+                title: 'Transaction Successful!',
+                text: 'Your transaction was successfully',
+                type: 'success',
+                confirmButtonColor: '#57a94f'
+            }
+        )
+    </script>
+    @endif
+
+
 			<!-- Main Content-->
 			<div class="main-content side-content pt-0">
 
@@ -18,11 +32,11 @@
 							</div>
 							</div>
 						<!-- End Page Header -->
-						
-						
-						
+
+
+
 						<!-- Row -->
-						
+
 						<div class="row row-sm">
 						<div class="col-sm-6 col-md-6 col-xl-3">
 								<div class="card custom-card">
@@ -82,7 +96,7 @@
 							</div>
 						</div>
 						<!--End Row -->
-						
+
 
 						<!-- Row -->
 						<div class="row row-sm">
@@ -114,7 +128,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="col-sm-6 col-md-6 col-xl-3">
 								<div class="card custom-card">
 									<div class="card-body user-card text-center">
@@ -129,7 +143,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="col-sm-6 col-md-6 col-xl-3">
 								<div class="card custom-card">
 									<div class="card-body user-card text-center">
@@ -144,43 +158,43 @@
 									</div>
 								</div>
 							</div>
-							
-							
+
+
 							</div>
 						<!--End Row -->
 					</div>
 				</div>
 			</div>
 			<!-- End Main Content-->
-			
-			
-			
+
+
+
 			<!-- Airtime modal -->
 			<form method="post" class="withdraw-pin-form" action="{{route('loadairtime') }}">
 			@csrf
-								    			
+
 			<div class="modal" id="airtime">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content modal-content-demo">
 						<div class="modal-header">
 							<h6 class="modal-title">Airtime Recharge</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
 						</div>
-						<div class="modal-body"> 
+						<div class="modal-body">
 							<!-- Select2 -->
 							<div class="withdraw-address">
 							 <small>Please Select Network</small>
-														 
+
 							<select name="network" class="form-control select2">
 							@foreach($networks as $k=>$data)
 							<option value="{{$data->symbol}}"><img width="40"  src="{{url('assets/images')}}/{{$data->image}}" alt=""> {{$data->name}} Network</option>
 							@endforeach
 							</select>
-							
+
 												</div>
 
 												<br>
 												<div class="withdraw-address">
-							 <small>Please Enter Phone Number</small>						 
+							 <small>Please Enter Phone Number</small>
 													<input name="number" class="form-control" placeholder="0801234567890" ></input>
 												</div>
 
@@ -197,16 +211,16 @@
 												</div>
 
 <br>
-												 
 
- 
-							
-							
+
+
+
+
 							<!-- Select2 -->
-							 
+
 						</div>
 						<div class="modal-footer">
-						
+
 							<button class="btn ripple btn-primary" type="submit">Recharge</button>
 							<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
 						</div>
@@ -215,42 +229,42 @@
 			</div>
 			</form>
 			<!-- End airtime modal -->
-			
-			
-				
+
+
+
 			<!-- internet modal -->
 			<form method="post"  action="{{route('loadata') }}">
 			@csrf
-								    			
+
 			<div class="modal" id="internet">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content modal-content-demo">
 						<div class="modal-header">
 							<h6 class="modal-title">Internet Data</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
 						</div>
-						<div class="modal-body"> 
+						<div class="modal-body">
 							<!-- Select2 -->
 							<div class="withdraw-address">
 							 <small>Please Select Network</small>
 							<script>
-function myFunction() { 
- var image = $("#mySelect option:selected").attr('data-image'); 
- document.getElementById("image").innerHTML = "<img width='20' src='{{url('assets/images')}}/"+image+"'>"; 
-  
+function myFunction() {
+ var image = $("#mySelect option:selected").attr('data-image');
+ document.getElementById("image").innerHTML = "<img width='20' src='{{url('assets/images')}}/"+image+"'>";
+
  };
-</script>														
+</script>
 							<select name="network"  id="mySelect" onchange="myFunction()" class="form-control select2">
 							@foreach($networks as $k=>$data)
 							<option data-image="{{$data->image}}" value="{{$data->symbol}}" > {{$data->name}} Network</option>
 							@endforeach
 							</select>
-							
+
 												</div>
 
 												<br>
-												 <small>Please Enter Phone Number</small>	
+												 <small>Please Enter Phone Number</small>
 												<div class="input-group">
-												 
+
 													<input name="number" class="form-control" placeholder="0801234567890" ></input>
 													<span class="input-group-append">
 														<button class="btn ripple btn-primary" type="button" ><a id="image">Phone</a></button>
@@ -258,10 +272,10 @@ function myFunction() {
 												</div>
 
 												<br>
-							 
+
 						</div>
 						<div class="modal-footer">
-						
+
 							<button class="btn ripple btn-primary" type="submit">Proceed</button>
 							<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
 						</div>
@@ -270,15 +284,15 @@ function myFunction() {
 			</div>
 			</form>
 			<!-- End internet modal -->
-				
+
 			<!-- Utility modal -->
 			<form method="post" action="{{route('validatemeter') }}">
 			@csrf
-								    			
+
 			<div class="modal" id="utility">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content modal-content-demo">
-						 	<div class="modal-body"> 
+						 	<div class="modal-body">
 							<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
 									<div class="header-text mb-0">
 										<div class="container-fluid p-5">
@@ -292,16 +306,16 @@ function myFunction() {
 													<div class="item-search-tabs mb-6 background-text">
 														<div class="buy-sell">
 															<div class="form row mx-auto justify-content-center d-flex p-4">
-																
+
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
-																
+
 																<script>
-function myFunctionpower() { 
- var image = $("#mySelected option:selected").attr('data-image');  
- document.getElementById("pimage").innerHTML = "<img width='40'  src='{{url('assets/images')}}/"+image+"'>"; 
-   
+function myFunctionpower() {
+ var image = $("#mySelected option:selected").attr('data-image');
+ document.getElementById("pimage").innerHTML = "<img width='40'  src='{{url('assets/images')}}/"+image+"'>";
+
  };
-</script>														 
+</script>
 																	<select name="meter" id="mySelected" onchange="myFunctionpower()" class="form-control select2  custom-select br-md-0">
 																		@foreach($power as $k=>$data)
 																		<option data-image="{{$data->image}}" value="{{$data->billercode}}" >{{$data->name}} ({{$data->type}})</option>
@@ -311,7 +325,7 @@ function myFunctionpower() {
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
 																	<i class=" pe-7s-light exchange-icon tx-30 text-white inline-block"></i>
 																</div>
-																 
+
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
 																	<input type="number"  name="meternumber"  class="form-control mb-4 mb-lg-0" id="text6" placeholder="Meter Number">
 																</div>
@@ -326,22 +340,22 @@ function myFunctionpower() {
 										</div>
 									</div><!-- /header-text -->
 								</div>
- 
+
 						</div>
 					</div>
 				</div>
 			</div>
 			</form>
 			<!-- End Utility modal -->
-			
+
 			<!-- cabletv modal -->
 			<form method="post" action="{{route('validatedecoder') }}">
 			@csrf
-								    			
+
 			<div class="modal" id="cabletv">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content modal-content-demo">
-						 	<div class="modal-body"> 
+						 	<div class="modal-body">
 							<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
 									<div class="header-text mb-0">
 										<div class="container-fluid p-5">
@@ -355,29 +369,29 @@ function myFunctionpower() {
 													<div class="item-search-tabs mb-6 background-text">
 														<div class="buy-sell">
 															<div class="form row mx-auto justify-content-center d-flex p-4">
-																
+
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
-																
+
 																		<script>
-function myFunctioncabletv() { 
- var deco = $("#mySelected2 option:selected").attr('data-deco');  
- document.getElementById("deco").value = deco; 
-   
+function myFunctioncabletv() {
+ var deco = $("#mySelected2 option:selected").attr('data-deco');
+ document.getElementById("deco").value = deco;
+
  };
-</script>											
+</script>
 																	<select name="decoder"  id="mySelected2" onchange="myFunctioncabletv()" class="form-control select2  custom-select br-md-0">
-																		 
+
 																		<option   data-deco="DStv"  value="dstv" >DSTV</option>
 																		<option  data-deco="GOtv" value="gotv" >GOTV</option>
 																		<option  data-deco="Startimes" value="startimes" >Startimes</option>
-																		  
+
 																	</select>
 																</div>
 																<input id="deco" name="deco" hidden>
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
 																	<i class=" pe-7s-light exchange-icon tx-30 text-white inline-block"></i>
 																</div>
-																 
+
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
 																	<input type="number"  name="number"  class="form-control mb-4 mb-lg-0" id="text6" placeholder="Decoder/IUC Number">
 																</div>
@@ -392,23 +406,23 @@ function myFunctioncabletv() {
 										</div>
 									</div><!-- /header-text -->
 								</div>
- 
+
 						</div>
 					</div>
 				</div>
 			</div>
 			</form>
 			<!-- End cabletv modal -->
-			
-					
+
+
 			<!-- SMS modal -->
 			<form  action="{{route('sendsmsnow')}}" method="post">
 			{{ csrf_field() }}
-								    			
+
 			<div class="modal" id="sms">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content modal-content-demo">
-						 	<div class="modal-body"> 
+						 	<div class="modal-body">
 							<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
 									<div class="header-text mb-0">
 										<div class="container-fluid p-5">
@@ -422,15 +436,15 @@ function myFunctioncabletv() {
 													<div class="item-search-tabs mb-6 background-text">
 														<div class="buy-sell">
 															<div class="form row mx-auto justify-content-center d-flex p-4">
-																
+
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
-																
+
 																	<input name="phone" type="number" placeholder="080********"  class="form-control mb-4 mb-lg-0" id="text6">
 																</div>
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
 																	<i class=" pe-7s-mail exchange-icon tx-30 text-white inline-block"></i>
 																</div>
-																 
+
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
 																	<textarea  name="message" type="text"  class="form-control mb-4 mb-lg-0" id="text6" placeholder="Enter Message Body"></textarea>
 																</div>
@@ -445,7 +459,7 @@ function myFunctioncabletv() {
 										</div>
 									</div><!-- /header-text -->
 								</div>
- 
+
 						</div>
 					</div>
 				</div>
