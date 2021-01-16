@@ -1821,7 +1821,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         }
 
         if($data->status==2){
-            return back()->with("user/products", "Payment has been made already");
+            return redirect()->route('products')->with("danger", "Payment has been made already");
         }
 
 
@@ -1852,7 +1852,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 'status' =>  0
             ]);
 
-            return redirect('user/products')->with('success', 'Your cryptocurrency purchase with transaction number '.$data->trx.'  was successful.');
+            return redirect()->route('products')->with(['modal'=> 'power', "success"=> 'Your cryptocurrency purchase with transaction number '.$data->trx.'  was successful.']);
         }
 
     }

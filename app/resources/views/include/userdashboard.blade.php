@@ -1086,9 +1086,9 @@
 								</a>
 							</div>
 						</div>
-						<div id="dlm" class="dropdown d-md-flex header-settings"  onclick="darklightmode({{Auth::user()->darkmode}})">
+						<div class="dropdown d-md-flex header-settings">
 						<label class="custom-switch">
-														<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
+														<input id="dlm" type="checkbox" onchange="darklightmode({{Auth::user()->darkmode}})" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
 														<span class="custom-switch-indicator"></span>
 														<span class="custom-switch-description">
 {{--                                                            @if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif--}}
@@ -1172,10 +1172,10 @@
 							</div>
 						</div>
 						<div class="dropdown  header-settings">
-							<div id="dlm2" class="dropdown d-md-flex header-settings"  onclick="darklightmode2({{Auth::user()->darkmode}})">
+							<div class="dropdown d-md-flex header-settings">
 {{--							<div id="dlm" class="dropdown d-md-flex header-settings"  onclick="event.preventDefault(); document.getElementById('darkmode-form').submit();">--}}
 						<label class="custom-switch">
-														<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
+														<input id="dlm2" onchange="darklightmode2({{Auth::user()->darkmode}})" type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" @if(Auth::user()->darkmode == 1 ) checked @endif>
 														<span class="custom-switch-indicator"></span>
 														<span class="custom-switch-description">
 {{--                                                            @if(Auth::user()->darkmode == 1 ) Dark Mode @else Toggle Dark Mode @endif--}}

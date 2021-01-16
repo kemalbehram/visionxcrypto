@@ -127,7 +127,7 @@ class ProductController extends Controller
 	$response = curl_exec($curl);
 	curl_close($curl);
 	$rep=json_decode($response, true);
-    
+
 	if($rep['responsecode'] == 00)
 	{
 	$product['user_id'] = Auth::id();
@@ -271,7 +271,7 @@ class ProductController extends Controller
 
 		public function internetstep2()
 		{
-		
+
         $data['page_title'] = "Internet Data";
 		$data['number'] = Session::get('number');
 		$network = Session::get('network');
@@ -362,7 +362,7 @@ class ProductController extends Controller
 	session()->forget('number');
 	session()->forget('network');
 
-    return redirect()->route('internet')->with(['modal'=> 'airtime', "success" => "internet subscription was successful"]);
+    return redirect()->route('products')->with(['modal'=> 'airtime', "success" => "internet subscription was successful"]);
 	}
 	else{
 		return back()->with('danger', 'Sorry, you cant subscribe to internet data at the moment, please try again later.');
@@ -622,7 +622,7 @@ class ProductController extends Controller
 	session()->forget('number');
 	session()->forget('amount');
 
-	return redirect()->route('banktransfer')->with("success", "fund transfer was successful");
+	return redirect()->route('products')->with(['modal'=> 'banktransfer', 'success'=> 'fund transfer was successful']);
 	}
 	else{
 		return back()->with('danger', ''.$rep['responsecode'].'Sorry, you cant make transfer at the moment, please try again later.');
@@ -701,7 +701,7 @@ class ProductController extends Controller
 
 	session()->forget('amount');
 
-	return redirect()->route('banktransfer')->with("fundsent", "fund transfer was successful. Please wait while we process your transfer");
+	return redirect()->route('products')->with(['modal'=> 'airtime', 'fundsent'=> 'fund transfer was successful. Please wait while we process your transfer']);
 	}
 	else{
 		return back()->with('danger', 'Sorry, you cant make transfer at the moment, please try again later.');
@@ -913,7 +913,7 @@ class ProductController extends Controller
                 session()->forget('number');
                 session()->forget('decoder');
 
-                return redirect()->route('tvbill')->with(['modal'=> 'tv', "success"=> $product['remark']]);
+                return redirect()->route('products')->with(['modal'=> 'tv', "success"=> $product['remark']]);
 
         }else {
             return back()->with('danger', 'We cannot proces your selected subscription plan at the moment. Please Try Again');
@@ -1157,7 +1157,7 @@ class ProductController extends Controller
             session()->forget('number');
             session()->forget('name');
 
-            return redirect()->route('utilitybill')->with(['modal'=> 'power', "success"=> $product['remark']]);
+            return redirect()->route('products')->with(['modal'=> 'power', "success"=> $product['remark']]);
         }
         else{
            return back()->with('danger', 'We cannot process your request at the moment, please try again later');

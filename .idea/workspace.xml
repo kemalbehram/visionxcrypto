@@ -22,16 +22,9 @@
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/ebuypay.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/ebuypay.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/esell.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/esell.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/esellscan.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/esellscan.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/my-wallet.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/my-wallet.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/products.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/products.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/profile.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/trade.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/trade.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/assets/img/brand/icon-light.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/assets/img/brand/icon-light.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/js/vcard.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/vcard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -237,7 +230,7 @@
       <workItem from="1610628609988" duration="9143000" />
       <workItem from="1610667883475" duration="2333000" />
       <workItem from="1610695269594" duration="125000" />
-      <workItem from="1610697390838" duration="18691000" />
+      <workItem from="1610697390838" duration="25219000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -283,18 +276,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>300</line>
+          <line>354</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>454</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>512</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
@@ -325,6 +308,11 @@
           <url>file://$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php</url>
           <line>852</line>
           <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
+          <line>44</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>

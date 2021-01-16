@@ -67,7 +67,7 @@ function darklightmode(state) {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200){
                 var rep=JSON.parse(this.responseText);
-                document.getElementById("dlm").setAttribute("onclick", "darklightmode("+!state+")");
+                document.getElementById("dlm").setAttribute("onchange", "darklightmode("+!state+")");
 
             }
         };
@@ -91,21 +91,10 @@ function darklightmode2(state) {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200){
                 var rep=JSON.parse(this.responseText);
-                document.getElementById("dlm2").setAttribute("onclick", "darklightmode2("+!state+")");
+                document.getElementById("dlm2").setAttribute("onchange", "darklightmode2("+!state+")");
 
             }
         };
         xmlhttp.open("GET", "darkmode", true);
         xmlhttp.send();
-}
-
-function sweetsuccess() {
-    swal(
-        {
-            title: 'Well done!',
-            text: 'You clicked the button!',
-            type: 'success',
-            confirmButtonColor: '#57a94f'
-        }
-    )
 }
