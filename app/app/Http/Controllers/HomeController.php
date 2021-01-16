@@ -101,6 +101,8 @@ class HomeController extends Controller
 
     public function index()
     {
+        $basic = GeneralSettings::first();
+
         $data['page_title'] = "Dashboard";
         $user = Auth::user();
         $data['trx'] = Trx::whereUser_id($user->id)->whereStatus(0)->latest()->paginate(6);
@@ -119,6 +121,7 @@ class HomeController extends Controller
         $data['spend'] = Trx::where('user_id', Auth::id())->whereStatus(1)->whereType(2)->select('main_amo')->sum('main_amo');;
         $data['sdecline'] = Trx::where('user_id', Auth::id())->whereStatus(-2)->whereType(2)->select('main_amo')->sum('main_amo');;
         $data['time'] = Carbon::now();
+        $data['news'] = $basic->news;
         $crypt = Currency::all();
 
         $user = Auth::user();
@@ -161,7 +164,7 @@ class HomeController extends Controller
                 Cryptowallet::create($new);
             }
         }
-        $basic = GeneralSettings::first();
+
         if ($basic->maintain == 1) {
             return view('front.maintain', $data);
         }
@@ -1689,10 +1692,18 @@ class HomeController extends Controller
             $reply = json_decode($response, true);
             curl_close($curl);
 
+            if(!isset($reply['data']['address'])){
+                return back()->with('error','Amount too low');
+            }
+
             $address = $reply['data']['address'];
             $invoiceid = $reply['data']['invoice_id'];
 //		$btcvalue = $reply['data']['total_amount']['TCN'];
-            $btcvalue = $reply['data']['total_amount']['BTC'];
+            if($currency->symbol=="BTC") {
+                $btcvalue = $reply['data']['total_amount']['BTC'];
+            }else{
+                $btcvalue = $reply['data']['total_amount']['ETH'];
+            }
 
             $data->action = $invoiceid;
             $data->method = $currency->symbol;

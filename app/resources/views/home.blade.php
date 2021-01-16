@@ -1,13 +1,13 @@
 @extends('include.userdashboard')
 @section('content')
-         
+
 
 @php
 $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first();
  $ncount = \App\Message::whereUser_id(Auth::user()->id)->whereAdmin(1)->whereStatus(0)->count();
- $tpend = \App\Trx::whereUser_id(Auth::user()->id)->whereStatus(1)->count(); 
- $tsuc = \App\Trx::whereUser_id(Auth::user()->id)->whereStatus(2)->count(); 
- $tdec = \App\Trx::whereUser_id(Auth::user()->id)->whereStatus(3)->count(); 
+ $tpend = \App\Trx::whereUser_id(Auth::user()->id)->whereStatus(1)->count();
+ $tsuc = \App\Trx::whereUser_id(Auth::user()->id)->whereStatus(2)->count();
+ $tdec = \App\Trx::whereUser_id(Auth::user()->id)->whereStatus(3)->count();
 
  $ipcount = \App\UserLogin::whereUser_id(Auth::user()->id)->count();
 @endphp
@@ -30,15 +30,15 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
     '',
   showCloseButton: true,
   showCancelButton: false,
-  showConfirmButton: false 
- 
+  showConfirmButton: false
+
 })
 </script>
 @endif
 <!-- Main Content-->
 			<div class="main-content side-content pt-0">
-			
-			
+
+
 
 				<div class="container-fluid">
 					<div class="inner-body">
@@ -47,12 +47,12 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 						<div class="page-header">
 							<div>
 								<h2 class="main-content-title tx-24 mg-b-5">Hello!!</h2>
-								
+
 							</div>
-							
+
 						</div>
 						<!-- End Page Header -->
- 
+
 						<!--Row-->
 						<div class="row row-sm">
 							<div class="col-sm-12 col-lg-12 col-xl-8">
@@ -67,8 +67,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 														<h4 class="d-flex  mb-3">
 															<span class="font-weight-bold text-white "> {{Auth::User()->fname}} {{Auth::User()->lname}}!</span>
 														</h4>
-														<p class="tx-white-7 mb-1">We got some amazing offer just for you anytime you by simply topup your account
-														topup your account and get extra <b class="text-success">₦20</b>
+														<p class="tx-white-7 mb-1">{{$news}}
 													</div>
 													<img src="{{url('/')}}/assets/assets/img/pngs/work3.png" alt="user-img">
 												</div>
@@ -85,10 +84,10 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											<div class="card-body">
 												<div class="card-item">
 													<div class="card-item-icon card-icon">
-														
-														
+
+
 														<i class="fas fa-wallet"style="color:green"></i>
-														
+
 														</div>
 													<div class="card-item-title mb-2">
 														<label class="main-content-label tx-13 font-weight-bold mb-1">Naira Walet</label>
@@ -97,7 +96,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 													<div class="card-item-body">
 														<div class="card-item-stat">
 															<h4 class="font-weight-bold">{{$basic->currency_sym}}{{number_format(Auth::user()->balance, $basic->decimal)}}</h4>
-															
+
 														</div>
 													</div>
 												</div>
@@ -109,9 +108,9 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											<div class="card-body">
 												<div class="card-item">
 													<div class="card-item-icon card-icon">
-														
+
 														<i class="fas fa-dollar"style="color:green"></i>
-														
+
 														</div>
 													<div class="card-item-title mb-2">
 														<label class="main-content-label tx-13 font-weight-bold mb-1">Investment</label>
@@ -120,7 +119,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 													<div class="card-item-body">
 														<div class="card-item-stat">
 															<h4 class="font-weight-bold">${{number_format($investment->balance, $basic->decimal)}}</h4>
-															
+
 														</div>
 													</div>
 												</div>
@@ -132,9 +131,9 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											<div class="card-body">
 												<div class="card-item">
 													<div class="card-item-icon card-icon">
-														
+
 														<i class="fas fa-gift"style="color:green"></i>
-														
+
 														</div>
 													<div class="card-item-title  mb-2">
 														<label class="main-content-label tx-13 font-weight-bold mb-1">Referral Bonus</label>
@@ -143,7 +142,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 													<div class="card-item-body">
 														<div class="card-item-stat">
 															<h4 class="font-weight-bold">{{$basic->currency_sym}}{{number_format(Auth::user()->bonus, $basic->decimal)}}</h4>
-															
+
 														</div>
 													</div>
 												</div>
@@ -168,61 +167,61 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 												<div class="card-header border-bottom-0 pt-0 pl-0 pr-0 d-flex">
 													<div>
 														<label class="main-content-label mb-2">Split Payment</label> <span class="d-block tx-12 mb-3 text-muted">Split bills with family and friends with just a click without getting stuck</span>
-													
+
 													<p class="mb-0 tx-24 mt-2"><b class="text"style="color:orange">COMING SOON</b></p>
-													
+
 													</div>
-													
+
 													<div class="  col-6 ">
 												<img src="{{url('/')}}/assets/assets/img/pngs/split.png" >
 											</div>
-														
-													
+
+
 												</div>
 											</div>
 										</div>
-										
+
 										<!--Row-->
-										
-										
+
+
 										<div class="card custom-card mg-b-20">
 											<div class="card-body">
 												<div class="card-header border-bottom-0 pt-0 pl-0 pr-0 d-flex">
 													<div>
 														<label class="main-content-label mb-2">Trade Bitcoin With Convinience</label> <span class="d-block tx-12 mb-3 text-muted">Enjoy crypto trade with us either on Btc, Eth, or Pm at the best rates</span>
-													
+
 													<br>
 											<p> * Convinient trading rate <i class="fas fa-check"style="color:green" ></i></p>
 											<p> * Swift transaction request <i class="fas fa-check"style="color:green" ></i></p>
 											<p> * Instant Payout settlement <i class="fas fa-check"style="color:green" ></i></p>
-											
+
 											<br>
 											<a href="{{route('trade')}}"><button class="btn btn-primary ml-auto">Buy Bitcoin</button></a><br><br><br>
-													
+
 													</div>
-													
-													
+
+
 													<div class="  col-6 ">
 												<img src="{{url('/')}}/assets/assets/img/pngs/coins2.png" >
 											</div>
-														
-													
+
+
 												</div>
 											</div>
 										</div>
-									
-										
+
+
 									</div><!-- col end -->
 								</div><!-- Row end -->
 							</div><!-- col end -->
 
 							<div class="col-sm-12 col-lg-12 col-xl-4 mt-xl-4">
-							
-							
-							
-							
-							
-							
+
+
+
+
+
+
 								<div class="card custom-card">
 									<div class="card-body h-100">
 										<div>
@@ -239,23 +238,23 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 												<div class="carousel-inner">
 													<div class="carousel-item active">
 														<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/advert1.png">
-														
+
 													</div>
 													<div class="carousel-item">
 														<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/advert2.png">
-														
+
 													</div>
 													<div class="carousel-item">
 														<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/advert3.png">
-														
+
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							
-							
+
+
 								<div class="card custom-card">
 									<div class="card-body">
 										<div class="row row-sm">
@@ -278,67 +277,67 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 										<div>
 											<label class="main-content-label mb-2 pt-2">Verification Level</label>
 											<span class="d-block tx-12 mb-2 text-muted">No verification, No Enjoyment</span>
-											
+
 											 @php
 							  if(Auth::user()->bankyes == 1 ){
-								 
+
 							  $a = 1; }
 							 if(Auth::user()->bankyes != 1 ){
-							
+
 							 $a = 0;
 							}
-							 
+
 							 if(Auth::user()->bvn_verify == 1 ){
 							 $b = 1; }
 							  if(Auth::user()->bvn_verify != 1 ){
-							 
+
 							 $b = 0;
 							 }
 							 if(Auth::user()->verified == 2 ){
-							  
+
 							 $c = 1; }
 							 if(Auth::user()->verified != 2 ){
 							 $c = 0;
 							}
-							  
+
 							@endphp
-							 
+
 							 @php
 							 $stars = $a + $b + $c;
 							 @endphp
-							 
+
 							 @if($stars == 1)
 							 <p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
 											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
-											
+
 							 @elseif($stars == 2)
-							 
+
 							 <p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
-											
+
 							 @elseif($stars == 3)
-							 
+
 							 <p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
 											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:green" ></i></p>
-											
+
 							 @else
-							 
+
 							<p> Level 1----- ₦1000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
 											<p> Level 2----- ₦2,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
 											<p> Level 3----- ₦10,000,000 limit <i class="fas fa-check-circle"style="color:red" ></i></p>
-											
+
 							 @endif
-											
+
 										</div>
 									</div>
-									
+
 								</div>
-								
-								
-								
+
+
+
 								<div class="card custom-card">
 									<div class="card-body">
 										<div class="row row-sm">
@@ -347,7 +346,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 													<label class="main-content-label mb-2 pt-2">Refer & Earn</label>
 													<span class="d-block tx-12 mb-0 text-muted">Stay at the peak of your game</span>
 												</div><br>
-												
+
 											<a  href="{{route('referral')}}" >	<button class="btn btn-primary ml-auto">Invite Now</button></a>
 											</div>
 											<div class="col-6">
@@ -356,64 +355,64 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 										</div>
 									</div>
 								</div>
-								
-								
-								
+
+
+
 								<div class="card custom-card">
 									<div class="card-header border-bottom-0 pb-0 d-flex pl-3 ml-1">
 										<div>
 											<label class="main-content-label mb-2 pt-2">Total Withdrawal</label>
-											
+
 											<p class="mb-0 tx-24 mt-2"><b class="text"style="color:green">{{$basic->currency_sym}}{{number_format($withdraw, $basic->decimal)}}</b></p>
 											<br>
-											
+
 										</div>
 									</div>
-									
+
 								</div>
-								
-								
+
+
 								<div class="card custom-card">
 									<div class="card-header border-bottom-0 pb-0 d-flex pl-3 ml-1">
 										<div>
 											<label class="main-content-label mb-2 pt-2">Successful Transaction</label>
-											
+
 											<p class="mb-0 tx-24 mt-2"><b class="text"style="color:green">{{$tsuc}}</b></p>
 											<br>
 										</div>
 									</div>
-									
+
 								</div>
-								
-								
+
+
 								<div class="card custom-card">
 									<div class="card-header border-bottom-0 pb-0 d-flex pl-3 ml-1">
 										<div>
 											<label class="main-content-label mb-2 pt-2">Pending Transaction</label>
-											
+
 											<p class="mb-0 tx-24 mt-2"><b class="text"style="color:orange">{{$tpend}}</b></p>
 											<br>
 										</div>
 									</div>
-									
+
 								</div>
-										
-										
+
+
 										<div class="card custom-card">
 									<div class="card-header border-bottom-0 pb-0 d-flex pl-3 ml-1">
 										<div>
 											<label class="main-content-label mb-2 pt-2">Declined Transaction</label>
-											
+
 											<p class="mb-0 tx-24 mt-2"><b class="text"style="color:red">{{$tdec}}</b></p>
 											<br>
 										</div>
 									</div>
-									
+
 								</div>
 									</div>
 								</div>
-								
-								
+
+
 								<!-- Row-->
 						<div class="row row-sm">
 							<div class="col-xl-12">
@@ -445,13 +444,13 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 														<td class="text-success">@if($data->type == 1) BUY @else SELL @endif</td>
 														<td><i class="cc BTC-alt text-warning"></i> ${{number_format($data->amount, $basic->decimal)}}</td>
 														<td><i class="cc BTC-alt text-warning"></i> {{App\Currency::whereId($data->currency_id)->first()->name ?? "Unknown"}}</td>
-														<td><span class="badge badge-warning-light badge-pill">Pending</span></td> 
+														<td><span class="badge badge-warning-light badge-pill">Pending</span></td>
 														<td>${{number_format($data->charge , $basic->decimal)}}</td>
 														<td>
 														  @if($data->type == 2)
 											    <a href="{{ route('esellpost22', $data->trx) }}">  <span class="badge badge-info-light badge-pill">Pay</span></a>
 											        @else
-											        <a href="{{ route('ebuypost22', $data->trx) }}">  <span class="badge badge-info-light badge-pill">Pay</span></a> 
+											        <a href="{{ route('ebuypost22', $data->trx) }}">  <span class="badge badge-info-light badge-pill">Pay</span></a>
 											    @endif
 														 <td><a href="{{ route('ebuydel',$data->trx) }}"><span class="badge badge-danger-light badge-pill">Cancel</span></a></td>
 														<td>{{ Carbon\Carbon::parse($data->created_at)->diffForHumans() }}</td>
@@ -460,7 +459,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											@else
 											No Transaction Record Found Yet
 											@endif
-													 
+
 												</tbody>
 											</table>
 										</div>

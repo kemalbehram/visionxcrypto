@@ -23,15 +23,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/esellscan.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/esellscan.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/my-wallet.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/my-wallet.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/new-investment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/new-investment.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/products.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/products.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/front/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/css/sass/layout/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/front/css/sass/layout/_header.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/home.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,7 +228,7 @@
       <workItem from="1610628609988" duration="9143000" />
       <workItem from="1610667883475" duration="2333000" />
       <workItem from="1610695269594" duration="125000" />
-      <workItem from="1610697390838" duration="44244000" />
+      <workItem from="1610697390838" duration="47529000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -297,7 +289,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>568</line>
+          <line>571</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -337,7 +329,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>582</line>
+          <line>585</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="postbank" />
@@ -346,7 +338,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>250</line>
+          <line>253</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="bvnVerify" />
@@ -355,7 +347,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>524</line>
+          <line>527</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="kyc2" />
@@ -382,7 +374,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>1774</line>
+          <line>1785</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="esellcallback" />

@@ -339,7 +339,7 @@ class ProductController extends Controller
 	$response = curl_exec($curl);
 
 	curl_close($curl);
-	echo $response;
+//	echo $response;
 	$rep=json_decode($response, true);
 
 	if($rep['responsecode'] == 00)
