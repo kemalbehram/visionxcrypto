@@ -622,7 +622,7 @@ class ProductController extends Controller
 	session()->forget('number');
 	session()->forget('amount');
 
-	return redirect()->route('products')->with(['modal'=> 'banktransfer', 'success'=> 'fund transfer was successful']);
+	return redirect()->route('banktransfer')->with(['modal'=> 'banktransfer', 'success'=> 'fund transfer was successful']);
 	}
 	else{
 		return back()->with('danger', ''.$rep['responsecode'].'Sorry, you cant make transfer at the moment, please try again later.');
@@ -701,7 +701,7 @@ class ProductController extends Controller
 
 	session()->forget('amount');
 
-	return redirect()->route('products')->with(['modal'=> 'airtime', 'fundsent'=> 'fund transfer was successful. Please wait while we process your transfer']);
+	return redirect()->route('banktransfer')->with(['modal'=> 'banktransfer', 'fundsent'=> 'fund transfer was successful. Please wait while we process your transfer']);
 	}
 	else{
 		return back()->with('danger', 'Sorry, you cant make transfer at the moment, please try again later.');

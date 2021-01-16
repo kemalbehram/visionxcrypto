@@ -1,5 +1,19 @@
 @extends('include.userdashboard')
 @section('content')
+
+    @if(session('modal'))
+        <script>
+            swal(
+                {
+                    title: 'Transfer Successful!',
+                    text: 'Your transaction was successfully',
+                    type: 'success',
+                    confirmButtonColor: '#57a94f'
+                }
+            )
+        </script>
+    @endif
+
    <!-- Main Content-->
 			<div class="main-content side-content pt-0">
 

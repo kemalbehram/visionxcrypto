@@ -1,7 +1,7 @@
 @extends('include.userdashboard')
 @section('content')
 
-    @if(Session::has('modal'))
+    @if(session('modal'))
     <script>
         swal(
             {

@@ -27,7 +27,7 @@
 
                                         <a class="nav-link active" data-toggle="tab" href="#bvn">BVN</a>
                                         <a class="nav-link" data-toggle="tab" href="#timeline">KYC Verification</a>
-                                        <a class="nav-link" data-toggle="tab" href="#bank">Payment</a>
+                                        <a class="nav-link" data-toggle="tab" href="#bank">Other Verification</a>
                                     </nav>
                                 </div>
                             </div>
@@ -41,29 +41,91 @@
                         <div class="card custom-card main-content-body-profile">
                             <div class="tab-content">
 
-
                                 <div class="main-content-body tab-pane p-4 border-top-0" id="bank">
 
-                                    <div class="mb-4 main-content-label">Front View</div>
+                                    <div class="mb-4 main-content-label">Bank Statement</div>
 
-                                    <div class="form-group ">
-                                        <div class="row row-sm">
-                                            <div class="col-md-9">
-                                                <div class="input-group file-browser">
-                                                    <input type="text"
-                                                           class="form-control border-right-0 browse-file"
-                                                           placeholder="Upload Avatar" readonly>
-                                                    <label class="input-group-btn">
-														<span class="btn btn-primary">
-															Browse <input type="file" name="photo"
-                                                                          accept="image/png, image/jpeg"
-                                                                          style="display: none;" multiple>
-														</span>
-                                                    </label>
+                                    @if($kyc3a=="")
+                                    <!-- Row -->
+                                    <div class="row row-sm">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="card custom-card">
+                                                <div class="card-body">
+                                                    <div>
+                                                        <p class="text-muted card-sub-title">Kindly select your bank statement of 6 months history</p>
+                                                    </div>
+                                                    <div class="row mb-4">
+                                                        <div class="col-12">
+                                                            <form role="form" method="POST" class="form-horizontal" action="{{ route('document.upload3') }}" enctype="multipart/form-data">
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="type" value="Bank Statement" />
+                                                                <input type="file" class="dropify" name="photo" data-height="100" accept=".pdf" />
+                                                                <button type="submit" class="btn ripple btn-primary btn-lg btn-block btn-with-icon"><i class="fe fe-upload"></i> Upload Now</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- End Row -->
+
+                                        @else
+
+                                            @if($kyc3a->status == 1)
+                                                <button class="btn btn-success btn-sm mb-lg-5">Verified
+                                                </button>
+                                            @elseif($kyc3a->status == 0)
+                                                <button class="btn btn-warning btn-sm mb-lg-5">Pending
+                                                </button>
+                                            @elseif($kyc3a->status == 3)
+                                                <button class="btn btn-danger btn-sm mb-lg-5">Rejected
+                                                </button>
+                                            @endif
+
+                                        @endif
+
+
+                                    <div class="mb-4 mt-lg-4 main-content-label">Utility Bill</div>
+
+                                @if($kyc3b=="")
+                                    <!-- Row -->
+                                    <div class="row row-sm">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="card custom-card">
+                                                <div class="card-body">
+                                                    <div>
+                                                        <p class="text-muted card-sub-title">Kindly select your Utility bill (Electricity bill or Water bill) not longer than 3 months</p>
+                                                    </div>
+                                                    <div class="row mb-4">
+                                                        <div class="col-12">
+                                                            <form role="form" method="POST" class="form-horizontal" action="{{ route('document.upload3') }}" enctype="multipart/form-data">
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="type" value="Utility Bill" />
+                                                                <input type="file" class="dropify" name="photo" data-height="100" accept=".pdf, .jpg" />
+                                                                <button type="submit" class="btn ripple btn-primary btn-lg btn-block btn-with-icon"><i class="fe fe-upload"></i> Upload Now</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Row -->
+                                    @else
+
+                                        @if($kyc3b->status == 1)
+                                            <button class="btn btn-success btn-sm mb-lg-5">Verified
+                                            </button>
+                                        @elseif($kyc3b->status == 0)
+                                            <button class="btn btn-warning btn-sm mb-lg-5">Pending
+                                            </button>
+                                        @elseif($kyc3b->status == 3)
+                                            <button class="btn btn-danger btn-sm mb-lg-5">Rejected
+                                            </button>
+                                        @endif
+
+                                    @endif
 
                                 </div>
 

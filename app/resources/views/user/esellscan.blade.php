@@ -35,7 +35,7 @@
 											</div>
 
 											<br>
-											<center><img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{'bitcoin:'.$address.'?amount='.$btcvalue}}&choe=UTF-8\" style='width:190px;' />
+											<center><img src="https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl={{'bitcoin:'.$address.'?amount='.$btcvalue}}&choe=UTF-8\" style='width:190px;' />
 											<br>
 											<span class="dt-type-md badge badge-outline badge-info badge-sm"><i class = "fa fa-spinner fa-spin"></i>&nbsp;Awaiting</span>
 											</center>
@@ -67,11 +67,11 @@
 											<dd class="text-right  ml-auto"><strong>{{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}</strong></dd>
 										</dl>
 										<dl class="dlist-align">
-											<dt class="">Payment Channel</dt>
+											<dt class="">Payment Destination</dt>
 											<dd class="text-right ml-auto">Naira Wallet</dd>
 										</dl>
 
- <small class="text-info"><p>Your fund will be credited into your Naira wallet as soon as your transaction as been confirmed.</p><br></small>
+ <small class="text-info"><p>Your fund will be credited into your Naira wallet after <span style="color: red"> three (3) confirmations</span>.</p><br></small>
 
 										<form role="form" method="POST"  action="{{ route('esellcallback') }}">
 										{{ csrf_field() }}

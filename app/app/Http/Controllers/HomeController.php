@@ -67,7 +67,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-       public function createwallet()
+    public function createwallet()
     {
         $token = 'v2x1c5087ffd1e3a432ef9baedc54c80c946115f1d3eb0eb6b54d8e13b67025a9b1';
         $coin = CurrencyCode::BITCOIN_TESTNET;
@@ -80,34 +80,30 @@ class HomeController extends Controller
 
     }
 
-	public function darkmode()
+    public function darkmode()
     {
         $auth = Auth::user();
 
-		if($auth->darkmode == 1){
-		$auth->darkmode = 0;
-		$auth->save();
+        if ($auth->darkmode == 1) {
+            $auth->darkmode = 0;
+            $auth->save();
             return response()->json(['status' => 1, 'message' => 'Light mode activated']);
 //		 return back()->withSuccess('Light mode activated');
-			}
-		else{
-			$auth->darkmode = 1;
-			$auth->save();
+        } else {
+            $auth->darkmode = 1;
+            $auth->save();
             return response()->json(['status' => 1, 'message' => 'Dark mode activated']);
 //		 return back()->withSuccess('Dark mode activated');
-		}
+        }
 
     }
-
-
-
 
 
     public function index()
     {
         $data['page_title'] = "Dashboard";
         $user = Auth::user();
-         $data['trx'] = Trx::whereUser_id($user->id)->whereStatus(0)->latest()->paginate(6);
+        $data['trx'] = Trx::whereUser_id($user->id)->whereStatus(0)->latest()->paginate(6);
         $data['approved'] = Deposit::where('user_id', Auth::id())->whereStatus(1)->select('amount')->sum('amount');;
         $data['pending'] = Deposit::where('user_id', Auth::id())->whereStatus(0)->select('amount')->sum('amount');;
         $data['declined'] = Deposit::where('user_id', Auth::id())->whereStatus(-2)->select('amount')->sum('amount');;
@@ -125,52 +121,49 @@ class HomeController extends Controller
         $data['time'] = Carbon::now();
         $crypt = Currency::all();
 
-		$user = Auth::user();
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $user = Auth::user();
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
-			$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
-			$data['invested'] = Invest::where('user_id', Auth::id())->sum('amount');
+        $data['btcrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
+        $data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
+        $data['invested'] = Invest::where('user_id', Auth::id())->sum('amount');
 
 
-        foreach ($crypt as $coin)
+        foreach ($crypt as $coin) {
+            $address = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890'), 0, 10);
+            $exist = Cryptowallet::where('coin_id', $coin->id)->where('user_id', Auth::id())->count();
+            if ($exist == 0) {
 
-			{
-       $address = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890') , 0 , 10 );
-    			$exist = Cryptowallet::where('coin_id', $coin->id)->where('user_id', Auth::id())->count();
-        		if($exist == 0)
-    			{
+                $new['coin_id'] = $coin->id;
+                $new['name'] = $coin->name;
+                $new['address'] = '0';
+                $new['user_id'] = Auth::id();
+                $new['balance'] = '0';
+                $new['status'] = '1';
 
-    				$new['coin_id'] = $coin->id;
-    				$new['name'] = $coin->name;
-    				$new['address'] = '0';
-    				$new['user_id'] = Auth::id();
-    				$new['balance'] = '0';
-    				$new['status'] = '1';
-
-    				Cryptowallet::create($new);
-    			}
-    	     }
-    	     $basic = GeneralSettings::first();
-    	       if($basic->maintain == 1){
-        return view('front.maintain', $data);
+                Cryptowallet::create($new);
+            }
+        }
+        $basic = GeneralSettings::first();
+        if ($basic->maintain == 1) {
+            return view('front.maintain', $data);
         }
 
 
@@ -181,33 +174,33 @@ class HomeController extends Controller
     public function daily()
     {
         $user = Auth::user();
-		$settings = GeneralSettings::first();
+        $settings = GeneralSettings::first();
         $now = Carbon::now();
 
-         if ($user->verified != 2 ){
-         return back()->withAlert('You are not eligible for daily bonus. Please proceed to verify your account first');
+        if ($user->verified != 2) {
+            return back()->withAlert('You are not eligible for daily bonus. Please proceed to verify your account first');
         }
 
-        if ($user->time < $now ){
+        if ($user->time < $now) {
 
             $user->time = $now->addHours(24);
             $user->save();
             $user->bonus = $user->bonus + $settings->bonus;
             $user->save();
 
-            return back()->withSuccess('You have Successfuly Claimed your daily '.$settings->currency.''.$settings->bonus.' bonus. ');
+            return back()->withSuccess('You have Successfuly Claimed your daily ' . $settings->currency . '' . $settings->bonus . ' bonus. ');
 
         }
 
-        return back()->withAlert('You have Alredy Claimed your '.$settings->currency.''.$settings->bonus.' daily rewards already. Please come back tomorrow for more');
+        return back()->withAlert('You have Alredy Claimed your ' . $settings->currency . '' . $settings->bonus . ' daily rewards already. Please come back tomorrow for more');
 
     }
 
     public function authCheck()
     {
         $basic = GeneralSettings::first();
-        if($basic->maintain == 1){
-        return view('front.maintain', $data);
+        if ($basic->maintain == 1) {
+            return view('front.maintain', $data);
         }
 
 
@@ -215,7 +208,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         } else {
             $data['page_title'] = "Authorization";
-              return view('user.authorization', $data);
+            return view('user.authorization', $data);
         }
     }
 
@@ -236,26 +229,26 @@ class HomeController extends Controller
             send_sms($user->phone, $code);
 
 
-        $baseUrl = "https://www.bulksmsnigeria.com/";
-        $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=".$basic->sitename."&to=".$user->phone."&body=".$code."";
-        $httpVerb = "GET";
-        $contentType = "application/json"; //e.g charset=utf-8
-        $headers = array (
-            "Content-Type: $contentType",
+            $baseUrl = "https://www.bulksmsnigeria.com/";
+            $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=" . $basic->sitename . "&to=" . $user->phone . "&body=" . $code . "";
+            $httpVerb = "GET";
+            $contentType = "application/json"; //e.g charset=utf-8
+            $headers = array(
+                "Content-Type: $contentType",
 
-        );
+            );
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+            curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
             curl_setopt($ch, CURLOPT_HTTPGET, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $content = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+            $content = json_decode(curl_exec($ch), true);
+            $err = curl_errno($ch);
+            $errmsg = curl_error($ch);
+            curl_close($ch);
 
             session()->flash('success', 'Verification Code Sent successfully');
         }
@@ -278,9 +271,9 @@ class HomeController extends Controller
 
     public function bvnVerify(Request $request)
     {
-       $user = Auth::user();
-	   $basic = GeneralSettings::first();
-	   $request->validate([
+        $user = Auth::user();
+        $basic = GeneralSettings::first();
+        $request->validate([
             'bvn' => 'required',
 //
         ], [
@@ -288,55 +281,53 @@ class HomeController extends Controller
         ]);
 
 
-		   if ($basic->bvn > $user->balance) {
-             return back()->with("danger", "Insufficient wallet balance. Please deposit more fund and try again");
+        if ($basic->bvn > $user->balance) {
+            return back()->with("danger", "Insufficient wallet balance. Please deposit more fund and try again");
         }
 
 
+        $trx = strtoupper(str_random(20));
+        $curl = curl_init();
 
-		$trx = strtoupper(str_random(20));
-		$curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/verifybvn",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\n\t\"bvn\":\"$request->bvn\",\n\t\"reference\":\"$trx\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: " . $basic->rubies_secretkey,
+            ),
+        ));
 
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://openapi.rubiesbank.io/v1/verifybvn",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 0,
-		  CURLOPT_FOLLOWLOCATION => true,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "POST",
-		  CURLOPT_POSTFIELDS =>"{\n\t\"bvn\":\"$request->bvn\",\n\t\"reference\":\"$trx\"\n}",
-		  CURLOPT_HTTPHEADER => array(
-			"Authorization: ".$basic->rubies_secretkey,
-		  ),
-		));
+        $response = curl_exec($curl);
 
-		$response = curl_exec($curl);
+        curl_close($curl);
+        $rep = json_decode($response, true);
 
-		curl_close($curl);
-		$rep=json_decode($response, true);
+        if ($rep['responsecode'] == 00) {
 
-       if($rep['responsecode'] == 00)
-		{
-
-			$product['user_id'] = Auth::id();
-			$product['firstName'] = $rep['firstName'];
-			$product['lastName'] =  $rep['lastName'];
-			$product['phoneNumber'] =  $rep['phoneNumber'];
-			$product['gender'] = $rep['data']['gender'];
-			$product['dateOfBirth'] = $rep['data']['dateOfBirth'];
-			$product['base64Image'] = $rep['base64Image'];
-			$product['number'] = $request->bvn;
-			Verified::create($product);
+            $product['user_id'] = Auth::id();
+            $product['firstName'] = $rep['firstName'];
+            $product['lastName'] = $rep['lastName'];
+            $product['phoneNumber'] = $rep['phoneNumber'];
+            $product['gender'] = $rep['data']['gender'];
+            $product['dateOfBirth'] = $rep['data']['dateOfBirth'];
+            $product['base64Image'] = $rep['base64Image'];
+            $product['number'] = $request->bvn;
+            Verified::create($product);
 
             $user->bvn_verify = 1;
-			$user->bvn_time = Carbon::now();
-			$user->balance = $user->balance - $basic->bvn;
+            $user->bvn_time = Carbon::now();
+            $user->balance = $user->balance - $basic->bvn;
             $user->save();
 
 
-            return back()->with(['modal'=> 'bvn', 'success'=> 'Bank Verification Number has been verfied successfully']);
+            return back()->with(['modal' => 'bvn', 'success' => 'Bank Verification Number has been verfied successfully']);
 
         } else {
             session()->flash('danger', 'You Have Entered A Wrong Bank Verification Number');
@@ -395,7 +386,7 @@ class HomeController extends Controller
         $data['page_title'] = "Profile";
         $data['user'] = User::findOrFail($auth->id);
         $data['method'] = Localbank::all();
-        $data['referral'] =  User::whereRefer(Auth::user()->id)->get();
+        $data['referral'] = User::whereRefer(Auth::user()->id)->get();
         return view('user.profile', $data);
     }
 
@@ -464,26 +455,25 @@ class HomeController extends Controller
         }
     }
 
-	public function changepin(Request $request)
+    public function changepin(Request $request)
     {
-       $this->validate($request,
+        $this->validate($request,
             [
-            'newpin' => 'required|string|max:4',
-            'currentpin' => 'required',
+                'newpin' => 'required|string|max:4',
+                'currentpin' => 'required',
             ]);
 
 
-            $user = User::findOrFail(Auth::id());
+        $user = User::findOrFail(Auth::id());
 
-			if($request->currentpin != $user->withdrawpass)
-			{
-			 return back()->with('error', 'Currenct Withdrawal Pin Is Wrong. Please Try Again.');
-			}
+        if ($request->currentpin != $user->withdrawpass) {
+            return back()->with('error', 'Currenct Withdrawal Pin Is Wrong. Please Try Again.');
+        }
 
-                $user->withdrawpass = $request->newpin;
-                $user->save();
+        $user->withdrawpass = $request->newpin;
+        $user->save();
 
-                return back()->with('success', 'Withdrawal Pin Updated Successfully.');
+        return back()->with('success', 'Withdrawal Pin Updated Successfully.');
 
     }
 
@@ -492,7 +482,7 @@ class HomeController extends Controller
     {
         $data['page_title'] = " Payment Methods";
         $data['gates'] = Gateway::whereStatus(1)->whereVal7(1)->get();
-		$data['deposit'] = Deposit::whereUser_id($user->id)->latest()->paginate(10);
+        $data['deposit'] = Deposit::whereUser_id($user->id)->latest()->paginate(10);
         $data['count'] = Deposit::whereUser_id($user->id)->count();
         $data['sum'] = Deposit::whereStatus(1)->whereUser_id($user->id)->sum('amount');
 
@@ -503,63 +493,65 @@ class HomeController extends Controller
     public function activitylog()
     {
         $data['page_title'] = " Activities";
-        $data['activity'] = UserLogin::where('user_id', Auth::id())->orderBy('id','desc')->paginate(10);
+        $data['activity'] = UserLogin::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
         return view('user.activity-log', $data);
     }
 
 
     public function referral()
-    {   $data['referral'] =  User::whereRefer(Auth::user()->id)->get();
+    {
+        $data['referral'] = User::whereRefer(Auth::user()->id)->get();
         $data['page_title'] = "Referral Log";
         return view('user.referral-log', $data);
     }
 
 
-
     public function kyc()
-    {   $data['user'] =  Auth::user()->id;
-        $data['kyc'] =  Verification::whereUser_id(Auth::user()->id)->first();
-        $data['kyccount'] =  Verification::whereUser_id(Auth::user()->id)->count();
+    {
+        $data['user'] = Auth::user()->id;
+        $data['kyc'] = Verification::whereUser_id(Auth::user()->id)->first();
+        $data['kyccount'] = Verification::whereUser_id(Auth::user()->id)->count();
         $data['page_title'] = "Account Verification";
         $data['docs'] = Verification::where('user_id', Auth::id())->latest()->first();
+        $data['kyc3a'] = Verification::where([['user_id', Auth::id()], ['type', 'Bank Statement']])->latest()->first();
+        $data['kyc3b'] = Verification::where([['user_id', Auth::id()], ['type', 'Utility Bill']])->latest()->first();
         $curl = curl_init();
-    $basic = GeneralSettings::first();
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://openapi.rubiesbank.io/v1/banklist",
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "POST",
-      CURLOPT_POSTFIELDS =>"{\n    \"request\": \"banklist\"\n}",
-      CURLOPT_HTTPHEADER => array(
-        "Authorization: ".$basic->rubies_secretkey,
-        "Content-Type: application/json"
-      ),
-    ));
+        $basic = GeneralSettings::first();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/banklist",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\n    \"request\": \"banklist\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: " . $basic->rubies_secretkey,
+                "Content-Type: application/json"
+            ),
+        ));
 
-    $response = curl_exec($curl);
-    $rep=json_decode($response, true);
-    $data['list']  = $rep['banklist'];
+        $response = curl_exec($curl);
+        $rep = json_decode($response, true);
+        $data['list'] = $rep['banklist'];
 
-    curl_close($curl);
+        curl_close($curl);
         return view('user.account-verification', $data);
     }
-
 
 
     public function kyc2(Request $request)
     {
 
-     $this->validate($request,
+        $this->validate($request,
             [
-            'type' => 'required',
-            'date' => 'required',
-            'number' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'photo2' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'type' => 'required',
+                'date' => 'required',
+                'number' => 'required',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'photo2' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             ]);
 
         $docm['user_id'] = Auth::id();
@@ -567,34 +559,32 @@ class HomeController extends Controller
         $docm['date'] = $request->date;
         $docm['number'] = $request->number;
         $docm['status'] = 0;
-        if($request->hasFile('photo'))
-            {
-                $docm['image1'] = uniqid().'.jpg';
-                $request->photo->move('kyc',$docm['image1']);
-            }
-          if($request->hasFile('photo2'))
-            {
-                $docm['image2'] = uniqid().'.jpg';
-                $request->photo2->move('kyc',$docm['image2']);
-            }
+        if ($request->hasFile('photo')) {
+            $docm['image1'] = uniqid() . '.jpg';
+            $request->photo->move('kyc', $docm['image1']);
+        }
+        if ($request->hasFile('photo2')) {
+            $docm['image2'] = uniqid() . '.jpg';
+            $request->photo2->move('kyc', $docm['image2']);
+        }
 
         Verification::create($docm);
 
         $user = User::find(Auth::id());
-        $user['verified'] = 1 ;
+        $user['verified'] = 1;
         $user->save();
 
 
-         Message::create([
-                    'user_id' => $user->id,
-                    'title' => 'KYC Submited',
-                    'details' =>'Your KYC submission has been received. Please wait while we verify your submissin. You will receive a message once your submission has been approved',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
+        Message::create([
+            'user_id' => $user->id,
+            'title' => 'KYC Submited',
+            'details' => 'Your KYC submission has been received. Please wait while we verify your submissin. You will receive a message once your submission has been approved',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
 
-        return back()->with(['modal'=> 'kyc', 'success'=> 'Account Verification Request Sent Successfully.']);
+        return back()->with(['modal' => 'kyc', 'success' => 'Account Verification Request Sent Successfully.']);
 
 
 //          session()->flash('success', 'Account Verification Request Sent Successfully. ');
@@ -602,10 +592,46 @@ class HomeController extends Controller
 //         return redirect()->route('home');
     }
 
+    public function kyc3(Request $request)
+    {
+
+        $this->validate($request,
+            ['type' => 'required',
+                'photo' => 'required',
+            ]);
+
+        $docm['user_id'] = Auth::id();
+        $docm['type'] = $request->type;
+        $docm['date'] = Carbon::now();
+        $docm['status'] = 0;
+        if ($request->hasFile('photo')) {
+            $docm['image1'] = uniqid() . '.jpg';
+            $request->photo->move('kyc', $docm['image1']);
+        }
+
+        Verification::create($docm);
+
+        $user = User::find(Auth::id());
+        $user['verified'] = 1;
+        $user->save();
+
+
+        Message::create([
+            'user_id' => $user->id,
+            'title' => $request->type . ' Submitted',
+            'details' => 'Your KYC submission has been received. Please wait while we verify your submission. You will receive a message once your submission has been approved',
+            'admin' => 1,
+            'status' => 0
+        ]);
+
+
+        return back()->with(['modal' => 'kyc', 'success' => $request->type . ' uploaded Successfully.']);
+    }
 
 
     public function bank()
-    {   $data['user'] =  Auth::user()->id;
+    {
+        $data['user'] = Auth::user()->id;
         $data['page_title'] = "Bank Account";
         return view('user.bank', $data);
     }
@@ -619,79 +645,76 @@ class HomeController extends Controller
         $bank = Banky::whereCode($request->bank)->first();
 
 
-        if(isset($request->paypal)){
-        $user->paypal = $request->paypal;
-        $user->save();
+        if (isset($request->paypal)) {
+            $user->paypal = $request->paypal;
+            $user->save();
         }
 
-        if(isset($request->btc)){
-        $user->btcwallet = $request->btc;
-        $user->save();
+        if (isset($request->btc)) {
+            $user->btcwallet = $request->btc;
+            $user->save();
         }
 
-        if($request->bank == "other"){
-         $user->bank = $request->bankname;
-         $user->accountname = $request->acctname;
-         $user->accountno = $request->actnumber;
-         $user->bankyes = 1;
-         $user->save();
-         return back()->with('success', 'Bank Account Updated Successfuly');
-         }
+        if ($request->bank == "other") {
+            $user->bank = $request->bankname;
+            $user->accountname = $request->acctname;
+            $user->accountno = $request->actnumber;
+            $user->bankyes = 1;
+            $user->save();
+            return back()->with('success', 'Bank Account Updated Successfuly');
+        }
 
-         if($request->bank == "none"){
-          return back()->with('danger', 'Bank Account Not Updated');
-         }
+        if ($request->bank == "none") {
+            return back()->with('danger', 'Bank Account Not Updated');
+        }
 
         $basic = GeneralSettings::first();
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://openapi.rubiesbank.io/v1/nameenquiry",
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "POST",
-          CURLOPT_POSTFIELDS =>"{\n\t\t\"accountnumber\":\"$request->actnumber\",\n\t\t\"bankcode\":\"$request->bank\"\n}",
-          CURLOPT_HTTPHEADER => array(
-            "Authorization: ".$basic->rubies_secretkey,
-            "Content-Type: application/json"
-          ),
+            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/nameenquiry",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\n\t\t\"accountnumber\":\"$request->actnumber\",\n\t\t\"bankcode\":\"$request->bank\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: " . $basic->rubies_secretkey,
+                "Content-Type: application/json"
+            ),
         ));
 
         $response = curl_exec($curl);
         curl_close($curl);
-        $rep=json_decode($response, true);
+        $rep = json_decode($response, true);
 
-            if($rep['responsecode']) {
-            if($rep['responsecode'] == 00) {
-                        $acctname = $rep['accountname'];
+        if ($rep['responsecode']) {
+            if ($rep['responsecode'] == 00) {
+                $acctname = $rep['accountname'];
 
-                        $user->bank = $request->bankname;
-                        $user->accountname = $acctname;
-                        $user->bankyes = 1;
-                        $user->accountno = $request->actnumber;
-                        $user->bankcode = $request->bank;
-                        $user->save();
+                $user->bank = $request->bankname;
+                $user->accountname = $acctname;
+                $user->bankyes = 1;
+                $user->accountno = $request->actnumber;
+                $user->bankcode = $request->bank;
+                $user->save();
 
-                    return back()->with(['modal'=> 'bank', 'success'=> 'Bank Account Updated successfully']);
+                return back()->with(['modal' => 'bank', 'success' => 'Bank Account Updated successfully']);
 
 
             }
 
-                return back()->with('danger', 'Account Number Not Verified Successfuly. Please check the account number and try again.');
+            return back()->with('danger', 'Account Number Not Verified Successfuly. Please check the account number and try again.');
 
 
-
-
-
-    }
+        }
 
     }
 
-     public function veribank(Request $request)
+    public function veribank(Request $request)
     {
         $user = User::findOrFail(Auth::user()->id);
         $gate = Gateway::whereId(107)->first();
@@ -701,59 +724,58 @@ class HomeController extends Controller
 
         $AccountID = "$request->accountno";
         $baseUrl = "https://api.paystack.co";
-        $endpoint = "/bank/resolve?account_number=".$AccountID."&bank_code=".$bankCode;
+        $endpoint = "/bank/resolve?account_number=" . $AccountID . "&bank_code=" . $bankCode;
         $httpVerb = "GET";
         $contentType = "application/json"; //e.g charset=utf-8
         $authorization = "$gate->val2"; //gotten from paystack dashboard
 
 
-        $headers = array (
+        $headers = array(
             "Content-Type: $contentType",
             "Authorization: Bearer $authorization"
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $content = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
+        $content = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
 
-            curl_close($ch);
+        curl_close($ch);
 
-            if($content['status']) {
-                     $response['account_name'] = $content['data']['account_name'];
-                     $bname =  $response['account_name'];
+        if ($content['status']) {
+            $response['account_name'] = $content['data']['account_name'];
+            $bname = $response['account_name'];
 
-                      $user->bank = $bank->bank;
-                      $user->accountno = $AccountID;
-                      $user->accountname = $bname;
-                      $user->save();
-              session()->flash('ready', 'Verification Code Did not matched');
-              return back()->with('success', 'Account Number Is Valid');
+            $user->bank = $bank->bank;
+            $user->accountno = $AccountID;
+            $user->accountname = $bname;
+            $user->save();
+            session()->flash('ready', 'Verification Code Did not matched');
+            return back()->with('success', 'Account Number Is Valid');
 
-             }
-             else {
+        } else {
 
-             return back()->with('danger', 'Account Number Not Registered With '.$bank->bank.'');
-             }
+            return back()->with('danger', 'Account Number Not Registered With ' . $bank->bank . '');
+        }
 
 
     }
 
-        public function validatebank($id)
-    {    $user = User::whereAccountno($id)->first();
-         $user->bankyes= 1;
-         $user->save();
+    public function validatebank($id)
+    {
+        $user = User::whereAccountno($id)->first();
+        $user->bankyes = 1;
+        $user->save();
         return back()->with('success', 'Bank Details Addes Successfully');
 
 
     }
-
 
 
     public function depositDataInsert(Request $request)
@@ -762,35 +784,32 @@ class HomeController extends Controller
             'amount' => 'required|numeric|min:1',
             'gateway' => 'required',
         ]);
-          $basic = GeneralSettings::first();
+        $basic = GeneralSettings::first();
         if ($request->amount <= 0) {
             return back()->with('danger', 'Invalid Amount Entered');
         }
-        if($request->gateway == "bank"){
-         $usdamo = ($request->amount + 0) / $basic->rate;
-         $depo['user_id'] = Auth::id();
-                    $depo['gateway_id'] = 0;
-                    $depo['amount'] = $request->amount;
-                    $depo['charge'] = $basic->depocharge;
-                    $depo['usd'] = round($usdamo, 2);
-                    $depo['trx'] = str_random(16);
-                    $depo['status'] = 0;
-                    Deposit::create($depo);
+        if ($request->gateway == "bank") {
+            $usdamo = ($request->amount + 0) / $basic->rate;
+            $depo['user_id'] = Auth::id();
+            $depo['gateway_id'] = 0;
+            $depo['amount'] = $request->amount;
+            $depo['charge'] = $basic->depocharge;
+            $depo['usd'] = round($usdamo, 2);
+            $depo['trx'] = str_random(16);
+            $depo['status'] = 0;
+            Deposit::create($depo);
 
-                    Session::put('Track', $depo['trx']);
+            Session::put('Track', $depo['trx']);
 
-                    return redirect()->route('user.deposit.preview');
-
-
-        }
+            return redirect()->route('user.deposit.preview');
 
 
-        else {
+        } else {
             $gate = Gateway::findOrFail($request->gateway);
 
             if (isset($gate)) {
-if ($gate->minamo <= $request->amount && $gate->maxamo >= $request->amount) {
-$charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100);
+                if ($gate->minamo <= $request->amount && $gate->maxamo >= $request->amount) {
+                    $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100);
                     $usdamo = ($request->amount + $charge) / $basic->rate;
 
 
@@ -823,55 +842,56 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data = Deposit::where('status', 0)->where('trx', $track)->first();
         $page_title = "Deposit Preview";
         $auth = Auth::user();
-		$total = $data->charge + $data->amount;
+        $total = $data->charge + $data->amount;
 
-			$baseUrl = "https://api.alternative.me";
-			$endpoint = "/v2/ticker/";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://api.alternative.me";
+        $endpoint = "/v2/ticker/";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $rate = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+        $rate = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
 
-			if($data->gateway_id == 513) {
-		    $coinrate  = $rate['data']['1'];
-         	$amount = $coinrate['quotes']['USD'];
-         	$rrate = $amount['price'];
-			$rate = $rrate;
-			}
+        if ($data->gateway_id == 513) {
+            $coinrate = $rate['data']['1'];
+            $amount = $coinrate['quotes']['USD'];
+            $rrate = $amount['price'];
+            $rate = $rrate;
+        }
 
-			if($data->gateway_id == 514) {
-			$coinrate  = $rate['data']['1027'];
-         	$amount = $coinrate['quotes']['USD'];
-         	$rrate = $amount['price'];
-			$rate = $rrate; }
+        if ($data->gateway_id == 514) {
+            $coinrate = $rate['data']['1027'];
+            $amount = $coinrate['quotes']['USD'];
+            $rrate = $amount['price'];
+            $rate = $rrate;
+        }
 
-			if($data->gateway_id == 102) {
-			$gatewayData = Gateway::where('id', $data->gateway_id)->first();
-			$perfectval = $gatewayData->val1;
-			}
+        if ($data->gateway_id == 102) {
+            $gatewayData = Gateway::where('id', $data->gateway_id)->first();
+            $perfectval = $gatewayData->val1;
+        }
 
-        return view('user.payment.preview', compact('data', 'rate','track','total','page_title'));
+        return view('user.payment.preview', compact('data', 'rate', 'track', 'total', 'page_title'));
     }
 
 
     public function wallet()
     {
         $data['page_title'] = "Crypto Wallets";
-        $data['wallet'] = Cryptowallet::where('user_id', Auth::id())->orderBy('name','asc')->get();
+        $data['wallet'] = Cryptowallet::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
         return view('user.wallet', $data);
     }
 
@@ -882,14 +902,11 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $wallet->address = $request->address;
         $wallet->save();
 
-         return back()->with('success', 'Wallet Address Updated Successfully.');
+        return back()->with('success', 'Wallet Address Updated Successfully.');
 
 
         return view('user.wallet', $data);
     }
-
-
-
 
 
     public function convertbonus()
@@ -899,24 +916,19 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-
     public function updateconvert(Request $request)
     {
-       $basic = GeneralSettings::first();
-           $this->validate($request, [
-           'amount' => 'required|numeric|min:'.$basic->minbonus.'',
+        $basic = GeneralSettings::first();
+        $this->validate($request, [
+            'amount' => 'required|numeric|min:' . $basic->minbonus . '',
         ], [
-             'amount.required' => 'The minimum amount you can convert is '.$basic->currency.''.$basic->minbonus.' '
+            'amount.required' => 'The minimum amount you can convert is ' . $basic->currency . '' . $basic->minbonus . ' '
         ]);
         $user = Auth::user();
 
-         if ($request->amount > $user->bonus) {
+        if ($request->amount > $user->bonus) {
             return back()->with('alert', 'You Cant Convert An Amount Greater Than Your Current Bonus Balance.');
         }
-
-
-
-
 
 
         $user->balance = $user->balance + $request->amount;
@@ -926,87 +938,84 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     }
 
-      public function transfer()
+    public function transfer()
     {
         $data['page_title'] = "Transfer Fund";
-		 $user = Auth::user();
-		$data['wallet'] = UserWallet::whereUser_id($user->id)->first();
-		$data['transfer'] = Transfer::where('user_id', Auth::id())->get();
-		$data['transfers'] = Transfer::where('user_id', Auth::id())->sum('amount');
+        $user = Auth::user();
+        $data['wallet'] = UserWallet::whereUser_id($user->id)->first();
+        $data['transfer'] = Transfer::where('user_id', Auth::id())->get();
+        $data['transfers'] = Transfer::where('user_id', Auth::id())->sum('amount');
         return view('user.transfer', $data);
     }
 
 
- public function updatetransfer(Request $request)
+    public function updatetransfer(Request $request)
     {
-		$basic = GeneralSettings::first();
-        	if($request->wallet == 0){
-			$user = Auth::user();
-			$amount = $request->amount;
-			 }
-		else{
-		 $user = UserWallet::whereUser_id($user->id)->first();
-		 $amount = $request->amount * $basic->rate;
-		  }
         $basic = GeneralSettings::first();
-         if ($request->amount > $user->balance) {
+        if ($request->wallet == 0) {
+            $user = Auth::user();
+            $amount = $request->amount;
+        } else {
+            $user = UserWallet::whereUser_id($user->id)->first();
+            $amount = $request->amount * $basic->rate;
+        }
+        $basic = GeneralSettings::first();
+        if ($request->amount > $user->balance) {
             return back()->with('danger', 'You Cant Transfer An Amount Greater Than Your Current Balance.');
         }
 
         $count = User::whereUsername($request->username)->count();
-         if($count < 1){
-         return back()->with('danger', 'There is no username with such username on '.$basic->sitename.' Please re-check and try again.');
-         }
+        if ($count < 1) {
+            return back()->with('danger', 'There is no username with such username on ' . $basic->sitename . ' Please re-check and try again.');
+        }
 
-        if($count > 0){
-        $receiver = User::whereUsername($request->username)->first();
-
-
-
-        $receiver->balance = $receiver->balance + $amount;
-        $receiver->save();
-         }
-
-         $tr = strtoupper(str_random(20));
-            $w['amount'] = $amount;
-            $w['transaction_id'] = $tr;
-            $w['user_id'] = Auth::user()->id;
-            $w['send_details'] = $request->username;
-            $w['status'] = 2;
-            $trr =Transfer::create($w);
+        if ($count > 0) {
+            $receiver = User::whereUsername($request->username)->first();
 
 
-                Trx::create([
-                    'user_id' =>  Auth::user()->id ,
-                    'amount' => round($amount,$basic->decimal),
-                    'charge' => 0,
-                    'type' => '-',
-                    'action' => "Transfer",
-                    'title' => 'Transfer fund to '. $request->username ,
-                    'trx' => $tr
-                ]);
+            $receiver->balance = $receiver->balance + $amount;
+            $receiver->save();
+        }
+
+        $tr = strtoupper(str_random(20));
+        $w['amount'] = $amount;
+        $w['transaction_id'] = $tr;
+        $w['user_id'] = Auth::user()->id;
+        $w['send_details'] = $request->username;
+        $w['status'] = 2;
+        $trr = Transfer::create($w);
+
+
+        Trx::create([
+            'user_id' => Auth::user()->id,
+            'amount' => round($amount, $basic->decimal),
+            'charge' => 0,
+            'type' => '-',
+            'action' => "Transfer",
+            'title' => 'Transfer fund to ' . $request->username,
+            'trx' => $tr
+        ]);
 
 
         $user->balance = $user->balance - $amount;
         $user->save();
-        return back()->with('success', 'Fund transfered to '.$request->username.' successfully.');
+        return back()->with('success', 'Fund transfered to ' . $request->username . ' successfully.');
 
     }
-      public function transferlog()
+
+    public function transferlog()
     {
         $data['transfer'] = Transfer::where('user_id', Auth::id())->get();
         return view('user.transfer-log', $data);
     }
 
 
-
-
     public function withdrawMoney()
     {
-        $data['withdrawMethod'] = WithdrawMethod::where('id', '>' ,1)->orderBy('name','asc')->get();
-        $data['withdrawMethod1'] = WithdrawMethod::whereId(1)->orderBy('name','asc')->get();
+        $data['withdrawMethod'] = WithdrawMethod::where('id', '>', 1)->orderBy('name', 'asc')->get();
+        $data['withdrawMethod1'] = WithdrawMethod::whereId(1)->orderBy('name', 'asc')->get();
         $data['page_title'] = "Withdraw Money";
-        $data['wallet'] = Cryptowallet::where('user_id', Auth::id())->orderBy('name','asc')->get();
+        $data['wallet'] = Cryptowallet::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
         return view('user.withdraw-money', $data);
     }
 
@@ -1025,8 +1034,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $currency = Currency::findOrFail($wallet->coin_id);
         $ch = $method->fix + round(($request->amount * $method->percent) / 100, $basic->decimal);
         $reAmo = $request->amount + $ch;
-         if ($wallet->address == 0) {
-            return back()->with('alert', 'You need to update your '.$wallet->name.' wallet details before you can withdraw from your '.$wallet->name.' wallet.');
+        if ($wallet->address == 0) {
+            return back()->with('alert', 'You need to update your ' . $wallet->name . ' wallet details before you can withdraw from your ' . $wallet->name . ' wallet.');
         }
         if ($reAmo < $method->withdraw_min) {
             return back()->with('alert', 'The Requested Amount is Smaller Than Withdraw Minimum Amount.');
@@ -1035,32 +1044,31 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             return back()->with('alert', 'The Requested Amount is Larger Than Withdraw Maximum Amount.');
         }
         if ($reAmo > $wallet->balance) {
-            return back()->with('alert', 'The Request Amount is More Than Your '.$wallet->name.' Wallet Current Balance.');
+            return back()->with('alert', 'The Request Amount is More Than Your ' . $wallet->name . ' Wallet Current Balance.');
         }
 
-            $tr = strtoupper(str_random(20));
-            $w['amount'] = $request->amount;
-            $w['method_id'] = $request->method_id;
-            $w['charge'] = $ch;
-            $w['transaction_id'] = $tr;
-            $w['net_amount'] = $reAmo;
-            $w['user_id'] = Auth::user()->id;
-            $w['currency_id'] = $currency->id;
-            $w['wallet_id'] = $request->wallet;
-            $trr = WithdrawLog::create($w);
-            $data['withdraw'] = $trr;
-            Session::put('wtrx', $trr->transaction_id);
+        $tr = strtoupper(str_random(20));
+        $w['amount'] = $request->amount;
+        $w['method_id'] = $request->method_id;
+        $w['charge'] = $ch;
+        $w['transaction_id'] = $tr;
+        $w['net_amount'] = $reAmo;
+        $w['user_id'] = Auth::user()->id;
+        $w['currency_id'] = $currency->id;
+        $w['wallet_id'] = $request->wallet;
+        $trr = WithdrawLog::create($w);
+        $data['withdraw'] = $trr;
+        Session::put('wtrx', $trr->transaction_id);
 
-            $data['method'] = $method;
-            $data['amount'] = $request->amount;
-            $data['charge'] = $ch;
-            $data['wallet'] = Cryptowallet::findOrFail($request->wallet);;
+        $data['method'] = $method;
+        $data['amount'] = $request->amount;
+        $data['charge'] = $ch;
+        $data['wallet'] = Cryptowallet::findOrFail($request->wallet);;
 
-            $data['page_title'] = "Withdraw Preview";
-            return view('user.withdraw-crypto', $data);
+        $data['page_title'] = "Withdraw Preview";
+        return view('user.withdraw-crypto', $data);
 
     }
-
 
 
     public function requestwithdrawal(Request $request)
@@ -1069,19 +1077,18 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             'method_id' => 'required|numeric',
             'amount' => 'required|numeric|min:1',
         ]);
-		 $user = Auth::user();
+        $user = Auth::user();
 
-		     if ($user->withdrawpass != $request->pin) {
+        if ($user->withdrawpass != $request->pin) {
             return back()->with('alert', 'You have entered a wrong withdraw pin. Please try again.');
         }
         $basic = GeneralSettings::first();
 
-		    if ($request->wallet == "1") {
-           $wallet = Auth::user();
+        if ($request->wallet == "1") {
+            $wallet = Auth::user();
+        } else {
+            $wallet = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
         }
-		else{
-			$wallet = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
-		}
 
 
         $user = Auth::user();
@@ -1089,45 +1096,44 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $ch = $method->fix + round(($request->amount * $method->percent) / 100, $basic->decimal);
         $reAmo = $request->amount + $ch;
 
-        if($request->method_id == 1){
+        if ($request->method_id == 1) {
 
-		 $this->validate($request, [
-         'walletaddress' => 'required',
-        ]);
-        $pay = $request->walletaddress;
-		}
-        if($request->method_id == 2){
+            $this->validate($request, [
+                'walletaddress' => 'required',
+            ]);
+            $pay = $request->walletaddress;
+        }
+        if ($request->method_id == 2) {
 
-		 $this->validate($request, [
-            'paypaladdress' => 'required',
-        ]);
-        $pay = $request->paypaladdress;
-		}
-       if($request->method_id == 3){
+            $this->validate($request, [
+                'paypaladdress' => 'required',
+            ]);
+            $pay = $request->paypaladdress;
+        }
+        if ($request->method_id == 3) {
 
 
+            session()->flash('success', 'Please proceed with your transfer by filling the form below. ');
 
-          session()->flash('success', 'Please proceed with your transfer by filling the form below. ');
+            return redirect()->route('banktransfer');
 
-         return redirect()->route('banktransfer');
+            $this->validate($request, [
+                'bankname' => 'required',
+                'accountname' => 'required',
+                'accountnumber' => 'required',
+            ]);
+            $pay = "Bank Name: " . $request->paypaladdress . ", Account Name:" . $request->accountname . ", Account Number:" . $request->accountnumber;
+        }
 
-		 $this->validate($request, [
-            'bankname' => 'required',
-            'accountname' => 'required',
-            'accountnumber' => 'required',
-        ]);
-        $pay = "Bank Name: " .$request->paypaladdress. ", Account Name:" .$request->accountname. ", Account Number:" .$request->accountnumber;
-		}
+        if ($request->method_id == 4) {
 
-		if($request->method_id == 4){
-
-		 $this->validate($request, [
-            'cashname' => 'required',
-            'accountnumber' => 'required',
-            'accountname' => 'required',
-        ]);
-        $pay = "Cash App Name: " .$request->cashname. ", Account Name: " .$request->accountname. ", Account Number: " .$request->accountnumber;
-		}
+            $this->validate($request, [
+                'cashname' => 'required',
+                'accountnumber' => 'required',
+                'accountname' => 'required',
+            ]);
+            $pay = "Cash App Name: " . $request->cashname . ", Account Name: " . $request->accountname . ", Account Number: " . $request->accountnumber;
+        }
         if ($reAmo < $method->withdraw_min) {
             return back()->with('alert', 'The Requested Amount is Smaller Than Withdraw Minimum Amount.');
         }
@@ -1138,24 +1144,24 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             return back()->with('alert', 'The Request Amount is More Than Your Wallet Current Balance.');
         }
 
-            $tr = strtoupper(str_random(20));
-            $w['amount'] = $request->amount;
-            $w['method_id'] = $request->method_id;
-            $w['charge'] = $ch;
-            $w['transaction_id'] = $tr;
-            $w['net_amount'] = $reAmo;
-            $w['user_id'] = Auth::user()->id;
-            $trr = WithdrawLog::create($w);
-            $data['withdraw'] = $trr;
-            Session::put('wtrx', $trr->transaction_id);
+        $tr = strtoupper(str_random(20));
+        $w['amount'] = $request->amount;
+        $w['method_id'] = $request->method_id;
+        $w['charge'] = $ch;
+        $w['transaction_id'] = $tr;
+        $w['net_amount'] = $reAmo;
+        $w['user_id'] = Auth::user()->id;
+        $trr = WithdrawLog::create($w);
+        $data['withdraw'] = $trr;
+        Session::put('wtrx', $trr->transaction_id);
 
-            $data['method'] = $method;
-            $data['amount'] = $request->amount;
-            $data['charge'] = $ch;
-            $data['pay'] = $pay;
+        $data['method'] = $method;
+        $data['amount'] = $request->amount;
+        $data['charge'] = $ch;
+        $data['pay'] = $pay;
 
-            $data['page_title'] = "Withdraw Preview";
-            return view('user.withdraw-fiat', $data);
+        $data['page_title'] = "Withdraw Preview";
+        return view('user.withdraw-fiat', $data);
 
     }
 
@@ -1185,21 +1191,20 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-
     public function cancelmywithdraw($id)
     {
         $ww = WithdrawLog::whereId($id)->whereStatus(0)->first();
         $count = WithdrawLog::whereId($id)->whereStatus(0)->count();
 
-		if($count < 1){
-		return back()->with('error', 'There is no withdrawal log with this details');
+        if ($count < 1) {
+            return back()->with('error', 'There is no withdrawal log with this details');
 
-		}
-		$ww->delete();
+        }
+        $ww->delete();
         $user = Auth::user();
         $user->balance = $user->balance + $ww->net_amount;
         $user->save();
-		 return back()->with('success', 'Withdrawal has been canceled and fund returned to Naira wallet');
+        return back()->with('success', 'Withdrawal has been canceled and fund returned to Naira wallet');
     }
 
 
@@ -1214,26 +1219,26 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     public function mywallet()
     {
         $user = Auth::user();
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+        $data['btcrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
         $data['pdep'] = Deposit::whereUser_id($user->id)->whereStatus(0)->sum('amount');
         $data['tdep'] = Deposit::whereUser_id($user->id)->whereStatus(1)->sum('amount');
         $data['pdepositlog'] = Deposit::whereUser_id($user->id)->whereStatus(2)->get();
@@ -1243,9 +1248,9 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['activeinv'] = Invest::whereUser_id($user->id)->whereStatus(1)->count();
         $data['endinv'] = Invest::whereUser_id($user->id)->whereStatus(0)->count();
         $data['withdrawgate'] = WithdrawMethod::whereStatus(1)->get();
-		$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
+        $data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
         $data['page_title'] = "My Wallet";
-		$data['gates'] = Gateway::whereStatus(1)->orderBy('name','asc')->get();
+        $data['gates'] = Gateway::whereStatus(1)->orderBy('name', 'asc')->get();
         return view('user.my-wallet', $data);
     }
 
@@ -1259,7 +1264,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['sum'] = Deposit::whereStatus(1)->whereUser_id($user->id)->sum('amount');
         return view('user.deposit-log', $data);
     }
-   public function withdrawLog()
+
+    public function withdrawLog()
     {
         $user = Auth::user();
         $data['withdraw'] = WithdrawLog::whereUser_id($user->id)->latest()->get();
@@ -1271,56 +1277,56 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-      public function tradecoin()
-    {    $auth = Auth::user();
-         if ($auth->verified != 2 ){
-         return back()->withAlert('You are not eligible to trade cryptocurrency. Please verify your account first');
+    public function tradecoin()
+    {
+        $auth = Auth::user();
+        if ($auth->verified != 2) {
+            return back()->withAlert('You are not eligible to trade cryptocurrency. Please verify your account first');
         }
 
 
         $get['pendbuy'] = Trx::where('status', 1)->where('type', 1)->sum('amount');
-		$get['totalbuy'] = Trx::where('status', 2)->where('type', 1)->sum('amount');
+        $get['totalbuy'] = Trx::where('status', 2)->where('type', 1)->sum('amount');
         $get['pendsell'] = Trx::where('status', 1)->where('type', 2)->sum('amount');
         $get['totalsell'] = Trx::where('status', 2)->where('type', 2)->sum('amount');
-        $get['currency'] = Currency::whereStatus(1)->orderBy('name','asc')->get();
-        $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name','asc')->get();
-        $get['bank'] = Bank::whereStatus(1)->orderBy('name','asc')->get();
+        $get['currency'] = Currency::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['bank'] = Bank::whereStatus(1)->orderBy('name', 'asc')->get();
         $get['page_title'] = "Trade E-Currency";
 
         $get['trade'] = Trx::where('status', '>', 0)->latest()->paginate(5);
         return view('user.trade', $get);
     }
 
-      public function buycoin()
-    {    $auth = Auth::user();
-         if ($auth->verified != 2 ){
-         return back()->withAlert('You are not eligible to buy cryptocurrency. Please verify your account first');
+    public function buycoin()
+    {
+        $auth = Auth::user();
+        if ($auth->verified != 2) {
+            return back()->withAlert('You are not eligible to buy cryptocurrency. Please verify your account first');
         }
 
-        $get['currency'] = Currency::whereStatus(1)->orderBy('name','asc')->get();
-        $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name','asc')->get();
-        $get['bank'] = Bank::whereStatus(1)->orderBy('name','asc')->get();
+        $get['currency'] = Currency::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['bank'] = Bank::whereStatus(1)->orderBy('name', 'asc')->get();
         $get['page_title'] = " Buy E-Currency";
         return view('user.buy', $get);
     }
+
     public function sellcoin()
     {
 
 
         $get['page_title'] = "Sell Currency";
-        $get['currency'] = Currency::whereStatus(1)->orderBy('name','asc')->get();
-        $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name','asc')->get();
-        $get['bank'] = Bank::whereStatus(1)->orderBy('name','asc')->get();
-       return view('user.sell', $get);
+        $get['currency'] = Currency::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['method'] = PaymentMethod::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['bank'] = Bank::whereStatus(1)->orderBy('name', 'asc')->get();
+        return view('user.sell', $get);
     }
 
 
-
-
-
-      public function buyecoin(Request $request)
+    public function buyecoin(Request $request)
     {
-         $this->validate($request, [
+        $this->validate($request, [
             'wallet' => 'required',
             'rewallet' => 'required',
             'usd' => 'required',
@@ -1335,100 +1341,96 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
 
-
-        if($request->wallet != $request->rewallet){
-        return back()->with("alert", "Your confirm wallet address entry does not tally with the wallet address ");
+        if ($request->wallet != $request->rewallet) {
+            return back()->with("alert", "Your confirm wallet address entry does not tally with the wallet address ");
         }
 
-        if($request->payment == 2){
+        if ($request->payment == 2) {
 
 
-        $charge = $basic->transcharge;
-        $usd = $request->usd * $currency->sell;
-        $topay = $usd + $charge;
-        $get = $request->usd/$currency->price;
+            $charge = $basic->transcharge;
+            $usd = $request->usd * $currency->sell;
+            $topay = $usd + $charge;
+            $get = $request->usd / $currency->price;
 
-        $buy['currency_id'] = $currency->id;
-        $buy['amount'] =  $request->usd;
-        $buy['main_amo'] = $topay;
-        $buy['charge'] = $charge;
-        $buy['price'] = $currency->price;
-        $buy['getamo'] = $get;
-        $buy['user_id'] = Auth::id();
-        $buy['type'] = 1;
-        $buy['method'] = $request->method;
-        $buy['wallet'] = $request->wallet;
-        $buy['rate'] = $currency->sell;
-        $buy['bank'] = $request->bank;
-        $buy['remark'] = $request->comment;
-        $buy['status'] = 0;
-        $buy['trx'] = $trx;
-        $data = Trx::create($buy)->trx;
+            $buy['currency_id'] = $currency->id;
+            $buy['amount'] = $request->usd;
+            $buy['main_amo'] = $topay;
+            $buy['charge'] = $charge;
+            $buy['price'] = $currency->price;
+            $buy['getamo'] = $get;
+            $buy['user_id'] = Auth::id();
+            $buy['type'] = 1;
+            $buy['method'] = $request->method;
+            $buy['wallet'] = $request->wallet;
+            $buy['rate'] = $currency->sell;
+            $buy['bank'] = $request->bank;
+            $buy['remark'] = $request->comment;
+            $buy['status'] = 0;
+            $buy['trx'] = $trx;
+            $data = Trx::create($buy)->trx;
 
-        Session::put('Track', $buy['trx']);
-        return redirect()->route('user.ebuy'); }
+            Session::put('Track', $buy['trx']);
+            return redirect()->route('user.ebuy');
+        } elseif ($request->payment == 1) {
 
-        elseif($request->payment == 1){
-
-        if($request->gateway ==  107){
-        $gate = Gateway::whereId(107)->first();
-         }
-
-
-        if($request->gateway == 103){
-        $gate = Gateway::whereId(103)->first();
-         }
+            if ($request->gateway == 107) {
+                $gate = Gateway::whereId(107)->first();
+            }
 
 
-        if($request->gateway == 100){
-        $gate = Gateway::whereId(100)->first();
-         }
+            if ($request->gateway == 103) {
+                $gate = Gateway::whereId(103)->first();
+            }
 
-        if($request->gateway == 99){
-        $gate = Gateway::whereId(99)->first();
 
-        if($request->local < $auth->balance){
-        return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund or try using another payment gateway");
+            if ($request->gateway == 100) {
+
+                $gate = Gateway::whereId(100)->first();
+            }
+
+            if ($request->gateway == 99) {
+                $gate = Gateway::whereId(99)->first();
+
+                if ($request->local < $auth->balance) {
+                    return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund or try using another payment gateway");
+                }
+
+
+            }
+
+            $charge = $basic->transcharge;
+            $usd = $request->usd * $currency->sell;
+            $topay = $usd + $charge;
+            $get = $request->usd / $currency->price;
+
+            $buy['currency_id'] = $currency->id;
+            $buy['amount'] = $request->usd;
+            $buy['main_amo'] = $topay;
+            $buy['charge'] = $charge;
+            $buy['price'] = $currency->price;
+            $buy['getamo'] = $get;
+            $buy['user_id'] = Auth::id();
+            $buy['type'] = 1;
+            $buy['method'] = $request->method;
+            $buy['wallet'] = $request->wallet;
+            $buy['rate'] = $currency->sell;
+            $buy['bank'] = $request->bank;
+            $buy['gateway'] = 1;
+            $buy['remark'] = $request->comment;
+            $buy['status'] = 0;
+            $buy['trx'] = $trx;
+            $data = Trx::create($buy)->trx;
+
+            Session::put('Track', $buy['trx']);
+            return redirect()->route('user.ebuy');
+
         }
-
-
-
-
-         }
-
-        $charge = $basic->transcharge;
-        $usd = $request->usd * $currency->sell;
-        $topay = $usd + $charge;
-        $get = $request->usd/$currency->price;
-
-        $buy['currency_id'] = $currency->id;
-        $buy['amount'] =  $request->usd;
-        $buy['main_amo'] = $topay;
-        $buy['charge'] = $charge;
-        $buy['price'] = $currency->price;
-        $buy['getamo'] = $get;
-        $buy['user_id'] = Auth::id();
-        $buy['type'] = 1;
-        $buy['method'] = $request->method;
-        $buy['wallet'] = $request->wallet;
-        $buy['rate'] = $currency->sell;
-        $buy['bank'] = $request->bank;
-        $buy['gateway'] = 1;
-        $buy['remark'] = $request->comment;
-        $buy['status'] = 0;
-        $buy['trx'] = $trx;
-        $data = Trx::create($buy)->trx;
-
-        Session::put('Track', $buy['trx']);
-        return redirect()->route('user.ebuy');
-
-         }
-
 
 
     }
 
-       public function ebuyonlinePreview()
+    public function ebuyonlinePreview()
     {
 
         $track = Session::get('Track');
@@ -1439,16 +1441,16 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
         $basic = GeneralSettings::first();
         date_default_timezone_set($auth->timezone);
-        $d=strtotime("+$basic->trxcancel minutes");
+        $d = strtotime("+$basic->trxcancel minutes");
         $timeout = date("Y-m-d h:i:sa", $d);
 
 
         $start = $data->created_at;
-        $time = date('Y-m-d H:i:s',strtotime('+1 hour',strtotime($start)));
+        $time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($start)));
 
 
         $start2 = $time;
-        $timeout = date('Y-m-d H:i:s',strtotime('+30 minutes',strtotime($start2)));
+        $timeout = date('Y-m-d H:i:s', strtotime('+30 minutes', strtotime($start2)));
 
         $data['timeout'] = $timeout;
         $data->save();
@@ -1466,7 +1468,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
     public function ebuydel($id)
-     {
+    {
         $data = Trx::where('status', 0)->where('trx', $id)->first();
         $page_title = "Purchase Preview";
         $auth = Auth::user();
@@ -1475,43 +1477,39 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-
-       public function ebuyonlinepost($id)
+    public function ebuyonlinepost($id)
     {
-         $data = Trx::where('status', 0)->where('trx', $id)->first();
-         Session::put('Track', $data->trx);
-         return redirect()->route('ebuypost2');
+        $data = Trx::where('status', 0)->where('trx', $id)->first();
+        Session::put('Track', $data->trx);
+        return redirect()->route('ebuypost2');
     }
 
 
-     public function ebuyonlinepost2()
+    public function ebuyonlinepost2()
     {
-         $track = Session::get('Track');
-         $data = Trx::where('status', 0)->where('trx', $track)->first();
-         $method = PaymentMethod::all();
-         $page_title = "Purchase Coin";
-         $auth = Auth::user();
-         return view('user.ebuypay', compact('data','method', 'page_title'));
-
-    }
-
-
-
-     public function ebuyonlinepost22($id)
-    {
-         $data = Trx::where('status', 0)->where('trx', $id)->first();
-         $method = PaymentMethod::all();
-         $page_title = "Purchase Coin";
-         $auth = Auth::user();
-         return view('user.ebuypay', compact('data','method', 'page_title'));
+        $track = Session::get('Track');
+        $data = Trx::where('status', 0)->where('trx', $track)->first();
+        $method = PaymentMethod::all();
+        $page_title = "Purchase Coin";
+        $auth = Auth::user();
+        return view('user.ebuypay', compact('data', 'method', 'page_title'));
 
     }
 
 
-
-     public function ebuyupload(Request $request)
+    public function ebuyonlinepost22($id)
     {
+        $data = Trx::where('status', 0)->where('trx', $id)->first();
+        $method = PaymentMethod::all();
+        $page_title = "Purchase Coin";
+        $auth = Auth::user();
+        return view('user.ebuypay', compact('data', 'method', 'page_title'));
 
+    }
+
+
+    public function ebuyupload(Request $request)
+    {
 
 
         $basic = GeneralSettings::first();
@@ -1519,45 +1517,44 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $count = Trx::where('status', 0)->where('trx', $request->trx)->count();
         $auth = Auth::user();
 
-		if($count < 1){
-			 return back()->with('danger', 'This transaction has expired or does not exist');
-			  }
-
-	     if($data->main_amo > $auth->balance){
-        return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund into your wallet and try again");
+        if ($count < 1) {
+            return back()->with('danger', 'This transaction has expired or does not exist');
         }
 
-         $data->amountpaid = $data->main_amo;
-         $data->depositor = $auth->username;
-         $data->tnum = rand(000000, 999999) . rand(000000, 999999);
-         $data->method = 1;
-         $data->status = 1;
-          if($request->hasFile('photo'))
-            {
-                $data['image'] = uniqid().'.jpg';
-                $request->photo->move('uploads/payments',$data['image']);
-            }
+        if ($data->main_amo > $auth->balance) {
+            return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund into your wallet and try again");
+        }
+
+        $data->amountpaid = $data->main_amo;
+        $data->depositor = $auth->username;
+        $data->tnum = rand(000000, 999999) . rand(000000, 999999);
+        $data->method = 1;
+        $data->status = 1;
+        if ($request->hasFile('photo')) {
+            $data['image'] = uniqid() . '.jpg';
+            $request->photo->move('uploads/payments', $data['image']);
+        }
 
         $user = Auth::user();
         $user->balance = $user->balance - $data->main_amo;
         $user->save();
 
 
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Purchased',
+            'details' => 'Your ' . $basic->currency_sym . '' . $request->amount . ' with transaction number ' . $data->trx . 'cryptocurrency purchase was successful. Please wait while our server verifies your purchase. Your account will be credited once payment is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
-             Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Coin Purchased',
-                    'details' => 'Your '.$basic->currency_sym.''.$request->amount.' with transaction number '.$data->trx.'cryptocurrency purchase was successful. Please wait while our server verifies your purchase. Your account will be credited once payment is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
-
-         $data->save();
-         return redirect()->route('trade')->with("success", "  Your coin purchase was successful. Please wait while we process your request");
+        $data->save();
+        return redirect()->route('trade')->with("success", "  Your coin purchase was successful. Please wait while we process your request");
 
     }
-      public function trxdel($id)
-     {
+
+    public function trxdel($id)
+    {
         $data = Trx::where('status', 0)->where('id', $id)->first();
         $page_title = "Purchase Preview";
         $data->delete();
@@ -1565,13 +1562,9 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-
-
-
-
-        public function sellecoin(Request $request)
+    public function sellecoin(Request $request)
     {
-         $this->validate($request, [
+        $this->validate($request, [
             'coin' => 'required',
             'usd' => 'required',
         ]);
@@ -1583,22 +1576,13 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
 
-
-
-
-
-
-
-
-
-
         $charge = $basic->transcharge;
         $usd = $request->usd * $currency->buy;
         $topay = $usd + $charge;
 
 
         $buy['currency_id'] = $currency->id;
-        $buy['amount'] =  $request->usd;
+        $buy['amount'] = $request->usd;
         $buy['main_amo'] = $topay;
         $buy['charge'] = $charge;
         $buy['price'] = $currency->price;
@@ -1618,7 +1602,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     }
 
-          public function esellonlinePreview()
+    public function esellonlinePreview()
     {
 
         $track = Session::get('Track');
@@ -1628,16 +1612,16 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
         $basic = GeneralSettings::first();
         date_default_timezone_set($auth->timezone);
-        $d=strtotime("+$basic->trxcancel minutes");
+        $d = strtotime("+$basic->trxcancel minutes");
         $timeout = date("Y-m-d h:i:sa", $d);
 
 
         $start = $data->created_at;
-        $time = date('Y-m-d H:i:s',strtotime('+1 hour',strtotime($start)));
+        $time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($start)));
 
 
         $start2 = $time;
-        $timeout = date('Y-m-d H:i:s',strtotime('+30 minutes',strtotime($start2)));
+        $timeout = date('Y-m-d H:i:s', strtotime('+30 minutes', strtotime($start2)));
 
         $data['timeout'] = $timeout;
         $data->save();
@@ -1664,58 +1648,65 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $page_title = "Sales Preview";
         $auth = Auth::user();
 
-		$getamount = Session::get('putamount');
+        $getamount = Session::get('putamount');
         $gettime = Session::get('timestamp');
         $gettrx = Session::get('puttrx');
         $getaddress = Session::get('putaddress');
 
-		if (Carbon::parse($gettime)->addMinutes(15) > Carbon::now() && $gettime != '') {
+        $basic = GeneralSettings::first();
 
-		$address = $getaddress;
-		$btcvalue = $getamount;
+        if (Carbon::parse($gettime)->addMinutes(15) > Carbon::now() && $gettime != '') {
 
-        return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
+            $address = $getaddress;
+            $btcvalue = $getamount;
 
-        } else{
+            return view('user.esellscan', compact('data', 'btcvalue', 'address', 'page_title'));
 
+        } else {
 
-		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+            if($currency->symbol=="BTC"){
+                $akey=$basic->bitcoin_address;
+            }else{
+                $akey=$basic->etherum_address;
+            }
+
+            $baseurl = "https://coinremitter.com/api/v3/" . $currency->symbol . "/create-invoice";
 //		$baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => $baseurl,
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => '',
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 0,
-		  CURLOPT_FOLLOWLOCATION => true,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
-		));
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $baseurl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'amount' => $data->amount, 'name' => $data->trx, 'currency' => 'USD', 'expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
+            ));
 
-		$response = curl_exec($curl);
-		$reply = json_decode($response,true);
-		curl_close($curl);
+            $response = curl_exec($curl);
+            $reply = json_decode($response, true);
+            curl_close($curl);
 
-		$address = $reply['data']['address'];
-		$invoiceid = $reply['data']['invoice_id'];
+            $address = $reply['data']['address'];
+            $invoiceid = $reply['data']['invoice_id'];
 //		$btcvalue = $reply['data']['total_amount']['TCN'];
-		$btcvalue = $reply['data']['total_amount']['BTC'];
+            $btcvalue = $reply['data']['total_amount']['BTC'];
 
-            $data->action=$invoiceid;
-            $data->method=$currency->symbol;
+            $data->action = $invoiceid;
+            $data->method = $currency->symbol;
             $data->save();
 
-		Session::put('puttrx', $data->trx);
-		Session::put('amount', $data->amount);
-		Session::put('timestamp', Carbon::now());
-		Session::put('putamount', $btcvalue);
-		Session::put('putaddress', $address);
+            Session::put('puttrx', $data->trx);
+            Session::put('amount', $data->amount);
+            Session::put('timestamp', Carbon::now());
+            Session::put('putamount', $btcvalue);
+            Session::put('putaddress', $address);
 
-		 }
+        }
 
-        return view('user.esellscan', compact('data', 'btcvalue','address', 'page_title'));
+        return view('user.esellscan', compact('data', 'btcvalue', 'address', 'page_title'));
     }
 
 
@@ -1728,7 +1719,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
     public function eselldel($id)
-     {
+    {
         $data = Trx::where('status', 0)->where('trx', $id)->first();
         $page_title = "Sale Preview";
         $auth = Auth::user();
@@ -1737,97 +1728,101 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-
-       public function esellonlinepost($id)
+    public function esellonlinepost($id)
     {
-         $data = Trx::where('status', 0)->where('trx', $id)->first();
-         Session::put('Track', $data->trx);
-         return redirect()->route('esellpost2');
+        $data = Trx::where('status', 0)->where('trx', $id)->first();
+        Session::put('Track', $data->trx);
+        return redirect()->route('esellpost2');
     }
 
 
-     public function esellupload(Request $request)
+    public function esellupload(Request $request)
     {
-           $this->validate($request,
+        $this->validate($request,
             [
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'trxx' => 'required',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'trxx' => 'required',
             ]);
 
         $basic = GeneralSettings::first();
         $data = Trx::where('status', 0)->where('trx', $request->trx)->first();
         $page_title = "Sold Coin";
-         $auth = Auth::user();
+        $auth = Auth::user();
 
         $data->tnum = $request->trxx;
         $data->status = 1;
-          if($request->hasFile('photo'))
-            {
-                $data['image'] = uniqid().'.jpg';
-                $request->photo->move('uploads/payments',$data['image']);
-            }
-		$data->save();
+        if ($request->hasFile('photo')) {
+            $data['image'] = uniqid() . '.jpg';
+            $request->photo->move('uploads/payments', $data['image']);
+        }
+        $data->save();
 
 
-             Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Coin Sold',
-                    'details' => 'Your USD'.$data->amount.' sale with transaction number '.$data->trx.' was successful. Please wait while our server verifies your sale. Your account will be credited once payment is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Sold',
+            'details' => 'Your USD' . $data->amount . ' sale with transaction number ' . $data->trx . ' was successful. Please wait while our server verifies your sale. Your account will be credited once payment is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
 
-         return redirect()->route('trade')->with("success", "  Your coin sale was successful. Please wait while we process your transaction");
+        return redirect()->route('trade')->with("success", "  Your coin sale was successful. Please wait while we process your transaction");
 
     }
 
 
-	   public function esellcallback(Request $request)
+    public function esellcallback(Request $request)
     {
 
         $basic = GeneralSettings::first();
         $data = Trx::where('status', 0)->where('trx', $request->trx)->first();
         $auth = Auth::user();
-		$data->save();
+        $data->save();
 
-        		$baseurl = "https://coinremitter.com/api/v3/".$data->method."/get-invoice";
+        if($data->method=="BTC"){
+            $akey=$basic->bitcoin_address;
+        }else{
+            $akey=$basic->etherum_address;
+        }
+
+        $baseurl = "https://coinremitter.com/api/v3/" . $data->method . "/get-invoice";
 //        $baseurl = "https://coinremitter.com/api/v3/TCN/get-invoice";
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => $baseurl,
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => '',
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 0,
-		  CURLOPT_FOLLOWLOCATION => true,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$yb3zuNt09d6dkVnTZZWclOOsOrAwMu5VsGE8hEbqM6V4gO.IeSI.W','password' => 'visionxcrypto','invoice_id' => $data->action),
-		));
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $data->action),
+        ));
 
         $response = curl_exec($curl);
-        $reply = json_decode($response,true);
+        $reply = json_decode($response, true);
         curl_close($curl);
 
-        if (!isset($reply['data']['status_code'])){
+        if (!isset($reply['data']['status_code'])) {
             return back()->with("danger", "An error occur. Contact server admin");
         }
 
         $status = $reply['data']['status_code'];
 
-        if($status==0){
+        if ($status == 0) {
             return back()->with("danger", "We have not received your payment. Kindly Scan and make payment");
         }
 
-        if($data->status==2){
+        if ($data->status == 2) {
             return redirect()->route('products')->with("danger", "Payment has been made already");
         }
 
 
-        if($status==1 || $status==3){
+        if ($status == 1 || $status == 3) {
             $basic = GeneralSettings::first();
-            $data->status= 2;
+            $data->status = 2;
             $data->save();
 
             $product['user_id'] = $data->user_id;
@@ -1840,27 +1835,22 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
             $product['amount'] = $data->main_amo;
             Transaction::create($product);
 
-            $user=User::find($data->user_id);
-            $user->balance+=$data->main_amo;
+            $user = User::find($data->user_id);
+            $user->balance += $data->main_amo;
             $user->save();
 
             Message::create([
                 'user_id' => $data->user_id,
                 'title' => 'Coin Purchase Successful',
-                'details' => 'Your cryptocurrency purchase with transaction number '.$data->trx.'  was successful. Your account has been credited as required, Thank you for choosing '.$basic->sitename.'',
+                'details' => 'Your cryptocurrency purchase with transaction number ' . $data->trx . '  was successful. Your account has been credited as required, Thank you for choosing ' . $basic->sitename . '',
                 'admin' => 1,
-                'status' =>  0
+                'status' => 0
             ]);
 
-            return redirect()->route('products')->with(['modal'=> 'power', "success"=> 'Your cryptocurrency purchase with transaction number '.$data->trx.'  was successful.']);
+            return redirect()->route('products')->with(['modal' => 'power', "success" => 'Your cryptocurrency purchase with transaction number ' . $data->trx . '  was successful.']);
         }
 
     }
-
-
-
-
-
 
 
     public function buyonline(Request $request)
@@ -1874,49 +1864,49 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $lenght = strlen($request->address);
 
 
-        if($request->radio ==  "paystack"){
-        $gate = Gateway::whereId(107)->first();
-         }
-
-
-        if($request->radio == "stripe"){
-        $gate = Gateway::whereId(103)->first();
-         }
-
-
-        if($request->radio == "rave"){
-        $gate = Gateway::whereId(100)->first();
-         }
-
-
-
-
-        if($wallet->address == "0"){
-        return back()->with("alert", "Please setup your $wallet->name wallet addres first before you make withdrawal");
+        if ($request->radio == "paystack") {
+            $gate = Gateway::whereId(107)->first();
         }
 
 
-        if($lenght < 10){
-        return back()->with("alert", "You have setup a wrong $wallet->name wallet address. Please update your walletaddress");
+        if ($request->radio == "stripe") {
+            $gate = Gateway::whereId(103)->first();
+        }
+
+
+        if ($request->radio == "rave") {
+            $gate = Gateway::whereId(100)->first();
+        }
+
+
+        if ($wallet->address == "0") {
+            return back()->with("alert", "Please setup your $wallet->name wallet addres first before you make withdrawal");
+        }
+
+
+        if ($lenght < 10) {
+            return back()->with("alert", "You have setup a wrong $wallet->name wallet address. Please update your walletaddress");
         }
 
 
         $buy['currency_id'] = $currency->id;
-        $buy['enter_amount'] =  round($request->amount, $basic->decimal);
+        $buy['enter_amount'] = round($request->amount, $basic->decimal);
         $buy['get_amount'] = $request->unit;
         $buy['buy_charge'] = round($request->charge, $basic->decimal);
         $buy['buy_price'] = $currency->price;
         $buy['user_id'] = Auth::id();
         $buy['type'] = 1;
         $buy['status'] = 0;
-        if($request->radio == "bank"){
-        $buy['gateway'] = 999; }
-        else{
-        $buy['gateway'] = $gate->id; }
-         if($request->radio == "bank"){
-        $buy['info'] = "Bought ".$wallet->name." using Bank Transfer"; }
-        else{
-        $buy['info'] = "Bought ".$wallet->name." using Credit Card"; }
+        if ($request->radio == "bank") {
+            $buy['gateway'] = 999;
+        } else {
+            $buy['gateway'] = $gate->id;
+        }
+        if ($request->radio == "bank") {
+            $buy['info'] = "Bought " . $wallet->name . " using Bank Transfer";
+        } else {
+            $buy['info'] = "Bought " . $wallet->name . " using Credit Card";
+        }
         $buy['account'] = $request->address;
         $buy['trx'] = $trx;
         $data = BuyMoney::create($buy)->trx;
@@ -1926,7 +1916,7 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     }
 
-     public function buyonlinePreview()
+    public function buyonlinePreview()
     {
 
         $track = Session::get('Track');
@@ -1936,12 +1926,12 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         return view('user.onlinebuy', compact('data', 'page_title'));
     }
 
-      public function sellwallet(Request $request)
+    public function sellwallet(Request $request)
     {
         $this->validate($request, [
             'radio2' => 'required',
         ], [
-             'radio2.required' => 'Please select a method to payment '
+            'radio2.required' => 'Please select a method to payment '
         ]);
         $auth = Auth::user();
         $basic = GeneralSettings::first();
@@ -1950,56 +1940,55 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
         $lenght = strlen($request->radio2);
-        if($wallet->balance < $request->unit){
-        return back()->with("alert", "You dont have enough balance in your ".$wallet->name." wallet");
+        if ($wallet->balance < $request->unit) {
+            return back()->with("alert", "You dont have enough balance in your " . $wallet->name . " wallet");
         }
 
-        if($wallet->address == "0"){
-        return back()->with("alert", "Please setup your payment account first before your make sales");
+        if ($wallet->address == "0") {
+            return back()->with("alert", "Please setup your payment account first before your make sales");
         }
 
 
-        if($lenght < 5){
-        return back()->with("alert", "You have setup a wrong payment account. Please update your payment account");
+        if ($lenght < 5) {
+            return back()->with("alert", "You have setup a wrong payment account. Please update your payment account");
         }
 
         $wallet->balance = $wallet->balance - 3;
         $wallet->save();
 
         $buy['currency_id'] = $currency->id;
-        $buy['enter_amount'] =  round($request->amount, $basic->decimal);
+        $buy['enter_amount'] = round($request->amount, $basic->decimal);
         $buy['get_amount'] = $request->unit;
         $buy['sell_charge'] = round($request->charge, $basic->decimal);
         $buy['sell_price'] = $currency->price;
         $buy['user_id'] = Auth::id();
         $buy['type'] = 0;
         $buy['status'] = 1;
-        if($request->radio2 == "Deposit Wallet"){
-        $buy['payout'] = 1;
+        if ($request->radio2 == "Deposit Wallet") {
+            $buy['payout'] = 1;
         }
         $buy['email'] = $request->radio2;
         $buy['trx'] = $trx;
         $data = SellMoney::create($buy)->trx;
 
         Trx::create([
-        'user_id' => $auth->id,
-        'amount' => $request->amount,
-        'main_amo' => round($auth->balance, $basic->decimal),
-        'charge' => $request->charge,
-        'type' => '-',
-        'action' => 'Sales',
-        'title' => ' Sold ' . $request->unit . ' ' . $currency->symbol,
-         'trx' => $trx
-          ]);
+            'user_id' => $auth->id,
+            'amount' => $request->amount,
+            'main_amo' => round($auth->balance, $basic->decimal),
+            'charge' => $request->charge,
+            'type' => '-',
+            'action' => 'Sales',
+            'title' => ' Sold ' . $request->unit . ' ' . $currency->symbol,
+            'trx' => $trx
+        ]);
 
-            Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Coin Sold',
-                    'details' => 'Your '.$request->unit.'' . $currency->symbol.' cryptocurrency sales valued at '.$basic->currency.''.round($request->amount-$request->charge, $basic->decimal).' was successful. '.$request->unit.'' . $currency->symbol.' was debited from your '.$basic->sitename.'  ' . $currency->name.' wallet. Please wait while our server verifies your sale. Your account will be credited once coin is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
-
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Sold',
+            'details' => 'Your ' . $request->unit . '' . $currency->symbol . ' cryptocurrency sales valued at ' . $basic->currency . '' . round($request->amount - $request->charge, $basic->decimal) . ' was successful. ' . $request->unit . '' . $currency->symbol . ' was debited from your ' . $basic->sitename . '  ' . $currency->name . ' wallet. Please wait while our server verifies your sale. Your account will be credited once coin is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
 
         $txt = $request->amount . ' ' . $currency->symbol . ' Sold Amount  ';
@@ -2008,27 +1997,27 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     }
 
-      public function sellonline(Request $request)
+    public function sellonline(Request $request)
     {
-          $this->validate($request, [
+        $this->validate($request, [
             'radio' => 'required',
         ], [
-             'radio.required' => 'Please select a method to payment '
+            'radio.required' => 'Please select a method to payment '
         ]);
         $auth = Auth::user();
         $currency = Currency::whereId($request->coin)->first();
         $basic = GeneralSettings::first();
         $trx = rand(000000, 999999) . rand(000000, 999999);
         $sell['currency_id'] = $currency->id;
-        $sell['enter_amount'] =  round($request->amount, $basic->decimal);
+        $sell['enter_amount'] = round($request->amount, $basic->decimal);
         $sell['get_amount'] = $request->unit;
         $sell['sell_charge'] = round($request->charge, $basic->decimal);
         $sell['sell_price'] = $currency->price;
         $sell['user_id'] = Auth::id();
         $sell['type'] = 1;
         $sell['status'] = 0;
-         if($request->radio2 == "Deposit Wallet"){
-        $buy['payout'] = 1;
+        if ($request->radio2 == "Deposit Wallet") {
+            $buy['payout'] = 1;
         }
 
         $sell['account'] = $request->account;
@@ -2037,29 +2026,27 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $sell = SellMoney::create($sell)->trx;
 
         Trx::create([
-        'user_id' => $auth->id,
-        'amount' => $request->amount,
-        'main_amo' => round($auth->balance, $basic->decimal),
-        'charge' => $request->charge,
-        'type' => '-',
-        'action' => 'Sales',
-        'title' => ' Sold ' . $request->unit . ' ' . $currency->symbol,
-         'trx' => $trx
-          ]);
-
+            'user_id' => $auth->id,
+            'amount' => $request->amount,
+            'main_amo' => round($auth->balance, $basic->decimal),
+            'charge' => $request->charge,
+            'type' => '-',
+            'action' => 'Sales',
+            'title' => ' Sold ' . $request->unit . ' ' . $currency->symbol,
+            'trx' => $trx
+        ]);
 
 
         $auth = Auth::user();
         $sell = SellMoney::where('trx', $trx)->where('user_id', $auth->id)->whereStatus(0)->first();
         $basic = GeneralSettings::first();
-         Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Coin Sold',
-                    'details' => 'Your '.$request->unit.'' . $currency->symbol.' cryptocurrency sales valued at '.$basic->currency.''.round($request->amount-$request->charge, $basic->decimal).' was successful. Please wait while our server verifies your sale. Your account will be credited once coin is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
-
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Sold',
+            'details' => 'Your ' . $request->unit . '' . $currency->symbol . ' cryptocurrency sales valued at ' . $basic->currency . '' . round($request->amount - $request->charge, $basic->decimal) . ' was successful. Please wait while our server verifies your sale. Your account will be credited once coin is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
 
         if ($sell) {
@@ -2083,17 +2070,17 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     public function exchange()
     {
         $get['page_title'] = "Exchange Currency";
-        $get['currency'] = Currency::whereStatus(1)->orderBy('name','asc')->get();
-        $get['currency2'] = Currency::whereStatus(1)->orderBy('name','asc')->get();
+        $get['currency'] = Currency::whereStatus(1)->orderBy('name', 'asc')->get();
+        $get['currency2'] = Currency::whereStatus(1)->orderBy('name', 'asc')->get();
         return view('user.exchange', $get);
     }
 
-     public function exchangewallet(Request $request)
+    public function exchangewallet(Request $request)
     {
         $this->validate($request, [
             'radio2' => 'required',
         ], [
-             'radio2.required' => 'Please select a method of payment '
+            'radio2.required' => 'Please select a method of payment '
         ]);
         $auth = Auth::user();
         $basic = GeneralSettings::first();
@@ -2102,41 +2089,40 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
         $lenght = strlen($request->radio);
-        if($hwallet->balance < $request->hhave){
-        return back()->with("alert", "You dont have enough balance in your ".$hwallet->name." wallet");
+        if ($hwallet->balance < $request->hhave) {
+            return back()->with("alert", "You dont have enough balance in your " . $hwallet->name . " wallet");
         }
 
-        if($request->radio2 == 0){
-        if($gwallet->address == "0"){
-        return back()->with("alert", "Please setup your payment account first before your make exchange");
-        } }
-
-        if($request->gcoin == $request->hcoin){
-        return back()->with("alert", "You cant exchange the same type of coin. Please check and try again later");
+        if ($request->radio2 == 0) {
+            if ($gwallet->address == "0") {
+                return back()->with("alert", "Please setup your payment account first before your make exchange");
+            }
         }
 
-       if($request->radio2 == 0){
-        $hwallet->balance = $hwallet->balance - $request->hhave;
-        $gwallet->balance = $gwallet->balance + $request->gget;
-        $hwallet->save();
-        $gwallet->save();
+        if ($request->gcoin == $request->hcoin) {
+            return back()->with("alert", "You cant exchange the same type of coin. Please check and try again later");
         }
-        else {
-        $hwallet->balance = $hwallet->balance - $request->hhave;
-        $hwallet->save();
+
+        if ($request->radio2 == 0) {
+            $hwallet->balance = $hwallet->balance - $request->hhave;
+            $gwallet->balance = $gwallet->balance + $request->gget;
+            $hwallet->save();
+            $gwallet->save();
+        } else {
+            $hwallet->balance = $hwallet->balance - $request->hhave;
+            $hwallet->save();
         }
 
 
         $data['user_id'] = Auth::id();
         $data['trx'] = $trx;
         $data['transaction_number'] = $trx;
-        if($request->radio2 == 0){
-        $data['info'] = "".$basic->sitename." Wallet";
-        $data['status'] = 2;
-        }
-        else {
-        $data['info'] = $hwallet->address;
-        $data['status'] = 1;
+        if ($request->radio2 == 0) {
+            $data['info'] = "" . $basic->sitename . " Wallet";
+            $data['status'] = 2;
+        } else {
+            $data['info'] = $hwallet->address;
+            $data['status'] = 1;
         }
 
         $data['from_amount'] = round($request->hhave, 6);
@@ -2150,26 +2136,24 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
 
         Trx::create([
-        'user_id' => $auth->id,
-        'amount' => $request->hamount,
-        'main_amo' => round($auth->balance, $basic->decimal),
-        'charge' => $request->charge,
-        'type' => '-',
-        'action' => 'Exchange',
-        'title' => ' Exchange ' . $request->unithave . ' ' . $hwallet->name,
-         'trx' => $trx
-          ]);
+            'user_id' => $auth->id,
+            'amount' => $request->hamount,
+            'main_amo' => round($auth->balance, $basic->decimal),
+            'charge' => $request->charge,
+            'type' => '-',
+            'action' => 'Exchange',
+            'title' => ' Exchange ' . $request->unithave . ' ' . $hwallet->name,
+            'trx' => $trx
+        ]);
 
 
-            Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Coin Exchanged',
-                    'details' => 'Your '.$request->hhave.'' . $hwallet->name.' cryptocurrency exchange was successful. '.$request->gget.'' . $gwallet->name.' will be credited to your '.$gwallet->name.' wallet. Please wait while our server verify your exchange. Your account will be credited once coin exchange is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
-
-
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Exchanged',
+            'details' => 'Your ' . $request->hhave . '' . $hwallet->name . ' cryptocurrency exchange was successful. ' . $request->gget . '' . $gwallet->name . ' will be credited to your ' . $gwallet->name . ' wallet. Please wait while our server verify your exchange. Your account will be credited once coin exchange is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
 
         $txt = $request->hhave . ' ' . $hwallet->name . ' Exchange Amount  ';
@@ -2179,14 +2163,12 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     }
 
 
-
-
-          public function exchangeonline(Request $request)
+    public function exchangeonline(Request $request)
     {
         $this->validate($request, [
             'radio2' => 'required',
         ], [
-             'radio2.required' => 'Please select a method of payment '
+            'radio2.required' => 'Please select a method of payment '
         ]);
         $auth = Auth::user();
         $basic = GeneralSettings::first();
@@ -2196,24 +2178,24 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
         $lenght = strlen($request->radio);
 
-        if($request->radio2 == 0){
-        if($gwallet->address == "0"){
-        return back()->with("alert", "Please setup your payment account first before your make exchange");
-        } }
+        if ($request->radio2 == 0) {
+            if ($gwallet->address == "0") {
+                return back()->with("alert", "Please setup your payment account first before your make exchange");
+            }
+        }
 
-        if($request->gcoin == $request->hcoin){
-        return back()->with("alert", "You cant exchange the same type of coin. Please check and try again later");
+        if ($request->gcoin == $request->hcoin) {
+            return back()->with("alert", "You cant exchange the same type of coin. Please check and try again later");
         }
 
 
         $data['user_id'] = Auth::id();
         $data['trx'] = $trx;
         $data['transaction_number'] = $request->account;
-        if($request->radio2 == 0){
-        $data['info'] = "".$basic->sitename." Wallet";
-        }
-        else {
-        $data['info'] = $hwallet->address;
+        if ($request->radio2 == 0) {
+            $data['info'] = "" . $basic->sitename . " Wallet";
+        } else {
+            $data['info'] = $hwallet->address;
         }
         $data['status'] = 1;
 
@@ -2223,42 +2205,42 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['from_currency_id'] = $request->hcoin;
         $data['receive_amount'] = round($request->gget, 6);
         $data['receive_currency_id'] = $request->gcoin;
-         if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $filename = $request->account . '.jpg';
-                $location = 'exchange/' . $filename;
-                $data['image'] = $filename;
-                Image::make($image)->save($location);
-            }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = $request->account . '.jpg';
+            $location = 'exchange/' . $filename;
+            $data['image'] = $filename;
+            Image::make($image)->save($location);
+        }
         $getTrx = ExchangeMoney::create($data)->trx;
 
 
         Trx::create([
-        'user_id' => $auth->id,
-        'amount' => $request->hamount,
-        'main_amo' => round($auth->balance, $basic->decimal),
-        'charge' => $request->charge,
-        'type' => '-',
-        'action' => 'Exchange',
-        'title' => ' Exchange ' . $request->unithave . ' ' . $hwallet->name,
-         'trx' => $trx
-          ]);
+            'user_id' => $auth->id,
+            'amount' => $request->hamount,
+            'main_amo' => round($auth->balance, $basic->decimal),
+            'charge' => $request->charge,
+            'type' => '-',
+            'action' => 'Exchange',
+            'title' => ' Exchange ' . $request->unithave . ' ' . $hwallet->name,
+            'trx' => $trx
+        ]);
 
 
-            Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Coin Exchanged',
-                    'details' => 'Your '.$request->hhave.'' . $hwallet->name.' cryptocurrency exchange was successful. '.$request->gget.'' . $gwallet->name.' will be credited to your '.$gwallet->name.' wallet. Please wait while our server verify your exchange. Your account will be credited once coin exchange is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Exchanged',
+            'details' => 'Your ' . $request->hhave . '' . $hwallet->name . ' cryptocurrency exchange was successful. ' . $request->gget . '' . $gwallet->name . ' will be credited to your ' . $gwallet->name . ' wallet. Please wait while our server verify your exchange. Your account will be credited once coin exchange is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
         $auth = Auth::user();
         $exchange = ExchangeMoney::where('transaction_number', $request->account)->where('user_id', $auth->id)->whereStatus(0)->first();
         $basic = GeneralSettings::first();
 
 
-            return redirect()->route('home')->with("success", "  Your Exchange Request Was Successful. Please wait while our server verify your transaction");
+        return redirect()->route('home')->with("success", "  Your Exchange Request Was Successful. Please wait while our server verify your transaction");
 
     }
 
@@ -2267,63 +2249,61 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     {
         $auth = Auth::user();
         $data['page_title'] = "My Trade";
-        $data['sell']=  Trx::where('user_id', $auth->id)->whereType(0)->latest()->get();
-        $data['buy']=  Trx::where('user_id', $auth->id)->latest()->whereType(1)->get();
+        $data['sell'] = Trx::where('user_id', $auth->id)->whereType(0)->latest()->get();
+        $data['buy'] = Trx::where('user_id', $auth->id)->latest()->whereType(1)->get();
 
-        return view('user.mytrade',$data);
+        return view('user.mytrade', $data);
 
     }
-
-
 
 
     public function notifications()
-    {     $auth = Auth::user();
+    {
+        $auth = Auth::user();
         $data['page_title'] = "Notifications";
-        $data['notify']=  Post::whereNotify(1)->latest()->get();
-         return view('user.notifications', $data);
+        $data['notify'] = Post::whereNotify(1)->latest()->get();
+        return view('user.notifications', $data);
     }
 
 
-
     public function inbox()
-    {     $auth = Auth::user();
+    {
+        $auth = Auth::user();
         $data['page_title'] = "Inbox";
-        $data['inbox']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->paginate(6);
-        $data['sent']=  Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at','desc')->count();
-        $data['total']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->count();
-        $data['unread']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at','desc')->count();
-        $data['read']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at','desc')->count();
-       $data['count']=  Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at','desc')->count();
-         return view('user.inbox', $data);
+        $data['inbox'] = Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at', 'desc')->paginate(6);
+        $data['sent'] = Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at', 'desc')->count();
+        $data['total'] = Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at', 'desc')->count();
+        $data['unread'] = Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at', 'desc')->count();
+        $data['read'] = Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at', 'desc')->count();
+        $data['count'] = Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at', 'desc')->count();
+        return view('user.inbox', $data);
     }
 
 
     public function sent()
-    {     $auth = Auth::user();
+    {
+        $auth = Auth::user();
         $data['page_title'] = "Outbox";
-        $data['inbox']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->paginate(6);
-        $data['sent']=  Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at','desc')->count();
-        $data['total']=  Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at','desc')->count();
-        $data['unread']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at','desc')->count();
-        $data['read']=  Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at','desc')->count();
-       $data['count']=  Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at','desc')->count();
-         return view('user.inbox', $data);
+        $data['inbox'] = Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at', 'desc')->paginate(6);
+        $data['sent'] = Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at', 'desc')->count();
+        $data['total'] = Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at', 'desc')->count();
+        $data['unread'] = Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at', 'desc')->count();
+        $data['read'] = Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at', 'desc')->count();
+        $data['count'] = Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at', 'desc')->count();
+        return view('user.inbox', $data);
     }
-
-
 
 
     public function inboxview($id)
     {
         $auth = Auth::user();
         $data['page_title'] = "Inbox View";
-        $data['inbox']=  Message::where('user_id', $auth->id)->whereId($id)->first();
-        $inbox =  Message::where('user_id', $auth->id)->whereId($id)->first();
+        $data['inbox'] = Message::where('user_id', $auth->id)->whereId($id)->first();
+        $inbox = Message::where('user_id', $auth->id)->whereId($id)->first();
 
         $inbox->status = 1;
         $inbox->save();
-         return view('user.inbox-view', $data);
+        return view('user.inbox-view', $data);
     }
 
 
@@ -2331,18 +2311,18 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
     {
         $auth = Auth::user();
         $data['page_title'] = "Inbox Delete";
-        $data['inbox']=  Message::where('user_id', $auth->id)->whereId($id)->first();
-        $inbox =  Message::where('user_id', $auth->id)->whereId($id)->first();
-         $inbox->delete();
-         return back()->with("message", "Message Deleted successfully");
+        $data['inbox'] = Message::where('user_id', $auth->id)->whereId($id)->first();
+        $inbox = Message::where('user_id', $auth->id)->whereId($id)->first();
+        $inbox->delete();
+        return back()->with("message", "Message Deleted successfully");
     }
 
 
-
     public function messages()
-    {    $data['page_title'] = "Create Message";
-         $data['code'] = strtoupper(Str::random(6));
-         return view('user.create_message', $data);
+    {
+        $data['page_title'] = "Create Message";
+        $data['code'] = strtoupper(Str::random(6));
+        return view('user.create_message', $data);
     }
 
 
@@ -2352,30 +2332,30 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['title'] = $request->subject;
         $data['details'] = $request->body;
         $data['status'] = 0;
-        if($request->hasFile('image'))
-        {
+        if ($request->hasFile('image')) {
 
-         $this->validate($request,
-            [
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            ]);
+            $this->validate($request,
+                [
+                    'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                ]);
 
 
-        $data['image'] = uniqid().'.jpg';
-        $request->image->move('uploads/messages',$data['image']);
+            $data['image'] = uniqid() . '.jpg';
+            $request->image->move('uploads/messages', $data['image']);
         }
 
 
         Message::create($data);
 
-     return back()->with("message", "Message sent successfully");
+        return back()->with("message", "Message sent successfully");
     }
 
 
     public function usertest()
-    {    $data['page_title'] = "Create Testimonial";
-         $data['code'] = strtoupper(Str::random(6));
-         return view('user.create_testimonial', $data);
+    {
+        $data['page_title'] = "Create Testimonial";
+        $data['code'] = strtoupper(Str::random(6));
+        return view('user.create_testimonial', $data);
     }
 
 
@@ -2388,9 +2368,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
         Testimonial::create($data);
 
-     return back()->with("message", "Your testimonial has been created successfully. Your testimonial will appear on the front page once testimonial is approved");
+        return back()->with("message", "Your testimonial has been created successfully. Your testimonial will appear on the front page once testimonial is approved");
     }
-
 
 
     public function newinvest()
@@ -2399,8 +2378,8 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['page_title'] = "New Investment";
         $data['plans'] = Plan::where('status', 1)->latest()->get();
 
-       return view('user.new-invest', $data);
-	}
+        return view('user.new-invest', $data);
+    }
 
 
     public function newcoinvest($id)
@@ -2409,33 +2388,30 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['page_title'] = "New Investment";
         $data['plan'] = Plan::where('status', 1)->whereId($id)->first();
         $data['wallets'] = UserWallet::where('user_id', Auth::id())->whereType('interest_wallet')->get();
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
-
-
-
-       return view('user.new-investment', $data);
-	}
+        $data['btcrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
 
 
+        return view('user.new-investment', $data);
+    }
 
 
     public function coinvest()
@@ -2444,57 +2420,56 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['plans'] = Plan::where('status', 1)->latest()->get();
         $data['wallets'] = UserWallet::where('user_id', Auth::id())->whereType('interest_wallet')->get();
         $data['earn'] = UserWallet::whereType('interest_wallet')->where('user_id', Auth::id())->first();
-		$data['trans'] = Invest::where('user_id', Auth::id())->latest()->get();
-		$data['invcount'] = Invest::where('user_id', Auth::id())->latest()->count();
-		$data['invcomplete'] = Invest::where('user_id', Auth::id())->where('status' ,'!=', 1)->latest()->count();
-		$data['invsum'] = Invest::where('user_id', Auth::id())->sum('amount');
-		$basic = GeneralSettings::first();
+        $data['trans'] = Invest::where('user_id', Auth::id())->latest()->get();
+        $data['invcount'] = Invest::where('user_id', Auth::id())->latest()->count();
+        $data['invcomplete'] = Invest::where('user_id', Auth::id())->where('status', '!=', 1)->latest()->count();
+        $data['invsum'] = Invest::where('user_id', Auth::id())->sum('amount');
+        $basic = GeneralSettings::first();
 
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
-
-        );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
-
-        	$baseUrl = "https://api.coingate.com";
-			$endpoint = "/v2/rates/merchant/USD/$basic->currency";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $data['usdrate']  = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
+        $data['btcrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
+
+        $baseUrl = "https://api.coingate.com";
+        $endpoint = "/v2/rates/merchant/USD/$basic->currency";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
+
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $data['usdrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
 
 
-       return view('user.invest', $data);
+        return view('user.invest', $data);
     }
-
 
 
     public function coinvestyield($id)
@@ -2503,58 +2478,58 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['invest'] = Invest::where('user_id', Auth::id())->whereId($id)->first();
         $data['plans'] = Plan::where('id', $data['invest']->plan_id)->first();
         $data['earn'] = UserWallet::whereType('interest_wallet')->where('user_id', Auth::id())->first();
-		$data['trans'] = Investyield::where('user_id', Auth::id())->whereInvest_id($id)->paginate(10);
+        $data['trans'] = Investyield::where('user_id', Auth::id())->whereInvest_id($id)->paginate(10);
 
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+        $data['btcrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
 
 
-       return view('user.investyield', $data);
+        return view('user.investyield', $data);
     }
 
 
     public function withdrawinvest()
     {
         $data['page_title'] = "Investment Withdrawal";
-           $user = Auth::user();
-		$baseUrl = "https://blockchain.info/";
-		$endpoint = "tobtc?currency=USD&value=1";
-		$httpVerb = "GET";
-		$contentType = "application/json"; //e.g charset=utf-8
-		$headers = array (
-				"Content-Type: $contentType",
+        $user = Auth::user();
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $data['btcrate'] = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+        $data['btcrate'] = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
         $data['pdep'] = Deposit::whereUser_id($user->id)->whereStatus(0)->sum('amount');
         $data['tdep'] = Deposit::whereUser_id($user->id)->whereStatus(1)->sum('amount');
         $data['pdepositlog'] = Deposit::whereUser_id($user->id)->whereStatus(2)->get();
@@ -2564,12 +2539,11 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         $data['activeinv'] = Invest::whereUser_id($user->id)->whereStatus(1)->count();
         $data['endinv'] = Invest::whereUser_id($user->id)->whereStatus(0)->count();
         $data['withdrawgate'] = WithdrawMethod::whereStatus(1)->get();
-		$data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
+        $data['investment'] = UserWallet::where('user_id', Auth::id())->where('type', 'interest_wallet')->first();
         $data['page_title'] = "Withdraw Investment";
-		$data['gates'] = Gateway::whereStatus(1)->orderBy('name','asc')->get();
-       return view('user.withdrawvest', $data);
+        $data['gates'] = Gateway::whereStatus(1)->orderBy('name', 'asc')->get();
+        return view('user.withdrawvest', $data);
     }
-
 
 
     public function buyPlan(Request $request)
@@ -2582,202 +2556,196 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         ]);
 
 
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-           $btcrate = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+        $btcrate = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
 
-		$btc = $request->amount * $btcrate;
+        $btc = $request->amount * $btcrate;
         $user = User::find(Auth::id());
         $gnl = GeneralSettings::first();
         $basic = GeneralSettings::first();
 
 
         $baseUrl = "https://api.coingate.com";
-			$endpoint = "/v2/rates/merchant/USD/$basic->currency";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $endpoint = "/v2/rates/merchant/USD/$basic->currency";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $localrate  = json_decode(curl_exec( $ch ),true);
-            $payamount = $localrate * $request->amount;
+        $localrate = json_decode(curl_exec($ch), true);
+        $payamount = $localrate * $request->amount;
 
         $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
         if (!$plan) {
-             return back()->with("danger", "Invalid Plan Selected!");
+            return back()->with("danger", "Invalid Plan Selected!");
         }
 
         if ($plan->fixed_amount == '0') {
             if ($request->amount < $plan->minimum) {
                 $notify = ['error', 'Minimum Invest ' . number_format($plan->minimum) . ' ' . $gnl->cur_text];
-                return back()->with("danger", "The Minimum Investment Amount Is $" .number_format($plan->minimum));
+                return back()->with("danger", "The Minimum Investment Amount Is $" . number_format($plan->minimum));
             }
 
             if ($request->amount > $plan->maximum) {
 
-                return back()->with("danger", "The Minimum Investment Amount Is $" .number_format($plan->maximum));
+                return back()->with("danger", "The Minimum Investment Amount Is $" . number_format($plan->maximum));
             }
         } else {
 
             if ($request->amount != $plan->fixed_amount) {
 
-                return back()->with("danger", "The Investment Amount must be exactly $" .number_format($plan->fixed_amount));
+                return back()->with("danger", "The Investment Amount must be exactly $" . number_format($plan->fixed_amount));
             }
         }
 
 
-
-		if($request->wallet_type == 1982100101281 ){
-		$userWallet = User::find(Auth::id());
-		}
-		elseif($request->wallet_type < 200000000 ){
-		$userWallet = UserWallet::where('user_id', Auth::id())->where('id', $request->wallet_type)->first();
-		}
-
-
-		if($request->wallet_type == 82718271565131 ){
-		$userWallet = User::find(Auth::id());
-
-		$user = User::find(Auth::id());
-        $gnl = GeneralSettings::first();
-
-        $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
-        if (!$plan) {
-             return back()->with("danger", "Invalid Plan Selected!");
-        }
-
-        if ($plan->fixed_amount == '0') {
-            if ($request->amount < $plan->minimum) {
-                $notify = ['error', 'Minimum Invest ' . number_format($plan->minimum) . ' ' . $gnl->cur_text];
-                return back()->with("danger", "The Minimum Investment Amount Is $" .number_format($plan->minimum));
-            }
-
-            if ($request->amount > $plan->maximum) {
-
-                return back()->with("danger", "The Minimum Investment Amount Is $" .number_format($plan->maximum));
-            }
-        } else {
-
-            if ($request->amount != $plan->fixed_amount) {
-
-                return back()->with("danger", "The Investment Amount must be exactly $" .number_format($plan->fixed_amount));
-            }
+        if ($request->wallet_type == 1982100101281) {
+            $userWallet = User::find(Auth::id());
+        } elseif ($request->wallet_type < 200000000) {
+            $userWallet = UserWallet::where('user_id', Auth::id())->where('id', $request->wallet_type)->first();
         }
 
 
+        if ($request->wallet_type == 82718271565131) {
+            $userWallet = User::find(Auth::id());
 
-        $time_name = TimeSetting::where('time', $plan->times)->first();
-        $now = Carbon::now();
+            $user = User::find(Auth::id());
+            $gnl = GeneralSettings::first();
 
-
-        //start
-        if ($plan->interest_status == 1) {
-            $interest_amount = ($request->amount * $plan->interest) / 100;
-        } else {
-            $interest_amount = $plan->interest;
-        }
-        $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
-        //end
-
-		$trxx = rand(000000, 999999) . rand(000000, 999999);
-
-        if ($plan->fixed_amount == 0) {
-
-            if ($plan->minimum <= $request->amount && $plan->maximum >= $request->amount) {
-                $invest['user_id'] = $user->id;
-                $invest['plan_id'] = $plan->id;
-                $invest['amount'] = $request->amount;
-                $invest['interest'] = $interest_amount;
-                $invest['period'] = $period;
-                $invest['time_name'] = $time_name->name;
-                $invest['hours'] = $plan->times;
-                $invest['btcvalue'] = $request->amount * $btcrate;
-                $invest['next_time'] = Carbon::parse($now)->addHours($plan->times);
-                $invest['status'] = 101;
-                $invest['capital_status'] = $plan->capital_back_status;
-                $invest['trx'] = $trxx;
-                $a = Invest::create($invest);
-
-
-				Session::put('Track', $trxx);
-
-                return redirect()->route('paybtcnow')->with("success", "Package Selected Successfully. Please proceed to make ayment to Complete process");
-
+            $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
+            if (!$plan) {
+                return back()->with("danger", "Invalid Plan Selected!");
             }
 
-           return back()->with("danger", "Invalid wallet balance");
+            if ($plan->fixed_amount == '0') {
+                if ($request->amount < $plan->minimum) {
+                    $notify = ['error', 'Minimum Invest ' . number_format($plan->minimum) . ' ' . $gnl->cur_text];
+                    return back()->with("danger", "The Minimum Investment Amount Is $" . number_format($plan->minimum));
+                }
 
-        } else {
-            if ($plan->fixed_amount == $request->amount) {
+                if ($request->amount > $plan->maximum) {
 
-                $data['user_id'] = $user->id;
-                $data['plan_id'] = $plan->id;
-                $data['amount'] = $request->amount;
-                $data['interest'] = $interest_amount;
-                $data['period'] = $period;
-                $data['time_name'] = $time_name->name;
-                $data['hours'] = $plan->times;
-                $invest['btcvalue'] = $request->amount * $btcrate;
-                $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
-                $data['status'] = 101;
-                $data['capital_status'] = $plan->capital_back_status;
-                $data['trx'] = $trxx;
-                $a = Invest::create($data);
+                    return back()->with("danger", "The Minimum Investment Amount Is $" . number_format($plan->maximum));
+                }
+            } else {
 
+                if ($request->amount != $plan->fixed_amount) {
 
-
-
-				 Session::put('Track', $trxx);
-
-                return redirect()->route('paybtcnow')->with("success", "Package Selected Successfully. Please proceed to make ayment to Complete process");
+                    return back()->with("danger", "The Investment Amount must be exactly $" . number_format($plan->fixed_amount));
+                }
             }
 
-            return back()->with("danger", "Something went wrong");
+
+            $time_name = TimeSetting::where('time', $plan->times)->first();
+            $now = Carbon::now();
+
+
+            //start
+            if ($plan->interest_status == 1) {
+                $interest_amount = ($request->amount * $plan->interest) / 100;
+            } else {
+                $interest_amount = $plan->interest;
+            }
+            $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
+            //end
+
+            $trxx = rand(000000, 999999) . rand(000000, 999999);
+
+            if ($plan->fixed_amount == 0) {
+
+                if ($plan->minimum <= $request->amount && $plan->maximum >= $request->amount) {
+                    $invest['user_id'] = $user->id;
+                    $invest['plan_id'] = $plan->id;
+                    $invest['amount'] = $request->amount;
+                    $invest['interest'] = $interest_amount;
+                    $invest['period'] = $period;
+                    $invest['time_name'] = $time_name->name;
+                    $invest['hours'] = $plan->times;
+                    $invest['btcvalue'] = $request->amount * $btcrate;
+                    $invest['next_time'] = Carbon::parse($now)->addHours($plan->times);
+                    $invest['status'] = 101;
+                    $invest['capital_status'] = $plan->capital_back_status;
+                    $invest['trx'] = $trxx;
+                    $a = Invest::create($invest);
+
+
+                    Session::put('Track', $trxx);
+
+                    return redirect()->route('paybtcnow')->with("success", "Package Selected Successfully. Please proceed to make ayment to Complete process");
+
+                }
+
+                return back()->with("danger", "Invalid wallet balance");
+
+            } else {
+                if ($plan->fixed_amount == $request->amount) {
+
+                    $data['user_id'] = $user->id;
+                    $data['plan_id'] = $plan->id;
+                    $data['amount'] = $request->amount;
+                    $data['interest'] = $interest_amount;
+                    $data['period'] = $period;
+                    $data['time_name'] = $time_name->name;
+                    $data['hours'] = $plan->times;
+                    $invest['btcvalue'] = $request->amount * $btcrate;
+                    $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
+                    $data['status'] = 101;
+                    $data['capital_status'] = $plan->capital_back_status;
+                    $data['trx'] = $trxx;
+                    $a = Invest::create($data);
+
+
+                    Session::put('Track', $trxx);
+
+                    return redirect()->route('paybtcnow')->with("success", "Package Selected Successfully. Please proceed to make ayment to Complete process");
+                }
+
+                return back()->with("danger", "Something went wrong");
+            }
+
+
         }
 
-
-
-		}
-
-		 if (!$userWallet) {
-           return back()->with("danger", "invalid wallet selected");
+        if (!$userWallet) {
+            return back()->with("danger", "invalid wallet selected");
         }
 
 
         if ($payamount > $userWallet->balance) {
-             return back()->with("danger", "Insufficient wallet balance");
+            return back()->with("danger", "Insufficient wallet balance");
         }
 
         $time_name = TimeSetting::where('time', $plan->times)->first();
         $now = Carbon::now();
 
-        $new_balance = $userWallet->balance - $payamount ;
+        $new_balance = $userWallet->balance - $payamount;
         $userWallet->balance = $new_balance;
         $userWallet->save();
 
@@ -2808,12 +2776,10 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $a = Invest::create($invest);
 
 
-
-
                 return redirect()->route('coinvest')->with("success", "Investment successful");
             }
 
-           return back()->with("danger", "Invalid wallet balance");
+            return back()->with("danger", "Invalid wallet balance");
 
         } else {
             if ($plan->fixed_amount == $request->amount) {
@@ -2825,13 +2791,12 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
                 $data['period'] = $period;
                 $data['time_name'] = $time_name->name;
                 $data['hours'] = $plan->times;
-               $invest['btcvalue'] = $request->amount * $btcrate;
+                $invest['btcvalue'] = $request->amount * $btcrate;
                 $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
                 $data['status'] = 1;
                 $data['capital_status'] = $plan->capital_back_status;
                 $data['trx'] = rand(000000, 999999) . rand(000000, 999999);
                 $a = Invest::create($data);
-
 
 
                 $user->save();
@@ -2845,38 +2810,36 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
 
     }
 
-	 public function paybtcnow()
+    public function paybtcnow()
     {
         $page_title = 'Pay BTC';
         $track = Session::get('Track');
-		$baseUrl = "https://blockchain.info/";
-			$endpoint = "tobtc?currency=USD&value=1";
-			$httpVerb = "GET";
-			$contentType = "application/json"; //e.g charset=utf-8
-			$headers = array (
-				"Content-Type: $contentType",
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
 
         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            $btcrate = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
+        $btcrate = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
 
 
-		$invest = Invest::where('user_id', Auth::id())->whereTrx($track)->first();
-		$currency  = Currency::whereId(5)->first();
-        return view('user.paybtcnow',  compact('page_title', 'btcrate','invest','currency'));
+        $invest = Invest::where('user_id', Auth::id())->whereTrx($track)->first();
+        $currency = Currency::whereId(5)->first();
+        return view('user.paybtcnow', compact('page_title', 'btcrate', 'invest', 'currency'));
     }
-
-
 
 
     public function interestLog()
@@ -2886,43 +2849,40 @@ $charge = $gate->fixed_charge + ($request->amount * $gate->percent_charge / 100)
         return view(activeTemplate() . 'user.interest_log', compact('page_title', 'trans'));
     }
 
-	  public function btcpaynowupload(Request $request)
+    public function btcpaynowupload(Request $request)
     {
-           $this->validate($request,
+        $this->validate($request,
             [
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'trxx' => 'required',
-            'btc' => 'required',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'trxx' => 'required',
+                'btc' => 'required',
             ]);
 
         $basic = GeneralSettings::first();
         $data = Invest::where('status', 101)->where('trx', $request->trx)->first();
         $auth = Auth::user();
 
-         $data->tnum = $request->trxx;
-         $data->btcwallet = $request->btc;
-         $data->status = 2;
-          if($request->hasFile('photo'))
-            {
-                $data['image'] = uniqid().'.jpg';
-                $request->photo->move('uploads/payments',$data['image']);
-            }
+        $data->tnum = $request->trxx;
+        $data->btcwallet = $request->btc;
+        $data->status = 2;
+        if ($request->hasFile('photo')) {
+            $data['image'] = uniqid() . '.jpg';
+            $request->photo->move('uploads/payments', $data['image']);
+        }
 
 
-             Message::create([
-                    'user_id' => $auth->id,
-                    'title' => 'Investment Plan Created',
-                    'details' => 'Your bitcoin investent of USD'.$data->amount.'  with transaction number '.$data->trx.' was successful. Please wait while our server verifies your payment. Your investment will be started once payment is confirmed by our server, Thank you for choosing '.$basic->sitename.'',
-                    'admin' => 1,
-                    'status' =>  0
-                ]);
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Investment Plan Created',
+            'details' => 'Your bitcoin investent of USD' . $data->amount . '  with transaction number ' . $data->trx . ' was successful. Please wait while our server verifies your payment. Your investment will be started once payment is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
 
-         $data->save();
-         return redirect()->route('coinvest')->with("success", "  Your investment plan was successfully sent for confirmation");
+        $data->save();
+        return redirect()->route('coinvest')->with("success", "  Your investment plan was successfully sent for confirmation");
 
     }
-
-
 
 
     public function refMy()

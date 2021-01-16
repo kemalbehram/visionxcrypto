@@ -1,6 +1,6 @@
 @extends('include.userdashboard')
 @section('content')
-  
+
 
 			<!-- Main Content-->
 			<div class="main-content side-content pt-0">
@@ -22,8 +22,8 @@
 
 						<!-- Row -->
 						<div class="row row-sm">
-							
-							
+
+
 							<div class="col-lg-12 col-xl-12 col-md-12">
 							<form id="investnow"  action="{{route('coin-vest')}}" method="post">
 							@csrf
@@ -40,7 +40,7 @@
 													 else{
 													 document.getElementById("return").innerHTML = {{$plan->interest}}*$(identifier).val();
 														 }
-													 
+
 													 total = {{$btcrate}}*$(identifier).val();
 													 document.getElementById("totalbtc").innerHTML = total.toFixed(8)+"BTC";
 													  }
@@ -48,13 +48,13 @@
 
 								<div class="card custom-card">
 									<div class="card-body">
-										 
+
 											<div class="form-group mb-0"> <label><b>Enter Amount</b></label>
 												<div class="input-group"> <input type="number" onkeyup="goDoSomething2(this);" name="amount" class="form-control coupon" placeholder="$0.00"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon"><i class="fa fa-usd"></i></button> </span> </div>
 											</div>
 											<br>
 										    <div class="form-group mb-0"> <label><b>Select Payment Type</b></label>
-												<div class="input-group"> 
+												<div class="input-group">
 												<select class="form-control select "  name="wallet_type">
 												@foreach($wallets as $k=>$data)
 												<option value="{{$data->id}}"> {{__(str_replace('_',' ',$data->type))}} ${{number_format($data->balance, 2)}}</option>
@@ -65,7 +65,7 @@
 
 												<span class="input-group-append"> <button class="btn btn-primary btn-apply coupon"><i class="fa fa-wallet"></i></button> </span> </div>
 											</div>
-										 
+
 									</div>
 								</div>
 								@php
@@ -98,21 +98,21 @@
 											<dt>Duration:</dt>
 											<dd class="text-right text-success ml-auto">@if($plan->lifetime_status == 0) {{__($plan->repeat_time)}}{{__($time_name->slug)}} @else @lang('Lifetime') @endif</dd>
 										</dl>
-										<hr>
-										<dl class="dlist-align">
-											<dt>BTC Invested:</dt>
-											<dd class="text-right  ml-auto"><strong id="totalbtc">0.00BTC</strong></dd>
-										</dl>
-										
-										<dl class="dlist-align">
-											<dt>Expected Return:</dt>
-											<dd class="text-right  ml-auto"><strong id="return">0.00USD</strong></dd>
-										</dl>
-										
+{{--										<hr>--}}
+{{--										<dl class="dlist-align">--}}
+{{--											<dt>BTC Invested:</dt>--}}
+{{--											<dd class="text-right  ml-auto"><strong id="totalbtc">0.00BTC</strong></dd>--}}
+{{--										</dl>--}}
+{{--										--}}
+{{--										<dl class="dlist-align">--}}
+{{--											<dt>Expected Return:</dt>--}}
+{{--											<dd class="text-right  ml-auto"><strong id="return">0.00USD</strong></dd>--}}
+{{--										</dl>--}}
+
 					        			<input value="{{$plan->id}}" hidden name="plan_id">
 										<div class="step-footer">
 											<button type="submit" class="step-btn btn btn-primary btn-block">Continue</button>
-										</div> 
+										</div>
 									</div>
 								</div>
 							</div>

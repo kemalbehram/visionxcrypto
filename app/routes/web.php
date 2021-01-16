@@ -175,6 +175,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('referral-log', 'HomeController@referral')->name('referral');
         Route::get('verification', 'HomeController@kyc')->name('verification');
         Route::post('verification2', 'HomeController@kyc2')->name('document.upload');
+        Route::post('verification3', 'HomeController@kyc3')->name('document.upload3');
 
         //Bank
         Route::get('bank', 'HomeController@bank')->name('bank');

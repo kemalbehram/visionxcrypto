@@ -3139,7 +3139,7 @@ header.no_blur {
   backdrop-filter: none !important;
 }
 .fixed-header header {
-  background: rgba(255, 255, 255, 0.8);
+  background-color: #010137;
   -webkit-backdrop-filter: saturate(1) blur(20px) !important;
   -o-backdrop-filter: saturate(1) blur(20px) !important;
   -ms-backdrop-filter: saturate(1) blur(20px) !important;
@@ -3297,13 +3297,13 @@ header .navbar .navbar-collapse .nav_account.btn_demo3 .btn_sm_primary {
   color: #0b2238 !important;
 }
 .fixed-header header.nav-product .nav-pills .nav-item .nav-link {
-  color: #0b2238 !important;
+  /*color: #0b2238 !important;*/
 }
 .fixed-header header.nav-product .nav-pills .nav-item .nav-link.active {
   color: #165df5 !important;
 }
 .fixed-header header.nav-product .nav_account .btn-default {
-  color: #0b2238 !important;
+  /*color: #0b2238 !important;*/
 }
 .fixed-header header.nav-product .nav_account .btn-primary {
   background-color: #165df5 !important;

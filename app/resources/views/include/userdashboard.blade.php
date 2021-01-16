@@ -733,6 +733,13 @@
 		<!-- Sidemenu css-->
 		<link href="{{url('/')}}/assets/assets/css/sidemenu/sidemenu.css" rel="stylesheet">
 
+
+        <!-- InternalFileupload css-->
+        <link href="{{url('/')}}/assets/assets/plugins/fileuploads/css/fileupload.css" rel="stylesheet" type="text/css"/>
+
+        <!-- InternalFancy uploader css-->
+        <link href="{{url('/')}}/assets/assets/plugins/fancyuploder/fancy_fileupload.css" rel="stylesheet" />
+
 		 <style>
             body {
                 background-color: #f8f8f8;
@@ -975,10 +982,24 @@
 							 $c = 0;
 							}
 
-							@endphp
+                             $d=\App\Verification::where([['user_id', Auth::id()], ['type', 'Bank Statement'], ['status', 1]])->latest()->first();
 
-							 @php
-							 $stars = $a + $b + $c;
+                             if($d){
+                                 $d=1;
+                             }else{
+                                 $d=0;
+                             }
+
+                             $e=\App\Verification::where([['user_id', Auth::id()], ['type', 'Utility Bill'], ['status', 1]])->latest()->first();
+
+                             if($e){
+                                 $e=1;
+                             }else{
+                                 $e=0;
+                             }
+
+
+							 $stars = $a + $b + $c +$d +$e;
 							 @endphp
 
 							 @if($stars == 1)
@@ -986,13 +1007,13 @@
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
-							 @elseif($stars == 2)
+							 @elseif($stars == 2 || $stars == 3)
 
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:red"></i>
 							 <i class="fa fa-star"style="color:red"></i>
-							 @elseif($stars == 3)
+							 @elseif($stars == 4 || $stars == 5)
 
 							 <i class="fa fa-star"style="color:green"></i>
 							 <i class="fa fa-star"style="color:green"></i>
@@ -1109,12 +1130,12 @@
 				<div class="mb-1 navbar navbar-expand-lg  nav nav-item  navbar-nav-right responsive-navbar navbar-dark  ">
 					<div class="collapse navbar-collapse" id="navbarSupportedContent-4">
 						<div class="d-flex order-lg-2 ml-auto">
-						<div class="dropdown ">
-							<a class="nav-link icon full-screen-link">
-								<i class="fe fe-maximize fullscreen-button fullscreen header-icons"></i>
-								<i class="fe fe-minimize fullscreen-button exit-fullscreen header-icons"></i>
-							</a>
-						</div>
+{{--						<div class="dropdown ">--}}
+{{--							<a class="nav-link icon full-screen-link">--}}
+{{--								<i class="fe fe-maximize fullscreen-button fullscreen header-icons"></i>--}}
+{{--								<i class="fe fe-minimize fullscreen-button exit-fullscreen header-icons"></i>--}}
+{{--							</a>--}}
+{{--						</div>--}}
 						<div class="dropdown main-header-notification">
 							<a class="nav-link icon" href="">
 								<i class="fe fe-bell header-icons"></i>
@@ -1422,6 +1443,17 @@
 		<script src="{{url('/')}}/assets/assets/plugins/polyfill/polyfill.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/polyfill/classList.min.js"></script>
 		<script src="{{url('/')}}/assets/assets/plugins/polyfill/polyfill_mdn.js"></script>
+
+     <!-- Internal Fileuploads js-->
+     <script src="{{url('/')}}/assets/assets/plugins/fileuploads/js/fileupload.js"></script>
+     <script src="{{url('/')}}/assets/assets/plugins/fileuploads/js/file-upload.js"></script>
+
+     <!-- InternalFancy uploader js-->
+     <script src="{{url('/')}}/assets/assets/plugins/fancyuploder/jquery.ui.widget.js"></script>
+     <script src="{{url('/')}}/assets/assets/plugins/fancyuploder/jquery.fileupload.js"></script>
+     <script src="{{url('/')}}/assets/assets/plugins/fancyuploder/jquery.iframe-transport.js"></script>
+     <script src="{{url('/')}}/assets/assets/plugins/fancyuploder/jquery.fancy-fileupload.js"></script>
+     <script src="{{url('/')}}/assets/assets/plugins/fancyuploder/fancy-uploader.js"></script>
 
                 @yield('js')
                 <script>
