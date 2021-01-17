@@ -48,7 +48,7 @@
 													</tr>
 													<tr>
 														<td>2</td>
-														<td class="tx-12">Deposit Charge</td> 
+														<td class="tx-12">Stamp duty charge</td> 
 														<td class="tx-right">{{$basic->currency_sym}}{{number_format($data->charge, $basic->decimal)}}</td>
 													</tr>
 													<tr>
@@ -64,7 +64,14 @@
 											</table>
 											<div class="invoice-notes">
 																<label class="main-content-label tx-13">Notes</label>
-																<p>Make Payment To The Account Number on Rubies Bank and your deposit wallet will be credited instantly with the amount credited </p>
+																<p>Make Payment To The Account Number on Rubies Bank and your deposit wallet will be credited instantly </p>
+															</div><!-- invoice-notes -->
+                                                            
+                                                           <br><br>
+                                                           
+                                                           <div class="invoice-notes">
+																<label class="main-content-label tx-13">Notes</label>
+																<p class="text-danger"> Bank Transfers from third party accounts will be applied to your account after 24hrs. For instant Transactions, please send funds from accounts owned by you. </p>
 															</div><!-- invoice-notes -->
 													
 <div class="fund-information-table table-responsive">
