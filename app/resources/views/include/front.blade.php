@@ -141,10 +141,10 @@
         <!-- Start header -->
         <header class="header-nav-center header-nav-left no_blur crypto_1 light nav-product active-orange"
                 id="myNavbar"  style="background-color: #010137">
-            <div class="container">
+            <div class="container" style="background-color: #010137">
                 <!-- navbar -->
 
-                <nav class="navbar navbar-expand-lg navbar-light">
+                <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #010137">
                     <a class="navbar-brand c-white" href="{{url('/')}}">
                         <img class="logo" src="{{asset('front/img/newlogo.png')}}" alt="logo"
                              style="width:230px;height:75px;"/>
