@@ -3222,17 +3222,17 @@ header .navbar .navbar-collapse .nav_account.btn_demo3 .btn_sm_primary {
     padding-bottom: 1rem;
   }
   header .navbar-collapse .navbar-nav .nav-item .nav-link {
-    color: #0b2238 !important;
+    /*color: #0b2238 !important;*/
   }
   header .navbar-collapse .navbar-nav .nav-item .nav-link.active {
-    color: #165df5 !important;
+    /*color: #165df5 !important;*/
   }
   header .navbar-collapse .nav_account {
     border-top: 1px solid #edeef1;
     padding: 1rem 0;
   }
   header .navbar-collapse .nav_account .btn-default {
-    color: #0b2238 !important;
+    /*color: #0b2238 !important;*/
   }
   header .navbar-collapse .nav_account .btn-primary {
     background-color: #165df5 !important;
