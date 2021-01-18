@@ -1023,7 +1023,7 @@ class TransactionController extends Controller
 
         $input = $request->all();
         $rules = array(
-            'currency' => 'required',
+            'currencyid' => 'required',
             'usd' => 'required',
             'wallet' => 'required',
         );
@@ -1115,9 +1115,16 @@ class TransactionController extends Controller
 
         Trx::create($buy)->trx;
 
+        $basic = GeneralSettings::first();
+        if($currency->id==5){
+            $akey=$basic->bitcoin_address;
+        }else{
+            $akey=$basic->etherum_address;
+        }
 
-//		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
-        $baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
+
+		$baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/create-invoice";
+//        $baseurl = "https://coinremitter.com/api/v3/TCN/create-invoice";
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $baseurl,
@@ -1128,15 +1135,19 @@ class TransactionController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('api_key' => '$2y$10$5s1pl64ibsMQ1waqpBTrM.vsIWoZSio.6S/hWaTzDnMOeFsOZ8Gau','password' => 'visionxcrypto','amount' => $data->amount,'name' => $data->trx,'currency' => 'USD','expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
+            CURLOPT_POSTFIELDS => array('api_key' => $akey,'password' => 'visionxcrypto','amount' => $buy['amount'],'name' => $buy['trx'],'currency' => 'USD','expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
         ));
 
         $response = curl_exec($curl);
         $reply = json_decode($response,true);
 
         $address = $reply['data']['address'];
-        $btcvalue = $reply['data']['total_amount']['TCN'];
-//		$btcvalue = $reply['data']['total_amount']['BTC'];
+//        $btcvalue = $reply['data']['total_amount']['TCN'];
+        if($currency->symbol=="BTC") {
+            $btcvalue = $reply['data']['total_amount']['BTC'];
+        }else{
+            $btcvalue = $reply['data']['total_amount']['ETH'];
+        }
 
         return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue]);
 
