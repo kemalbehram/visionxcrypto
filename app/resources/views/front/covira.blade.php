@@ -101,6 +101,9 @@
                         Keep yourself safe at all times <br>
                         <span class="text-primary">Stay Home, Stay Safe.</span>
                     </h1>
+                    
+                    <br>
+                    
                     <div class="buttons">
                         <a href="#prevention" class="btn btn-lg btn-primary" data-scroll>COVID-19 Prevention</a>
                         <a href="#symptoms" class="btn btn-lg btn-pink" data-scroll>COVID-19 Symtoms</a>
@@ -139,6 +142,8 @@
         </div>
     </div>
 </section>
+
+<br>
 
 <!-- Corona news -->
 <section class="corona-updates-section">
