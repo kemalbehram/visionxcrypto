@@ -677,6 +677,468 @@
     </body>
     </html>
 
+ {{ \Carbon\Carbon::Now() }}
+@elseif(\Carbon\Carbon::Now() > Auth::user()->login_time )
+
+    <html lang="en">
+	<head>
+
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+		<meta name="description" content="Spruha -  Admin Panel HTML Dashboard Template">
+		<meta name="author" content="Vision X">
+		<meta name="keywords" content="Vision X">
+
+		<!-- Favicon -->
+		<link rel="icon" href="{{url('/')}}/assets/assets/img/brand/favicon.png" type="image/x-icon"/>
+
+		<!-- Title -->
+		<title>{{isset($page_title) ? $page_title : ''}} | {{$basic->sitename}}</title>
+
+		<!-- Bootstrap css-->
+		<link href="{{url('/')}}/assets/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+		<!-- Icons css-->
+		<link href="{{url('/')}}/assets/assets/plugins/web-fonts/icons.css" rel="stylesheet"/>
+		<link href="{{url('/')}}/assets/assets/plugins/web-fonts/font-awesome/font-awesome.min.css" rel="stylesheet">
+		<link href="{{url('/')}}/assets/assets/plugins/web-fonts/plugin.css" rel="stylesheet"/>
+
+		<!-- Style css-->
+		<link href="{{url('/')}}/assets/assets/css/style.css" rel="stylesheet">
+		<link href="{{url('/')}}/assets/assets/css/skins.css" rel="stylesheet">
+		<link href="{{url('/')}}/assets/assets/css/dark-style.css" rel="stylesheet">
+		<link href="{{url('/')}}/assets/assets/css/colors/default.css" rel="stylesheet">
+		<link href="{{url('/')}}/assets/assets/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" />
+
+		<!-- Color css-->
+		<link id="theme" rel="stylesheet" type="text/css" media="all" href="{{url('/')}}/assets/assets/css/colors/color.css">
+
+		<!-- Select2 css-->
+		<link href="{{url('/')}}/assets/assets/plugins/select2/css/select2.min.css" rel="stylesheet">
+
+		<!-- Mutipleselect css-->
+		<link rel="stylesheet" href="{{url('/')}}/assets/assets/plugins/multipleselect/multiple-select.css">
+
+        <!-- Internal Sweet-Alert css-->
+        <link href="{{url('/')}}/assets/assets/plugins/sweet-alert/sweetalert.css" rel="stylesheet">
+        <script src="{{url('/')}}/assets/assets/plugins/sweet-alert/sweetalert.min.js"></script>
+
+		<!-- Sidemenu css-->
+		<link href="{{url('/')}}/assets/assets/css/sidemenu/sidemenu.css" rel="stylesheet">
+
+
+        <!-- InternalFileupload css-->
+        <link href="{{url('/')}}/assets/assets/plugins/fileuploads/css/fileupload.css" rel="stylesheet" type="text/css"/>
+
+        <!-- InternalFancy uploader css-->
+        <link href="{{url('/')}}/assets/assets/plugins/fancyuploder/fancy_fileupload.css" rel="stylesheet" />
+
+		 <style>
+            body {
+                background-color: #f8f8f8;
+                font-family: arial;
+                font-weight: 400;
+            }
+
+            #toast {
+                position: fixed;
+                z-index: 999;
+                top: 12px;
+                right: 12px;
+            }
+
+            .notification {
+                display: block;
+                position: relative;
+                overflow: hidden;
+                margin-top: 10px;
+                margin-right: 10px;
+                padding: 20px;
+                width: 300px;
+                border-radius: 3px;
+                color: white;
+                right: -400px;
+            }
+
+            .normal {
+                background: #273140;
+            }
+
+            .success {
+                background: #44be75;
+            }
+
+            .error {
+                background: #c33c3c;
+            }
+
+
+            .hidden-xs-up {
+                display: none !important;
+            }
+
+            @media (max-width: 575px) {
+                .hidden-xs-down {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 576px) {
+                .hidden-sm-up {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .hidden-sm-down {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 768px) {
+                .hidden-md-up {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: 991px) {
+                .hidden-md-down {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 992px) {
+                .hidden-lg-up {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: 991px) {
+                .hidden-lg-down {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 1200px) {
+                .hidden-xl-up {
+                    display: none !important;
+                }
+            }
+
+            .hidden-xl-down {
+                display: none !important;
+            }
+
+            @media (max-width: 991px) {
+                .chart-legend > li {
+                    float: left;
+                    margin-right: 10px;
+                }
+            }
+
+            .logo-wrapperme {
+                float: left;
+                display: block;
+                padding: 26px 28px 26px 0;
+            }
+
+        </style>
+
+	</head> 
+	 <div id="toast"></div>
+		
+		<div class="page main-signin-wrapper">
+
+			<!-- Row -->
+			<div class="row signpages text-center">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="row row-sm">
+							<div class="col-lg-6 col-xl-5 d-none d-lg-block bg-primary details">
+								<div class="mt-4 pt-4 pl-5 ml-3 pr-5 pos-absolute">
+									<img src="{{url('/')}}/assets/assets/img/brand/logo.png" class="header-brand-img mb-4" alt="logo">
+									<div class="clearfix"></div>
+									<img src="https://laravel.spruko.com/spruha/ltr/assets/img/svgs/user.svg" class="ht-100 mb-0" alt="user">
+									<h5 class="mt-4 text-white">Unlock</h5>
+									<span class="tx-white-6 tx-13 mb-5 mt-xl-0">Enter your password to access the yoour account.</span>
+								</div>
+							</div>
+							<div class="col-lg-6 col-xl-7 col-xs-12 col-sm-12 login_form ">
+								<div class="container-fluid">
+									<div class="row row-sm">
+										<div class="card-body main-profile-overview mt-3 mb-3">
+											<img src="{{url('/')}}/assets/assets/img/brand/logo.png" class=" d-lg-none header-brand-img text-left float-left mb-4" alt="logo">
+											<div class="clearfix"></div>
+											<h5 class="text-left mb-2">Lockscreen</h5>
+											<p class="mb-4 text-muted tx-13 ml-0 text-left">Unlock your account by entering password 
+ 
+ </p>
+											<form action="{{route('unlockusernow')}}" method="post">
+											    @csrf
+												<div class="text-left d-flex float-left mb-4 user-lock">
+												 
+														@if( file_exists(Auth::User()->image))
+                                                <img class="rounded-circle mb-0" src="{{asset(Auth::user()->image)}}" alt="" >
+                                            @else
+                                                <img  class="rounded-circle mb-0" src="{{url('assets/user/images/user-default.png')}}" alt=""
+                                                    >
+                                            @endif 
+													<div class="my-auto">
+														<p class="font-weight-semibold my-auto ml-2 text-uppercase ">{{Auth::user()->username}}</p>
+													</div>
+												</div>
+												<div class="form-group">
+													<input class="form-control" placeholder="Enter your password" name="password" type="password">
+												</div>
+											 
+												<button class="btn ripple btn-main-primary btn-block mt-4">Unlock</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End Row -->
+
+		</div>
+		<!-- End Page -->
+
+
+        <!-- Optional JavaScript _____________________________  -->
+
+        <script src="{{asset('assets/vendor/jquery.2.2.3.min.js')}}"></script>
+        <!-- Popper js -->
+        <script src="{{asset('assets/vendor/popper.js/popper.min.js')}}"></script>
+        <!-- Bootstrap JS -->
+        <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+        <!-- Country Select -->
+        <script src="{{asset('assets/vendor/country-select-js-master/build/js/countrySelect.min.js')}}"></script>
+        <!-- Telephone Select -->
+        <script src="{{asset('assets/vendor/intl-tel/build/js/intlTelInput.min.js')}}"></script>
+        <!-- Select js -->
+        <script src="{{asset('assets/vendor/select/jquery.selectric.min.js')}}"></script>
+        <!-- Range Slider -->
+        <script src="{{asset('assets/vendor/ion.rangeSlider/ion.rangeSlider.js')}}"></script>
+        <!-- Dashboard js -->
+        <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    </div> <!-- /.main-page-wrapper -->
+
+    @yield('js')
+    <script>
+        (function ($) {
+
+            $.fn.toast = function (options) {
+
+                var settings = $.extend({
+                    type: 'normal',
+                    message: null
+                }, options);
+
+                var item = $('<div class="notification ' + settings.type + '"><span>' + settings.message + '</span></div>');
+                this.append($(item));
+                $(item).animate({"right": "12px"}, "fast");
+                setInterval(function () {
+                    $(item).animate({"right": "-400px"}, function () {
+                        $(item).remove();
+                    });
+                }, 4000);
+            }
+
+            $(document).on('click', '.notification', function () {
+                $(this).fadeOut(400, function () {
+                    $(this).remove();
+                });
+            });
+
+        }(jQuery));
+    </script>
+
+
+    @if (session('alert'))
+        <script>
+            $("#toast").toast({
+                message: '{{ session('alert') }}'
+            });
+        </script>
+    @endif
+    @if(Session::has('success'))
+        <script>
+            $("#toast").toast({
+                type: 'success',
+                message: '{{ Session::get('success') }}'
+            });
+        </script>
+
+    @endif
+
+    @if (session('message'))
+        <script>
+            $("#toast").toast({
+                message: '{{ session('message') }}'
+            });
+        </script>
+    @endif
+
+    @if(Session::has('danger'))
+        <script>
+            $("#toast").toast({
+                type: 'error',
+                message: '{{ session('danger') }}'
+            });
+        </script>
+    @endif
+
+    @if ($errors->has('fname'))
+
+        <script>
+            $("#toast").toast({
+                type: 'error',
+                message: '{{ $errors->first('fname') }}'
+            });
+        </script>
+    @endif
+
+    @if ($errors->has('lname'))
+        <script>
+            <
+            script >
+            $("#toast").toast({
+                type: 'error',
+                message: '{{ $errors->first('lname') }}'
+            });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('username'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('username') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('phone'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('phone') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('email'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('email') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('password'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('password') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('currency'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('country') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('address'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('address') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('zip_code'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('zip_code') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('current_password'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('currenct_password') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('password_confirmation'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('password_confirmation') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->has('city'))
+        <
+        script >
+        < script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $errors->first('city') }}'
+        });
+        </script>
+        </script>
+        @endif
+        @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <
+        script >
+        $("#toast").toast({
+            type: 'error',
+            message: '{{ $error }}'
+        });
+        </script>
+
+        @endforeach
+
+    @endif
+
+    </body>
+    </html>
+
 
 
 
@@ -693,8 +1155,8 @@
 		<meta charset="utf-8">
 		<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 		<meta name="description" content="Spruha -  Admin Panel HTML Dashboard Template">
-		<meta name="author" content="Spruko Technologies Private Limited">
-		<meta name="keywords" content="admin,dashboard,panel,bootstrap admin template,bootstrap dashboard,dashboard,themeforest admin dashboard,themeforest admin,themeforest dashboard,themeforest admin panel,themeforest admin template,themeforest admin dashboard,cool admin,it dashboard,admin design,dash templates,saas dashboard,dmin ui design">
+		<meta name="author" content="Vision X">
+		<meta name="keywords" content="Vision X">
 
 		<!-- Favicon -->
 		<link rel="icon" href="{{url('/')}}/assets/assets/img/brand/favicon.png" type="image/x-icon"/>
