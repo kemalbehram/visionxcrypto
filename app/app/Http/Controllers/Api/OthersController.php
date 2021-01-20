@@ -88,6 +88,7 @@ class OthersController extends Controller
         $user->withdrawpass_used = 3;
         $user->locked = 1;
         $user->save();
+        return response()->json(['status' => 1, 'message' => 'Account locked successfully']);
     }
 
 }

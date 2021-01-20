@@ -14,29 +14,29 @@
     <meta name="author" content="Marvel Theme">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="covidassets/img/logo/favicon.png">
+    <link rel="icon" type="image/png" href="covidasset/img/logo/favicon.png">
 
     <!-- Title -->
     <title>Covid-19 Care | Vision-X Crypto</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="covidassets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="covidasset/css/bootstrap.min.css">
 
     <!-- Icon Font -->
-    <link rel="stylesheet" href="covidassets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="covidasset/css/line-awesome.min.css">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap"
           rel="stylesheet">
 
     <!-- AOS -->
-    <link rel="stylesheet" href="covidassets/css/aos.css">
+    <link rel="stylesheet" href="covidasset/css/aos.css">
 
     <!-- Template CSS -->
-    <link rel="stylesheet" href="covidassets/css/style.css">
+    <link rel="stylesheet" href="covidasset/css/style.css">
 
     <!-- Custom CSS for end users -->
-    <link rel="stylesheet" href="covidassets/css/custom.css">
+    <link rel="stylesheet" href="covidasset/css/custom.css">
 </head>
 
 <body>
@@ -51,7 +51,7 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{url('/')}}">
-            <img src="covidassets/img/logo/logo.png" alt="">
+            <img src="covidasset/img/logo/logo.png" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -152,28 +152,28 @@
                     <div class="statistics-card-inner">
                         <h3 class="data-header" id="totalCases"></h3>
                         <p>Total cases</p>
-                        <img src="covidassets/img/shapes/1.png" alt="" class="img-fluid shape">
+                        <img src="covidasset/img/shapes/1.png" alt="" class="img-fluid shape">
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 statistics-card card-danger" data-aos="fade-up" data-aos-delay="50">
                     <div class="statistics-card-inner">
                         <h3 class="data-header" id="totalDeaths"></h3>
                         <p>Total deaths</p>
-                        <img src="covidassets/img/shapes/1.png" alt="" class="img-fluid shape">
+                        <img src="covidasset/img/shapes/1.png" alt="" class="img-fluid shape">
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 statistics-card card-success" data-aos="fade-up" data-aos-delay="100">
                     <div class="statistics-card-inner">
                         <h3 class="data-header" id="totalRecovered"></h3>
                         <p>Total recovered</p>
-                        <img src="covidassets/img/shapes/1.png" alt="" class="img-fluid shape">
+                        <img src="covidasset/img/shapes/1.png" alt="" class="img-fluid shape">
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 statistics-card card-warning" data-aos="fade-up" data-aos-delay="150">
                     <div class="statistics-card-inner">
                         <h3 class="data-header" id="newCases"></h3>
                         <p>New cases</p>
-                        <img src="covidassets/img/shapes/1.png" alt="" class="img-fluid shape">
+                        <img src="covidasset/img/shapes/1.png" alt="" class="img-fluid shape">
                     </div>
                 </div>
             </div>
@@ -219,10 +219,10 @@
             </div>
             <div class="col-md-5 offset-xl-1">
                 <div class="about-img">
-                    <img src="covidassets/img/about/1.png" alt="" class="img-fluid">
+                    <img src="covidasset/img/about/1.png" alt="" class="img-fluid">
                     <div class="about-graphics">
                         <div class="graphic graphic-1">
-                            <lottie-player src="https://covidassets6.lottiefiles.com/packages/lf20_wpGbRj.json"
+                            <lottie-player src="https://covidasset6.lottiefiles.com/packages/lf20_wpGbRj.json"
                                            background="transparent.html" speed=".7" style="width: 60px; height: 60px;" loop
                                            autoplay>
                             </lottie-player>
@@ -269,25 +269,25 @@
         <div class="row">
             <div class="col-md-6 col-lg-3">
                 <div class="transmission-card">
-                    <img src="covidassets/img/transmission/1.png" alt="" class="img-fluid">
+                    <img src="covidasset/img/transmission/1.png" alt="" class="img-fluid">
                     <h4>Coughs from Infected Person</h4>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="transmission-card">
-                    <img src="covidassets/img/transmission/2.png" alt="" class="img-fluid">
+                    <img src="covidasset/img/transmission/2.png" alt="" class="img-fluid">
                     <h4>Sneezes from Infected Person</h4>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="transmission-card">
-                    <img src="covidassets/img/transmission/3.png" alt="" class="img-fluid">
+                    <img src="covidasset/img/transmission/3.png" alt="" class="img-fluid">
                     <h4>Touching Contaminated Object or Surfaces</h4>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="transmission-card">
-                    <img src="covidassets/img/transmission/4.png" alt="" class="img-fluid">
+                    <img src="covidasset/img/transmission/4.png" alt="" class="img-fluid">
                     <h4>Close Contact with Infected Person</h4>
                 </div>
             </div>
@@ -303,22 +303,22 @@
 <section class="covid-symptoms-section py-lg s-bg-light" id="symptoms">
     <div class="graphics">
         <div class="graphic graphic-1">
-            <img src="covidassets/img/shapes/1.png" alt="">
+            <img src="covidasset/img/shapes/1.png" alt="">
         </div>
         <div class="graphic graphic-2">
-            <img src="covidassets/img/shapes/1.png" alt="">
+            <img src="covidasset/img/shapes/1.png" alt="">
         </div>
         <div class="graphic graphic-3">
-            <img src="covidassets/img/shapes/1.png" alt="">
+            <img src="covidasset/img/shapes/1.png" alt="">
         </div>
         <div class="graphic graphic-4">
-            <img src="covidassets/img/shapes/1.png" alt="">
+            <img src="covidasset/img/shapes/1.png" alt="">
         </div>
         <div class="graphic graphic-5">
-            <img src="covidassets/img/shapes/1.png" alt="">
+            <img src="covidasset/img/shapes/1.png" alt="">
         </div>
         <div class="graphic graphic-6">
-            <img src="covidassets/img/shapes/1.png" alt="">
+            <img src="covidasset/img/shapes/1.png" alt="">
         </div>
     </div>
     <div class="container">
@@ -339,7 +339,7 @@
             <div class="col-md-6 col-lg-4 symptom-card style-2 text-center" data-aos="fade-up">
                 <div class="symptom-card-inner h-100">
                     <div class="card-img">
-                        <img src="covidassets/img/symptoms/1.png" alt="" class="img-fluid rounded-circle">
+                        <img src="covidasset/img/symptoms/1.png" alt="" class="img-fluid rounded-circle">
                     </div>
                     <h4>High Fever</h4>
                     <p>
@@ -351,7 +351,7 @@
             <div class="col-md-6 col-lg-4 symptom-card style-2 text-center" data-aos="fade-up" data-aos-delay="50">
                 <div class="symptom-card-inner h-100">
                     <div class="card-img">
-                        <img src="covidassets/img/symptoms/2.png" alt="" class="img-fluid rounded-circle">
+                        <img src="covidasset/img/symptoms/2.png" alt="" class="img-fluid rounded-circle">
                     </div>
                     <h4>Sore Throat</h4>
                     <p>
@@ -363,7 +363,7 @@
             <div class="col-md-6 col-lg-4 symptom-card style-2 text-center" data-aos="fade-up" data-aos-delay="100">
                 <div class="symptom-card-inner h-100">
                     <div class="card-img">
-                        <img src="covidassets/img/symptoms/3.png" alt="" class="img-fluid rounded-circle">
+                        <img src="covidasset/img/symptoms/3.png" alt="" class="img-fluid rounded-circle">
                     </div>
                     <h4>Dry Cough</h4>
                     <p>
@@ -375,7 +375,7 @@
             <div class="col-md-6 col-lg-4 symptom-card style-2 text-center" data-aos="fade-up">
                 <div class="symptom-card-inner h-100">
                     <div class="card-img">
-                        <img src="covidassets/img/symptoms/4.png" alt="" class="img-fluid rounded-circle">
+                        <img src="covidasset/img/symptoms/4.png" alt="" class="img-fluid rounded-circle">
                     </div>
                     <h4>Sneezing</h4>
                     <p>
@@ -387,7 +387,7 @@
             <div class="col-md-6 col-lg-4 symptom-card style-2 text-center" data-aos="fade-up" data-aos-delay="50">
                 <div class="symptom-card-inner h-100">
                     <div class="card-img">
-                        <img src="covidassets/img/symptoms/5.png" alt="" class="img-fluid rounded-circle">
+                        <img src="covidasset/img/symptoms/5.png" alt="" class="img-fluid rounded-circle">
                     </div>
                     <h4>Shortness of Breath</h4>
                     <p>
@@ -399,7 +399,7 @@
             <div class="col-md-6 col-lg-4 symptom-card style-2 text-center" data-aos="fade-up" data-aos-delay="100">
                 <div class="symptom-card-inner h-100">
                     <div class="card-img">
-                        <img src="covidassets/img/symptoms/6.png" alt="" class="img-fluid rounded-circle">
+                        <img src="covidasset/img/symptoms/6.png" alt="" class="img-fluid rounded-circle">
                     </div>
                     <h4>Vomiting</h4>
                     <p>
@@ -528,7 +528,7 @@
 
 <!-- Callout -->
 <section class="callout-section pt-md pb-lg s-bg-primary" id="contact">
-    <img src="covidassets/img/bg/1.jpg" alt="" class="parallax-bg">
+    <img src="covidasset/img/bg/1.jpg" alt="" class="parallax-bg">
     <div class="container">
         <div class="row">
             <div class="col-xl-11 mx-auto text-center">
@@ -571,37 +571,37 @@
                 <div class="hand-washing-steps style-2">
                     <div class="step">
                         <div class="img-box">
-                            <img src="covidassets/img/hand-wash/1.png" alt="" class="img-fluid">
+                            <img src="covidasset/img/hand-wash/1.png" alt="" class="img-fluid">
                         </div>
                         <h5>Wet Hands</h5>
                     </div>
                     <div class="step">
                         <div class="img-box">
-                            <img src="covidassets/img/hand-wash/2.png" alt="" class="img-fluid">
+                            <img src="covidasset/img/hand-wash/2.png" alt="" class="img-fluid">
                         </div>
                         <h5>Apply Soap</h5>
                     </div>
                     <div class="step">
                         <div class="img-box">
-                            <img src="covidassets/img/hand-wash/3.png" alt="" class="img-fluid">
+                            <img src="covidasset/img/hand-wash/3.png" alt="" class="img-fluid">
                         </div>
                         <h5>Rub Hands Palm to Palm</h5>
                     </div>
                     <div class="step">
                         <div class="img-box">
-                            <img src="covidassets/img/hand-wash/4.png" alt="" class="img-fluid">
+                            <img src="covidasset/img/hand-wash/4.png" alt="" class="img-fluid">
                         </div>
                         <h5>Wash Between Fingers</h5>
                     </div>
                     <div class="step">
                         <div class="img-box">
-                            <img src="covidassets/img/hand-wash/5.png" alt="" class="img-fluid">
+                            <img src="covidasset/img/hand-wash/5.png" alt="" class="img-fluid">
                         </div>
                         <h5>Rub Wrists</h5>
                     </div>
                     <div class="step">
                         <div class="img-box">
-                            <img src="covidassets/img/hand-wash/6.png" alt="" class="img-fluid">
+                            <img src="covidasset/img/hand-wash/6.png" alt="" class="img-fluid">
                         </div>
                         <h5>Dry with a Single use Towel</h5>
                     </div>
@@ -854,23 +854,23 @@
 
 
 <!-- jQuery first, then Bootstrap bundle JS, then others -->
-<script src="covidassets/js/jquery-3.5.1.min.js"></script>
-<script src="covidassets/js/bootstrap.bundle.min.js"></script>
+<script src="covidasset/js/jquery-3.5.1.min.js"></script>
+<script src="covidasset/js/bootstrap.bundle.min.js"></script>
 
 <!-- Plugins -->
-<script src="covidassets/js/jquery-ui.min.js"></script>
+<script src="covidasset/js/jquery-ui.min.js"></script>
 <script src="../../../../../unpkg.com/%40lottiefiles/lottie-player%400.5.1/dist/lottie-player.js"></script>
-<script src="covidassets/js/corona-script.js"></script>
-<script src="covidassets/js/aos.js"></script>
-<script src="covidassets/js/simpleParallax.min.js"></script>
-<script src="covidassets/js/parallax.min.js"></script>
+<script src="covidasset/js/corona-script.js"></script>
+<script src="covidasset/js/aos.js"></script>
+<script src="covidasset/js/simpleParallax.min.js"></script>
+<script src="covidasset/js/parallax.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhrdEzlfpnsnfq4MgU1e1CCsrvVx2d59s"></script>
-<script src="covidassets/js/gmaps.js"></script>
-<script src="covidassets/js/ajax-mail.js"></script>
-<script src="covidassets/js/ajax-subscribe.js"></script>
+<script src="covidasset/js/gmaps.js"></script>
+<script src="covidasset/js/ajax-mail.js"></script>
+<script src="covidasset/js/ajax-subscribe.js"></script>
 
 <!-- Template JS -->
-<script src="covidassets/js/scripts.js"></script>
+<script src="covidasset/js/scripts.js"></script>
 </body>
 
 

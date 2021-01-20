@@ -95,9 +95,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
     Route::get('getrate/{currencyid}/{type}', [ProductsController::class, 'getRate'])->name('getRate');
-
     Route::post('buycrypto', [TransactionController::class, 'buycrypto'])->name('buycrypto');
     Route::post('sellcrypto', [TransactionController::class, 'sellcrypto'])->name('sellcrypto');
+    Route::post('verifysellcrypto', [VerificationController::class, 'cryptosell_verification'])->name('cryptosell_verification');
+
     Route::post('lockaccount', [OthersController::class, 'lockaccount'])->name('lockaccount');
 
 

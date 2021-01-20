@@ -1064,7 +1064,7 @@ class TransactionController extends Controller
         $buy['remark'] = $request->comment;
         $buy['status'] = 0;
         $buy['trx'] = $trx;
-        Trx::create($buy)->trx;
+        Trx::create($buy);
 
         return response()->json(['status' => 1, 'message' => 'Transaction is successful']);
 
@@ -1113,13 +1113,15 @@ class TransactionController extends Controller
         $buy['status'] = 0;
         $buy['trx'] = $trx;
 
-        Trx::create($buy)->trx;
+        Trx::create($buy);
 
         $basic = GeneralSettings::first();
         if($currency->id==5){
             $akey=$basic->bitcoin_address;
-        }else{
+        }elseif($currency->id==1){
             $akey=$basic->etherum_address;
+        }else{
+            return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'trx'=> $trx]);
         }
 
 
@@ -1149,7 +1151,7 @@ class TransactionController extends Controller
             $btcvalue = $reply['data']['total_amount']['ETH'];
         }
 
-        return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue]);
+        return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue, 'trx'=> $trx]);
 
     }
 
