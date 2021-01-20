@@ -196,6 +196,21 @@ class UserManageController extends Controller
 
 
 
+    public function usernotify2()
+    {
+        $data['page_title'] = "Send Notification";
+        return view('admin.post.notifydash', $data);
+    }
+
+    public function usernotifypost(Request $request)
+    {
+        
+         $basic = GeneralSettings::first();
+         $basic->news = $request->details;
+         $basic->save();
+         return back()->with('success', 'Notification Posted Successfully!');
+    }
+
     public function usernotify()
     {
         $data['category'] = Category::whereStatus(1)->get();
