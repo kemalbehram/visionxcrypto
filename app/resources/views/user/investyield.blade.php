@@ -1,94 +1,73 @@
-@extends('include.dashboard')
+@extends('include.userdashboard')
 @section('content')
-   	<!-- ***************** User Content **************** -->
-	  <script>
-        function createCountDown(elementId, sec) {
-            var tms = sec;
-            var x = setInterval(function() {
-                var distance = tms*1000;
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById(elementId).innerHTML =days+"d: "+ hours + "h "+ minutes + "m " + seconds + "s ";
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById(elementId).innerHTML = "{{__('COMPLETE')}}";
-                }
-                tms--;
-            }, 1000);
-        }
-    </script>
-						<div class="dashboard-user-content payout-panel">
-						<div class="next-payout-box clearfix">
-								<div class="title font-fix">Next Payout</div>
-								<div class="payout-date"><small> @if($invest->status == '2')  <span class="badge badge-warning"><i class="fa fa-spinner fa-spin"></i> @lang('Pending')</span>  @elseif($invest->status == '17')  <span class="badge badge-danger"><i class="fa fa-trash fa-spzin"></i> @lang('Rejected')</span>  @else {{ Carbon\Carbon::parse($invest->next_time)->diffForHumans() }} @endif</small></div>
-								<img src="images/coins.png" alt="" class="coins">
-							</div> <!-- /.next-payout-box -->
+  <!-- Main Content-->
+			<div class="main-content side-content pt-0">
 
-							<div class="payout-history-wrapper">
-								<div class="clearfix">
-									<div class="payout-history-title">Payouts history <button type="button" class="help-button" data-toggle="tooltip" data-placement="top" title="The amount you want to invest, you can always add funds to your investment at any time."><img src="images/info.png" alt=""></button></div>
+				<div class="container-fluid">
+					<div class="inner-body">
 
-									<div class="total-payout-count font-fix">Total Payouts: <span>{{count($trans)}}</span></div>
+						<!-- Page Header -->
+						<div class="page-header">
+							<div>
+								<h2 class="main-content-title tx-24 mg-b-5">My VX Vault</h2>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">VX Vault Yield</li>
+								</ol>
+							</div>
+							 
+						</div>
+						<!-- End Page Header -->
+						 
+
+
+						<!-- row -->
+						<div class="row row-sm">
+							<div class="col-md-12 col-lg-12 col-xl-12">
+								<div class="card custom-card transcation-crypto">
+									<div class="card-header border-bottom-0">
+										<div class="main-content-label">Investment Return History</div> 
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table" id="example1">
+												<thead>
+													<tr>
+														<th>Plan</th> 
+														<th>Date</th> 
+														<th>Amount USD</th>
+														<th>Amount BTC</th>
+														<th>Type</th> 
+														<th>Status</th>
+													</tr>
+												</thead>
+												<tbody>
+													@foreach($trans as $k=>$data)
+													<tr class="border-bottom">
+														<td>
+														<td class="font-weight-bold">{{$plans->name ?? "" }}</td>
+														<td>{!! date(' D, d/M/Y', strtotime($data->created_at)) !!}</td>  
+														<td class="text-success font-weight-bold">${{number_format($data->amount, $basic->decimal)}}</td>
+														<td class="text-success font-weight-bold">{{number_format($btcrate * $data->amount, 8)}}BTC</td>
+														<td class="text-success font-weight-bold">Interest</td>
+														<td>
+														 
+														<span class="text-success font-weight-semibold">Paidd</span>
+														 
+														</td>
+													</tr>
+													 @endforeach
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
-
-								<div class="payout-single-table">
-									<div class="table-responsive table-data">
-										<table class="table">
-											<tbody>
-											 @if(count($trans)==0)
-												<tr>
-													<td colspan="8" class="text-center">@lang('No Investment Yield Yet')</td>
-												</tr>
-												
-											@endif
-
-											@foreach($trans as $data)
-													<tr role="row">
-												
-											      	<td>
-												      	<div class="title">Status</div>
-					        							<div class="value font-fix payment-status paid">Paid</div>
-												    </td>
-												    <td>
-												    	<div class="title">Investment</div>
-												      	<div class="value font-fix">{{$plans->name }}</div>
-												    </td>
-												    <td>
-												      	<div class="title">Payment Type</div>
-												      	<div class="value font-fix"> Interest</div>
-												    </td>
-												    <td>
-												      	<div class="title">Paid out</div>
-												      	<div class="value font-fix">{{ Carbon\Carbon::parse($data->created_at)->diffForHumans() }}</div>
-												    </td>
-												    <td>
-												    	<div class="title">Amount</div>
-					        							<div class="value font-fix payout-amount">${{number_format($data->amount, $basic->decimal)}}</div>
-												    </td>
-												    <td>
-												    	<div class="title">Value</div>
-					        							<div class="value font-fix payout-amount"><img src="{{asset('assets/images/bitcoin2.png')}}" alt="" class="currency-icon">{{number_format($btcrate * $data->amount, 8)}}BTC</div>
-												    </td>
-											    </tr>
-												
-												@endforeach
- 
-											</tbody>
-										</table>
-										<br><br><br><br><br><br><br><br><br><br><br>
-												<br><br><br><br><br><br><br><br><br>
-									</div> <!-- /.table-data -->
-								</div> <!-- /.payout-single-table -->
-							</div> <!-- /.payout-history-wrapper -->
-
-						</div> <!-- /.dashboard-user-content --> <!-- ***** End User Content **** -->
-					</div> <!-- /#dashboard-main-body -->
-				</div> <!-- /.container -->  <!-- ***** End Dashboard Body Wrapper **** -->
-			</div> <!-- #dashboard-wrapper --> <!-- ***** End Dashboard Main Container **** -->
-
-			
-			
-			
-			@endsection
+								<!-- Row End -->
+							</div>
+						</div>
+						<!-- Row End -->
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content-->
+@stop
