@@ -63,14 +63,14 @@
 												</tbody>
 											</table>
 											<div class="invoice-notes">
-																<label class="main-content-label tx-13">Notes</label>
+																<label class="main-content-label tx-13">Note:</label>
 																<p>Make Payment To The Account Number on Rubies Bank and your deposit wallet will be credited instantly </p>
 															</div><!-- invoice-notes -->
                                                             
-                                                           <br><br>
+                                                           <br>
                                                            
                                                            <div class="invoice-notes">
-																<label class="main-content-label tx-13">Notes</label>
+																<label class="main-content-label tx-13"> </label>
 																<p class="text-danger"> Bank Transfers from third party accounts will be applied to your account after 24hrs. For instant Transactions, please send funds from accounts owned by you. </p>
 															</div><!-- invoice-notes -->
 													
