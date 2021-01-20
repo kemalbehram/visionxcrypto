@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-
+use Mail;
 use App\UserWallet;
 use App\GeneralSettings;
 use Illuminate\Http\Request;
@@ -177,7 +177,9 @@ class RegisterController extends Controller
         if ($basic->email_verification == 1) {
             $email_code = strtoupper(Str::random(6));
             $text = "Your Verification Code Is: <b>$email_code</b>";
-            send_email_verification($user->email, $user->username, 'Email verification', $text);
+            
+             
+     
 
             $user->verification_code = $email_code;
             $user->email_time = Carbon::parse()->addMinutes(5);
@@ -193,8 +195,8 @@ class RegisterController extends Controller
             $user->save();
             
             
-             $baseUrl = "https://www.bulksmsnigeria.com/";
-            $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=".$basic->sitename."&to=".$user->phone."&body=".$txt."";
+            $baseUrl = "https://www.bulksmsnigeria.com/";
+            $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
             $httpVerb = "GET";
             $contentType = "application/json"; //e.g charset=utf-8
             $headers = array (
