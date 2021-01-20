@@ -230,6 +230,9 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('/esell-pay/{id}', 'HomeController@esellscan2')->name('esellpost22');
         Route::get('/esell-scan', 'HomeController@esellscan')->name('esellscan');
 
+        Route::get('/esell-pm/{trx}', 'HomeController@esellpm')->name('esellpm');
+        Route::get('/perfectpaid', 'HomeController@sellperfectsuccess')->name('sellperfectsuccess');
+         
         Route::get('/esell-del/{id}', 'HomeController@eselldel')->name('eselldel');
         Route::post('/esell-upload', 'HomeController@esellupload')->name('esellupload');
 
@@ -281,13 +284,13 @@ Route::group(['prefix' => 'user'], function () {
 });
 
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget'], function () {
     Route::get('/', 'AdminLoginController@index')->name('admin.loginForm');
     Route::post('/', 'AdminLoginController@authenticate')->name('admin.login');
 });
 
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' => 'auth:admin'], function () {
 
 
 
@@ -439,7 +442,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     //Notification
 
-    Route::get('notification', 'UserManageController@usernotify')->name('user.notification');
+    Route::get('notify', 'UserManageController@usernotify2')->name('user.notify');
+    Route::post('notifypost', 'UserManageController@usernotifypost')->name('user.notifypost');
+    Route::get('new-post', 'UserManageController@usernotify')->name('user.notification');
     Route::get('testimonials', 'UserManageController@usertestimonial')->name('admin.testi');
     Route::get('testimonials/{id}', 'UserManageController@usertestimonialdel')->name('admin.testidel');
     Route::post('testimonials/update', 'UserManageController@usertestimonialupdate')->name('update.testi');
