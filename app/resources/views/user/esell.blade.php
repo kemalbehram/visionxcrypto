@@ -9,10 +9,10 @@
 						<!-- Page Header -->
 						<div class="page-header">
 							<div>
-								<h2 class="main-content-title tx-24 mg-b-5">Sell Coin</h2>
+								<h2 class="main-content-title tx-24 mg-b-5">Sell Digital Asset</h2>
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Sell Coin</li>
+									<li class="breadcrumb-item active" aria-current="page">Sell Digital Asset</li>
 								</ol>
 							</div>
 
@@ -42,7 +42,7 @@
 																</div>
 																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
 																<label class="text-white-50">Our Rate</label>
-																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->sell, $basic->decimal)}}">
+																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->buy, $basic->decimal)}}">
 
 																</div>
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
@@ -61,7 +61,12 @@
 														</div>
 													</div>
 													<div class="text-center background-text">
-														<a href="{{ route('esellscan',$data->trx) }}" class="btn btn-warning pl-6 pr-6 pt-2 pb-2 mx-auto float-left mt-5">CONTINUE</a>
+													    @if($data->currency_id == 11)
+													    
+														<a href="{{ route('esellpm',$data->trx) }}" class="btn btn-warning pl-6 pr-6 pt-2 pb-2 mx-auto float-left mt-5">CONTINUE</a>
+													    @else
+														<a href="{{ route('esellscan') }}" class="btn btn-warning pl-6 pr-6 pt-2 pb-2 mx-auto float-left mt-5">CONTINUE</a>
+														@endif
 													</div>
 												</div>
 											</div>
