@@ -169,6 +169,11 @@ class HomeController extends Controller
         if ($basic->maintain == 1) {
             return view('front.maintain', $data);
         }
+        
+         $time = Carbon::parse(Carbon::now())->addMinutes(30);
+         $user->login_time = $time;
+         $user->save();
+
 
 
         return view('home', $data);
@@ -464,6 +469,34 @@ class HomeController extends Controller
                 $user->save();
 
                 return back()->with('success', 'Password Changes Successfully.');
+            } else {
+                return back()->with('danger', 'Current Password Not Match');
+            }
+
+        } catch (\PDOException $e) {
+            return back()->with('danger', $e->getMessage());
+        }
+    }
+    
+    
+    
+
+    public function unlockme(Request $request)
+    {
+        $this->validate($request, [ 
+            'password' => 'required'
+        ]);
+        try {
+            $c_password = Auth::user()->password;
+            $c_id = Auth::user()->id;
+            $user = User::findOrFail($c_id);
+            if (Hash::check($request->password, $c_password)) {
+
+                 $time = Carbon::parse(Carbon::now())->addMinutes(30);
+                $user->login_time = $time;
+                $user->save();
+
+                return back()->with('success', 'Account Unlocked Successfully.');
             } else {
                 return back()->with('danger', 'Current Password Not Match');
             }
