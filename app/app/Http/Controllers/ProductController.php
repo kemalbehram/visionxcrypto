@@ -729,6 +729,7 @@ class ProductController extends Controller
 	     $request->validate([
             'decodertype' => 'required',
             'decodernumber' => 'required',
+            'decoder' => 'required',
 //
         ], [
             'decodertype.required' => 'Please select a decoder type',
@@ -737,7 +738,7 @@ class ProductController extends Controller
 
 		$basic = GeneralSettings::first();
          $baseUrl = "https://www.nellobytesystems.com";
-        $endpoint = "/APIVerifyCableTVV1.0.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&cabletv=".$request->decodertype."&smartcardno=".$request->decodernumber."";
+        $endpoint = "/APIVerifyCableTVV1.0.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&cabletv=".$request->decoder."&smartcardno=".$request->decodernumber."";
 
         $url=$baseUrl.$endpoint;
         // Perform initialize to validate name on server
@@ -777,6 +778,10 @@ class ProductController extends Controller
 		      return back()->with('danger', 'INVALID API KEY. Please Try Again');
 
     	    }
+    	      if ($result == "INVALID_CABLETV"){
+		      return back()->with('danger', 'INVALID DECODER TYPE. Please Try Again');
+
+    	    }
     	     if ($result == ""){
 			       return back()->with('danger', 'We are unable to process your request at the moment. Please Try Again');
 
@@ -785,7 +790,7 @@ class ProductController extends Controller
 
 			Session::put('number', $request->decodernumber);
 			Session::put('decoder', $request->decodertype);
-			Session::put('deco', $request->deco);
+			Session::put('deco', $request->decodertype);
 			Session::put('name', $result);
 			return redirect()->route('validateddecoder');
 

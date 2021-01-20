@@ -31,6 +31,7 @@ use App\Lib\coinPayments;
 use App\Lib\BlockIo;
 use App\Lib\CoinPaymentHosted;
 use Auth;
+use Mail;
 use App\User;
 use App\Investyield;
 use Carbon\Carbon;
@@ -229,11 +230,9 @@ class HomeController extends Controller
             $user->phone_time = Carbon::now();
             $user->sms_code = $code;
             $user->save();
-            send_sms($user->phone, $code);
-
-
+ 
             $baseUrl = "https://www.bulksmsnigeria.com/";
-            $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=" . $basic->sitename . "&to=" . $user->phone . "&body=" . $code . "";
+            $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=VISIONX&to=" . $user->phone . "&body=" . $code . "";
             $httpVerb = "GET";
             $contentType = "application/json"; //e.g charset=utf-8
             $headers = array(
@@ -352,6 +351,22 @@ class HomeController extends Controller
             $user->email_time = Carbon::now();
             $user->verification_code = $code;
             $user->save();
+            
+             $data = array(
+
+                "name"=> $user->username,
+                "email"=> $user->email,
+                "body"=> "Your Verification Code is " . $code, 
+                "heading"=> "Verification Code", 
+                );
+   
+   
+      
+      Mail::send('mail', $data, function($message) {
+      $user = Auth::user();
+    $message->to($user->email, $user->username)->subject('Verification Code');
+});
+
             send_email($user->email, $user->username, 'Verificatin Code', 'Your Verification Code is ' . $code);
             session()->flash('success', 'Verification Code Sent  successfully');
         }
@@ -1650,7 +1665,7 @@ class HomeController extends Controller
         $currency = Currency::where('id', $data->currency_id)->first();
         $page_title = "Sales Preview";
         $auth = Auth::user();
-
+        
         $getamount = Session::get('putamount');
         $gettime = Session::get('timestamp');
         $gettrx = Session::get('puttrx');
@@ -1721,6 +1736,40 @@ class HomeController extends Controller
     }
 
 
+    public function esellpm($trx)
+    {
+        $data = Trx::where('status', 0)->where('trx', $trx)->first();
+        $auth = Auth::user();
+        Session::put('Perfect', $trx);
+        
+        $gatewayData = Gateway::find(102);
+        return view('user.esellpm', compact('data', 'gatewayData'));
+    }
+     
+    public function sellperfectsuccess()
+    {
+        $gatewayData = Gateway::find(102);
+        
+        $passphrase = strtoupper(md5($gatewayData->val2));
+         $track = Session::get('Perfect');
+        define('ALTERNATE_PHRASE_HASH', $passphrase);
+        define('PATH_TO_LOG', '/somewhere/out/of/document_root/');
+       
+            $data = Trx::where('status', 0)->where('trx', $track)->first();
+            $user = User::whereId($data->user_id)->first();
+            $gnl = GeneralSettings::first();
+ 
+               $data->status = 2;
+               $data->save();
+               
+               $user->balance = $user->balance + $data->main_amo;
+               $user->save();
+                return redirect()->route('home')->with("success", "Perfect Money Sales Was Successful");
+      
+
+    }
+    
+    
     public function esellscan2($id)
     {
         $data = Trx::where('status', 0)->where('trx', $id)->first();
@@ -2168,7 +2217,6 @@ class HomeController extends Controller
 
 
         $txt = $request->hhave . ' ' . $hwallet->name . ' Exchange Amount  ';
-        send_email($auth->email, $auth->username, 'Exchange Amount', $txt);
         return redirect()->route('home')->with("success", "  Your coin sales was successful");
 
     }
@@ -2431,7 +2479,7 @@ class HomeController extends Controller
         $data['plans'] = Plan::where('status', 1)->latest()->get();
         $data['wallets'] = UserWallet::where('user_id', Auth::id())->whereType('interest_wallet')->get();
         $data['earn'] = UserWallet::whereType('interest_wallet')->where('user_id', Auth::id())->first();
-        $data['trans'] = Invest::where('user_id', Auth::id())->latest()->get();
+        $data['trans'] = Invest::where('user_id', Auth::id())->where('status' ,'<', '2')->latest()->get();
         $data['invcount'] = Invest::where('user_id', Auth::id())->latest()->count();
         $data['invcomplete'] = Invest::where('user_id', Auth::id())->where('status', '!=', 1)->latest()->count();
         $data['invsum'] = Invest::where('user_id', Auth::id())->sum('amount');
