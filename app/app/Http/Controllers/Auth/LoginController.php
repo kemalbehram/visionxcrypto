@@ -54,8 +54,9 @@ class LoginController extends Controller
             $notification =  array('message' => 'Sorry Your Account is Block Now.!','alert-type' => 'warning');
             return redirect('/')->with($notification);
         }
-
-        $user->login_time = Carbon::now();
+       
+        $time = Carbon::parse(Carbon::now())->addMinutes(30);
+        $user->login_time = $time;
         $user->save();
 
         $user_ip = request()->ip();
