@@ -42,7 +42,7 @@
 								<div class="card custom-card">
 									<div class="card-body user-card text-center">
 										<div class="main-img-user avatar-lg online text-center">
-											<img alt="avatar" class="rounded-circle" src="{{url('/')}}/assets/assets/img/svgs/crypto-currencies/btc.svg">
+											<img alt="avatar" class="rounded-circle" src="{{url('/')}}/assets/assets/img/pngs/bitcoin.png">
 										</div>
 										<div class="mt-2">
 											<h5 class="mb-1">Digital Assets</h5>
