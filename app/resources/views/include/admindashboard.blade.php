@@ -40,6 +40,17 @@
 
 
 
+<li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-lock"></em>&nbsp; VX Vault</a><ul class="navbar-dropdown">
+    <li class=" "><a class=" " href="{{route('activevault')}}">Locked Vaults </a></li>
+    <li class=" "><a class=" " href="{{ route('closedvault') }}">Withdrawn Vaults</a></li>
+    <li class=" "><a class=" " href="{{ route('unpaidvault') }}">Incomplete Process Vaults</a></li>
+<li class=" "><a class=" " href="{{route('pendingwithdraw')}}">Pending Withdrawal </a></li>
+<li class=" "><a class=" " href="{{route('closedwithdraw')}}">Approved Withdrawal</a></li>
+<li class=" "><a class=" " href="{{route('declinedwithdraw')}}">Declined Withdrawal</a></li>
+</ul></li>
+
+
+
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-user"></em>&nbsp; Users</a><ul class="navbar-dropdown"><li class=" "><a class=" " href="{{route('users')}}">Active Users </a></li><li class=" "><a class=" " href="{{route('user.ban')}}">Inactive Users</a></li>
 
 </ul></li>
@@ -225,5 +236,9 @@ var c=t(".toastr-info");c.length>0&&c.ready(function(){toastr.clear(),toastr.opt
     @endforeach
 
 @endif
-
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
 </body></html>
