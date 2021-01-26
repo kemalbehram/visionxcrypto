@@ -1320,7 +1320,7 @@
 
     @endphp
 	<body id="mainbody" class="main-body leftmenu @if(Auth::user()->darkmode == 1 ) dark-theme @endif">
-	 <div id="toast"></div>
+	
 		<!-- Loader -->
 		<div id="global-loader">
 			<img src="{{url('/')}}/assets/assets/img/loader.svg" class="loader-img" alt="Loader">
@@ -1330,8 +1330,7 @@
 
 		<!-- Page -->
 		<div class="page">
-
-			<!-- Sidemenu -->
+        	<!-- Sidemenu -->
 			<div class="main-sidebar main-sidebar-sticky side-menu">
 				<div class="sidemenu-logo">
 					<a class="main-logo" href="{{route('home')}}">
@@ -1353,8 +1352,11 @@
 							<a class="nav-link" href="{{route('my-wallet')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-wallet sidemenu-icon"></i><span class="sidemenu-label">Wallet</span></a>
 						</li>
 						<br>
-						<li class="nav-item">
+						<!--<li class="nav-item">
 							<a class="nav-link" href="{{route('coinvest')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-chart sidemenu-icon"></i><span class="sidemenu-label">VX Vault</span></a>
+						</li> -->
+						<li class="nav-item">
+							<a class="nav-link" href="{{route('vxlock')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-chart sidemenu-icon"></i><span class="sidemenu-label">VX Vault</span></a>
 						</li>
 						<br>
 						<li class="nav-item">
@@ -1586,6 +1588,9 @@
 				</div>
 			</div>
 			<!-- End Main Header-->
+			
+			 <div id="toast"></div>
+		
 
 			<!-- Mobile-header -->
 			<div class="mobile-main-header">
@@ -1672,6 +1677,7 @@
 				</div>
 			</div>
 			<!-- Mobile-header closed -->
+			
 			@yield('content')
 
 				<!-- Main Footer-->
