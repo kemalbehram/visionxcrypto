@@ -86,6 +86,9 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::get('authorization', 'HomeController@authCheck')->name('user.authorization');
     Route::post('verification', 'HomeController@sendVcode')->name('user.send-vcode');
+    
+    
+    Route::post('unlockusernow', 'HomeController@unlockme')->name('unlockusernow');
     Route::post('smsVerify', 'HomeController@smsVerify')->name('user.sms-verify');
     Route::post('bvnVerify', 'HomeController@bvnVerify')->name('user.bvn-verify');
     Route::post('verify-email', 'HomeController@sendEmailVcode')->name('user.send-emailVcode');
@@ -191,6 +194,17 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('paybtcnow', 'HomeController@paybtcnow')->name('paybtcnow');
         Route::get('withdrawinvest', 'HomeController@withdrawinvest')->name('withdrawinvest');
         Route::post('btcpaynowupload', 'HomeController@btcpaynowupload')->name('btcpaynowupload');
+        
+        
+        //VX Lock
+        Route::get('vx-lock', 'VxlockController@vxlock')->name('vxlock');
+        Route::post('vx-lock-proceed', 'VxlockController@vxlockproceed')->name('vxlockproceed');
+        Route::get('vx-vault', 'VxlockController@vxvault')->name('vxvault');
+        Route::post('lockfund', 'VxlockController@lockfund')->name('lockfund');
+        Route::get('preview-vault', 'VxlockController@previewvault')->name('previewvault');
+        Route::post('vx-lock-callback', 'VxlockController@elockcallback')->name('elockcallback');
+        Route::post('vx-lock-withdraw', 'VxlockController@vxvaultwithdraw')->name('vxvaultwithdraw');
+        Route::post('relock-vault', 'VxlockController@relockvault')->name('relockvault');
 
 
 
@@ -350,6 +364,21 @@ Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' 
     Route::get('investreject/{id}', 'PlanController@investreject')->name('investreject');
     Route::get('investdelete/{id}', 'PlanController@investdelete')->name('investdelete');
     Route::get('investview/{id}', 'PlanController@investview')->name('investview');
+    
+    
+    //VXVault Admin
+    Route::get('users-vault', 'VxlockController@allvault')->name('users-vault');
+    Route::get('active-users-vault', 'VxlockController@activevault')->name('activevault');
+    Route::get('closed-users-vault', 'VxlockController@closedvault')->name('closedvault');
+    Route::get('unpaidvault-users-vault', 'VxlockController@unpaidvault')->name('unpaidvault');
+    Route::get('pendingwithdraw-users-vault', 'VxlockController@pendingwithdraw')->name('pendingwithdraw');
+    Route::get('closedwithdraw-users-vault', 'VxlockController@closedwithdraw')->name('closedwithdraw');
+    Route::get('decliedwithdraw-users-vault', 'VxlockController@declinedwithdraw')->name('declinedwithdraw');
+    Route::get('viewvault-users-vault/{id}', 'VxlockController@viewvault')->name('viewvault');
+    Route::get('viewwithdraw-users-vault/{id}', 'VxlockController@viewwithdraw')->name('viewwithdraw');
+    Route::get('approvewithdraw-users-vault/{id}', 'VxlockController@approvewithdraw')->name('approvewithdraw');
+    Route::get('rejectwithdraw-users-vault/{id}', 'VxlockController@rejectwithdraw')->name('rejectwithdraw');
+    
 
 
     // General Settings
