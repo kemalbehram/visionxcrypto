@@ -169,24 +169,24 @@ class AuthenticateController extends Controller
 
 
                 $baseUrl = "https://www.bulksmsnigeria.com/";
-                $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=" . $basic->sitename . "&to=" . $user->phone . "&body=" . $txt . "";
+                $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
                 $httpVerb = "GET";
                 $contentType = "application/json"; //e.g charset=utf-8
-                $headers = array(
+                $headers = array (
                     "Content-Type: $contentType",
 
                 );
 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+                curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
                 curl_setopt($ch, CURLOPT_HTTPGET, true);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-                $content = json_decode(curl_exec($ch), true);
-                $err = curl_errno($ch);
-                $errmsg = curl_error($ch);
+                $content = json_decode(curl_exec( $ch ),true);
+                $err     = curl_errno( $ch );
+                $errmsg  = curl_error( $ch );
                 curl_close($ch);
             }
 
@@ -224,6 +224,14 @@ class AuthenticateController extends Controller
 
             if ($user->status == 0) {
                 return response()->json(['status' => 0, 'message' => 'Your account has been blocked! Kindly contact support']);
+            }
+
+            if ($user->phone_verify != 1) {
+                return response()->json(['status' => 2, 'message' => 'You have not verify your phone number ']);
+            }
+
+            if ($user->email_verify != 1) {
+                return response()->json(['status' => 0, 'message' => 'You have not verify your email address']);
             }
 
             $user->login_time = Carbon::now();
@@ -283,7 +291,7 @@ class AuthenticateController extends Controller
             $basic = GeneralSettings::first();
 
             if($user->locked==1){
-                return response()->json(['status' => 0, 'message' => 'Account has been locked. Kindly contact support']);
+                return response()->json(['status' => 0, 'message' => 'Account has been locked for maximum pin attempt. Kindly contact support']);
             }
 
             return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified, 'notification'=>$noti]);
@@ -342,8 +350,35 @@ class AuthenticateController extends Controller
 
             $basic = GeneralSettings::first();
             if ($basic->sms_verification == 1) {
-                $txt = "Your%20phone%20verification%20code%20is:%20$user->sms_code";
-                send_sms($user->phone, $txt);
+                $sms_code = strtoupper(Str::random(6));
+                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
+
+
+                $user->sms_code = $sms_code;
+                $user->phone_time = Carbon::parse()->addMinutes(1);
+                $user->save();
+
+
+                $baseUrl = "https://www.bulksmsnigeria.com/";
+                $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
+                $httpVerb = "GET";
+                $contentType = "application/json"; //e.g charset=utf-8
+                $headers = array (
+                    "Content-Type: $contentType",
+
+                );
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+                curl_setopt($ch, CURLOPT_HTTPGET, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $content = json_decode(curl_exec( $ch ),true);
+                $err     = curl_errno( $ch );
+                $errmsg  = curl_error( $ch );
+                curl_close($ch);
             }
 
             return response()->json(['status' => 1, 'message' => 'Code resent successfully']);
@@ -369,12 +404,39 @@ class AuthenticateController extends Controller
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
             }
 
-            $code = trim(substr(date('iym') . rand(), 0, 6));
+            $basic = GeneralSettings::first();
+            if ($basic->sms_verification == 1) {
+                $sms_code = strtoupper(Str::random(6));
+                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
 
-            notify($user, "Verification Code", "Your verification code is " . $code);
 
-            $user->sms_code = $code;
-            $user->save();
+                $user->sms_code = $sms_code;
+                $user->phone_time = Carbon::parse()->addMinutes(1);
+                $user->save();
+
+
+                $baseUrl = "https://www.bulksmsnigeria.com/";
+                $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
+                $httpVerb = "GET";
+                $contentType = "application/json"; //e.g charset=utf-8
+                $headers = array (
+                    "Content-Type: $contentType",
+
+                );
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+                curl_setopt($ch, CURLOPT_HTTPGET, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $content = json_decode(curl_exec( $ch ),true);
+                $err     = curl_errno( $ch );
+                $errmsg  = curl_error( $ch );
+                curl_close($ch);
+            }
+
             return response()->json(['status' => 1, 'message' => 'Verification sent successfully']);
 
         } else {

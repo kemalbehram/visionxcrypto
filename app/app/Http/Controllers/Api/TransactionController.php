@@ -15,10 +15,13 @@ use App\Transaction;
 use App\Trx;
 use App\User;
 use App\VirtualCard;
+use App\Vxvault;
+use App\Vxvaultwithdraw;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class TransactionController extends Controller
 {
@@ -268,7 +271,27 @@ class TransactionController extends Controller
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
-       send_sms($request->phone, $request->message);
+            $baseUrl = "https://www.bulksmsnigeria.com/";
+            $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$request->phone."&body=". $request->message."";
+            $httpVerb = "GET";
+            $contentType = "application/json"; //e.g charset=utf-8
+            $headers = array (
+                "Content-Type: $contentType",
+
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $content = json_decode(curl_exec( $ch ),true);
+            $err     = curl_errno( $ch );
+            $errmsg  = curl_error( $ch );
+            curl_close($ch);
+
 
         $tr = strtoupper(str_random(20));
         $w['transaction_id'] = $tr;
@@ -277,6 +300,18 @@ class TransactionController extends Controller
         $w['amount'] = $basic->smscharge;
         $w['phone'] = $request->phone;
         $trr = Sms::create($w);
+
+        $trx = strtoupper(str_random(20));
+        $product['user_id'] = Auth::id();
+        $product['gateway'] ="SMS";
+        $product['method'] = $request->package;
+        $product['account_number'] = $request->number;
+        $product['type'] = 3; //check this if it is correct by you
+        $product['remark'] = "SMS sent successfully to ".$request->phone;
+        $product['trx'] = $trx;
+        $product['status'] = 1;
+        $product['amount'] = $basic->smscharge;
+        Transaction::create($product);
 
         $user->balance = $user->balance - $basic->smscharge;
         $user->save();
@@ -352,7 +387,7 @@ class TransactionController extends Controller
             $product['serial'] = $result['pin']['serialNumber'];
             $product['unit'] = $result['pin']['units'];
             $product['type'] = 4; //check this if it is correct by you
-            $product['remark'] = "Meter payment was successful on ";
+            $product['remark'] = "Meter payment was successful";
             $product['trx'] = $trx;
             $product['status'] = 1;
             $product['amount'] = $request->amount;
@@ -362,6 +397,8 @@ class TransactionController extends Controller
             $user = Auth::user();
             $user->balance = $user->balance - $total;
             $user->save();
+
+            $this->sendnotification(Auth::id(), "Meter Payment", "Meter payment was successful on ". $request->meternumber. " with token: ".$product['pin']);
 
             return response()->json(['status' => 1, 'message' => $product['remark'], 'pin'=>$product['pin']]);
 
@@ -406,7 +443,7 @@ class TransactionController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"narration\": \"$request->naration\",\n    \"craccountname\": \"$user->fname $user->lname\",\n    \"bankname\": \"$user->bank\",\n    \"draccountname\": \"$user->fname $user->lname\",\n    \"craccount\": \"$request->accountno\",\n    \"bankcode\": \"$request->bankcode\"\n}",
+            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"narration\": \"$request->narration\",\n    \"craccountname\": \"$user->fname $user->lname\",\n    \"bankname\": \"$user->bank\",\n    \"draccountname\": \"$user->fname $user->lname\",\n    \"craccount\": \"$user->accountno\",\n    \"bankcode\": \"$user->bankcode\"\n}",
             CURLOPT_HTTPHEADER => array(
                 "Authorization: ".$basic->rubies_secretkey,
                 "Content-Type: application/json"
@@ -438,8 +475,7 @@ class TransactionController extends Controller
 
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful']);
-        }
-        else{
+        }else{
             return response()->json(['status' => 0, 'message' => 'Sorry, you cant make transfer at the moment, please try again later.']);
         }
 
@@ -494,6 +530,8 @@ class TransactionController extends Controller
             $user = Auth::user();
             $user->balance = $user->balance - $total;
             $user->save();
+
+            $this->sendnotification($user->id,"Payment Sent","Your payment to ". $name." will be sent soon." );
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
         }
@@ -559,13 +597,10 @@ class TransactionController extends Controller
             $r->balance = $r->balance + $total;
             $r->save();
 
-            Message::create([
-                'user_id' => $user->id,
-                'title' => "Payment Sent",
-                'details' =>"Your payment has been sent successfully to " . $product['method'],
-                'admin' => 1,
-                'status' =>  0
-            ]);
+            $this->sendnotification($user->id,"Payment Sent","Your payment has been sent successfully to " . $r->fname . " ". $r->lname );
+
+            $this->sendnotification($r->id,"Payment Received","A payment of " . $amount ." has been received from " . $user->fname . " ". $user->lname );
+
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
         }
@@ -1153,6 +1188,206 @@ class TransactionController extends Controller
 
         return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue, 'trx'=> $trx]);
 
+    }
+
+    public function addcoinlock(Request $request)
+    {
+        $user = Auth::user();
+
+        $input = $request->all();
+        $rules = array(
+            'amount' => 'required',
+            'duration' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+
+        $count =  Vxvault::whereUser_id(Auth()->user()->id)->whereStatus(1)->where('paid', '!=', 1)->count();
+        if($count > 2){
+            return response()->json(['status' => 3, 'message' => 'Sorry, you cant lock more than 3 assets at a time in your VX vault. Please wait till one or more of your assets expures']);
+        }
+        $basic = GeneralSettings::first();
+        $akey=$basic->bitcoin_address;
+        $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
+        $trx = rand(000000, 999999) . rand(000000, 999999);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'amount' => $request->amount, 'name' => $trx, 'currency' => 'USD', 'expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response, true);
+        curl_close($curl);
+        //return $response;
+
+        if(!isset($reply['data']['address'])){
+            return response()->json(['status' => 2, 'message' => 'Amount too low']);
+        }
+        $now = Carbon::now();
+        $expire = Carbon::parse($now)->addMonth($request->duration);
+
+        $address = $reply['data']['address'];
+        $invoiceid = $reply['data']['invoice_id'];
+        $btcvalue = $reply['data']['total_amount']['BTC'];
+
+        $lock['user_id'] = Auth::id();
+        $lock['invoiceid'] = $invoiceid;
+        $lock['amount'] = $request->amount*$basic->rate;
+        $lock['status'] = 0;
+        $lock['code'] = $trx;
+        $lock['expire'] = $expire;
+        $lock['usd'] = $request->amount;
+        $lock['btc'] = $btcvalue;
+        $lock['address'] = $address;
+
+        Vxvault::create($lock);
+
+        return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue, 'trx'=> $trx]);
+    }
+
+    public function coinlockwithdraw(Request $request)
+    {
+        $user = Auth::user();
+
+        $input = $request->all();
+        $rules = array(
+            'wallet' => 'required',
+            'trx' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $basic = GeneralSettings::first();
+        $data = Vxvault::where('status', 1)->where('code', $request->trx)->first();
+        $auth = Auth::user();
+
+        if(!$data){
+            return response()->json(['status' => 0, 'message' => 'Sorry, there is no VX Vault with this transaction details. Please check and try again later']);
+        }
+        $data->save();
+
+        if(Carbon::Now() < $data->expire){
+            return response()->json(['status' => 0, 'message' => 'Your VX Vault is not mature enough for withdrawal. Please try again later']);
+        }
+        if($data->status > 1){
+            return response()->json(['status' => 0, 'message' => 'You have already made withdrawal from this vault. Please create a new vault and come back later for withdrawal']);
+        }
+
+        if($data->status < 1){
+            return response()->json(['status' => 0, 'message' => 'It seems you have not made any payment into your VX vault. Please check and try again later']);
+        }
+
+
+        $akey=$basic->bitcoin_address;
+
+        $baseurl = "https://coinremitter.com/api/v3/BTC/get-invoice";
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $data->invoiceid),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response, true);
+        curl_close($curl);
+
+        if (!isset($reply['data']['status_code'])) {
+            return response()->json(['status' => 0, 'message' => 'An error occur. Contact server admin']);
+        }
+        //return $response;
+
+        $status = $reply['data']['status_code'];
+
+        if ($status == 0) {
+            return response()->json(['status' => 0, 'message' => 'We have not received your payment for this VX vault. Ensure you have made payment before you proceed with withdrawal']);
+        }
+        if ($status == 4) {
+            return response()->json(['status' => 0, 'message' => 'This VX vault transaction has expired on the blockchain network and it appeared you havent made any payment or locked any actual coin. Please contact admin for support or clarification.']);
+        }
+
+
+        if ($status == 1 || $status == 3) {
+            $basic = GeneralSettings::first();
+            $data->status = 2;
+            $data->save();
+
+            $withdraw['user_id'] = Auth::id();
+            $withdraw['invoiceid'] = $data->invoiceid;
+            $withdraw['address'] = $request->wallet;
+            $withdraw['status'] = 0;
+            $withdraw['code'] = $data->code;
+
+            $dat = Vxvaultwithdraw::create($withdraw)->code;
+
+            Message::create([
+                'user_id' =>  Auth::id(),
+                'title' => 'VX Vault Withdrawal Successful',
+                'details' => 'Your bitcoin lock with transaction number ' . $data->code . '  has been successfully withdrawn from your vault. Please wait while we process your withdrawal, your fund will be available to you in less than 24hours Thank you for choosing ' . $basic->sitename . '',
+                'admin' => 1,
+                'status' => 0
+            ]);
+
+            return response()->json(['status' => 1, 'message' => 'Your Bitcoin Lock with transaction number ' . $data->code . '  was successfully withdrawn.']);
+        }
+
+    }
+
+    public function relockcoin(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'trx' => 'required',
+            'duration' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $data = Vxvault::whereUser_id(Auth()->user()->id)->whereCode($request->trx)->orderBy('id','desc')->first();
+
+        $now = Carbon::now();
+        $expire = Carbon::parse($now)->addMonth($request->months);
+        $data->expire = $expire;
+        $data->save();
+
+        return response()->json(['status' => 1, 'message' => 'You have successfully relocked your vault with Vault Number '.$data->code.'. Your fund will be available for withdrawal in the next '.$request->months.' months']);
+    }
+
+    public function sendnotification($id, $title, $message){
+        Message::create([
+            'user_id' => $id,
+            'title' => $title,
+            'details' =>$message,
+            'admin' => 1,
+            'status' =>  0
+        ]);
     }
 
 

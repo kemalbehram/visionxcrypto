@@ -6,6 +6,8 @@ use App\Currency;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Transaction;
+use App\Vxvault;
+use App\Vxvaultwithdraw;
 use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
@@ -177,4 +179,12 @@ class ProductsController extends Controller
 
         return response()->json(['status' => 1, 'message' => 'Rates fetched successfully', 'rate'=>$rate*1]);
     }
+
+    public function coinlocks()
+    {
+        $data['vault'] = Vxvault::orderBy('id','desc')->get();
+        $data['withdraw'] = Vxvaultwithdraw::orderBy('id','desc')->paginate(8);
+        return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'data'=>$data]);
+    }
+
 }

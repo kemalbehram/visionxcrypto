@@ -101,6 +101,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('lockaccount', [OthersController::class, 'lockaccount'])->name('lockaccount');
 
+    Route::get('coinlocks', [ProductsController::class, 'coinlocks'])->name('coinlocks');
+    Route::post('addcoinlock', [TransactionController::class, 'addcoinlock'])->name('addcoinlock');
+    Route::post('coinlockwithdraw', [TransactionController::class, 'coinlockwithdraw'])->name('coinlockwithdraw');
+    Route::post('relockcoin', [TransactionController::class, 'relockcoin'])->name('relockcoin');
+
 
 
 });
