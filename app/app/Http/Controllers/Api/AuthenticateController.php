@@ -227,7 +227,7 @@ class AuthenticateController extends Controller
             }
 
             if ($user->phone_verify != 1) {
-                return response()->json(['status' => 2, 'message' => 'You have not verify your phone number ']);
+                return response()->json(['status' => 2, 'message' => 'You have not verify your phone number', 'data'=>$user->phone]);
             }
 
             if ($user->email_verify != 1) {
@@ -294,7 +294,11 @@ class AuthenticateController extends Controller
                 return response()->json(['status' => 0, 'message' => 'Account has been locked for maximum pin attempt. Kindly contact support']);
             }
 
-            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified, 'notification'=>$noti]);
+            $hour = date('H');
+            $dayTerm = ($hour > 17) ? "Evening" : (($hour > 12) ? "Afternoon" : "Morning");
+            $greet= "Good " . $dayTerm;
+
+            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified, 'notification'=>$noti, 'greet'=>$greet]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Unable to login with errors', 'error' => $validator->errors()]);
@@ -313,7 +317,7 @@ class AuthenticateController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->passes()) {
-            $user = User::where('email', $input['email'])->first();
+            $user = User::where('email', $input['email'])->orWhere('username', $input['email'])->first();
 
             if (!$user) {
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
@@ -342,7 +346,7 @@ class AuthenticateController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->passes()) {
-            $user = User::where('email', $input['email'])->first();
+            $user = User::where('email', $input['email'])->orWhere('username', $input['email'])->first();
 
             if (!$user) {
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
@@ -398,7 +402,7 @@ class AuthenticateController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->passes()) {
-            $user = User::where('email', $input['email'])->orWhere('phone', $input['email'])->first();
+            $user = User::where('email', $input['email'])->orWhere('username', $input['email'])->orWhere('phone', $input['email'])->first();
 
             if (!$user) {
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
@@ -456,7 +460,7 @@ class AuthenticateController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->passes()) {
-            $user = User::where('email', $input['email'])->orWhere('phone', $input['email'])->first();
+            $user = User::where('email', $input['email'])->orWhere('username', $input['email'])->orWhere('phone', $input['email'])->first();
 
             if (!$user) {
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
