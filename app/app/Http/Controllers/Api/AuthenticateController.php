@@ -145,8 +145,6 @@ class AuthenticateController extends Controller
             $user->phone_time = Carbon::now();
             $user->sms_code = $code;
             $user->save();
-            send_sms($user->phone, $code);
-
 
             if ($basic->email_verification == 1) {
                 $email_code = strtoupper(Str::random(6));
