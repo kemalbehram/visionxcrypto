@@ -22,6 +22,8 @@
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +248,12 @@
       <workItem from="1611136282254" duration="1010000" />
       <workItem from="1611163359406" duration="26000" />
       <workItem from="1611774087503" duration="12839000" />
-      <workItem from="1611802253531" duration="523000" />
+      <workItem from="1611802253531" duration="706000" />
+      <workItem from="1611803091887" duration="548000" />
+      <workItem from="1611843736337" duration="122000" />
+      <workItem from="1611876064396" duration="1024000" />
+      <workItem from="1611887114043" duration="68000" />
+      <workItem from="1611902051662" duration="3779000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>

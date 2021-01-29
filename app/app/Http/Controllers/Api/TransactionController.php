@@ -305,7 +305,7 @@ class TransactionController extends Controller
         $product['user_id'] = Auth::id();
         $product['gateway'] ="SMS";
         $product['method'] = $request->package;
-        $product['account_number'] = $request->number;
+        $product['account_number'] = $request->phone;
         $product['type'] = 3; //check this if it is correct by you
         $product['remark'] = "SMS sent successfully to ".$request->phone;
         $product['trx'] = $trx;
