@@ -185,8 +185,36 @@ class ProductsController extends Controller
     public function coinlocks()
     {
         $vault = Vxvault::orderBy('id','desc')->get();
-        $history = Vxvaultwithdraw::orderBy('id','desc')->get();
+        $history = Vxvaultwithdraw::join('vxvaults', 'vxvaults.invoiceid','vxvaultwithdraws.invoiceid')->select('vxvaultwithdraws.*', 'vxvaults.usd' )->orderBy('id','desc')->get();
         return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'vault'=>$vault, 'history'=>$history]);
+    }
+
+    public function coinrate(){
+        $baseUrl = "https://blockchain.info/";
+        $endpoint = "tobtc?currency=USD&value=1";
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $headers = array(
+            "Content-Type: $contentType",
+
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $btcrate= json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        curl_close($ch);
+
+        $basic = GeneralSettings::first();
+
+        return response()->json(['status' => 1, 'message' => 'Coin Rates fetched successfully', 'btc'=>$btcrate, 'ngn'=>$basic->rate]);
+
     }
 
 }
