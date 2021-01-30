@@ -342,8 +342,25 @@ Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' 
     Route::get('/bank_transfer_approve/{id}', 'AdminController@banktransferapprove')->name('banktransferapprove');
     Route::get('/bank_transfer_reject/{id}', 'AdminController@banktransferreject')->name('banktransferreject');
 
-
-
+    //Subadmin
+    
+    Route::get('/create-admin', 'AdminController@createadmin')->name('createadmin');
+    
+    Route::post('create-admin', 'AdminController@createadminpost')->name('createnewadmin');
+    
+    
+    Route::get('/block-admin/{id}', 'AdminController@blockadmin')->name('adminblock');
+    Route::get('/activate-admin/{id}', 'AdminController@activateadmin')->name('adminactivate');
+    Route::get('/delete-admin/{id}', 'AdminController@deleteadmin')->name('admindelete');
+    Route::get('/view-admin/{id}', 'AdminController@viewadmin')->name('viewadmin');
+    Route::post('/update-admin', 'AdminController@updateadmin')->name('updateadmin');
+   
+    Route::get('/manage-admin', 'AdminController@manageadmin')->name('manageadmin');
+    
+    
+    
+    Route::get('/dash-note', 'AdminController@dashnote')->name('dashnote');
+    Route::post('/post-dash-note', 'AdminController@postdashnote')->name('postdashnote');
 
     //Plans
 

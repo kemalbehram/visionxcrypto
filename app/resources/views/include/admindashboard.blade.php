@@ -11,18 +11,25 @@
 
 </div></li><!-- .topbar-nav-item --></ul><!-- .topbar-nav --></div></div><!-- .container --></div><!-- .topbar --><div class="navbar"><div class="container"><div class="navbar-innr"><ul class="navbar-menu"><li><a href="{{route('admin.dashboard')}}"><em class="text-primary ti ti-dashboard"></em>&nbsp;  Dashboard</a></li>
 
+
+@if(Auth::guard('admin')->user()->role == 1 OR Auth::guard('admin')->user()->role == 0 )
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-shopping-cart"></em>&nbsp; Digital Assets</a><ul class="navbar-dropdown"><li class=" "><a class=" " href="{{route('buy-currency')}}">Processed Purchase</a></li><li class=" "><a class=" " href="{{route('pendingbuy-currency')}}">Pending Purchase</a></li><li class=" "><a class=" " href="{{route('declinedbuy-currency')}}">Declined Purchase</a></li>
 <hr>
 <li class=" "><a class=" " href="{{route('sell-currency')}}">Processed Sales </a></li><li class=" "><a class=" " href="{{route('pendingsell-currency')}}">Pending Sales</a></li><li class=" "><a class=" " href="{{route('declinedsell-currency')}}">Declined Sales</a></li>
 
 </ul></li>
+@endif
 
  
 
+@if(Auth::guard('admin')->user()->role == 1 OR Auth::guard('admin')->user()->role == 0 )
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-server"></em>&nbsp; Products</a><ul class="navbar-dropdown"><li class=" "><a class=" " href="{{route('cabletvs')}}">Cable TV </a></li><li class=" "><a class=" " href="{{route('powerpaid')}}">Electricity Bills</a></li><li class=" "><a class=" " href="{{route('internetsub')}}">Internet Subscriptions</a></li>
 <li class=" "><a class=" " href="{{route('airtimerecharge')}}">Airtime Recharge</a></li>
 
 </ul></li>
+@endif
+
+@if(Auth::guard('admin')->user()->role == 1 OR Auth::guard('admin')->user()->role == 0 )
 
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-credit-card"></em>&nbsp; Finance</a><ul class="navbar-dropdown">
 
@@ -30,16 +37,24 @@
 <li><a href="{{route('transfer.log')}}">User To User Transfer </a></li>
 <li><a href="{{route('banktransfers')}}">Other Banks Transfer </a></li>
 </ul></li>
+@endif
 
 
+<li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-gift"></em>&nbsp; Plan</a><ul class="navbar-dropdown">
+    
+@if(Auth::guard('admin')->user()->role == 0 OR Auth::guard('admin')->user()->role == 0 )
+    <li class=" "><a class=" " href="{{route('plan-setting')}}">Investment Plans </a></li><li class=" "><a class=" " href="{{ route('time-setting') }}">Investment Timer</a></li>
+    @endif
 
-<li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-gift"></em>&nbsp; Plan</a><ul class="navbar-dropdown"><li class=" "><a class=" " href="{{route('plan-setting')}}">Investment Plans </a></li><li class=" "><a class=" " href="{{ route('time-setting') }}">Investment Timer</a></li>
+@if(Auth::guard('admin')->user()->role == 1 OR Auth::guard('admin')->user()->role == 0 )
 <li class=" "><a class=" " href="{{route('userslan')}}">Users' Investment </a></li>
 <li class=" "><a class=" " href="{{route('pendingplan')}}">Pending Investment </a></li>
+@endif
 </ul></li>
 
 
 
+@if(Auth::guard('admin')->user()->role == 1 OR Auth::guard('admin')->user()->role == 0 )
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-lock"></em>&nbsp; VX Vault</a><ul class="navbar-dropdown">
     <li class=" "><a class=" " href="{{route('activevault')}}">Locked Vaults </a></li>
     <li class=" "><a class=" " href="{{ route('closedvault') }}">Withdrawn Vaults</a></li>
@@ -49,20 +64,37 @@
 <li class=" "><a class=" " href="{{route('declinedwithdraw')}}">Declined Withdrawal</a></li>
 </ul></li>
 
+@endif
 
+
+
+@if(Auth::guard('admin')->user()->role == 0 OR Auth::guard('admin')->user()->role == 0 )
+<li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-shield"></em>&nbsp; Sub-admin</a><ul class="navbar-dropdown"><li class=" "><a class=" " href="{{route('createadmin')}}">Create Admin </a></li><li class=" "><a class=" " href="{{route('manageadmin')}}">Manage Subadmins</a></li>
+
+</ul></li>
+@endif
+
+
+
+@if(Auth::guard('admin')->user()->role == 2 OR Auth::guard('admin')->user()->role == 0 )
 
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-user"></em>&nbsp; Users</a><ul class="navbar-dropdown"><li class=" "><a class=" " href="{{route('users')}}">Active Users </a></li><li class=" "><a class=" " href="{{route('user.ban')}}">Inactive Users</a></li>
 
 </ul></li>
+@endif
 
 
+@if(Auth::guard('admin')->user()->role == 3 OR Auth::guard('admin')->user()->role == 0 )
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-comments"></em>&nbsp;  Message</a><ul class="navbar-dropdown"></li>
  <li class=" "><a class="" href="{{route('user.notification')}}">Create News</a></li>
+ <li class=" "><a class="" href="{{route('dashnote')}}">Create Notification</a></li>
  <li class=" "><a class="" href="{{route('user.tickets')}}">Customers' Request</a></li>
  <li><a href="{{route('admin.testi')}}">Customers' Testimonial</a></li>
 </ul></li>
+@endif
 
 
+@if(Auth::guard('admin')->user()->role == 0 OR Auth::guard('admin')->user()->role == 0 )
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-settings"></em>&nbsp;  Settings</a><ul class="navbar-dropdown"></li>
  <li class=" "><a class="" href="{{route('admin.GenSetting')}}">System Settings</a></li>
 <li class=" "><a class="" href="{{route('currency.index')}}">System Currencies</a></li>
@@ -79,13 +111,17 @@
 
 <li class=" "><a class="" href="{{route('currency.index')}}">System Currencies</a></li>
 </ul></li>
-
+@endif
 
 @php
 $count = \App\Verification::whereStatus(0)->count();
 @endphp
+
+@if(Auth::guard('admin')->user()->role == 2 OR Auth::guard('admin')->user()->role == 0 )
+
  </ul></li></ul><ul class="navbar-btns"><li><a href="{{route('admin.kyc')}}" class="btn btn-sm btn-outline btn-secondary"><em class="text-primary ti ti-id-badge"></em><span>KYC @if($count > 0)
  ({{$count}} New)
+ @endif
  @endif
  </span></a></li>
 </ul>
