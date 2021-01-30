@@ -224,7 +224,7 @@ class ProductsController extends Controller
 
         $basic = GeneralSettings::first();
 
-        return response()->json(['status' => 1, 'message' => 'Coin Rates fetched successfully', 'btc'=>$btcrate*1, 'ngn'=>$basic->rate*1]);
+        return response()->json(['status' => 1, 'message' => 'Coin Rates fetched successfully', 'btc'=>number_format($btcrate*1,10)*1, 'ngn'=>number_format($basic->rate*1,2)*1]);
 
     }
 
