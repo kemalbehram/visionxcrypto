@@ -105,6 +105,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('addcoinlock', [TransactionController::class, 'addcoinlock'])->name('addcoinlock');
     Route::post('coinlockwithdraw', [TransactionController::class, 'coinlockwithdraw'])->name('coinlockwithdraw');
     Route::post('relockcoin', [TransactionController::class, 'relockcoin'])->name('relockcoin');
+    Route::post('coinlock_callback', [VerificationController::class, 'coinlock_callback'])->name('coinlock_callback');
 
 
 

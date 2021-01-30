@@ -184,9 +184,9 @@ class ProductsController extends Controller
 
     public function coinlocks()
     {
-        $data['vault'] = Vxvault::orderBy('id','desc')->get();
-        $data['withdraw'] = Vxvaultwithdraw::orderBy('id','desc')->paginate(8);
-        return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'data'=>$data]);
+        $vault = Vxvault::orderBy('id','desc')->get();
+        $history = Vxvaultwithdraw::orderBy('id','desc')->get();
+        return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'vault'=>$vault, 'history'=>$history]);
     }
 
 }

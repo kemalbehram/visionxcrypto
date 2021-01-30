@@ -1265,7 +1265,7 @@ class TransactionController extends Controller
         $input = $request->all();
         $rules = array(
             'wallet' => 'required',
-            'trx' => 'required',
+            'code' => 'required',
         );
 
         $validator = Validator::make($input, $rules);
@@ -1275,7 +1275,7 @@ class TransactionController extends Controller
         }
 
         $basic = GeneralSettings::first();
-        $data = Vxvault::where('status', 1)->where('code', $request->trx)->first();
+        $data = Vxvault::where('status', 1)->where('code', $request->code)->first();
         $auth = Auth::user();
 
         if(!$data){
@@ -1360,7 +1360,7 @@ class TransactionController extends Controller
     {
         $input = $request->all();
         $rules = array(
-            'trx' => 'required',
+            'code' => 'required',
             'duration' => 'required',
         );
 
@@ -1370,7 +1370,7 @@ class TransactionController extends Controller
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
 
-        $data = Vxvault::whereUser_id(Auth()->user()->id)->whereCode($request->trx)->orderBy('id','desc')->first();
+        $data = Vxvault::whereUser_id(Auth()->user()->id)->whereCode($request->code)->orderBy('id','desc')->first();
 
         $now = Carbon::now();
         $expire = Carbon::parse($now)->addMonth($request->months);
