@@ -185,7 +185,7 @@ class ProductsController extends Controller
 
     public function coinlocks()
     {
-        $vaul = Vxvault::whereUser_id(Auth::id())->whereStatus(1)->where('paid','=',null)->get();
+        $vaul = Vxvault::whereUser_id(Auth::id())->whereStatus(1)->where('paid','=',null)->limit(3)->get();
         foreach ($vaul as $v ){
             $t=Carbon::parse($v->expire)->diffInSeconds(Carbon::now(),  false);
             if($t>=15){
@@ -224,7 +224,7 @@ class ProductsController extends Controller
 
         $basic = GeneralSettings::first();
 
-        return response()->json(['status' => 1, 'message' => 'Coin Rates fetched successfully', 'btc'=>$btcrate, 'ngn'=>$basic->rate]);
+        return response()->json(['status' => 1, 'message' => 'Coin Rates fetched successfully', 'btc'=>$btcrate*1, 'ngn'=>$basic->rate*1]);
 
     }
 
