@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Transaction;
 use App\Vxvault;
 use App\Vxvaultwithdraw;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
@@ -184,9 +185,19 @@ class ProductsController extends Controller
 
     public function coinlocks()
     {
-        $vault = Vxvault::orderBy('id','desc')->get();
+        $vaul = Vxvault::whereUser_id(Auth::id())->whereStatus(1)->where('paid','=',null)->get();
+        foreach ($vaul as $v ){
+            $t=Carbon::parse($v->expire)->diffInSeconds(Carbon::now(),  false);
+            if($t>=15){
+                $expire=true;
+            }else{
+                $expire=false;
+            }
+            $v['estatus']=$expire;
+        }
+
         $history = Vxvaultwithdraw::join('vxvaults', 'vxvaults.invoiceid','vxvaultwithdraws.invoiceid')->select('vxvaultwithdraws.*', 'vxvaults.usd' )->orderBy('id','desc')->get();
-        return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'vault'=>$vault, 'history'=>$history]);
+        return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'vault'=>$vaul, 'history'=>$history]);
     }
 
     public function coinrate(){

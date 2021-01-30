@@ -1361,7 +1361,6 @@ class TransactionController extends Controller
         $input = $request->all();
         $rules = array(
             'code' => 'required',
-            'duration' => 'required',
         );
 
         $validator = Validator::make($input, $rules);
@@ -1373,7 +1372,7 @@ class TransactionController extends Controller
         $data = Vxvault::whereUser_id(Auth()->user()->id)->whereCode($request->code)->orderBy('id','desc')->first();
 
         $now = Carbon::now();
-        $expire = Carbon::parse($now)->addMonth($request->months);
+        $expire = Carbon::parse($now)->addMonth(1);
         $data->expire = $expire;
         $data->save();
 
