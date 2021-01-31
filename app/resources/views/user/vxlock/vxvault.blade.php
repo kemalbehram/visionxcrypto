@@ -296,21 +296,21 @@
 				    @elseif(Auth::user()->bvn_verify < 1)
 				    					 	      
 <div class="alert alert-danger">
-  <strong>Hello! </strong> It appears that you have not enrolled for BVN on our platform. Please proceed to verify your BVN and come back here to create your new vault
+  <strong>Hello! </strong> It appears that you have not verified your BVN on our platform. Please proceed to verify your BVN and come back here to create your new vault
 </div>
 				    
 				    @elseif(Auth::user()->verified < 2)
 				    
 				    					 	      
 <div class="alert alert-danger">
-  <strong>Hello! </strong> It appears that you have not verified you KYC status. Please proceed to verify your KYC and come back here to create your new vault
+  <strong>Hello! </strong> It appears that you have not verified your KYC status. Please proceed to verify your KYC and come back here to create your new vault
 </div>
 				    
 				    @elseif(Auth::user()->bankyes < 1)
 				    
 				    					 	      
 <div class="alert alert-danger">
-  <strong>Hello! </strong> It appears that you have not verified you Bank Account Details. Please proceed to verify your Bank Account Number and come back here to create your new vault
+  <strong>Hello! </strong> It appears that you have not verified your Bank Account Details. Please proceed to verify your Bank Account Number and come back here to create your new vault
 </div>
 				    
 				    @else
