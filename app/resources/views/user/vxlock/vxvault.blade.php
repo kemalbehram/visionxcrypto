@@ -176,7 +176,7 @@
 										<label class="main-content-label mb-2 pt-1 text-warning">VX VAULT</label>
 										</div><br>
 									<div class="card-body pt-0">
-										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/img/pngs/loadicon.gif">
+										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/noresult.png">
 										<div class="card-header border-bottom-0 pb-1 text-center font-weight-bold text-warning">
 										<p>You have no bitcoin in your vault at the moment. Please click on the 'create new lock' button to start</p>
 										</div>
