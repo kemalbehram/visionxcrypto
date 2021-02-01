@@ -199,7 +199,7 @@
 										<label class="main-content-label mb-2 pt-1 text-warning">Built For Convenience</label>
 										</div><br>
 									<div class="card-body pt-0">
-										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/img/pngs/coinlockgif.gif">
+										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/coinlockgif.gif">
 										<div class="card-header border-bottom-0 pb-1 text-center font-weight-bold text-warning">
 										<p>Zero% charge on deposit | processing | withdrawal.</p>
 										</div>
