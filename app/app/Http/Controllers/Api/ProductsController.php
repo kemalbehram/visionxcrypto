@@ -197,6 +197,10 @@ class ProductsController extends Controller
         }
 
         $history = Vxvaultwithdraw::join('vxvaults', 'vxvaults.invoiceid','vxvaultwithdraws.invoiceid')->select('vxvaultwithdraws.*', 'vxvaults.usd' )->orderBy('id','desc')->get();
+
+        if($vaul->isEmpty){
+            return response()->json(['status' => 0, 'message' => 'Vault does not exist']);
+        }
         return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'vault'=>$vaul, 'history'=>$history]);
     }
 

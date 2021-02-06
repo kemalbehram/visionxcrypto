@@ -111,7 +111,7 @@ class AuthenticateController extends Controller
 
 
             $verification_code = strtoupper(Str::random(6));
-            $sms_code = strtoupper(Str::random(6));
+            $sms_code = substr(rand(),0,6);
             $email_time = Carbon::parse()->addMinutes(5);
             $phone_time = Carbon::parse()->addMinutes(5);
 
@@ -157,7 +157,7 @@ class AuthenticateController extends Controller
             }
 
             if ($basic->sms_verification == 1) {
-                $sms_code = strtoupper(Str::random(6));
+                $sms_code = substr(rand(),0,6);
                 $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
 
 
@@ -352,7 +352,7 @@ class AuthenticateController extends Controller
 
             $basic = GeneralSettings::first();
             if ($basic->sms_verification == 1) {
-                $sms_code = strtoupper(Str::random(6));
+                $sms_code = substr(rand(),0,6);
                 $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
 
 
@@ -408,7 +408,7 @@ class AuthenticateController extends Controller
 
             $basic = GeneralSettings::first();
             if ($basic->sms_verification == 1) {
-                $sms_code = strtoupper(Str::random(6));
+                $sms_code = substr(rand(),0,6);
                 $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
 
 
