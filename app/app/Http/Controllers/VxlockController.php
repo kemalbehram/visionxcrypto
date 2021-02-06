@@ -95,7 +95,25 @@ class VxlockController extends Controller
         
         $count =  Vxvault::whereUser_id(Auth()->user()->id)->whereStatus(1)->where('paid', '!=', 1)->count();
         if($count > 2){
-             return back()->with("danger", "Sorry, you cant lock more than 3 assets at a time in your VX vault. Please wait till one or more of your assets expures");
+             return back()->with("danger", "Sorry, you cant lock more than 3 assets at a time in your VX vault. Please wait till one or more of your assets expires");
+        }
+        
+        $user = Auth::user();
+        
+        if($user-> bvn_verify < 1){
+             return back()->with("danger", "Please verify you BVN before creating a new vault");
+        }
+        if($user-> bankyes < 1){
+             return back()->with("danger", "Please verify you Bank Account Details before creating a new vault");
+        }
+        if($user-> verified < 1){
+             return back()->with("danger", "Please verify you KYC before creating a new vault");
+        }
+        if($user-> phone_verify < 1){
+             return back()->with("danger", "Please verify you phone number before creating a new vault");
+        }
+        if($user-> email_verify < 1){
+             return back()->with("danger", "Please verify you email address before creating a new vault");
         }
         $data['page_title'] = "VX Vault"; 
         $basic = GeneralSettings::first(); 

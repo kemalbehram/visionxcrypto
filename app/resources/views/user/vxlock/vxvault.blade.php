@@ -176,7 +176,7 @@
 										<label class="main-content-label mb-2 pt-1 text-warning">VX VAULT</label>
 										</div><br>
 									<div class="card-body pt-0">
-										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/img/pngs/loadicon.gif">
+										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/noresult.png">
 										<div class="card-header border-bottom-0 pb-1 text-center font-weight-bold text-warning">
 										<p>You have no bitcoin in your vault at the moment. Please click on the 'create new lock' button to start</p>
 										</div>
@@ -199,7 +199,7 @@
 										<label class="main-content-label mb-2 pt-1 text-warning">Built For Convenience</label>
 										</div><br>
 									<div class="card-body pt-0">
-										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/img/pngs/bankvault.png">
+										<img alt="img" class="d-block w-100 op-10" src="{{url('/')}}/assets/assets/img/pngs/coinlockgif.gif">
 										<div class="card-header border-bottom-0 pb-1 text-center font-weight-bold text-warning">
 										<p>Zero% charge on deposit | processing | withdrawal.</p>
 										</div>
@@ -269,13 +269,54 @@
 			
 			
 <!-- New VX Modal --> 
-			<form  action="{{route('lockfund')}}" method="post">
-			{{ csrf_field() }}
+			
 
 			<div class="modal" id="addnewlock">
 				<div class="modal-dialog" role="document">
+				    
+				  
+				    
 					<div class="modal-content modal-content-demo">
 						 	<div class="modal-body">
+						 	    
+						 	      @if(Auth::user()->phone_verify < 1)
+						 	      
+						 	      
+<div class="alert alert-danger">
+  <strong>Hello! </strong> It appears that you have not verified your Phone Number. Please proceed to verify your phone number and come back here to create your new vault
+</div>
+				    
+				    @elseif(Auth::user()->email_verify < 1)
+				    
+				    					 	      
+<div class="alert alert-danger">
+  <strong>Hello! </strong> It appears that you have not verified your email address. Please proceed to verify your email and come back here to create your new vault
+</div>
+				    
+				    @elseif(Auth::user()->bvn_verify < 1)
+				    					 	      
+<div class="alert alert-danger">
+  <strong>Hello! </strong> It appears that you have not verified your BVN on our platform. Please proceed to verify your BVN and come back here to create your new vault
+</div>
+				    
+				    @elseif(Auth::user()->verified < 2)
+				    
+				    					 	      
+<div class="alert alert-danger">
+  <strong>Hello! </strong> It appears that you have not verified your KYC status. Please proceed to verify your KYC and come back here to create your new vault
+</div>
+				    
+				    @elseif(Auth::user()->bankyes < 1)
+				    
+				    					 	      
+<div class="alert alert-danger">
+  <strong>Hello! </strong> It appears that you have not verified your Bank Account Details. Please proceed to verify your Bank Account Number and come back here to create your new vault
+</div>
+				    
+				    @else
+				    
+				    <form  action="{{route('lockfund')}}" method="post">
+			{{ csrf_field() }}
 							<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
 									<div class="header-text mb-0">
 										<div class="container-fluid p-5">
@@ -318,10 +359,13 @@
 									</div><!-- /header-text -->
 								</div>
 
+						</form>
+						
+						@endif
 						</div>
 					</div>
 				</div>
 			</div>
-			</form>
+		
 			<!-- End VX modal -->
 @stop
