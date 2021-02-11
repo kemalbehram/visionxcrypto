@@ -80,42 +80,22 @@ class ValidateController extends Controller
             'meternumber.required' => 'Please enter a meter number',
         ]);
 
-        $cp = Power::where([['name', '=', $request->name], ['type', '=', $request->type]])->first();
+        $cp = Power::where([['name', '=', $request->name]])->first();
 
         $basic = GeneralSettings::first();
 
-        $curl = curl_init();
+        $baseUrl = "https://www.nellobytesystems.com";
+        $endpoint = "/APIVerifyElectricityV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&ElectricCompany=".$cp->code."&MeterNo=".$request->meternumber;
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerverification",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "{\n    \"billercode\":\"$cp->billercode\",\n    \"billercustomerid\":\"$request->meternumber\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: " . $basic->rubies_secretkey
-            ),
-        ));
+        $url=$baseUrl.$endpoint;
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $rep=json_decode($result, true);
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $result = json_decode($response, true);
-
-        if (isset($result['message'])) {
+        if ($rep['customer_name']=="INVALID_METERNO") {
             return response()->json(['status' => 0, 'message' => 'it seems you have entered a wrong meter number or you have selected a wrong meter. Please check and try again']);
-        }
-
-        if (isset($result['responsecode'])) {
-            if ($result['responsecode'] == 00) {
-                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $result['customername'], 'code' => $cp->billercode, 'charges'=>$basic->electricityfee*1]);
-            } else {
-                return response()->json(['status' => 0, 'message' => 'We cannot process your request at the moment, please try again later']);
-            }
+        }else{
+            return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $rep['customer_name'], 'code' => $cp->code, 'charges'=>$basic->electricityfee*1]);
         }
 
     }

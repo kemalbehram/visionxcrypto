@@ -56,28 +56,27 @@ class TransactionController extends Controller
         $trx = strtoupper(str_random(20));
         $basic = GeneralSettings::first();
 
+        if(strtolower($request->network)=="mtn"){
+            $net=01;
+        }elseif(strtolower($request->network)=="glo"){
+            $net=02;
+        }elseif(strtolower($request->network)=="9mobile"){
+            $net=03;
+        }elseif(strtolower($request->network)=="airtel"){
+            $net=04;
+        }else{
+            $net=0;
+        }
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/ctairtimepurchase",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"mobilenumber\": \"$request->number\",\n    \"telco\": \"$request->network\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey
-            ),
-        ));
+        $baseUrl = "https://www.nellobytesystems.com";
+        $endpoint = "/APIAirtimeV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&MobileNetwork=".$net."&MobileNumber=".$request->number."&Amount=".$request->amount."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
 
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $rep=json_decode($response, true);
+        $url=$baseUrl.$endpoint;
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $rep=json_decode($result, true);
 
-        if($rep['responsecode'] != 00)
+        if($rep['status'] != "ORDER_RECEIVED")
         {
             return response()->json(['status' => 0, 'message' => 'Error while buying Airtime']);
         }
@@ -86,7 +85,7 @@ class TransactionController extends Controller
         $product['gateway'] = $request->network . " airtime";
         $product['account_number'] = $request->number;
         $product['type'] = 1;
-        $product['remark'] = $rep['responsemessage'];
+        $product['remark'] = $rep['status'];
         $product['trx'] = $trx;
         $product['status'] = 1;
         $product['amount'] = $request->amount;
@@ -128,30 +127,27 @@ class TransactionController extends Controller
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
-        $curl = curl_init();
+        if(strtolower($request->network)=="mtn"){
+            $net=01;
+        }elseif(strtolower($request->network)=="glo"){
+            $net=02;
+        }elseif(strtolower($request->network)=="9mobile"){
+            $net=03;
+        }elseif(strtolower($request->network)=="airtel"){
+            $net=04;
+        }else{
+            $net=0;
+        }
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/ctmobiledatapurchase",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"productcode\": \"$request->plan\",\n    \"mobilenumber\": \"$request->number\",\n    \"telco\": \"$request->network\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey
+        $baseUrl = "https://www.nellobytesystems.com";
+        $endpoint = "/APIDatabundleV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&MobileNetwork=".$net."&MobileNumber=".$request->number."&DataPlan=".$request->plan."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
 
-            ),
-        ));
+        $url=$baseUrl.$endpoint;
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $rep=json_decode($result, true);
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $rep=json_decode($response, true);
-
-        if($rep['responsecode'] != 00)
+        if($rep['status'] != "ORDER_RECEIVED")
         {
             return response()->json(['status' => 0, 'message' => 'Server error, please try again later or contact admin if error persist']);
         }
@@ -160,7 +156,7 @@ class TransactionController extends Controller
             $product['account_number'] = $request->number;
             $product['method'] = $request->name;
             $product['type'] = 2;
-            $product['remark'] = $rep['responsemessage'];
+            $product['remark'] = $rep['status'];
             $product['trx'] = $trx;
             $product['status'] = 1;
             $product['amount'] = 100;
@@ -347,45 +343,35 @@ class TransactionController extends Controller
 
         $basic = GeneralSettings::first();
         $trx = strtoupper(str_random(6));
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerpurchase",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            //CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"billercustomerid\": \"$request->number\",\n    \"productcode\": \"$request->type\",\n    \"amount\": \"$request->amount\n    \"mobilenumber\": \"$user->phone\",\n    \"name\": \"$request->name\",\n    \"billercode\": \"$request->meter\"\n}",
-            //CURLOPT_HTTPHEADER => array(
-            CURLOPT_POSTFIELDS => "{\n    \"reference\": \"$trx\",\n    \"billercustomerid\": \"$request->meternumber\",\n    \"productcode\": \"$request->type\",\n    \"amount\": \"$request->amount\",\n    \"mobilenumber\": \"08031975397\",\n    \"name\": \"$request->name\",\n    \"billercode\": \"$request->code\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: " . $basic->rubies_secretkey
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $result = json_decode($response, true);
-
-        if (isset($result['message'])) {
-            return response()->json(['status' => 0, 'message' => $result['message']]);
+        if(strtolower($request->type)=="prepaid"){
+            $type=01;
+        }else{
+            $type=02;
         }
 
 
-        if ($result['responsecode'] == 00) {
+        https://www.nellobytesystems.com/APIElectricityV1.asp?UserID=your_userid&APIKey=your_apikey&ElectricCompany=electric_company_code&MeterType=meter_type&MeterNo=meter_no&Amount=_amount&RequestID=request_id&CallBackURL=callback_url
+
+        $baseUrl = "https://www.nellobytesystems.com";
+        $endpoint = "/APIElectricityV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&ElectricCompany=".$request->code."&MeterNo=".$request->meternumber."&MeterType=".$type."&Amount=".$request->amount."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
+
+        $url=$baseUrl.$endpoint;
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $rep=json_decode($result, true);
+
+
+        if($rep['status'] == "ORDER_RECEIVED"){
             $product['user_id'] = Auth::id();
             $product['gateway'] = $request->meter;
             $product['method'] = $request->type;
             $product['details'] = $request->name . " (Meter Number: " . $request->meternumber . ")";
             $product['account_number'] = $request->meternumber;
-            $product['ref'] = $result['cbareference'];
-            $product['pin'] = $result['pin']['pinCode'];
-            $product['serial'] = $result['pin']['serialNumber'];
-            $product['unit'] = $result['pin']['units'];
+            $product['ref'] = $result['orderid'];
+            $product['pin'] = $result['metertoken'];
+            $product['serial'] = $result['metertoken'];
+            $product['unit'] = 1;
             $product['type'] = 4; //check this if it is correct by you
             $product['remark'] = "Meter payment was successful";
             $product['trx'] = $trx;

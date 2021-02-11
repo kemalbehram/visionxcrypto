@@ -18,44 +18,28 @@ class ProductsController extends Controller
         $user = Auth::user();
 
         $basic = GeneralSettings::first();
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/ctmobiledataproduct",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n    \"request\": \"dataproduct\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey,
-                ": "
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $rep=json_decode($response, true);
+        $url="https://www.nellobytesystems.com/APIDatabundlePlansV1.asp";
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $reps=json_decode($result, true);
+        $rep=$reps['MOBILE_NETWORK'];
 
 
         if($network=="MTN") {
-            $product=$rep['MTN'];
+            $product=$rep['MTN'][0]['PRODUCT'];
         }
 
         if($network=="9MOBILE") {
-            $product=$rep['9MOBILE'];
+            $product=$rep['9mobile'][0]['PRODUCT'];
         }
 
         if($network=="AIRTEL") {
-            $product=$rep['AIRTEL'];
+            $product=$rep['Airtel'][0]['PRODUCT'];
         }
 
         if($network=="GLO") {
-            $product=$rep['GLO'];
+            $product=$rep['Glo'][0]['PRODUCT'];
         }
 
         return response()->json(['status' => 1, 'message' => 'Internet data plans fetched successfully', 'data'=>$product]);
@@ -198,7 +182,7 @@ class ProductsController extends Controller
 
         $history = Vxvaultwithdraw::join('vxvaults', 'vxvaults.invoiceid','vxvaultwithdraws.invoiceid')->select('vxvaultwithdraws.*', 'vxvaults.usd' )->orderBy('id','desc')->get();
 
-        if($vaul->isEmpty){
+        if($vaul->isEmpty()){
             return response()->json(['status' => 0, 'message' => 'Vault does not exist']);
         }
         return response()->json(['status' => 1, 'message' => 'Coinlocks fetched successfully', 'vault'=>$vaul, 'history'=>$history]);

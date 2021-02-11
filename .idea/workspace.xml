@@ -21,8 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ValidateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ValidateController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,7 +264,12 @@
       <workItem from="1612027654313" duration="31000" />
       <workItem from="1612132002014" duration="817000" />
       <workItem from="1612361507701" duration="32000" />
-      <workItem from="1612570241334" duration="2116000" />
+      <workItem from="1612570241334" duration="2961000" />
+      <workItem from="1612574156539" duration="29000" />
+      <workItem from="1612772283758" duration="21000" />
+      <workItem from="1612832003460" duration="131000" />
+      <workItem from="1613067821789" duration="402000" />
+      <workItem from="1613068852862" duration="6187000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -418,7 +424,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php</url>
-          <line>483</line>
+          <line>474</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\Api\TransactionController" />
             <option name="methodName" value="otherbanktransfer" />
