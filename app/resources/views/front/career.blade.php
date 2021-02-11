@@ -61,7 +61,7 @@
               </div>
               <div class="col-lg-6 ml-auto order-1 order-lg-1">
                 <div class="illustration__ch">
-                  <img class="img-fluid" src="../../front/img/charity/ch1.png">
+                  <img class="img-fluid" src="../../front/img/map1.png">
                 </div>
               </div>
             </div>
