@@ -92,7 +92,7 @@ class ValidateController extends Controller
         $result = file_get_contents($url);
         $rep=json_decode($result, true);
 
-        if ($rep['customer_name']=="INVALID_METERNO") {
+        if ($rep['customer_name']=="INVALID_METERNO" || $rep['customer_name']=="Service unavailable. Please try again later.") {
             return response()->json(['status' => 0, 'message' => 'it seems you have entered a wrong meter number or you have selected a wrong meter. Please check and try again']);
         }else{
             return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $rep['customer_name'], 'code' => $cp->code, 'charges'=>$basic->electricityfee*1]);

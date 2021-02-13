@@ -57,13 +57,13 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
 
         if(strtolower($request->network)=="mtn"){
-            $net=01;
+            $net='01';
         }elseif(strtolower($request->network)=="glo"){
-            $net=02;
+            $net='02';
         }elseif(strtolower($request->network)=="9mobile"){
-            $net=03;
+            $net='03';
         }elseif(strtolower($request->network)=="airtel"){
-            $net=04;
+            $net='04';
         }else{
             $net=0;
         }
@@ -128,13 +128,13 @@ class TransactionController extends Controller
         }
 
         if(strtolower($request->network)=="mtn"){
-            $net=01;
+            $net='01';
         }elseif(strtolower($request->network)=="glo"){
-            $net=02;
+            $net='02';
         }elseif(strtolower($request->network)=="9mobile"){
-            $net=03;
+            $net='03';
         }elseif(strtolower($request->network)=="airtel"){
-            $net=04;
+            $net='04';
         }else{
             $net=0;
         }
@@ -384,7 +384,7 @@ class TransactionController extends Controller
             $user->balance = $user->balance - $total;
             $user->save();
 
-            $this->sendnotification(Auth::id(), "Meter Payment", "Meter payment was successful on ". $request->meternumber. " with token: ".$product['pin']);
+            $this->sendnotification($user, "Meter Payment", "Meter payment was successful on ". $request->meternumber. " with token: ".$product['pin']);
 
             return response()->json(['status' => 1, 'message' => $product['remark'], 'pin'=>$product['pin']]);
 
@@ -517,7 +517,7 @@ class TransactionController extends Controller
             $user->balance = $user->balance - $total;
             $user->save();
 
-            $this->sendnotification($user->id,"Payment Sent","Your payment to ". $name." will be sent soon." );
+            $this->sendnotification($user,"Payment Sent","Your payment to ". $name." will be sent soon." );
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
         }
@@ -583,9 +583,9 @@ class TransactionController extends Controller
             $r->balance = $r->balance + $total;
             $r->save();
 
-            $this->sendnotification($user->id,"Payment Sent","Your payment has been sent successfully to " . $r->fname . " ". $r->lname );
+            $this->sendnotification($user,"Payment Sent","Your payment has been sent successfully to " . $r->fname . " ". $r->lname );
 
-            $this->sendnotification($r->id,"Payment Received","A payment of " . $amount ." has been received from " . $user->fname . " ". $user->lname );
+            $this->sendnotification($r,"Payment Received","A payment of " . $amount ." has been received from " . $user->fname . " ". $user->lname );
 
 
             return response()->json(['status' => 1, 'message' => 'Fund transfer was successful. Please wait while we process your transfer']);
@@ -1067,9 +1067,6 @@ class TransactionController extends Controller
         $topay = $usd + $charge;
         $get = $request->usd/$currency->price;
 
-        if ($topay > $user->balance ) {
-            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
-        }
 
         $buy['currency_id'] = $currency->id;
         $buy['amount'] =  $request->usd;
@@ -1329,13 +1326,7 @@ class TransactionController extends Controller
 
             $dat = Vxvaultwithdraw::create($withdraw)->code;
 
-            Message::create([
-                'user_id' =>  Auth::id(),
-                'title' => 'VX Vault Withdrawal Successful',
-                'details' => 'Your bitcoin lock with transaction number ' . $data->code . '  has been successfully withdrawn from your vault. Please wait while we process your withdrawal, your fund will be available to you in less than 24hours Thank you for choosing ' . $basic->sitename . '',
-                'admin' => 1,
-                'status' => 0
-            ]);
+            $this->sendnotification($user,"VX Vault Withdrawal Successful",'Your Bitcoin Lock with transaction number ' . $data->code . '  was successfully withdrawn.' );
 
             return response()->json(['status' => 1, 'message' => 'Your Bitcoin Lock with transaction number ' . $data->code . '  was successfully withdrawn.']);
         }
@@ -1365,14 +1356,34 @@ class TransactionController extends Controller
         return response()->json(['status' => 1, 'message' => 'You have successfully relocked your vault with Vault Number '.$data->code.'. Your fund will be available for withdrawal in the next '.$request->months.' months']);
     }
 
-    public function sendnotification($id, $title, $message){
+    public function sendnotification($user, $title, $message){
         Message::create([
-            'user_id' => $id,
+            'user_id' => $user->id,
             'title' => $title,
             'details' =>$message,
             'admin' => 1,
             'status' =>  0
         ]);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n\"to\": \"/topics/". $user->phone."\",\n\"data\": {\n\t\"extra_information\": \"Mega Cheap Data\"\n},\n\"notification\":{\n\t\"title\": \"". $title."\",\n\t\"text\":\"". $message."\"\n\t}\n}\n",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: key=".env('PUSH_NOTIFICATION_KEY'),
+                "Content-Type: application/json",
+                "Content-Type: text/plain"
+            ),
+        ));
+        $uresponse = curl_exec($curl);
+
     }
 
 
