@@ -345,13 +345,10 @@ class TransactionController extends Controller
         $trx = strtoupper(str_random(6));
 
         if(strtolower($request->type)=="prepaid"){
-            $type=01;
+            $type='01';
         }else{
-            $type=02;
+            $type='02';
         }
-
-
-        https://www.nellobytesystems.com/APIElectricityV1.asp?UserID=your_userid&APIKey=your_apikey&ElectricCompany=electric_company_code&MeterType=meter_type&MeterNo=meter_no&Amount=_amount&RequestID=request_id&CallBackURL=callback_url
 
         $baseUrl = "https://www.nellobytesystems.com";
         $endpoint = "/APIElectricityV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&ElectricCompany=".$request->code."&MeterNo=".$request->meternumber."&MeterType=".$type."&Amount=".$request->amount."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
@@ -368,7 +365,7 @@ class TransactionController extends Controller
             $product['method'] = $request->type;
             $product['details'] = $request->name . " (Meter Number: " . $request->meternumber . ")";
             $product['account_number'] = $request->meternumber;
-            $product['ref'] = $result['orderid'];
+            $product['ref'] = $result['transactionid'];
             $product['pin'] = $result['metertoken'];
             $product['serial'] = $result['metertoken'];
             $product['unit'] = 1;
