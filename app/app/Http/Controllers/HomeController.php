@@ -169,7 +169,7 @@ class HomeController extends Controller
         if ($basic->maintain == 1) {
             return view('front.maintain', $data);
         }
-        
+
          $time = Carbon::parse(Carbon::now())->addMinutes(30);
          $user->login_time = $time;
          $user->save();
@@ -235,7 +235,7 @@ class HomeController extends Controller
             $user->phone_time = Carbon::now();
             $user->sms_code = $code;
             $user->save();
- 
+
             $baseUrl = "https://www.bulksmsnigeria.com/";
             $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=VISIONX&to=" . $user->phone . "&body=" . $code . "";
             $httpVerb = "GET";
@@ -356,17 +356,17 @@ class HomeController extends Controller
             $user->email_time = Carbon::now();
             $user->verification_code = $code;
             $user->save();
-            
+
              $data = array(
 
                 "name"=> $user->username,
                 "email"=> $user->email,
-                "body"=> "Your Verification Code is " . $code, 
-                "heading"=> "Verification Code", 
+                "body"=> "Your Verification Code is " . $code,
+                "heading"=> "Verification Code",
                 );
-   
-   
-      
+
+
+
       Mail::send('mail', $data, function($message) {
       $user = Auth::user();
     $message->to($user->email, $user->username)->subject('Verification Code');
@@ -477,13 +477,13 @@ class HomeController extends Controller
             return back()->with('danger', $e->getMessage());
         }
     }
-    
-    
-    
+
+
+
 
     public function unlockme(Request $request)
     {
-        $this->validate($request, [ 
+        $this->validate($request, [
             'password' => 'required'
         ]);
         try {
@@ -832,7 +832,7 @@ class HomeController extends Controller
     public function depositDataInsert(Request $request)
     {
         $this->validate($request, [
-            'amount' => 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:3000',
             'gateway' => 'required',
         ]);
         $basic = GeneralSettings::first();
@@ -855,7 +855,66 @@ class HomeController extends Controller
             return redirect()->route('user.deposit.preview');
 
 
-        } else {
+        }
+
+          if ($request->gateway == "bitcoin") {
+            $trx = str_random(15);
+            $usdamo = ($request->amount + 0) / $basic->rate;
+            $usdcharge = ($basic->depocharge + 0) / $basic->rate;
+            $usdconv = $usdamo + $usdcharge;
+            $usd = number_format($usdconv,2);
+            $akey=$basic->bitcoin_address;
+            $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $baseurl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'amount' => $usd, 'name' => $trx, 'currency' => 'USD', 'expire_time' => '15', 'suceess_url' => url("/noapi/sellcallback")),
+            ));
+
+            $response = curl_exec($curl);
+            $reply = json_decode($response, true);
+            curl_close($curl);
+            //return $reply;
+
+             if($reply['flag'] == 0){
+                return back()->with('danger',$reply['msg']);
+            }
+
+            if(!isset($reply['data']['address'])){
+                return back()->with('danger','Amount too low');
+            }
+
+
+            $address = $reply['data']['address'];
+            $invoiceid = $reply['data']['invoice_id'];
+            $btcvalue = $reply['data']['total_amount']['BTC'];
+
+            $depo['user_id'] = Auth::id();
+            $depo['gateway_id'] = 513;
+            $depo['amount'] = $request->amount;
+            $depo['code'] = $invoiceid;
+            $depo['image'] =  $address;
+            $depo['coin'] = $btcvalue;
+            $depo['charge'] = $basic->depocharge;
+            $depo['usd'] = round($usd, 2);
+            $depo['trx'] = $trx;
+            $depo['status'] = 0;
+            Deposit::create($depo);
+
+            Session::put('Track', $depo['trx']);
+
+            return redirect()->route('user.deposit.preview');
+
+
+        }
+        else {
             $gate = Gateway::findOrFail($request->gateway);
 
             if (isset($gate)) {
@@ -936,6 +995,79 @@ class HomeController extends Controller
         }
 
         return view('user.payment.preview', compact('data', 'rate', 'track', 'total', 'page_title'));
+    }
+
+
+
+    public function btcdepositcallback(Request $request, $id)
+    {
+
+        $basic = GeneralSettings::first();
+        $data = Deposit::where('status', 0)->where('trx', $request->trx)->where('code', $id)->first();
+        $auth = Auth::user();
+        $data->save();
+
+        $akey=$basic->bitcoin_address;
+        $baseurl = "https://coinremitter.com/api/v3/BTC/get-invoice";
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $id),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response, true);
+        curl_close($curl);
+        //return $response;
+
+        if (!isset($reply['data']['status_code'])) {
+            return back()->with("danger", "An error occur. Contact server admin");
+        }
+
+        $status = $reply['data']['status_code'];
+
+        if ($status == 0) {
+            return back()->with("danger", "We have not received your payment. Kindly Scan and make payment");
+        }
+
+         if ($status == 4) {
+         return redirect()->route('my-wallet')->with("danger", "Transation has expired. We didnt receive any BTC. Please try again later");
+
+        }
+
+
+        if ($data->status == 1) {
+            return redirect()->route('my-wallet')->with("danger", "Payment has been made already");
+        }
+
+
+        if ($status == 1 || $status == 3) {
+            $basic = GeneralSettings::first();
+            $data->status = 1;
+            $data->save();
+
+            $user = User::find($data->user_id);
+            $user->balance += $data->amount;
+            $user->save();
+
+            Message::create([
+                'user_id' => $data->user_id,
+                'title' => 'BTC Deposit Successful',
+                'details' => 'Your cryptocurrency deposit with transaction number ' . $data->trx . '  was successful. Your account has been credited as required, Thank you for choosing ' . $basic->sitename . '',
+                'admin' => 1,
+                'status' => 0
+            ]);
+
+            return redirect()->route('my-wallet')->with(['modal' => 'power', "success" => 'Your BTC Deposit with transaction number ' . $data->trx . '  was successful.']);
+        }
+
     }
 
 
@@ -1698,7 +1830,7 @@ class HomeController extends Controller
         $currency = Currency::where('id', $data->currency_id)->first();
         $page_title = "Sales Preview";
         $auth = Auth::user();
-        
+
         $getamount = Session::get('putamount');
         $gettime = Session::get('timestamp');
         $gettrx = Session::get('puttrx');
@@ -1774,35 +1906,35 @@ class HomeController extends Controller
         $data = Trx::where('status', 0)->where('trx', $trx)->first();
         $auth = Auth::user();
         Session::put('Perfect', $trx);
-        
+
         $gatewayData = Gateway::find(102);
         return view('user.esellpm', compact('data', 'gatewayData'));
     }
-     
+
     public function sellperfectsuccess()
     {
         $gatewayData = Gateway::find(102);
-        
+
         $passphrase = strtoupper(md5($gatewayData->val2));
          $track = Session::get('Perfect');
         define('ALTERNATE_PHRASE_HASH', $passphrase);
         define('PATH_TO_LOG', '/somewhere/out/of/document_root/');
-       
+
             $data = Trx::where('status', 0)->where('trx', $track)->first();
             $user = User::whereId($data->user_id)->first();
             $gnl = GeneralSettings::first();
- 
+
                $data->status = 2;
                $data->save();
-               
+
                $user->balance = $user->balance + $data->main_amo;
                $user->save();
                 return redirect()->route('home')->with("success", "Perfect Money Sales Was Successful");
-      
+
 
     }
-    
-    
+
+
     public function esellscan2($id)
     {
         $data = Trx::where('status', 0)->where('trx', $id)->first();
@@ -2986,6 +3118,14 @@ class HomeController extends Controller
 
 
     }
+
+     public function vxvault()
+    {
+        $data['page_title'] = "VX Vault";
+        return view('user.vxvault.vxlock', $data);
+    }
+
+
 
 
 }

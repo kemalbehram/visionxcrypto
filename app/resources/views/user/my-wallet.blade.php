@@ -100,10 +100,10 @@
 													<span class="input-group-addon-left bg-light"><i class="fa fa-bank"></i></span>
 													<select name="bank" id='mySelect' required onchange='myFunction()' class="form-control input-lg select">
 												 <option disabled selected >Select Bank Name</option>
-												 @if(Auth::user()->bankyes == 1)
+												<!-- @if(Auth::user()->bankyes == 1)
 												 <option data-name="{{Auth::user()->bank}}" value="{{Auth::user()->bankcode}}">{{Auth::user()->bank}}(Account #: {{Auth::user()->accountno}})</option>
-												 @endif
-												 <option value="others">Other Bank</option>
+												 @endif -->
+												 <option value="others">Other Banks</option>
 
 												</select>
 												</div>
@@ -329,8 +329,12 @@
 							<select   name="gateway" class="form-control ">
 								<option label="Choose one">
 								</option>
-								<option value="bank" >
+								<!--<option value="bank" >
 								Bank Deposit
+								</option> -->
+
+								<option value="bitcoin" >
+								Bitcoin
 								</option>
 
 							</select>

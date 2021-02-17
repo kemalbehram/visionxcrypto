@@ -107,34 +107,33 @@ class ProductController extends Controller
 		$trx = strtoupper(str_random(20));
 		$basic = GeneralSettings::first();
 
+        if(strtolower($request->network)=="mtn"){
+            $net='01';
+        }elseif(strtolower($request->network)=="glo"){
+            $net='02';
+        }elseif(strtolower($request->network)=="9mobile"){
+            $net='03';
+        }elseif(strtolower($request->network)=="airtel"){
+            $net='04';
+        }else{
+            $net=0;
+        }
 
-      $curl = curl_init();
-	  curl_setopt_array($curl, array(
-	  CURLOPT_URL => "https://openapi.rubiesbank.io/v1/ctairtimepurchase",
-	  CURLOPT_RETURNTRANSFER => true,
-	  CURLOPT_ENCODING => "",
-	  CURLOPT_MAXREDIRS => 10,
-	  CURLOPT_TIMEOUT => 0,
-	  CURLOPT_FOLLOWLOCATION => true,
-	  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	  CURLOPT_CUSTOMREQUEST => "POST",
-	  CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"mobilenumber\": \"$request->number\",\n    \"telco\": \"$request->network\"\n}",
-	  CURLOPT_HTTPHEADER => array(
-		"Authorization: ".$basic->rubies_secretkey
-	  ),
-	));
+        $baseUrl = "https://www.nellobytesystems.com";
+        $endpoint = "/APIAirtimeV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&MobileNetwork=".$net."&MobileNumber=".$request->number."&Amount=".$request->amount."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
 
-	$response = curl_exec($curl);
-	curl_close($curl);
-	$rep=json_decode($response, true);
+        $url=$baseUrl.$endpoint;
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $rep=json_decode($result, true);
 
-	if($rep['responsecode'] == 00)
+	if($rep['status'] != "ORDER_RECEIVED")
 	{
 	$product['user_id'] = Auth::id();
     $product['gateway'] = $request->network;
     $product['account_number'] = $request->number;
     $product['type'] = 1;
-    $product['remark'] = $rep['responsemessage'];
+    $product['remark'] = $rep['status'];
     $product['trx'] = $trx;
     $product['status'] = 1;
     $product['amount'] = $request->amount;
@@ -156,80 +155,59 @@ class ProductController extends Controller
         $user = Auth::user();
 
 		$basic = GeneralSettings::first();
-		 $curl = curl_init();
 
-		  curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://openapi.rubiesbank.io/v1/ctmobiledataproduct",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 0,
-		  CURLOPT_FOLLOWLOCATION => true,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "POST",
-		  CURLOPT_POSTFIELDS =>"{\n    \"request\": \"dataproduct\"\n}",
-		  CURLOPT_HTTPHEADER => array(
-			"Authorization: ".$basic->rubies_secretkey,
-			": "
-		  ),
-		));
+        $url="https://www.nellobytesystems.com/APIDatabundlePlansV1.asp";
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $reps=json_decode($result, true);
+        $rep=$reps['MOBILE_NETWORK'];
 
-		$response = curl_exec($curl);
-
-		curl_close($curl);
-		$rep=json_decode($response, true);
-
-
-		foreach($rep['MTN'] as $data) {
-		$exist = Internet::where('code', $data['productcode'])->count();
+        foreach($rep['MTN'][0]['PRODUCT'] as $data) {
+		$exist = Internet::where('code', $data['PRODUCT_ID'])->count();
 		if($exist == 0)
 		{
-		$product['name'] = $data['name'];
-		$product['amount'] = $data['amount'];
-        $product['code'] = $data['productcode'];
-        $product['amount'] = $data['amount'];
+		$product['name'] = $data['PRODUCT_NAME'];
+		$product['amount'] = $data['PRODUCT_AMOUNT'];
+        $product['code'] = $data['PRODUCT_ID'];
         $product['network'] = "MTN";
         $product['status'] = 1;
         Internet::create($product);
 
 		}}
 
-		foreach($rep['9MOBILE'] as $data) {
+		foreach($rep['9mobile'][0]['PRODUCT'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
 		{
-		$product['name'] = $data['name'];
-		$product['amount'] = $data['amount'];
-        $product['code'] = $data['productcode'];
-        $product['amount'] = $data['amount'];
+		$product['name'] = $data['PRODUCT_NAME'];
+		$product['amount'] = $data['PRODUCT_AMOUNT'];
+        $product['code'] = $data['PRODUCT_ID'];
         $product['network'] = "9MOBILE";
         $product['status'] = 1;
         Internet::create($product);
 
 		}}
 
-		foreach($rep['AIRTEL'] as $data) {
+		foreach($rep['Airtel'][0]['PRODUCT'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
 		{
-		$product['name'] = $data['name'];
-		$product['amount'] = $data['amount'];
-        $product['code'] = $data['productcode'];
-        $product['amount'] = $data['amount'];
+		$product['name'] = $data['PRODUCT_NAME'];
+		$product['amount'] = $data['PRODUCT_AMOUNT'];
+        $product['code'] = $data['PRODUCT_ID'];
         $product['network'] = "AIRTEL";
         $product['status'] = 1;
         Internet::create($product);
 
 		}}
 
-		foreach($rep['GLO'] as $data) {
+		foreach($rep['Glo'][0]['PRODUCT'] as $data) {
 		$exist = Internet::where('code', $data['productcode'])->count();
 		if($exist == 0)
 		{
-		$product['name'] = $data['name'];
-		$product['amount'] = $data['amount'];
-        $product['code'] = $data['productcode'];
-        $product['amount'] = $data['amount'];
+		$product['name'] = $data['PRODUCT_NAME'];
+		$product['amount'] = $data['PRODUCT_AMOUNT'];
+        $product['code'] = $data['PRODUCT_ID'];
         $product['network'] = "GLO";
         $product['status'] = 1;
         Internet::create($product);
@@ -317,32 +295,28 @@ class ProductController extends Controller
 		$trx = strtoupper(str_random(20));
 		$basic = GeneralSettings::first();
 
+      if(strtolower($request->network)=="mtn"){
+          $net='01';
+      }elseif(strtolower($request->network)=="glo"){
+          $net='02';
+      }elseif(strtolower($request->network)=="9mobile"){
+          $net='03';
+      }elseif(strtolower($request->network)=="airtel"){
+          $net='04';
+      }else{
+          $net=0;
+      }
 
-     $curl = curl_init();
+      $baseUrl = "https://www.nellobytesystems.com";
+      $endpoint = "/APIDatabundleV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&MobileNetwork=".$net."&MobileNumber=".$request->number."&DataPlan=".$request->plan."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
 
-	  curl_setopt_array($curl, array(
-	  CURLOPT_URL => "https://openapi.rubiesbank.io/v1/ctmobiledatapurchase",
-	  CURLOPT_RETURNTRANSFER => true,
-	  CURLOPT_ENCODING => "",
-	  CURLOPT_MAXREDIRS => 10,
-	  CURLOPT_TIMEOUT => 0,
-	  CURLOPT_FOLLOWLOCATION => true,
-	  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	  CURLOPT_CUSTOMREQUEST => "POST",
-	  CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"amount\": \"$request->amount\",\n    \"productcode\": \"$request->plan\",\n    \"mobilenumber\": \"$request->number\",\n    \"telco\": \"$request->network\"\n}",
-      CURLOPT_HTTPHEADER => array(
-     "Authorization: ".$basic->rubies_secretkey
+      $url=$baseUrl.$endpoint;
+      // Perform initialize to validate name on server
+      $result = file_get_contents($url);
+      $rep=json_decode($result, true);
 
-	  ),
-	));
 
-	$response = curl_exec($curl);
-
-	curl_close($curl);
-//	echo $response;
-	$rep=json_decode($response, true);
-
-	if($rep['responsecode'] == 00)
+	if($rep['status'] != "ORDER_RECEIVED")
 	{
 	$product['user_id'] = Auth::id();
     $product['gateway'] = $request->network;
@@ -1009,44 +983,29 @@ class ProductController extends Controller
 
 		$basic = GeneralSettings::first();
 
-        $curl = curl_init();
+            $cp = Power::where([['name', '=', $request->meter]])->first();
 
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerverification",
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "POST",
-          CURLOPT_POSTFIELDS =>"{\n    \"billercode\":\"$request->meter\",\n    \"billercustomerid\":\"$request->meternumber\"\n}",
-          CURLOPT_HTTPHEADER => array(
-            "Authorization: ".$basic->rubies_secretkey
-          ),
-        ));
 
-        $response = curl_exec($curl);
+            $baseUrl = "https://www.nellobytesystems.com";
+            $endpoint = "/APIVerifyElectricityV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&ElectricCompany=".$cp->code."&MeterNo=".$request->meternumber;
 
-        curl_close($curl);
-        $result =json_decode($response, true);
+            $url=$baseUrl.$endpoint;
+            // Perform initialize to validate name on server
+            $result = file_get_contents($url);
+            $rep=json_decode($result, true);
 
-        if(isset($result['message'])){
-         return back()->with('danger', 'it seems you have entered a wrong meter number or you have selected a wrong meter. Please check and try again');
-        }
+            if ($rep['customer_name']=="INVALID_METERNO" || $rep['customer_name']=="Service unavailable. Please try again later.") {
+                return back()->with('danger', 'We cannot process your request at the moment, please try again later');
+            }else{
+                Session::put('number', $request->meternumber);
+                Session::put('meter', $request->meter);
+                Session::put('name', $rep['customer_name']);
+                return redirect()->route('validatedmeter');
 
-        if(isset($result['responsecode'])){
-        if($result['responsecode'] == 00){
-          Session::put('number', $request->meternumber);
-          Session::put('meter', $request->meter);
-          Session::put('name', $result['customername']);
-          return redirect()->route('validatedmeter');
-        }
-        else{
-           return back()->with('danger', 'We cannot process your request at the moment, please try again later');
+
+
+                return response()->json(['status' => 1, 'message' => 'Validated successfully', 'data' => $rep['customer_name'], 'code' => $cp->code, 'charges'=>$basic->electricityfee*1]);
             }
-        }
-
 
 		}
 
@@ -1106,36 +1065,24 @@ class ProductController extends Controller
 
         $basic = GeneralSettings::first();
         $trx = strtoupper(str_random(6));
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://openapi.rubiesbank.io/v1/billerpurchase",
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "POST",
-          //CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"billercustomerid\": \"$request->number\",\n    \"productcode\": \"$request->type\",\n    \"amount\": \"$request->amount\n    \"mobilenumber\": \"$user->phone\",\n    \"name\": \"$request->name\",\n    \"billercode\": \"$request->meter\"\n}",
-          //CURLOPT_HTTPHEADER => array(
-          CURLOPT_POSTFIELDS =>"{\n    \"reference\": \"$trx\",\n    \"billercustomerid\": \"$request->number\",\n    \"productcode\": \"$request->type\",\n    \"amount\": \"$request->amount\",\n    \"mobilenumber\": \"08031975397\",\n    \"name\": \"$request->name\",\n    \"billercode\": \"$request->meter\"\n}",
-          CURLOPT_HTTPHEADER => array(
-            "Authorization: ".$basic->rubies_secretkey
-          ),
-        ));
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $result =json_decode($response, true);
-
-        if(isset($result['message'])){
-         return back()->with('danger', $result['message']);
+        if(strtolower($request->type)=="prepaid"){
+            $type='01';
+        }else{
+            $type='02';
         }
 
+        $baseUrl = "https://www.nellobytesystems.com";
+        $endpoint = "/APIElectricityV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&ElectricCompany=".$request->meter."&MeterNo=".$request->number."&MeterType=".$type."&Amount=".$request->amount."&RequestID=".$trx."&CallBackURL=http://www.your-website.com";
 
-        if($result['responsecode'] == 00){
+        $url=$baseUrl.$endpoint;
+        // Perform initialize to validate name on server
+        $result = file_get_contents($url);
+        $rep=json_decode($result, true);
+
+
+        if($rep['status'] == "ORDER_RECEIVED"){
          $product['user_id'] = Auth::id();
             $product['gateway'] = $request->meter;
             $product['method'] = $request->type;

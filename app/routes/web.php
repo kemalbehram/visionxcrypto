@@ -86,8 +86,8 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::get('authorization', 'HomeController@authCheck')->name('user.authorization');
     Route::post('verification', 'HomeController@sendVcode')->name('user.send-vcode');
-    
-    
+
+
     Route::post('unlockusernow', 'HomeController@unlockme')->name('unlockusernow');
     Route::post('smsVerify', 'HomeController@smsVerify')->name('user.sms-verify');
     Route::post('bvnVerify', 'HomeController@bvnVerify')->name('user.bvn-verify');
@@ -145,6 +145,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/deposit-confirm', 'PaymentController@depositConfirm')->name('deposit.confirm');
         Route::post('/deposit-confirmed', 'PaymentController@depositConfirm2')->name('deposit2.confirm');
         Route::post('/crypto/payment/status', 'PaymentControlle@cryptoStatus')->name('userDepositCrypto');
+        Route::post('/btcdepositcallback/{id}', 'HomeController@btcdepositcallback')->name('btcdepositcallback');
 
         Route::post('/card-confirm', 'PaymentController@cardpay')->name('cardpay');
 
@@ -194,8 +195,8 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('paybtcnow', 'HomeController@paybtcnow')->name('paybtcnow');
         Route::get('withdrawinvest', 'HomeController@withdrawinvest')->name('withdrawinvest');
         Route::post('btcpaynowupload', 'HomeController@btcpaynowupload')->name('btcpaynowupload');
-        
-        
+
+
         //VX Lock
         Route::get('vx-lock', 'VxlockController@vxlock')->name('vxlock');
         Route::post('vx-lock-proceed', 'VxlockController@vxlockproceed')->name('vxlockproceed');
@@ -246,7 +247,7 @@ Route::group(['prefix' => 'user'], function () {
 
         Route::get('/esell-pm/{trx}', 'HomeController@esellpm')->name('esellpm');
         Route::get('/perfectpaid', 'HomeController@sellperfectsuccess')->name('sellperfectsuccess');
-         
+
         Route::get('/esell-del/{id}', 'HomeController@eselldel')->name('eselldel');
         Route::post('/esell-upload', 'HomeController@esellupload')->name('esellupload');
 
@@ -343,22 +344,22 @@ Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' 
     Route::get('/bank_transfer_reject/{id}', 'AdminController@banktransferreject')->name('banktransferreject');
 
     //Subadmin
-    
+
     Route::get('/create-admin', 'AdminController@createadmin')->name('createadmin');
-    
+
     Route::post('create-admin', 'AdminController@createadminpost')->name('createnewadmin');
-    
-    
+
+
     Route::get('/block-admin/{id}', 'AdminController@blockadmin')->name('adminblock');
     Route::get('/activate-admin/{id}', 'AdminController@activateadmin')->name('adminactivate');
     Route::get('/delete-admin/{id}', 'AdminController@deleteadmin')->name('admindelete');
     Route::get('/view-admin/{id}', 'AdminController@viewadmin')->name('viewadmin');
     Route::post('/update-admin', 'AdminController@updateadmin')->name('updateadmin');
-   
+
     Route::get('/manage-admin', 'AdminController@manageadmin')->name('manageadmin');
-    
-    
-    
+
+
+
     Route::get('/dash-note', 'AdminController@dashnote')->name('dashnote');
     Route::post('/post-dash-note', 'AdminController@postdashnote')->name('postdashnote');
 
@@ -381,8 +382,8 @@ Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' 
     Route::get('investreject/{id}', 'PlanController@investreject')->name('investreject');
     Route::get('investdelete/{id}', 'PlanController@investdelete')->name('investdelete');
     Route::get('investview/{id}', 'PlanController@investview')->name('investview');
-    
-    
+
+
     //VXVault Admin
     Route::get('users-vault', 'VxlockController@allvault')->name('users-vault');
     Route::get('active-users-vault', 'VxlockController@activevault')->name('activevault');
@@ -395,7 +396,7 @@ Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' 
     Route::get('viewwithdraw-users-vault/{id}', 'VxlockController@viewwithdraw')->name('viewwithdraw');
     Route::get('approvewithdraw-users-vault/{id}', 'VxlockController@approvewithdraw')->name('approvewithdraw');
     Route::get('rejectwithdraw-users-vault/{id}', 'VxlockController@rejectwithdraw')->name('rejectwithdraw');
-    
+
 
 
     // General Settings
