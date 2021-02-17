@@ -95,7 +95,7 @@
 										<input hidden name="decoder" value="{{$decoder}}">
 											<input hidden name="number" value="{{$number}}">
 											<input  name="package" hidden id="package">
-											<input  name="amount" hidden id="totall">
+											<input  name="amount" hidden id="total">
 
 											<small>Enter Transaction Password</small>
 							        		<input type="tel" name="password" placeholder="****" maxlength="4" required class="form-control">
