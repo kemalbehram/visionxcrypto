@@ -393,7 +393,7 @@ function myFunctioncabletv() {
 																</div>
 
 																<div class="form-group col-xl-12 col-lg-12 col-md-12 mb-0">
-																	<input type="number"  name="number"  class="form-control mb-4 mb-lg-0" id="text6" placeholder="Decoder/IUC Number">
+																	<input type="number"  name="decodernumber"  class="form-control mb-4 mb-lg-0" id="text6" placeholder="Decoder/IUC Number">
 																</div>
 															</div>
 														</div>

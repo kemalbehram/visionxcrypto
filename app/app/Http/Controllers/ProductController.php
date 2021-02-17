@@ -700,7 +700,6 @@ class ProductController extends Controller
     {
          $user = Auth::user();
 	     $request->validate([
-            'decodertype' => 'required',
             'decodernumber' => 'required',
             'decoder' => 'required',
 //
@@ -761,9 +760,10 @@ class ProductController extends Controller
         	 }
 
 
+    	     $d=$request->decoder;
 			Session::put('number', $request->decodernumber);
-			Session::put('decoder', $request->decodertype);
-			Session::put('deco', $request->decodertype);
+			Session::put('decoder', $request->decoder);
+			Session::put('deco', strtoupper(substr($d,0,2)). strtolower(substr($d,2,5)));
 			Session::put('name', $result);
 			return redirect()->route('validateddecoder');
 
@@ -842,25 +842,9 @@ class ProductController extends Controller
          $baseUrl = "https://www.nellobytesystems.com";
         $endpoint = "/APICableTVV1.asp?UserID=".$basic->clubkonnect_id."&APIKey=".$basic->clubkonnect_key."&CableTV=".$request->decoder."&Package=".$request->package."&SmartCardNo=".$request->number."";
 
-        $httpVerb = "GET";
-        $contentType = "application/json"; //e.g charset=utf-8
-        $headers = array (
-            "Content-Type: $contentType",
-
-        );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-            $content = json_decode(curl_exec( $ch ),true);
-            $err     = curl_errno( $ch );
-            $errmsg  = curl_error( $ch );
-        	curl_close($ch);
-			$result = implode(', ', (array)$content);
+        $url=$baseUrl.$endpoint;
+        $result = file_get_contents($url);
+        $content=json_decode($result, true);
 
         $statusResult=$content['status']; // Access Array data
         $total = $request->amount + $basic->decoderfee;

@@ -15,42 +15,42 @@
 									<li class="breadcrumb-item active" aria-current="page">Cable TV</li>
 								</ol>
 							</div>
-							 
+
 						</div>
 						<!-- End Page Header -->
 
 						<!-- Row -->
 						<div class="row row-sm">
-							 
+
 							<div class="col-lg-12 col-xl-12 col-md-12">
 								<div class="card custom-card">
 									<div class="card-body">
 										<form method="post"  class="withdraw-action-form" action="{{route('paydecoder') }}">
 										    @csrf
 											<div class="form-group mb-0"> <label>Select Bouquet</label>
-												<div class="input-group"> 
+												<div class="input-group">
 																														<script>
-													function myFunctioncabletv() { 
-													 var price = $("#mySelected2 option:selected").attr('data-price');  
-													 var amount = $("#mySelected2 option:selected").attr('data-amount');  
-													 var name = $("#mySelected2 option:selected").attr('data-plan');  
-													 document.getElementById("price").innerHTML = amount;  
-													 document.getElementById("planname").innerHTML = name;  
-													 document.getElementById("total").innerHTML = +price + +{{$basic->decoderfee}}; 
-													 document.getElementById("package").value = name; 
-													 document.getElementById("totall").value = +price + +{{$basic->decoderfee}}; 
-													   
+													function myFunctioncabletv() {
+													 var price = $("#mySelected2 option:selected").attr('data-price');
+													 var amount = $("#mySelected2 option:selected").attr('data-amount');
+													 var name = $("#mySelected2 option:selected").attr('data-plan');
+													 document.getElementById("price").innerHTML = amount;
+													 document.getElementById("planname").innerHTML = name;
+													 document.getElementById("total").innerHTML = +price + +{{$basic->decoderfee}};
+													 document.getElementById("package").value = name;
+													 document.getElementById("total").value = +price + +{{$basic->decoderfee}};
+
 													 };
 													</script>
 												<select name="decoder"  required id="mySelected2" onchange="myFunctioncabletv()" class="form-control select2  custom-select br-md-0">
 												<option selected disabled>Select A Plan</option>
 												@foreach($plans[$deco][0]['PRODUCT'] as $k=>$data)
-												<option  data-plan="{{$data['PACKAGE_ID']}}" data-price="{{$data['PACKAGE_AMOUNT']}}"  data-amount="{{$basic->currency_sym}}{{$data['PACKAGE_AMOUNT']}}" >{{$data['PACKAGE_ID']}}</option>
-												@endforeach						  
+												<option data-plan="{{$data['PACKAGE_ID']}}" data-price="{{$data['PACKAGE_AMOUNT']}}"  data-amount="{{$basic->currency_sym}}{{$data['PACKAGE_AMOUNT']}}" >{{$data['PACKAGE_NAME']}}</option>
+												@endforeach
 												</select>
-												 
+
 											</div>
-										 
+
 									</div>
 								</div>
 								<div class="card custom-card cart-details">
@@ -59,11 +59,11 @@
 										<dl class="dlist-align">
 											<dt class="">Decoder</dt>
 											<dd class="text-right ml-auto">@if($decoder == "dstv")
-																		<img width="50" src="{{url('assets/images/dstv.png')}}" alt=""> 
+																		<img width="50" src="{{url('assets/images/dstv.png')}}" alt="">
 																		@elseif($decoder == "gotv")
-																		<img width="50" src="{{url('assets/images/gotv.jpg')}}" alt=""> 
+																		<img width="50" src="{{url('assets/images/gotv.jpg')}}" alt="">
 																		@else($decoder == "startimes")
-																		<img width="50" src="{{url('assets/images/startime.jpg')}}" alt=""> 
+																		<img width="50" src="{{url('assets/images/startime.jpg')}}" alt="">
 																		@endif</dd>
 										</dl>
 										<dl class="dlist-align">
@@ -96,9 +96,9 @@
 											<input hidden name="number" value="{{$number}}">
 											<input  name="package" hidden id="package">
 											<input  name="amount" hidden id="totall">
-											
+
 											<small>Enter Transaction Password</small>
-							        		<input type="tel" name="password" placeholder="0000" maxlength="4" required class="form-control">
+							        		<input type="tel" name="password" placeholder="****" maxlength="4" required class="form-control">
 											<br>
 											<button type="submit" class="step-btn btn btn-primary">Make Payment</button>
 										</div>
