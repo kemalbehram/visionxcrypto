@@ -21,10 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/my-wallet.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/my-wallet.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/payment/preview.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/payment/preview.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/user/products.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/products.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,7 +274,7 @@
       <workItem from="1613151616460" duration="17000" />
       <workItem from="1613221242789" duration="2165000" />
       <workItem from="1613495944685" duration="4127000" />
-      <workItem from="1613566929547" duration="2403000" />
+      <workItem from="1613566929547" duration="6159000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -351,12 +350,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
-          <line>888</line>
+          <line>887</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
-          <line>1135</line>
+          <line>1103</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -371,7 +370,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
-          <line>598</line>
+          <line>597</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
@@ -403,7 +402,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
-          <line>1025</line>
+          <line>1024</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\ProductController" />
             <option name="methodName" value="paypower" />
@@ -412,7 +411,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/ProductController.php</url>
-          <line>382</line>
+          <line>381</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\ProductController" />
             <option name="methodName" value="validatebank" />

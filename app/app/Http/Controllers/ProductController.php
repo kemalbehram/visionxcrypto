@@ -127,7 +127,7 @@ class ProductController extends Controller
         $result = file_get_contents($url);
         $rep=json_decode($result, true);
 
-	if($rep['status'] != "ORDER_RECEIVED")
+	if($rep['status'] == "ORDER_RECEIVED")
 	{
 	$product['user_id'] = Auth::id();
     $product['gateway'] = $request->network;
@@ -176,7 +176,7 @@ class ProductController extends Controller
 		}}
 
 		foreach($rep['9mobile'][0]['PRODUCT'] as $data) {
-		$exist = Internet::where('code', $data['productcode'])->count();
+		$exist = Internet::where('code', $data['PRODUCT_ID'])->count();
 		if($exist == 0)
 		{
 		$product['name'] = $data['PRODUCT_NAME'];
@@ -189,7 +189,7 @@ class ProductController extends Controller
 		}}
 
 		foreach($rep['Airtel'][0]['PRODUCT'] as $data) {
-		$exist = Internet::where('code', $data['productcode'])->count();
+		$exist = Internet::where('code', $data['PRODUCT_ID'])->count();
 		if($exist == 0)
 		{
 		$product['name'] = $data['PRODUCT_NAME'];
@@ -202,7 +202,7 @@ class ProductController extends Controller
 		}}
 
 		foreach($rep['Glo'][0]['PRODUCT'] as $data) {
-		$exist = Internet::where('code', $data['productcode'])->count();
+		$exist = Internet::where('code', $data['PRODUCT_ID'])->count();
 		if($exist == 0)
 		{
 		$product['name'] = $data['PRODUCT_NAME'];
@@ -316,14 +316,14 @@ class ProductController extends Controller
       $rep=json_decode($result, true);
 
 
-	if($rep['status'] != "ORDER_RECEIVED")
+	if($rep['status'] == "ORDER_RECEIVED")
 	{
 	$product['user_id'] = Auth::id();
     $product['gateway'] = $request->network;
     $product['account_number'] = $request->number;
     $product['method'] = $request->name;
     $product['type'] = 2;
-    $product['remark'] = $rep['responsemessage'];
+    $product['remark'] = $rep['status'];
     $product['trx'] = $trx;
     $product['status'] = 1;
     $product['amount'] = 100;
@@ -337,8 +337,7 @@ class ProductController extends Controller
 	session()->forget('network');
 
     return redirect()->route('products')->with(['modal'=> 'airtime', "success" => "internet subscription was successful"]);
-	}
-	else{
+	}else{
 		return back()->with('danger', 'Sorry, you cant subscribe to internet data at the moment, please try again later.');
 	}
 
@@ -983,7 +982,7 @@ class ProductController extends Controller
 
 		$basic = GeneralSettings::first();
 
-            $cp = Power::where([['name', '=', $request->meter]])->first();
+            $cp = Power::where([['billercode', '=', $request->meter]])->first();
 
 
             $baseUrl = "https://www.nellobytesystems.com";

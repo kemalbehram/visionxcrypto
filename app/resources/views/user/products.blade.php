@@ -318,7 +318,7 @@ function myFunctionpower() {
 </script>
 																	<select name="meter" id="mySelected" onchange="myFunctionpower()" class="form-control select2  custom-select br-md-0">
 																		@foreach($power as $k=>$data)
-																		<option data-image="{{$data->image}}" value="{{$data->billercode}}" >{{$data->name}} ({{$data->type}})</option>
+																		<option name="meter" data-image="{{$data->image}}" value="{{$data->billercode}}" >{{$data->name}} ({{$data->type}})</option>
 																		@endforeach
 																	</select>
 																</div>
