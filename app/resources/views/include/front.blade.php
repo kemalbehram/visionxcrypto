@@ -96,6 +96,12 @@
         .subnav:hover .subnav-content {
             display: block;
         }
+        @media (max-width: 1199.98px) {
+            .simg {
+                max-width: 120px;
+                max-height: 38.5px;
+            }
+        }
     </style>
 
 </head>
@@ -146,7 +152,7 @@
 
                 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #010137">
                     <a class="navbar-brand c-white" href="{{url('/')}}">
-                        <img class="logo" src="{{asset('front/img/newlogo.png')}}" alt="logo"
+                        <img class="simg" src="{{asset('front/img/newlogo.png')}}" alt="logo"
                              style="width:230px;height:75px;"/>
                     </a>
                     <button class="navbar-toggler menu ripplemenu" type="button" data-toggle="collapse"

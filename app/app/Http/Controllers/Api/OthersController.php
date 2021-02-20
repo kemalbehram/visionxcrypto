@@ -108,7 +108,7 @@ class OthersController extends Controller
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
 
-        $trx ="topup". rand(000000, 999999) . rand(000000, 888999);
+        $trx ="topup". rand(000000, 999999);
 
         Deposit::create([
            'user_id'=>Auth::id(),

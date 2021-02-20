@@ -22,14 +22,7 @@
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/OthersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/OthersController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/TransactionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/VerificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/VerificationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/ebuy.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/ebuy.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/ebuypay.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/ebuypay.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/trade.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/trade.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/include/front.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/front.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,7 +274,7 @@
       <workItem from="1613221242789" duration="2165000" />
       <workItem from="1613495944685" duration="4127000" />
       <workItem from="1613566929547" duration="15478000" />
-      <workItem from="1613803455874" duration="11049000" />
+      <workItem from="1613803455874" duration="15209000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
