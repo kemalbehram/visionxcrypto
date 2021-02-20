@@ -472,7 +472,7 @@ class VerificationController extends Controller
     public function topup_verify(Request $request)
     {
         $basic = GeneralSettings::first();
-        $data = Deposit::where('status', 0)->where('code', $request->trx)->first();
+        $data = Deposit::where('status', 0)->where('trx', $request->trx)->first();
 
         $akey=$basic->bitcoin_address;
 
@@ -487,7 +487,7 @@ class VerificationController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $data->invoiceid),
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $data->trx),
         ));
 
         $response = curl_exec($curl);
