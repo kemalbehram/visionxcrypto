@@ -90,10 +90,10 @@
 										</div>
 										<p style="color:red">*Ensure your enter the correct <a id="bcoin">wallet</a> address.</p>
 										<p style="color:red">*Minimum trade amount accepted is $50.</p>
-										<label class="main-content-label mt-4 mb-4">payment method</label>
+										<label class="main-content-label mt-4 mb-4">Payment method</label>
 
 											<div class="payment-type d-flex">
-												<input type="radio" name="payment" id="credit" value="1" checked><label class="credit-label payment-cards four ml-0 col" for="credit"><span class="d-none d-md-block">Naira Wallet</span><img src="{{url('/')}}/assets/assets/img/visa.png" alt="visa"></label>
+												<input type="radio" name="payment" id="credit" value="1" checked><label class="credit-label payment-cards four ml-0 col" for="credit"><span class="d-none d-md-block">P2P Account</span><img src="{{url('/')}}/assets/assets/img/visa.png" alt="visa"></label>
 												</div>
 											<button type="submit" class="btn btn-primary btn-lg btn-block mt-4">Buy Now</button>
 
@@ -154,12 +154,12 @@
 											</div>
 										</div>
 										<br>
-										<p style="color:red">*Your fund will be credited into your Naira wallet as soon as your transaction as been confirmed.</p>
+										<p style="color:red">*Your fund will be credited into your Bank Account as soon as your transaction as been confirmed.</p>
 										<p style="color:red">*Minimum trade amount accepted is $50.</p><br>
 										<label class="main-content-label mt-4 mb-4">Credit payment destination</label>
 										<a class="payment-form form">
 											<div class="payment-type d-flex">
-												<input type="radio" name="radio3" id="credit" value="credit" checked><label class="credit-label payment-cards four ml-0 col" for="credit"><span class="d-none d-md-block">Naira Wallet</span><img src="{{url('/')}}/assets/assets/img/visa.png" alt="visa"></label>
+												<input type="radio" name="radio3" id="credit" value="credit" checked><label class="credit-label payment-cards four ml-0 col" for="credit"><span class="d-none d-md-block">P2P Account</span><img src="{{url('/')}}/assets/assets/img/visa.png" alt="visa"></label>
 												</div>
 											<button type="Submit" class="btn btn-primary btn-lg btn-block mt-4">Sell Now</button>
 										</a>

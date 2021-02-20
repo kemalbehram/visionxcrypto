@@ -79,7 +79,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 
 								<!--Row-->
 								<div class="row row-sm">
-									<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
+									<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
 										<div class="card custom-card">
 											<div class="card-body">
 												<div class="card-item">
@@ -103,30 +103,30 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
-										<div class="card custom-card">
-											<div class="card-body">
-												<div class="card-item">
-													<div class="card-item-icon card-icon">
+{{--									<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">--}}
+{{--										<div class="card custom-card">--}}
+{{--											<div class="card-body">--}}
+{{--												<div class="card-item">--}}
+{{--													<div class="card-item-icon card-icon">--}}
 
-														<i class="fas fa-dollar"style="color:green"></i>
+{{--														<i class="fas fa-dollar"style="color:green"></i>--}}
 
-														</div>
-													<div class="card-item-title mb-2">
-														<label class="main-content-label tx-13 font-weight-bold mb-1">Investment</label>
-														<span class="d-block tx-12 mb-0 text-muted">Employees joined this month</span>
-													</div>
-													<div class="card-item-body">
-														<div class="card-item-stat">
-															<h4 class="font-weight-bold">${{number_format($investment->balance, $basic->decimal)}}</h4>
+{{--														</div>--}}
+{{--													<div class="card-item-title mb-2">--}}
+{{--														<label class="main-content-label tx-13 font-weight-bold mb-1">Investment</label>--}}
+{{--														<span class="d-block tx-12 mb-0 text-muted">Employees joined this month</span>--}}
+{{--													</div>--}}
+{{--													<div class="card-item-body">--}}
+{{--														<div class="card-item-stat">--}}
+{{--															<h4 class="font-weight-bold">${{number_format($investment->balance, $basic->decimal)}}</h4>--}}
 
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+{{--														</div>--}}
+{{--													</div>--}}
+{{--												</div>--}}
+{{--											</div>--}}
+{{--										</div>--}}
+{{--									</div>--}}
+									<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
 										<div class="card custom-card">
 											<div class="card-body">
 												<div class="card-item">

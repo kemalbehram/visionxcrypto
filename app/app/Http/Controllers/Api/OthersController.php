@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Deposit;
+use App\GeneralSettings;
 use App\Message;
 use App\Password;
 use App\User;
@@ -91,4 +93,72 @@ class OthersController extends Controller
         return response()->json(['status' => 1, 'message' => 'Account locked successfully']);
     }
 
+    public function topup(Request $request)
+    {
+        $user = Auth::user();
+
+        $input = $request->all();
+        $rules = array(
+            'amount' => 'required',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
+        }
+
+        $trx ="topup". rand(000000, 999999) . rand(000000, 888999);
+
+        Deposit::create([
+           'user_id'=>Auth::id(),
+           'usd'=>$request->amount,
+           'trx'=>$trx,
+        ]);
+
+        $basic = GeneralSettings::first();
+        $akey=$basic->bitcoin_address;
+        $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'amount' => $request->amount, 'name' => $trx, 'currency' => 'USD', 'expire_time' => '15', 'suceess_url' => url("/api/sellcallback")),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response, true);
+        curl_close($curl);
+        //return $response;
+
+        if(!isset($reply['data']['address'])){
+            return response()->json(['status' => 2, 'message' => 'Amount too low']);
+        }
+        $now = Carbon::now();
+        $expire = Carbon::parse($now)->addMonth($request->duration);
+
+        $address = $reply['data']['address'];
+        $invoiceid = $reply['data']['invoice_id'];
+        $btcvalue = $reply['data']['total_amount']['BTC'];
+
+        $lock['user_id'] = Auth::id();
+        $lock['invoiceid'] = $invoiceid;
+        $lock['amount'] = $request->amount*$basic->rate;
+        $lock['status'] = 0;
+        $lock['code'] = $trx;
+        $lock['expire'] = $expire;
+        $lock['usd'] = $request->amount;
+        $lock['btc'] = $btcvalue;
+        $lock['address'] = $address;
+
+
+        return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue, 'trx'=> $trx]);
+    }
 }

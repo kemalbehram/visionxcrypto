@@ -1621,6 +1621,12 @@ class HomeController extends Controller
         $page_title = "Purchase Preview";
         $auth = Auth::user();
 
+        $user=User::find(Auth::id());
+
+        $time = Carbon::parse(Carbon::now())->addMinutes(30);
+        $user->login_time = $time;
+        $user->save();
+
 
         $basic = GeneralSettings::first();
         date_default_timezone_set($auth->timezone);
@@ -1704,10 +1710,6 @@ class HomeController extends Controller
             return back()->with('danger', 'This transaction has expired or does not exist');
         }
 
-        if ($data->main_amo > $auth->balance) {
-            return back()->with("alert", "You dont have enough fund in your Naira wallet.Please deposit more fund into your wallet and try again");
-        }
-
         $data->amountpaid = $data->main_amo;
         $data->depositor = $auth->username;
         $data->tnum = rand(000000, 999999) . rand(000000, 999999);
@@ -1718,10 +1720,8 @@ class HomeController extends Controller
             $request->photo->move('uploads/payments', $data['image']);
         }
 
-        $user = Auth::user();
-        $user->balance = $user->balance - $data->main_amo;
-        $user->save();
 
+        $data->save();
 
         Message::create([
             'user_id' => $auth->id,
@@ -1731,7 +1731,12 @@ class HomeController extends Controller
             'status' => 0
         ]);
 
-        $data->save();
+        $dat['user_id'] = Auth::id();
+        $dat['title'] = "Buy Crypto";
+        $dat['details'] = "I request to buy crypto with transaction id ".$request->trx;
+        $dat['status'] = 0;
+        Message::create($dat);
+
         return redirect()->route('trade')->with("success", "  Your coin purchase was successful. Please wait while we process your request");
 
     }

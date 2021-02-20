@@ -108,6 +108,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('relockcoin', [TransactionController::class, 'relockcoin'])->name('relockcoin');
     Route::post('coinlock_callback', [VerificationController::class, 'coinlock_callback'])->name('coinlock_callback');
 
+    Route::post('topup', [OthersController::class, 'topup'])->name('topup');
+    Route::post('verifytopup', [VerificationController::class, 'topup_verify'])->name('topup_verify');
+
 
 
 });

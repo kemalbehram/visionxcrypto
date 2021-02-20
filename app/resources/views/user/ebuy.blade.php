@@ -15,14 +15,14 @@
 									<li class="breadcrumb-item active" aria-current="page">Buy Coin</li>
 								</ol>
 							</div>
-							 
+
 						</div>
 						<!-- End Page Header -->
 
 						<!-- Row -->
 						<div class="row row-sm">
-						 
-						
+
+
 						<div class="col-md-12">
 								<div class="pt-0 card custom-card pt-7 bg-background2 card pb-7 border-0 overflow-hidden">
 									<div class="header-text mb-0">
@@ -43,7 +43,7 @@
 																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
 																<label class="text-white-50">Our Rate</label>
 																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->buy, $basic->decimal)}}">
-																
+
 																</div>
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">
 																	<i class="cf cf-{{$data->currency->icon}} exchange-icon tx-30 text-white inline-block"></i>
@@ -55,7 +55,7 @@
 																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
 																<label class="text-white-50">Total Amount</label>
 																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="{{$basic->currency_sym}}{{number_format($data->main_amo, $basic->decimal)}}">
-																
+
 																</div>
 															</div>
 														</div>
@@ -69,8 +69,8 @@
 									</div><!-- /header-text -->
 								</div>
 							</div>
-							
-							 
+
+
 						</div>
 						<!-- End Row -->
 
@@ -78,5 +78,5 @@
 				</div>
 			</div>
 			<!-- End Main Content-->
-			
+
 @stop

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Deposit;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Message;
@@ -414,7 +415,6 @@ class VerificationController extends Controller
         $basic = GeneralSettings::first();
         $data = Vxvault::where('status', 0)->where('code', $request->trx)->first();
         $auth = Auth::user();
-        $data->save();
 
 
         $akey=$basic->bitcoin_address;
@@ -465,6 +465,69 @@ class VerificationController extends Controller
             ]);
 
             return response()->json(['status' => 1, 'message' => 'Your Bitcoin Lock with transaction number ' . $data->code . '  was successful.']);
+        }
+
+    }
+
+    public function topup_verify(Request $request)
+    {
+        $basic = GeneralSettings::first();
+        $data = Deposit::where('status', 0)->where('code', $request->trx)->first();
+
+        $akey=$basic->bitcoin_address;
+
+        $baseurl = "https://coinremitter.com/api/v3/BTC/get-invoice";
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $data->invoiceid),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response, true);
+        curl_close($curl);
+
+        if (!isset($reply['data']['status_code'])) {
+            return response()->json(['status' => 0, 'message' => 'An error occur. Contact server admin']);
+        }
+
+        $status = $reply['data']['status_code'];
+
+        if ($status == 0) {
+            return response()->json(['status' => 0, 'message' => 'We have not received your payment. Kindly Scan and make payment']);
+        }
+        if ($status == 4) {
+            return response()->json(['status' => 0, 'message' => 'This transaction has expired. Please try again later.']);
+        }
+
+
+        if ($status == 1 || $status == 3) {
+            $basic = GeneralSettings::first();
+            $data->status = 1;
+            $a=$data->usd * $basic->rate;
+            $data->amount=$a;
+            $data->save();
+
+            $u=User::find(Auth::id());
+            $u->balance+=$a;
+            $u->save();
+
+            Message::create([
+                'user_id' => $data->user_id,
+                'title' => 'Bitcoin Lock Successful',
+                'details' => 'Your bitcoin lock with transaction number ' . $data->code . '  was successful. Your locked coin will be made available to you on the expiration of your lock tenure, Thank you for choosing ' . $basic->sitename . '',
+                'admin' => 1,
+                'status' => 0
+            ]);
+
+            return response()->json(['status' => 1, 'message' => 'Your deposit ' . $data->code . '  was successful.']);
         }
 
     }

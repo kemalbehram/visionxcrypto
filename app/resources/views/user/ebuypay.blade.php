@@ -13,7 +13,7 @@
 								<h2 class="main-content-title tx-24 mg-b-5">Make Payment</h2>
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Make ayment</li>
+									<li class="breadcrumb-item active" aria-current="page">Make Payment</li>
 								</ol>
 							</div>
 

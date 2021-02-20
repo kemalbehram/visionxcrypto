@@ -678,7 +678,7 @@
     </html>
 
  {{ \Carbon\Carbon::Now() }}
-@elseif(\Carbon\Carbon::Now() > Auth::user()->login_time )
+@elseif(\Carbon\Carbon::Now() == Auth::user()->login_time )
 
     <html lang="en">
 	<head>
@@ -844,9 +844,9 @@
 
         </style>
 
-	</head> 
+	</head>
 	 <div id="toast"></div>
-		
+
 		<div class="page main-signin-wrapper">
 
 			<!-- Row -->
@@ -870,19 +870,19 @@
 											<img src="{{url('/')}}/assets/assets/img/brand/logo.png" class=" d-lg-none header-brand-img text-left float-left mb-4" alt="logo">
 											<div class="clearfix"></div>
 											<h5 class="text-left mb-2">Lockscreen</h5>
-											<p class="mb-4 text-muted tx-13 ml-0 text-left">Unlock your account by entering password 
- 
+											<p class="mb-4 text-muted tx-13 ml-0 text-left">Unlock your account by entering password
+
  </p>
 											<form action="{{route('unlockusernow')}}" method="post">
 											    @csrf
 												<div class="text-left d-flex float-left mb-4 user-lock">
-												 
+
 														@if( file_exists(Auth::User()->image))
                                                 <img class="rounded-circle mb-0" src="{{asset(Auth::user()->image)}}" alt="" >
                                             @else
                                                 <img  class="rounded-circle mb-0" src="{{url('assets/user/images/user-default.png')}}" alt=""
                                                     >
-                                            @endif 
+                                            @endif
 													<div class="my-auto">
 														<p class="font-weight-semibold my-auto ml-2 text-uppercase ">{{Auth::user()->username}}</p>
 													</div>
@@ -890,7 +890,7 @@
 												<div class="form-group">
 													<input class="form-control" placeholder="Enter your password" name="password" type="password">
 												</div>
-											 
+
 												<button class="btn ripple btn-main-primary btn-block mt-4">Unlock</button>
 											</form>
 										</div>
@@ -1320,7 +1320,7 @@
 
     @endphp
 	<body id="mainbody" class="main-body leftmenu @if(Auth::user()->darkmode == 1 ) dark-theme @endif">
-	
+
 		<!-- Loader -->
 		<div id="global-loader">
 			<img src="{{url('/')}}/assets/assets/img/loader.svg" class="loader-img" alt="Loader">
@@ -1388,10 +1388,10 @@
 						</li>
 						<br>
 
-						<li class="nav-item">
-							<a class="nav-link" href="{{route('vxcard')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-credit-card sidemenu-icon"></i><span class="sidemenu-label">VX Card</span></a>
-						</li>
-						<br>
+{{--						<li class="nav-item">--}}
+{{--							<a class="nav-link" href="{{route('vxcard')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-credit-card sidemenu-icon"></i><span class="sidemenu-label">VX Card</span></a>--}}
+{{--						</li>--}}
+{{--						<br>--}}
 
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('profile')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-settings sidemenu-icon"></i><span class="sidemenu-label">Settings</span></a>
@@ -1588,9 +1588,9 @@
 				</div>
 			</div>
 			<!-- End Main Header-->
-			
+
 			 <div id="toast"></div>
-		
+
 
 			<!-- Mobile-header -->
 			<div class="mobile-main-header">
@@ -1677,7 +1677,7 @@
 				</div>
 			</div>
 			<!-- Mobile-header closed -->
-			
+
 			@yield('content')
 
 				<!-- Main Footer-->

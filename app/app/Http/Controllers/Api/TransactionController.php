@@ -1052,8 +1052,6 @@ class TransactionController extends Controller
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
 
-
-
         $auth = Auth::user();
         $basic = GeneralSettings::first();
         $currency = Currency::find($input['currencyid']);
@@ -1080,6 +1078,12 @@ class TransactionController extends Controller
         $buy['status'] = 0;
         $buy['trx'] = $trx;
         Trx::create($buy);
+
+        $data['user_id'] = Auth::id();
+        $data['title'] = "Buy Crypto";
+        $data['details'] = "I request to buy crypto with transaction id ".$trx;
+        $data['status'] = 0;
+        Message::create($data);
 
         return response()->json(['status' => 1, 'message' => 'Transaction is successful']);
 
@@ -1372,7 +1376,7 @@ class TransactionController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n\"to\": \"/topics/". $user->phone."\",\n\"data\": {\n\t\"extra_information\": \"Mega Cheap Data\"\n},\n\"notification\":{\n\t\"title\": \"". $title."\",\n\t\"text\":\"". $message."\"\n\t}\n}\n",
+            CURLOPT_POSTFIELDS =>"{\n\"to\": \"/topics/". $user->phone."\",\n\"data\": {\n\t\"extra_information\": \"Visionx\"\n},\n\"notification\":{\n\t\"title\": \"". $title."\",\n\t\"text\":\"". $message."\"\n\t}\n}\n",
             CURLOPT_HTTPHEADER => array(
                 "Authorization: key=".env('PUSH_NOTIFICATION_KEY'),
                 "Content-Type: application/json",
