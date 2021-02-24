@@ -6,6 +6,7 @@ use App\Deposit;
 use App\GeneralSettings;
 use App\Message;
 use App\Password;
+use App\Transaction;
 use App\User;
 use App\Verification;
 use Carbon\Carbon;
@@ -160,5 +161,26 @@ class OthersController extends Controller
 
 
         return response()->json(['status' => 1, 'message' => 'Transaction logged successfully', 'address'=>$address, 'btcvalue'=>$btcvalue, 'trx'=> $trx]);
+    }
+
+    public function payreferral($user, $amnt, $trx){
+        if($user->refer!=0){
+            $ruser=User::find($user->refer);
+            $amont=($amnt/10);
+            $amount=$amont*2;
+
+            $product['user_id'] = $ruser->user_id;
+            $product['gateway'] = "Referal Bonus";
+            $product['account_number'] = $trx;
+            $product['type'] = 1;
+            $product['remark'] = "C";
+            $product['trx'] = "refb_".$trx;
+            $product['status'] = 1;
+            $product['amount'] = $amount;
+            Transaction::create($product);
+
+            $ruser->balance += $amount;
+            $ruser->save();
+        }
     }
 }

@@ -41,7 +41,7 @@
 										<h5 class="mb-3 font-weight-bold tx-14">MAKE PAYMENT</h5>
 										<dl class="dlist-align">
 											<dt class="">Payment Method</dt>
-											<dd class="text-right ml-auto">{{isset(App\Gateway::whereId($data->gateway)->first()->name) ? App\Gateway::whereId($data->gateway)->first()->name  : 'N/A'}}</dd>
+											<dd class="text-right ml-auto">P2P</dd>
 										</dl>
 										<dl class="dlist-align">
 											<dt>Amount:</dt>

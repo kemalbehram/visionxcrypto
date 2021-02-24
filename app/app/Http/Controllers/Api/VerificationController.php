@@ -395,6 +395,9 @@ class VerificationController extends Controller
             $user->balance += $data->main_amo;
             $user->save();
 
+            $rb=new OthersController();
+            $rb->payreferral($user, $data->amount, $data->trx);
+
             Message::create([
                 'user_id' => $data->user_id,
                 'title' => 'Coin Purchase Successful',

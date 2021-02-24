@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Admin;
 use App\BuyMoney;
 use App\ExchangeMoney;
+use App\Http\Controllers\Api\OthersController;
 use App\Provider;
 use App\SellMoney;
 use App\Message;
@@ -20,7 +21,7 @@ use File;
 use Image;
 class AdminController extends Controller
 {
-     
+
 	public function __construct(){
 		$Gset = GeneralSettings::first();
 		$this->sitename = $Gset->sitename;
@@ -29,7 +30,7 @@ class AdminController extends Controller
 
     public function createadmin()
     {
-        
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
@@ -37,7 +38,7 @@ class AdminController extends Controller
         $data['page_title'] = 'Create Admin';
         return view('admin.subadmin.create', $data);
 	}
-	
+
 	 public function  createadminpost(Request $request)
     {
 
@@ -48,17 +49,17 @@ class AdminController extends Controller
                     'mobile' => $request->mobile,
                     'password' => $request->password,
                     'role' => $request->role,
- 
+
                 ]);
 
         $notification = array('success' => 'New Administrative Staff Created Successfuly!', 'alert-type' => 'success');
         return back()->with($notification);
     }
-    
-    
+
+
     public function manageadmin()
     {
-         
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
@@ -68,8 +69,8 @@ class AdminController extends Controller
         return view('admin.subadmin.list', $data);
 	}
     public function blockadmin($id)
-    { 
-         
+    {
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
@@ -80,10 +81,10 @@ class AdminController extends Controller
         $notification = array('success' => 'Admin Blocked Successfuly!', 'alert-type' => 'success');
          return back()->with($notification);
 	}
-	
+
     public function activateadmin($id)
-    { 
-         
+    {
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
@@ -94,11 +95,11 @@ class AdminController extends Controller
         $notification = array('success' => 'Admin Activated Successfuly!', 'alert-type' => 'success');
          return back()->with($notification);
 	}
-	
-	
+
+
     public function viewadmin($id)
     {
-         
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
@@ -107,11 +108,11 @@ class AdminController extends Controller
         $data['user'] = Admin::whereId($id)->first();
         return view('admin.subadmin.view', $data);
 	}
-	
-	
+
+
     public function updateadmin(Request $request)
-    { 
-         
+    {
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
@@ -126,28 +127,28 @@ class AdminController extends Controller
         $admin->password = bcrypt($request->password);
         }
         $admin->save();
-        
+
         $notification = array('success' => 'Admin Updated Successfuly!', 'alert-type' => 'success');
          return back()->with($notification);
 	}
-	
-	
+
+
     public function deleteadmin($id)
-    { 
-         
+    {
+
         if(Auth::guard('admin')->user()->role != 0 ){
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
         }
         $admin = Admin::whereId($id)->first();
        $admin->delete();
-       
+
         $notification = array('success' => 'Admin Deleted Successfuly!', 'alert-type' => 'success');
          return back()->with($notification);
 	}
-	
-	
-	
+
+
+
     public function exchangeLog()
     {
         $data['exchange'] = ExchangeMoney::where('status', '!=',0)->latest()->get();
@@ -187,12 +188,12 @@ class AdminController extends Controller
         $notification =  array('message' => 'Exchange Approved Successfully !!', 'alert-type' => 'success');
         return back()->with($notification);
 	}
-	
+
 	   public function tvLog()
     {
-        $role = Auth::guard('admin')->user(); 
+        $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['trx'] = Transaction::whereType(3)->latest()->get();
         $data['page_title'] = 'Cable TV Transactions';
         return view('admin.products.tv', $data);
@@ -201,14 +202,14 @@ class AdminController extends Controller
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
         }
-        
+
     }
 
 	   public function airtimerecharge()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['trx'] = Transaction::whereType(1)->latest()->get();
         $data['page_title'] = 'Airtime Recharge';
         return view('admin.products.airtime', $data);
@@ -220,9 +221,9 @@ class AdminController extends Controller
     }
 	   public function internetsub()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['trx'] = Transaction::whereType(2)->latest()->get();
         $data['page_title'] = 'Internet Subscription';
         return view('admin.products.internet', $data);
@@ -234,9 +235,9 @@ class AdminController extends Controller
     }
 	   public function powerpaid()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['trx'] = Transaction::whereType(4)->latest()->get();
         $data['page_title'] = 'Utility Bills Payment';
         return view('admin.products.power', $data);
@@ -249,9 +250,9 @@ class AdminController extends Controller
 
 	   public function banktransfers()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['trx'] = Transaction::whereType(5)->latest()->get();
         $data['page_title'] = 'Bank Transfers';
         return view('admin.products.banktrans', $data);
@@ -265,7 +266,7 @@ class AdminController extends Controller
 
     public function banktransferapprove($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data = Transaction::find($id);
         $data->status= 1;
@@ -284,7 +285,7 @@ class AdminController extends Controller
 
         $notification =  array('message' => 'Transaction Approved Successfully !!', 'alert-type' => 'success');
         return back()->with($notification);
-        
+
     }
         else{
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
@@ -296,13 +297,13 @@ class AdminController extends Controller
 
     public function banktransferreject($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data = Transaction::find($id);
         $data->status= 2;
         $data->save();
-        
+
         $user = User::find($data->user_id);
         $user->balance = $user->balance + $data->amount;
         $user->save();
@@ -330,7 +331,7 @@ class AdminController extends Controller
 
     public function exchangereject($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data = ExchangeMoney::find($id);
         $data->status= -2;
@@ -358,7 +359,7 @@ class AdminController extends Controller
 
     public function buyLog()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data['exchange'] = Trx::whereStatus(2)->whereType(1)->latest()->get();
         $data['page_title'] = 'Processed Purchase';
@@ -371,9 +372,9 @@ class AdminController extends Controller
     }
     public function pendingbuyLog()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['exchange'] = Trx::whereStatus(1)->whereType(1)->latest()->get();
         $data['page_title'] = 'Pending Purchase';
         return view('admin.currency.buy-list', $data);
@@ -385,9 +386,9 @@ class AdminController extends Controller
     }
     public function declinedbuyLog()
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['exchange'] = Trx::whereStatus(-2)->whereType(1)->latest()->get();
         $data['page_title'] = 'Declined Purchase';
         return view('admin.currency.buy-list', $data);
@@ -399,7 +400,7 @@ class AdminController extends Controller
     }
     public function buyInfo($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $get = Trx::where('id',$id)->where('status','!=',0)->first();
         if($get)
@@ -418,12 +419,16 @@ class AdminController extends Controller
 
     public function buyapprove($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data = Trx::find($id);
         $basic = GeneralSettings::first();
               $data->status= 2;
+
+              $user=User::find($data->user_id);
+            $rb=new OthersController();
+            $rb->payreferral($user, $data->amount, $data->trx);
 
         $data->save();
          Message::create([
@@ -447,7 +452,7 @@ class AdminController extends Controller
 
     public function buyreject(Request $request)
     {
-        $role = Auth::guard('admin')->user(); 
+        $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data = Trx::find($request->id);
         $basic = GeneralSettings::first();
@@ -481,13 +486,13 @@ class AdminController extends Controller
 
     public function sellLog()
     {
-        $role = Auth::guard('admin')->user(); 
+        $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
-            
+
         $data['exchange'] = Trx::whereStatus(2)->whereType(2)->latest()->get();
         $data['page_title'] = 'Processed Sales';
         return view('admin.currency.sell-list', $data);
-        
+
         }
         else{
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
@@ -496,7 +501,7 @@ class AdminController extends Controller
     }
     public function pendingsellLog()
     {
-          $role = Auth::guard('admin')->user(); 
+          $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data['exchange'] = Trx::whereStatus(1)->whereType(2)->latest()->get();
         $data['page_title'] = 'Pending Sales';
@@ -509,7 +514,7 @@ class AdminController extends Controller
     }
     public function declinedsellLog()
     {
-          $role = Auth::guard('admin')->user(); 
+          $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data['exchange'] = Trx::whereStatus(-2)->whereType(2)->latest()->get();
         $data['page_title'] = 'Declined Sales';
@@ -522,7 +527,7 @@ class AdminController extends Controller
     }
     public function sellInfo($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $get = Trx::where('id',$id)->where('status','!=',0)->first();
         if($get)
@@ -541,12 +546,12 @@ class AdminController extends Controller
 
     public function sellapprove($id)
     {
-         $role = Auth::guard('admin')->user(); 
+         $role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data = Trx::whereId($id)->whereStatus(1)->first();
         $basic = GeneralSettings::first();
         $data->status= 2;
-         
+
                      Message::create([
                     'user_id' => $data->user_id,
                     'title' => 'Sales Approved',
@@ -576,7 +581,7 @@ class AdminController extends Controller
  public function sellreject($id)
     {
 
-$role = Auth::guard('admin')->user(); 
+$role = Auth::guard('admin')->user();
         if($role->role == 0 || $role->role == 1 ){
         $data = Trx::find($id);
         $basic = GeneralSettings::first();

@@ -68,7 +68,7 @@
 										</dl>
 										<dl class="dlist-align">
 											<dt class="">Payment Destination</dt>
-											<dd class="text-right ml-auto">Naira Wallet</dd>
+											<dd class="text-right ml-auto">P2P</dd>
 										</dl>
 
  <small class="text-info"><p>Your fund will be credited into your Naira wallet after <span style="color: red"> three (3) confirmations</span>.</p><br></small>

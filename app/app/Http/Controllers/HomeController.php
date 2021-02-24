@@ -7,6 +7,7 @@ use App\BuyMoney;
 use App\Currency;
 use App\Deposit;
 use App\ExchangeMoney;
+use App\Http\Controllers\Api\OthersController;
 use App\PaymentMethod;
 use App\Localbank;
 use App\Gateway;
@@ -2068,6 +2069,10 @@ class HomeController extends Controller
             $user = User::find($data->user_id);
             $user->balance += $data->main_amo;
             $user->save();
+
+
+            $rb=new OthersController();
+            $rb->payreferral($user, $data->amount, $data->trx);
 
             Message::create([
                 'user_id' => $data->user_id,
