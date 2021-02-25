@@ -33,8 +33,8 @@
 											    <hr>
 												<h4 class="text-white">Ensure you are sending payment from your default bank account as seen below:</h4><br>
 												<b>Bank Name: {{Auth::user()->bank}}<br>
-												Account Name: {{Auth::user()->accountno}}<br>
-												Account Number: {{Auth::user()->accountname}}</b>
+												Account Number: {{Auth::user()->accountno}}<br>
+												Account Name: {{Auth::user()->accountname}}</b>
 
 												</p>
 											</div>
