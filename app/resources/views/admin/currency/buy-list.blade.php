@@ -40,11 +40,11 @@
 
 <td class="data-col text-right"><div class="relative d-inline-block"><a href="#" class="btn btn-light-alt btn-xs btn-icon toggle-tigger"><em class="ti ti-more-alt"></em></a><div class="toggle-class dropdown-content dropdown-content-top-left"><ul class="dropdown-list"><li><a href="{{route('buy-info',$data->id)}}"><em class="ti ti-eye"></em> View Details</a></li>
 
-@if($data->status == 1)
-<li><a href="{{route('buy.approve',$data->id)}}"><em class="ti ti-check-box"></em> Approve</a></li>
-<li><a href="{{route('buy.reject',$data->id)}}"><em class="ti ti-na"></em> Decline</a></li>
+{{--@if($data->status == 1)--}}
+{{--<li><a href="{{route('buy.approve',$data->id)}}"><em class="ti ti-check-box"></em> Approve</a></li>--}}
+{{--<li><a href="{{route('buy.reject',$data->id)}}"><em class="ti ti-na"></em> Decline</a></li>--}}
 
-@endif
+{{--@endif--}}
 
 
 </ul></div></div></td></tr><!-- .data-item -->
