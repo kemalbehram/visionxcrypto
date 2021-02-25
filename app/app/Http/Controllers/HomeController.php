@@ -2570,12 +2570,12 @@ class HomeController extends Controller
     public function sent()
     {
         $auth = Auth::user();
-        $data['page_title'] = "Outbox";
-        $data['inbox'] = Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at', 'desc')->paginate(6);
+        $data['page_title'] = "Sent";
+        $data['inbox'] = Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at', 'desc')->paginate(6);
         $data['sent'] = Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at', 'desc')->count();
-        $data['total'] = Message::where('user_id', $auth->id)->whereAdmin(1)->orderBy('created_at', 'desc')->count();
-        $data['unread'] = Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(0)->orderBy('created_at', 'desc')->count();
-        $data['read'] = Message::where('user_id', $auth->id)->whereAdmin(1)->whereView(1)->orderBy('created_at', 'desc')->count();
+        $data['total'] = Message::where('user_id', $auth->id)->whereAdmin(0)->orderBy('created_at', 'desc')->count();
+        $data['unread'] = Message::where('user_id', $auth->id)->whereAdmin(0)->whereView(0)->orderBy('created_at', 'desc')->count();
+        $data['read'] = Message::where('user_id', $auth->id)->whereAdmin(0)->whereView(1)->orderBy('created_at', 'desc')->count();
         $data['count'] = Message::where('user_id', $auth->id)->whereStatus(0)->whereAdmin(1)->orderBy('created_at', 'desc')->count();
         return view('user.inbox', $data);
     }
