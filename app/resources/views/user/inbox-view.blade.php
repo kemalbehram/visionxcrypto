@@ -51,7 +51,7 @@
 										</div>
 										<div class="eamil-body">
 											<h6 class="mb-3">Hi {{Auth::user()->username}}</h6>
-											<p> {{$inbox->details}}</p>
+											<p> {!!$inbox->details!!}</p>
 											<p class="mb-0">{{$basic->sitename}}</p>
 											<hr>
 											
