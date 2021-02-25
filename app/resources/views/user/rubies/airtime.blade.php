@@ -55,7 +55,7 @@
 														<th class="wd-1"></th>
 														<th>TRX ID</th>
 														<th>Date</th> 
-														<th>Gateway</th> 
+														<th>Remark</th> 
 														<th>Total</th>
 														<th>Status</th>
 													</tr>
