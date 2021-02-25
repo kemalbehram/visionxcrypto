@@ -1838,7 +1838,7 @@ class HomeController extends Controller
         $buy['bankname'] = "VisionX";
         $buy['accountname'] = $auth->username;
         $buy['accountnumber'] = $auth->account_number;
-        $buy['rate'] = $currency->buy;
+        $buy['rate'] = $currency->sell;
         $buy['status'] = 0;
         $buy['trx'] = $trx;
         $data = Trx::create($buy)->trx;
