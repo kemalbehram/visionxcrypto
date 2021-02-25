@@ -70,7 +70,10 @@
 														</td>
 														<td class="font-weight-bold">{{isset($data->trx ) ? $data->trx  : 'N/A'}}</td>
 														<td>{!! date(' D, d/M/Y', strtotime($data->created_at)) !!}</td> 
-														<td class="text-info font-weight-bold">{{$data->remark}}</td> 
+														<td class="text-info font-weight-bold">{{$data->remark}}
+                                                        <br>
+                                                        <b>{{$data->account_number}}</b>
+                                                        </td> 
 														<td class="text-success font-weight-bold">({{$data->gateway}})<br>{{$basic->currency_sym}}{{number_format($data->amount,2)}} </td>
 														<td>
 														@if($data->status == 1)
