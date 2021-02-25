@@ -1387,6 +1387,21 @@
 							</ul>
 						</li>
 						<br>
+							<li class="nav-item">
+							<a class="nav-link with-sub" href="#"><span class="shape1"></span><span class="shape2"></span><i class="ti-support sidemenu-icon"></i><span class="sidemenu-label">Support Ticket</span><i class="angle fe fe-chevron-right"></i></a>
+							<ul class="nav-sub">
+
+								<li class="nav-sub-item">
+									<a class="nav-sub-link" href="{{route('createmessage')}}">Create Ticket</a>
+								</li>
+
+								<li class="nav-sub-item">
+									<a class="nav-sub-link" href="{{route('sent')}}">My Tickets</a>
+								</li>
+
+							</ul>
+						</li>
+						<br>
 
 {{--						<li class="nav-item">--}}
 {{--							<a class="nav-link" href="{{route('vxcard')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-credit-card sidemenu-icon"></i><span class="sidemenu-label">VX Card</span></a>--}}
