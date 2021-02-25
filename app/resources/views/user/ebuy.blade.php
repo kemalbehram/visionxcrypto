@@ -30,8 +30,16 @@
 											<div class="text-left text-white background-text">
 												<h4 class="mb-3 tx-30 font-weight-semibold">Buy {{$data->currency->name}}</h4>
 												<p class="tx-18 mb-5 text-white-50">Find below the summary of your {{$data->currency->name}} purchase. {{$basic->sitename}} will not be liable to any loss arising from wrong wallet address, or reduction in {{$data->currency->name}} price rate. <br>You can cancel this operation by clicking <a href="{{ route('ebuydel',$data->trx) }}">here</a></p>
+											    <hr>
+												<h4 class="text-white">Ensure are sending payment from your default bank account as seen below:</h4><br>
+												<b>Bank Name: {{Auth::user()->bank}}<br>
+												Account Name: {{Auth::user()->accountno}}<br>
+												Account Number: {{Auth::user()->accountname}}</b>
+
+												</p>
 											</div>
 											<div class="row">
+											    
 												<div class="col-xl-12 col-lg-12 col-md-12 d-block mx-auto">
 													<div class="item-search-tabs mb-6 background-text">
 														<div class="buy-sell">
