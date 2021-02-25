@@ -220,10 +220,10 @@ class ProductController extends Controller
 
 		 $data['transactions'] = Transaction::whereStatus(1)->where('user_id', Auth::id())->latest()->whereType(2)->get();
 
-		$data['mtn'] = $rep['MTN'];
-		$data['airtel'] = $rep['AIRTEL'];
-		$data['glo'] = $rep['GLO'];
-		$data['ninemobile'] = $rep['9MOBILE'];
+	//	$data['mtn'] = $rep['MTN'];
+		//$data['airtel'] = $rep['AIRTEL'];
+		//$data['glo'] = $rep['GLO'];
+		//$data['ninemobile'] = $rep['9MOBILE'];
 
         return view('user.rubies.internet', $data);
     }
