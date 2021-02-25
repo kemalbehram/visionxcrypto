@@ -231,7 +231,12 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepay')->name('ebuypost2');
         Route::get('/ebuy-del/{id}', 'HomeController@ebuydel')->name('ebuydel');
         Route::get('/ebuy-pay', 'HomeController@ebuyonlinepost2')->name('ebuypost2');
-        Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepost22')->name('ebuypost22');
+        Route::get('/pair-pay/{id}', 'HomeController@ebuypeerpay')->name('pairpay');
+        
+        Route::post('ebuypeerpaid', 'HomeController@ebuypeerpaid')->name('ebuypeerpaid');
+         Route::get('/ebuy-pay/{id}', 'HomeController@ebuyonlinepost22')->name('ebuypost22');
+         
+         
         Route::post('/ebuy-upload', 'HomeController@ebuyupload')->name('ebuyupload');
 
 
@@ -331,6 +336,8 @@ Route::group(['prefix' => 'adminwantsomeicecubesbutitishardtoget', 'middleware' 
     Route::get('/buy-log/{id}', 'AdminController@buyInfo')->name('buy-info');
     Route::get('/buy-app/{id}', 'AdminController@buyapprove')->name('buy.approve');
     Route::get('/buy-rej/{id}', 'AdminController@buyreject')->name('buy.reject');
+    
+    Route::post('/buy-peeruser/{id}', 'AdminController@peeruser')->name('buy-peeruser');
 
 
     //Product Controller
