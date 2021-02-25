@@ -7,7 +7,6 @@ use App\BuyMoney;
 use App\Currency;
 use App\Deposit;
 use App\ExchangeMoney;
-use App\Http\Controllers\Api\OthersController;
 use App\PaymentMethod;
 use App\Localbank;
 use App\Gateway;
@@ -1118,7 +1117,7 @@ class HomeController extends Controller
         $user->balance = $user->balance + $request->amount;
         $user->bonus = $user->bonus - $request->amount;
         $user->save();
-        return back()->with('success', 'Bonus Cpnverted Successfuly.');
+        return back()->with('success', 'Bonus Converted Successfuly.');
 
     }
 
@@ -1533,7 +1532,7 @@ class HomeController extends Controller
 
 
             $charge = $basic->transcharge;
-            $usd = $request->usd * $currency->sell;
+            $usd = $request->usd * $currency->buy;
             $topay = $usd + $charge;
             $get = $request->usd / $currency->price;
 
@@ -1547,7 +1546,7 @@ class HomeController extends Controller
             $buy['type'] = 1;
             $buy['method'] = $request->method;
             $buy['wallet'] = $request->wallet;
-            $buy['rate'] = $currency->sell;
+            $buy['rate'] = $currency->buy;
             $buy['bank'] = $request->bank;
             $buy['remark'] = $request->comment;
             $buy['status'] = 0;
@@ -1584,7 +1583,7 @@ class HomeController extends Controller
             }
 
             $charge = $basic->transcharge;
-            $usd = $request->usd * $currency->sell;
+            $usd = $request->usd * $currency->buy;
             $topay = $usd + $charge;
             $get = $request->usd / $currency->price;
 
@@ -1697,6 +1696,64 @@ class HomeController extends Controller
 
     }
 
+    public function ebuypeerpay($id)
+    {
+        
+        $data = Trx::where('status', 1)->where('trx', $id)->first();
+        
+        if(!$data){
+             return back()->with('danger', 'This transaction has expired or does not exist');
+        }
+        
+        if($data->action != 1){
+             return back()->with('danger', 'You have not been paired to execute this transaction');
+        }
+        $method = PaymentMethod::all();
+        $page_title = "Make Payment";
+        $auth = Auth::user();
+        return view('user.buypeer', compact('data', 'method', 'page_title'));
+
+    }
+    
+    
+    public function ebuypeerpaid(Request $request)
+    {
+
+         $this->validate($request, [
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+        
+        $basic = GeneralSettings::first();
+        $data = Trx::where('action', 1)->where('trx', $request->trx)->first();
+        $count = Trx::where('action', 1)->where('trx', $request->trx)->count();
+        $auth = Auth::user();
+
+        if ($count < 1) {
+            return back()->with('danger', 'This transaction has expired or does not exist');
+        }
+
+        $data->action = 2;
+        if ($request->hasFile('photo')) {
+            $data['image'] = uniqid() . '.jpg';
+            $request->photo->move('uploads/payments', $data['image']);
+        }
+
+
+        $data->save();
+
+        Message::create([
+            'user_id' => $auth->id,
+            'title' => 'Coin Purchased',
+            'details' => 'You have uploaded your proof of payment successfully for your buy order  with transaction number ' . $data->trx . 'Please wait while seller verifies your payment. Thank you for choosing ' . $basic->sitename . '',
+            'admin' => 1,
+            'status' => 0
+        ]);
+ 
+
+        return redirect()->route('trade')->with("success", " You have uploaded your proof of payment successfully. Please wait while seller verifies your payment");
+
+    }
+
 
     public function ebuyupload(Request $request)
     {
@@ -1713,7 +1770,7 @@ class HomeController extends Controller
 
         $data->amountpaid = $data->main_amo;
         $data->depositor = $auth->username;
-        $data->tnum = rand(000000, 999999) . rand(000000, 999999);
+        //$data->tnum = rand(000000, 999999) . rand(000000, 999999);
         $data->method = 1;
         $data->status = 1;
         if ($request->hasFile('photo')) {
@@ -2069,10 +2126,6 @@ class HomeController extends Controller
             $user = User::find($data->user_id);
             $user->balance += $data->main_amo;
             $user->save();
-
-
-            $rb=new OthersController();
-            $rb->payreferral($user, $data->amount, $data->trx);
 
             Message::create([
                 'user_id' => $data->user_id,
