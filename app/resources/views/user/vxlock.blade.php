@@ -38,7 +38,7 @@
 												
 											</div>
 											<div class="  ">
-												<img src="{{url('/')}}/assets/img/pngs/bankvault2.png" alt="image" class="  ">
+												<img src="{{url('/')}}/assets/assets/img/pngs/bankvault2.png" alt="image" class="  ">
 											</div>
 										</div>
 									</div>
@@ -59,7 +59,7 @@
 												<a href="#" class="btn ripple btn-primary mt-3">COMING SOON</a>
 											</div>
 											<div class="  ">
-												<img src="{{url('/')}}/assets/img/pngs/coininvest.png" alt="image" class="  ">
+												<img src="{{url('/')}}/assets/assets/img/pngs/coininvest.png" alt="image" class="  ">
 											</div>
 										</div>
 									</div>
