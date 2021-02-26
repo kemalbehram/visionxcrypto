@@ -139,7 +139,7 @@
 											<h5 class="mb-1">VX Vault</h5>
 											<p class="mb-1 tx-inverse">Investment Bank</p>
 										</div>
-										<a href="{{route('coinvest')}}" class="btn ripple btn-primary mt-3">Get started</a>
+										<a href="{{route('vxvault')}}" class="btn ripple btn-primary mt-3">Get started</a>
 									</div>
 								</div>
 							</div>
