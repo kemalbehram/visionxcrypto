@@ -54,13 +54,15 @@
 
             <!-- Row -->
             <div class="row row-sm">
-                <div class="col-12">
+                <div class="col-lg-12 col-md-12">
                     <div class="card custom-card productdesc">
                         <div class="card-body h-100">
                             <div class="row">
+
                                 <div class="col-12 col-lg-6">
-                                    <div class="mt-4 mb-1">
+                                    <div class="mt-1 mb-4">
                                         <h4 class="mt-1 mb-3">Bank Details</h4>
+
                                         <h5 class="mb-2">Bank Name <b>{{$data->bankname}}</b></h5>
                                         <h5 class="mb-2">Account Number <b>{{$data->accountnumber}}</b></h5>
                                         <h5 class="mb-2">Account Name <b>{{$data->accountname}}</b></h5>
@@ -69,7 +71,6 @@
 
                                         <h6 class="mt-4 fs-16 text-danger">Please ensure your are sending from your to hasten your transaction process</h6>
                                         <p class="text-danger">{{$basic->sitename}} will not be responsible for any loss arising from you funding a wrong account number other than the one provided on this page</p>
-
 
                                     </div>
                                     <p>Click on the I have paid button below to complete your transaction.</p><br>
@@ -81,6 +82,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-6 text-center">
+
                                     <h1 id="title">Countdown Clock</h1>
                                     <div id="clockdiv">
                                         <div>

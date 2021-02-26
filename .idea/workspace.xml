@@ -19,11 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/views/user/buypeer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/user/buypeer.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -280,7 +276,7 @@
       <workItem from="1614157132359" duration="52000" />
       <workItem from="1614197731095" duration="1240000" />
       <workItem from="1614214448856" duration="41000" />
-      <workItem from="1614217798014" duration="7534000" />
+      <workItem from="1614217798014" duration="8360000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
