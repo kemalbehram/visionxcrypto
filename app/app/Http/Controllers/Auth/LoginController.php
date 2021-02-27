@@ -8,6 +8,7 @@ use App\UserLogin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
+use Mail;
 
 
 class LoginController extends Controller
@@ -55,11 +56,23 @@ class LoginController extends Controller
             return redirect('/')->with($notification);
         }
        
+        $user_ip = request()->ip();
+
+        if($user_ip !=$user->ip_address){
+          $content = "Sorry your account was just accessed from an unknown IP address<br> " .$ip_address. ".<br>If this was you, please you can ignore this message or reset your account password.";
+           $body = $content;
+            $data = array('name'=>"$user->username");
+            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
+            $m->from(env('MAIL_USERNAME'), 'Debit Alert');
+            $m->to($user->email, $user->username)->subject('Suspicious Login Attempt');
+            });
+
+          }
+
         $time = Carbon::parse(Carbon::now())->addMinutes(30);
         $user->login_time = $time;
+        $user->provider = $user_ip;
         $user->save();
-
-        $user_ip = request()->ip();
 
 
 // Use JSON encoded string and converts
