@@ -397,6 +397,7 @@ class AdminController extends Controller
         return back()->with($notification);
         }
     }
+    
     public function buyInfo($id)
     {
          $role = Auth::guard('admin')->user(); 
@@ -410,6 +411,50 @@ class AdminController extends Controller
         }
         abort(404);
     }
+        else{
+             $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
+        return back()->with($notification);
+        }
+    }
+    
+    public function peeruser(Request $request, $id)
+    {
+          $request->validate([
+            'bank_name' => 'required',
+            'account_name' => 'required|min:10',
+            'account_number' => 'required',
+        ]);
+        
+        
+         $role = Auth::guard('admin')->user(); 
+        if($role->role == 0 || $role->role == 1 ){
+            
+        $data = Trx::find($id);
+        
+        if($data->action == 1){
+             $notification = array('danger' => 'You have already paired this buy order with a bank account details!', 'alert-type' => 'danger');
+            
+        }
+        $basic = GeneralSettings::first();
+        $data->action= 1;
+        $data->bankname= $request->bank_name;
+        $data->accountname= $request->account_name;
+        $data->accountnumber= $request->account_number;
+
+        $data->save();
+        Message::create([
+                    'user_id' => $data->user_id,
+                    'title' => 'You Have Been Paired',
+                    'details' => 'Your cryptocurrency sell order with transaction number '.$data->trx.' has been processed. You have been paired to make payment to the following account details. Please note you have a 15Minutes payment window to complete the transaction before payment is closed on our server. Click the link below continue process <a href="'.$basic->baseurl.'/user/pair-pay/'.$data->trx.'"<button class="btn btn-success">Proceed</button></a>',
+                    'admin' => 1,
+                    'status' =>  0
+                ]);
+
+
+
+        $notification =  array('message' => 'User Paired Successfully !!', 'alert-type' => 'success');
+        return back()->with($notification);
+        }
         else{
              $notification = array('danger' => 'You dont have permission to view this page!', 'alert-type' => 'danger');
         return back()->with($notification);
