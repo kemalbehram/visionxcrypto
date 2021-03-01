@@ -84,7 +84,7 @@
 @endif
 
 
-@if(Auth::guard('admin')->user()->role == 3 OR Auth::guard('admin')->user()->role == 0 )
+@if(Auth::guard('admin')->user()->role == 3 OR Auth::guard('admin')->user()->role == 1 OR Auth::guard('admin')->user()->role == 0 )
 <li class="has-dropdown page-links-all"><a class="drop-toggle" href="#"><em class="text-primary ti ti-comments"></em>&nbsp;  Message</a><ul class="navbar-dropdown"></li>
  <li class=" "><a class="" href="{{route('user.notification')}}">Create News</a></li>
  <li class=" "><a class="" href="{{route('dashnote')}}">Create Notification</a></li>
