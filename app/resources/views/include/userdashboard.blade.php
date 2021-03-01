@@ -1482,28 +1482,30 @@
 							 @endphp
 
 							 @if($stars == 1)
-							 <i class="fa fa-star"style="color:green"></i>
-							 <i class="fa fa-star"style="color:red"></i>
-							 <i class="fa fa-star"style="color:red"></i>
-							 <i class="fa fa-star"style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:green"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 
 							 @elseif($stars == 2 || $stars == 3)
-
-							 <i class="fa fa-star"style="color:green"></i>
-							 <i class="fa fa-star"style="color:green"></i>
-							 <i class="fa fa-star"style="color:red"></i>
-							 <i class="fa fa-star"style="color:red"></i>
+ <i class="mdi mdi-approval" style="color:green"></i>
+							 <i class="mdi mdi-approval" style="color:green"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 
 							 @elseif($stars == 4 || $stars == 5)
 
-							 <i class="fa fa-star"style="color:green"></i>
-							 <i class="fa fa-star"style="color:green"></i>
-							 <i class="fa fa-star"style="color:green"></i>
-							 <i class="fa fa-star"style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:green"></i>
+							 <i class="mdi mdi-approval" style="color:green"></i>
+							 <i class="mdi mdi-approval" style="color:green"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 
 							 @else
 
-							 <i class="fa fa-star"style="color:red"></i>
-							 <i class="fa fa-star"style="color:red"></i>
-							 <i class="fa fa-star"style="color:red"></i>
-							 <i class="fa fa-star"style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
+							 <i class="mdi mdi-approval" style="color:red"></i>
 							 @endif
 
 
