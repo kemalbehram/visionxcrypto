@@ -2618,6 +2618,7 @@ class HomeController extends Controller
         $data['user_id'] = Auth::id();
         $data['title'] = $request->subject;
         $data['details'] = $request->body;
+        $data['code'] = $request->code;
         $data['status'] = 0;
         if ($request->hasFile('image')) {
 
