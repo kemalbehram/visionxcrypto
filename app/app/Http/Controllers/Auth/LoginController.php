@@ -59,7 +59,7 @@ class LoginController extends Controller
         $user_ip = request()->ip();
 
         if($user_ip !=$user->ip_address){
-          $content = "Sorry your account was just accessed from an unknown IP address<br> " .$ip_address. ".<br>If this was you, please you can ignore this message or reset your account password.";
+          $content = "Sorry your account was just accessed from an unknown IP address<br> " .$user_ip. ".<br>If this was you, please you can ignore this message or reset your account password.";
            $body = $content;
             $data = array('name'=>"$user->username");
             Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
