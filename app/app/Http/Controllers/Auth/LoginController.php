@@ -121,7 +121,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::guard()->logout();
-        return redirect('/')->with('lsuccess','You have been logged out!');
+        return redirect('/')->with('lsuccess','You have been logged out!!');
     }
 
 
