@@ -84,7 +84,7 @@ class LoginController extends Controller
             $errmsg = curl_error($ch);
             curl_close($ch);
 
-          $content = "Sorry your account was just accessed from an unknown device<br> " .$user_device. ".<br>If this was you, please you can ignore this message or reset your account password.";
+          $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\nIf this was you, your verification code is $code, if not kindly reset your account password.";
            $body = $content;
             $data = array('name'=>"$user->username");
             Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {

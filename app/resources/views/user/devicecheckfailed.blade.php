@@ -91,7 +91,7 @@
             </div>
             <form class="verification-code-form" action="{{ route('user.vunauthorize')}}" method="post">
                 @csrf
-                <input type="text" name="sms_code" placeholder="Enter the 5-digit code">
+                <input type="text" name="sms_code" placeholder="Enter the 6-digit code">
                 <input type="hidden" name="id" value="{{Auth::user()->id}}">
                 <button type="submit" class="theme-button"><span></span>Verify</button>
             </form>
