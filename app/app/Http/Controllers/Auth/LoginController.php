@@ -84,7 +84,7 @@ class LoginController extends Controller
             $errmsg = curl_error($ch);
             curl_close($ch);
 
-          $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\nIf this was you, your verification code is $code, if not kindly reset your account password.";
+          $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\n\nIf this was you, your verification code is $code. \n\nIf not you, kindly reset your account password.";
            $body = $content;
             $data = array('name'=>"$user->username");
             Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
@@ -95,6 +95,7 @@ class LoginController extends Controller
 
         $time = Carbon::parse(Carbon::now())->addMinutes(30);
         $user->login_time = $time;
+        $user->sms_code = $code;
         $user->save();
 
 // Use JSON encoded string and converts
