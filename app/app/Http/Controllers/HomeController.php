@@ -276,6 +276,20 @@ class HomeController extends Controller
         return back();
     }
 
+    public function vunauthorize(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        if ($user->sms_code == $request->sms_code) {
+            $user->web_device = $_SERVER['HTTP_USER_AGENT'];
+            $user->save();
+            session()->flash('success', 'Device has been authorized');
+            return redirect()->route('home');
+        } else {
+            session()->flash('danger', 'Verification Code Did not match');
+        }
+        return back();
+    }
+
     public function bvnVerify(Request $request)
     {
         $user = Auth::user();
@@ -1698,13 +1712,13 @@ class HomeController extends Controller
 
     public function ebuypeerpay($id)
     {
-        
+
         $data = Trx::where('status', 1)->where('trx', $id)->first();
-        
+
         if(!$data){
              return back()->with('danger', 'This transaction has expired or does not exist');
         }
-        
+
         if($data->action != 1){
              return back()->with('danger', 'You have not been paired to execute this transaction');
         }
@@ -1714,15 +1728,15 @@ class HomeController extends Controller
         return view('user.buypeer', compact('data', 'method', 'page_title'));
 
     }
-    
-    
+
+
     public function ebuypeerpaid(Request $request)
     {
 
          $this->validate($request, [
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        
+
         $basic = GeneralSettings::first();
         $data = Trx::where('action', 1)->where('trx', $request->trx)->first();
         $count = Trx::where('action', 1)->where('trx', $request->trx)->count();
@@ -1748,7 +1762,7 @@ class HomeController extends Controller
             'admin' => 1,
             'status' => 0
         ]);
- 
+
 
         return redirect()->route('trade')->with("success", " You have uploaded your proof of payment successfully. Please wait while seller verifies your payment");
 

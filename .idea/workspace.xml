@@ -19,7 +19,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work" />
+    <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
+      <change afterPath="$PROJECT_DIR$/app/resources/views/user/devicecheckfailed.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +141,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../repo/bigbluebutton" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/resources/views/user" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -276,7 +283,13 @@
       <workItem from="1614157132359" duration="52000" />
       <workItem from="1614197731095" duration="1240000" />
       <workItem from="1614214448856" duration="41000" />
-      <workItem from="1614217798014" duration="8360000" />
+      <workItem from="1614217798014" duration="9309000" />
+      <workItem from="1614355349676" duration="14000" />
+      <workItem from="1614382211052" duration="178000" />
+      <workItem from="1614382437428" duration="1084000" />
+      <workItem from="1614412572552" duration="436000" />
+      <workItem from="1614692545287" duration="264000" />
+      <workItem from="1614712340853" duration="4284000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -337,7 +350,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>619</line>
+          <line>633</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -382,7 +395,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>633</line>
+          <line>647</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="postbank" />
@@ -400,7 +413,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>575</line>
+          <line>589</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="kyc2" />
@@ -427,7 +440,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>2062</line>
+          <line>2076</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="esellcallback" />
