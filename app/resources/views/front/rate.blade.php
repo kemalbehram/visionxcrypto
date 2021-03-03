@@ -164,10 +164,12 @@ function myFunction() {
  var paysell = 1*amount+sellcharge;
  var rate = parseFloat(1*amount/price).toFixed(8);
 
- document.getElementById("unit").innerHTML = "What you get: " + rate + cur;
-
- document.getElementById("buy").innerHTML = "We buy at: USD " + paybuy;
- document.getElementById("sell").innerHTML = "We sell at: USD " + paysell;
+ //document.getElementById("unit").innerHTML = "What you get: " + rate + cur;
+ 
+ var webuy = amount*buy;
+ var wesell = amount*sell;
+ document.getElementById("buy").innerHTML = "We buy at: USD " + webuy;
+ document.getElementById("sell").innerHTML = "We sell at: USD " + wesell;
  var unit = parseFloat(amount / price).toFixed(8);
  document.getElementById("price").innerHTML = "USD " +      Math.round(rate).toFixed(2);
 
@@ -189,8 +191,7 @@ function myFunction() {
 <br>
 
 <p id="buy"></p>
-<p id="sell"></p>
-<p id="unit"></p>
+<p id="sell"></p> 
 
 
 </div></section>
