@@ -551,7 +551,7 @@ class ProductController extends Controller
      $curl = curl_init();
 
 	  curl_setopt_array($curl, array(
-	  CURLOPT_URL => "https://openapi.rubiesbank.io/v1/fundtransfer",
+	  //CURLOPT_URL => "https://openapi.rubiesbank.io/v1/fundtransfer",
 	  CURLOPT_RETURNTRANSFER => true,
 	  CURLOPT_ENCODING => "",
 	  CURLOPT_MAXREDIRS => 10,
@@ -698,6 +698,13 @@ class ProductController extends Controller
 
      public function validatedecoder(Request $request)
     {
+        
+         $auth = Auth::user();
+        if ($auth->verified != 2) {
+            return back()->withAlert('Please yiur need verify your account before buying cable tv bouquet');
+        }
+        
+        
          $user = Auth::user();
 	     $request->validate([
             'decodernumber' => 'required',
@@ -951,6 +958,11 @@ class ProductController extends Controller
 
 	public function validatemeter(Request $request)
 		{
+		    
+		      $auth = Auth::user();
+        if ($auth->verified != 2) {
+            return back()->withAlert('Please you need to verify your account before paying utility bills');
+        }
 
 		 $user = Auth::user();
 	   $request->validate([
