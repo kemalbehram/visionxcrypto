@@ -33,10 +33,7 @@
     </style>
  <form class="login-form" id="login-form" action="" method="post">
  {{ csrf_field() }}
-<center>
-<strong><u>Demo Login</u></strong><br>
-Email: admin@admin.com<br>
-Password: admin123</center>
+ 
 <div class="field-item"><div class="field-wrap"><input name="username" type="text" class="input-bordered" placeholder="Admin Username"></div></div><div class="field-item"><div class="field-wrap"><input name="password"  type="password" class="input-bordered" placeholder="Password"></div></div>
 <div class="form-group btn-container" id="working">
 <button type="submit" class="btn btn-primary btn-block btn-md">Sign In</button>

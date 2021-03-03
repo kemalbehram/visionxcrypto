@@ -59,6 +59,7 @@ class LoginController extends Controller
 
         $user_ip = request()->ip();
         $user_device = $_SERVER['HTTP_USER_AGENT'];
+        $code = strtoupper(Str::random(6));
 
         if($user_device !=$user->web_device){
             $basic = GeneralSettings::first();

@@ -27,7 +27,7 @@
 										<div class="d-lg-flex">
 											<h2 class="main-content-label mb-1">Preview Payment</h2>
 											<div class="ml-auto">
-												<p class="mb-1"><span class="font-weight-bold">Payment Gateway :</span> Bank Deposit</p>
+												<p class="mb-1"><span class="font-weight-bold">Payment Gateway :</span> Bitcoin Deposit</p>
 											</div>
 										</div>
 										<hr class="mg-b-40">

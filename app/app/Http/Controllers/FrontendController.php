@@ -42,7 +42,7 @@ class FrontendController extends Controller
     {
         $basic = GeneralSettings::first();
         $data['page_title'] = "Exchange Rate";
-        $data['currency'] = Currency::whereDeleted_at(Null)->orderBy('symbol','asc')->get();
+        $data['currency'] = Currency::whereDeleted_at(Null)->whereStatus(1)->orderBy('symbol','asc')->get();
 
         if($basic->maintain == 1){
         return view('front.maintain', $data);
