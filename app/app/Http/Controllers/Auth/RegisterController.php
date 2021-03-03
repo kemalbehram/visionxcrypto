@@ -105,29 +105,7 @@ class RegisterController extends Controller
 		$accountname = "".$data['fname']." ".$data['lname'];
 		
 		
-		$curl = curl_init();
-
-		  curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://openapi.rubiesbank.io/v1/createvirtualaccount",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 0,
-		  CURLOPT_FOLLOWLOCATION => true,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "POST",
-		 CURLOPT_POSTFIELDS =>"{\n    \"virtualaccountname\": \"$accountname\",\n    \"amount\": \"1\",\n    \"amountcontrol\": \"VARIABLEAMOUNT\",\n    \"daysactive\": 10000,\n    \"minutesactive\": 30,\n    \"callbackurl\": \"$basic->baseurl/api/callback1\"\n}",
-		  CURLOPT_HTTPHEADER => array(
-			"Authorization: ".$basic->rubies_secretkey,
-			"Content-Type: application/json"
-		  ),
-		));
-
-		$response = curl_exec($curl);
-		curl_close($curl);
-		$rep=json_decode($response, true);
 		 
-
         $verification_code  = strtoupper(Str::random(6));
         $sms_code  = strtoupper(Str::random(6));
         $email_time = Carbon::parse()->addMinutes(5);
@@ -139,7 +117,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'timezone' => $basic->timezone,
             'phone' => $data['phone'], 
-            'account_number' => $rep['virtualaccount'], 
+            'account_number' => strtoupper(Str::random(10)), 
             'username' => strtolower($data['username']),
             'refer' =>  isset($data['referBy']) ?  $referUser->id : 0,
             'email_verify' => $email_verify,
@@ -172,13 +150,28 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user)
     {
+        
         $basic = GeneralSettings::first();
+        
+            $content = "Welcome to Vision-X Crypto. A platform to trade cryptocurrencies with ease and peace of mind. We look forward to seeing more of you.";
+            $body = $content;
+            $data = array('name'=>"$user->username");
+            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
+            $m->from(env('MAIL_USERNAME'), 'Visionx');
+            $m->to($user->email, $user->username)->subject('Welcome to Vision-X Crypto');
+            });
 
         if ($basic->email_verification == 1) {
             $email_code = strtoupper(Str::random(6));
             $text = "Your Verification Code Is: <b>$email_code</b>";
             
-             
+            $content = "Your verification code is $code.";
+            $body = $content;
+            $data = array('name'=>"$user->username");
+            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
+            $m->from(env('MAIL_USERNAME'), 'Visionx');
+            $m->to($user->email, $user->username)->subject('Welcome to Vision X');
+            });
      
 
             $user->verification_code = $email_code;
