@@ -9,10 +9,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Welcome to {{$basic->sitename}}, Easy User Experience and Responsive payment for all platforms" />
+    content="Welcome to {{$basic->sitename}}, Easy and convenient way to buy and sell cryptocurrency" />
   <meta name="keywords"
-    content="HTML, CSS, JavaScript, Bootstrap, jQuery, Rakon, Themeforest, Template, envato, SASS, SCSS, HTML5, landing page, SaaS Product, SaaS Modern,  MultiPurpose, Crypto, Currency, ICO, Hosting, Agency, Mobile, App, Interior, Charity" />
-  <meta name="author" content="Rakon - Creative Multi-Purpose HTML5 Templates" />
+    content="Crypto, Currency, Bitcoin-Delta, Ethereum, Bitcoin, Mobile, App, Printing, Charity" />
+  <meta name="author" content="Vison-X Crypto Services" />
 
   <title>{{isset($page_title) ? $page_title : ''}} | {{$basic->sitename}}</title>
   <!-- favicon -->
