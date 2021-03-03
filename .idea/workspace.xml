@@ -21,7 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/views/include/userdashboard.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -285,7 +285,11 @@
       <workItem from="1614382437428" duration="1084000" />
       <workItem from="1614412572552" duration="436000" />
       <workItem from="1614692545287" duration="264000" />
-      <workItem from="1614712340853" duration="7029000" />
+      <workItem from="1614712340853" duration="7729000" />
+      <workItem from="1614758903232" duration="602000" />
+      <workItem from="1614762121204" duration="318000" />
+      <workItem from="1614765126862" duration="281000" />
+      <workItem from="1614770839929" duration="247000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>

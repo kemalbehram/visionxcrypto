@@ -1486,20 +1486,20 @@
 							 <i class="mdi mdi-approval" style="color:red"></i>
 							 <i class="mdi mdi-approval" style="color:red"></i>
 							 <i class="mdi mdi-approval" style="color:red"></i>
-							 
+
 							 @elseif($stars == 2 || $stars == 3)
- <i class="mdi mdi-approval" style="color:green"></i>
+                             <i class="mdi mdi-approval" style="color:green"></i>
 							 <i class="mdi mdi-approval" style="color:green"></i>
 							 <i class="mdi mdi-approval" style="color:red"></i>
 							 <i class="mdi mdi-approval" style="color:red"></i>
-							 
+
 							 @elseif($stars == 4 || $stars == 5)
 
 							 <i class="mdi mdi-approval" style="color:green"></i>
 							 <i class="mdi mdi-approval" style="color:green"></i>
 							 <i class="mdi mdi-approval" style="color:green"></i>
 							 <i class="mdi mdi-approval" style="color:red"></i>
-							 
+
 							 @else
 
 							 <i class="mdi mdi-approval" style="color:red"></i>
@@ -2147,5 +2147,5 @@
 
 	</body>
 </html>
- 
+
 @endif
