@@ -70,6 +70,8 @@
                   Sign up to Visionxcrypto.
                 </div>
                 
+
+                
                 <form  method="POST" action="{{ route('register') }}" class="sign-up-form" autocomplete="off">
 					@csrf
                 <div class="form-row">
@@ -95,18 +97,36 @@
                           <label>Username</label>
                           <input type="text" name="username" value="{{ old('username') }}" class="form-control" placeholder="Username" />
                         </div>
+                                        
+                        
+                        
+                         @if ($errors->has('username'))
+                        <a class="text-danger"> {{ $errors->first('username') }}</a>
+                        
+                        @endif
                       </div>
                       <div class="col-6">
                         <div class="form-group">
                           <label>Email address</label>
                           <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Email Address" />
                         </div>
+                        
+                         @if ($errors->has('email'))
+                       <a class="text-danger">  {{ $errors->first('email') }}</a>
+                        @endif
+                        
+
                       </div>
 					  <div class="col-md-12">
                         <div class="form-group">
                           <label>Phone Number</label>
                           <input type="tel"  name="phone"  required  value="{{ old('phone') }}"  class="form-control" placeholder="Email Address" />
                         </div>
+                        
+                         @if ($errors->has('phone'))
+                       <a class="text-danger"> {{ $errors->first('phone') }}</a>
+                        
+                        @endif
                       </div>
                       <div class="col-6">
                         <div class="form-group --password" id="show_hide_password">
@@ -314,6 +334,17 @@
 		}).call(this);
  	</script>
 @endif
+@if ($errors->has('username'))
+<script>
+		 (function () {
+		  $(function () {
+		   return $.growl.error({
+				message: "{{ $errors->first('username') }}"
+			});
+  		  });
+		}).call(this);
+ 	</script>
+@endif
 @if ($errors->has('password'))
 <script>
 		 (function () {
@@ -368,6 +399,32 @@
 		  $(function () {
 		   return $.growl.error({
 				message: "{{ $errors->first('sms_code') }}"
+			});
+  		  });
+		}).call(this);
+ 	</script>
+@endif
+
+
+ @if ($errors->has('email'))
+<script>
+		 (function () {
+		  $(function () {
+		   return $.growl.error({
+				message: "{{ $errors->first('email') }}"
+			});
+  		  });
+		}).call(this);
+ 	</script>
+@endif
+
+
+ @if ($errors->has('phone'))
+<script>
+		 (function () {
+		  $(function () {
+		   return $.growl.error({
+				message: "{{ $errors->first('phone') }}"
 			});
   		  });
 		}).call(this);
