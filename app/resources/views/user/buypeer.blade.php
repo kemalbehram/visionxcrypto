@@ -78,7 +78,7 @@
 
 
                                         </div>
-                                        <p>Click on the i have paid button below to complete your transaction.</p><br>
+                                        <p>Click on the I have paid button below to complete your transaction.</p><br>
 
                                         <h1 id="title">Countdown Clock</h1>
                                         <div id="clockdiv">
@@ -209,7 +209,7 @@
             const timeinterval = setInterval(updateClock, 1000);
         }
 
-        const deadline = new Date(Date.parse("2021-02-26 07:54:13") + 15 * 60 * 1000);
+        const deadline = new Date(Date.parse("{{$data->timeout}}") + 15 * 60 * 1000);
         initializeClock('clockdiv', deadline);
     </script>
 
