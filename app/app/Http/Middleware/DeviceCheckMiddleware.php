@@ -20,6 +20,10 @@ class DeviceCheckMiddleware
 
         $user_device = $_SERVER['HTTP_USER_AGENT'];
 
+        if(!Auth::id()){
+            return redirect('/login');
+        }
+
         if($user_device !=Auth::user()->web_device){
             return redirect()->route('unauthorized');
         }

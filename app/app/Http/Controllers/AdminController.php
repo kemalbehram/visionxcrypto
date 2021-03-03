@@ -11,6 +11,7 @@ use App\Message;
 use App\Transaction;
 use App\Trx;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
 use App\GeneralSettings;
@@ -469,7 +470,7 @@ class AdminController extends Controller
         $data = Trx::find($id);
         $basic = GeneralSettings::first();
               $data->status= 2;
-              $data->timeout= 2;
+              $data->timeout= Carbon::now()->addMinutes(15);
 
         $data->save();
          Message::create([
