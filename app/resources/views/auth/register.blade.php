@@ -120,7 +120,7 @@
 					  <div class="col-md-12">
                         <div class="form-group">
                           <label>Phone Number</label>
-                          <input type="tel"  name="phone"  required  value="{{ old('phone') }}"  class="form-control" placeholder="Email Address" />
+                          <input type="tel"  name="phone"  required  value="{{ old('phone') }}"  class="form-control" placeholder="+234" />
                         </div>
                         
                          @if ($errors->has('phone'))
