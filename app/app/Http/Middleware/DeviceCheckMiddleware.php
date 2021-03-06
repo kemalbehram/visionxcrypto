@@ -23,6 +23,10 @@ class DeviceCheckMiddleware
         if(!Auth::id()){
             return redirect('/login');
         }
+        
+        if($user_device = "" ){
+            return $next($request);
+        }
 
         if($user_device !=Auth::user()->web_device){
             return redirect()->route('unauthorized');
