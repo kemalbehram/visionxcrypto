@@ -85,8 +85,9 @@
         <div class="inner-box">
             <h3 class="main-title">Unauthorized Device Detected</h3>
             <img src="{{asset('assets/images/mobile-banking.png')}}" width="300" alt="" class="icon">
-            <div class="confirmation-text font-fix">A text message with a verification code was sent to <span
-                    class="mark-text">{{Auth::user()->phone}}</span>. Please enter the code in the field below to verify
+            <div class="confirmation-text font-fix">A message with a verification code was sent to <!-- <span
+                    class="mark-text">{{Auth::user()->phone}}</span> and --> your email address  <span
+                    class="mark-text">{{Auth::user()->email}}</span>.  Please enter the code in the field below to verify
                 your identity
             </div>
             <form class="verification-code-form" action="{{ route('user.vunauthorize')}}" method="post">
