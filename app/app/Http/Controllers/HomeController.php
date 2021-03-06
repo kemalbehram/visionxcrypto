@@ -1530,12 +1530,48 @@ class HomeController extends Controller
             'coin' => 'required',
             'payment' => 'required',
         ]);
+        
+        
 
 
         $auth = Auth::user();
         $basic = GeneralSettings::first();
         $currency = Currency::whereId($request->coin)->first();
         $trx = rand(000000, 999999) . rand(000000, 999999);
+        
+         if($currency->symbol=="BTC" || $currency->symbol=="ETH"){
+         if($currency->symbol=="BTC"){
+                $akey=$basic->bitcoin_address;
+            }else{
+                $akey=$basic->etherum_address;
+            }
+ 
+        $baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/validate-address";
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl,
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  CURLOPT_POSTFIELDS => array('api_key' => $akey,'password' => 'visionxcrypto','address' => $request->wallet),
+		));
+
+		$response = curl_exec($curl);
+		$reply = json_decode($response,true);
+		curl_close($curl);
+		return $response;
+
+		if (!isset($reply['msg'])){
+		 return back()->with("alert", "API Error");
+         }
+         if ($reply['flag'] != '1'){
+		return back()->with("alert", "Invalid ".$currency->name." address ");
+         }
+         }
 
 
         if ($request->wallet != $request->rewallet) {
