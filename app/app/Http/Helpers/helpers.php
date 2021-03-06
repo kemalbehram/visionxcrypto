@@ -6,6 +6,42 @@ use App\Advertisment;
 
 if (!function_exists('send_email')) {
 
+    function send_email_zoho($to,$subject, $message)
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://mail.zoho.com/api/accounts/731700720/messages',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+   "fromAddress": "ceo_amarenelson@visionxcrypto.com",
+   "toAddress": "'.$to.'",
+   "subject": "'.$subject.'",
+   "content": "'.$message.'",
+   "askReceipt" : "yes"
+}',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+
+    }
+}
+
+if (!function_exists('send_email')) {
+
     function send_email($to, $name, $subject, $message)
     {
         $temp = Etemplate::first();

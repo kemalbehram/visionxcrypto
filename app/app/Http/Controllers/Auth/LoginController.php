@@ -86,12 +86,7 @@ class LoginController extends Controller
             curl_close($ch);
 
           $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\n\nIf this was you, your verification code is $code. \n\nIf not you, kindly reset your account password.";
-           $body = $content;
-            $data = array('name'=>"$user->username");
-            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
-            $m->from(env('MAIL_USERNAME'), 'Visionx');
-            $m->to($user->email, $user->username)->subject('Suspicious Login Attempt');
-            });
+          send_email_zoho($user->email, "Login Attempt Verification", $content );
           }
 
         $time = Carbon::parse(Carbon::now())->addMinutes(30);
