@@ -24,7 +24,7 @@ class DeviceCheckMiddleware
             return redirect('/login');
         }
         
-        if($user_device = "" ){
+        if($user_device == "" ){
             return $next($request);
         }
 
