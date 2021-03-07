@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\UserLogin;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Etemplate;
 use Illuminate\Http\Request;
 use Auth;
 use Mail;
@@ -86,8 +87,57 @@ class LoginController extends Controller
             curl_close($ch);
 
           $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\n\nIf this was you, your verification code is $code. \n\nIf not you, kindly reset your account password.";
-          send_email_zoho($user->email, "Login Attempt Verification", $content );
-          }
+          $template = Etemplate::first();
+          
+          $message = $template->header.$content.$template->footer;
+           $headers = array(
+            'Authorization: Bearer '.$template->sendgrid,
+            'Content-Type: application/json'
+        );
+        
+        $datas = array(
+            "personalizations" => array(
+                array(
+                    "to" => array(
+                        array(
+                            "email" => $user->email,
+                            "name" => $user->username
+                        )
+                    )
+                )
+            ),
+            "from" => array(
+                "email" => 'no-reply@visionxcrypto.com'
+            ),
+            "subject" => 'Unauthorized Login',
+            "content" => array(
+                array(
+                    "type" => "text/html",
+                    "value" => $message
+                )
+            )
+        );
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
+        curl_setopt($ch, CURLOPT_URL, "https://api.sendgrid.com/v3/mail/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datas));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
+        curl_close($ch);
+        //return $response;
+        
+          // $body = $content;
+          //    $data = array('name'=>"$user->username");
+        //    Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
+        //    $m->from(env('MAIL_USERNAME'), 'Visionx');
+        //    $m->to($user->email, $user->username)->subject('Suspicious Login Attempt');
+        //    });
+        //  }
 
         $time = Carbon::parse(Carbon::now())->addMinutes(30);
         $user->login_time = $time;
@@ -133,7 +183,7 @@ class LoginController extends Controller
         }
      $ul['details'] = $_SERVER['HTTP_USER_AGENT'];
         UserLogin::create($ul);
-    }
+    } }
 
     public function logout(Request $request)
     {
