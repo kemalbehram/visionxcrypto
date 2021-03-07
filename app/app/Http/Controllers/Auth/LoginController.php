@@ -86,7 +86,7 @@ class LoginController extends Controller
             $errmsg = curl_error($ch);
             curl_close($ch);
 
-          $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\n\nIf this was you, your verification code is $code. \n\nIf not you, kindly reset your account password.";
+          $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\n\n, <b><br>Your Verification Code Is $code. \n\n</b><br>If not you, kindly reset your account password.";
           $template = Etemplate::first();
           
           $message = $template->header.$content.$template->footer;
