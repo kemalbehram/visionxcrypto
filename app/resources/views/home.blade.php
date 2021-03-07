@@ -414,6 +414,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 
 
 								<!-- Row-->
+								<!--
 						<div class="row row-sm">
 							<div class="col-xl-12">
 								<div class="card custom-card">
@@ -469,6 +470,7 @@ $ip = \App\UserLogin::whereUser_id(Auth::user()->id)->latest()->take(1)->first()
 						</div>
 						<!-- Row End -->
 					</div>
+					
 				</div>
 			</div>
 			<!-- End Main Content-->
