@@ -84,7 +84,11 @@
                             <h3>{{$data->name}} <span class="offer">{{$data->symbol}}</span></h3>
                           </div>
                           <div class="part_two">
-                           We Buy @
+                           We Buy At
+                             
+                          </div>
+                          <div class="part_three">
+                          
                             <h4>₦{{number_format($data->buy, $basic->decimal)}} <span>/ USD</span></h4>
                           </div>
                         </div>
@@ -114,8 +118,12 @@
                             <span class="check_select"></span>
                             <h3>{{$data->name}} <span class="offer">{{$data->symbol}}</span></h3>
                           </div>
+                           <div class="part_two">
+                           We Sell At
+                             
+                          </div>
                           <div class="part_two">
-                            We Sell @
+                            
                             <h4>₦{{number_format($data->sell, $basic->decimal)}} <span>/ USD</span></h4>
                           </div>
                         </div>
