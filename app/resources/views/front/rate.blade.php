@@ -84,6 +84,7 @@
                             <h3>{{$data->name}} <span class="offer">{{$data->symbol}}</span></h3>
                           </div>
                           <div class="part_two">
+                           We Buy @
                             <h4>{{number_format($data->buy, $basic->decimal)}} <span>/ USD</span></h4>
                           </div>
                         </div>
@@ -114,6 +115,7 @@
                             <h3>{{$data->name}} <span class="offer">{{$data->symbol}}</span></h3>
                           </div>
                           <div class="part_two">
+                            We Sell @
                             <h4>{{number_format($data->sell, $basic->decimal)}} <span>/ USD</span></h4>
                           </div>
                         </div>
