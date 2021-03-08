@@ -33,11 +33,11 @@
                       <ul class="nav nav-pills" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
                           <a class="nav-link active" id="pills-month-tab" data-toggle="pill" href="#pills-month"
-                            role="tab" aria-controls="pills-month" aria-selected="true">Buy</a>
+                            role="tab" aria-controls="pills-month" aria-selected="true">We Buy At</a>
                         </li>
                         <li class="nav-item" role="presentation">
                           <a class="nav-link" id="pills-annually-tab" data-toggle="pill" href="#pills-annually"
-                            role="tab" aria-controls="pills-annually" aria-selected="false">Sell</a>
+                            role="tab" aria-controls="pills-annually" aria-selected="false">We Sell At</a>
                         </li>
                       </ul>
                       <br><br>
