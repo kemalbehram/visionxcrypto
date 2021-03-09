@@ -20,7 +20,7 @@ class HistoryController extends Controller
         $spent=Transaction::where('user_id', Auth::id())->sum('amount');
 
 
-        return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>Auth::user()->balance, 'trans'=>$trans]);
+        return response()->json(['status' => 1, 'message' => 'Transactions fetched successfully', 'spent'=>$spent, 'balance'=>round(Auth::user()->balance), 'trans'=>$trans]);
     }
 
     public function invoice(){

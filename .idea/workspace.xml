@@ -21,9 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/RegisterController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Helpers/helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Helpers/helpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/HistoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/HistoryController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/ProductsController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -295,7 +294,12 @@
       <workItem from="1614772841635" duration="477000" />
       <workItem from="1615012751279" duration="467000" />
       <workItem from="1615025533106" duration="3382000" />
-      <workItem from="1615046305962" duration="2522000" />
+      <workItem from="1615046305962" duration="3338000" />
+      <workItem from="1615059847057" duration="1498000" />
+      <workItem from="1615098317364" duration="969000" />
+      <workItem from="1615105630040" duration="716000" />
+      <workItem from="1615117711281" duration="401000" />
+      <workItem from="1615307906857" duration="318000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -446,7 +450,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>2076</line>
+          <line>2112</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="esellcallback" />

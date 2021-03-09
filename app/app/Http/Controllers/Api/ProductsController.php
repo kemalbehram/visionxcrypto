@@ -145,7 +145,7 @@ class ProductsController extends Controller
     {
         $user = Auth::user();
 
-        $vx=Vxvault::orderBy('id','desc')->whereStatus(0)->where('user_id', Auth::id())->sum('amount');
+        $vx=Vxvault::orderBy('id','desc')->whereStatus(1)->where('user_id', Auth::id())->sum('btc');
 
         return response()->json(['status' => 1, 'message' => 'Balances fetched successfully', 'naira'=>round($user->balance), 'investment'=>'0', 'coinlock'=>$vx, 'referral'=>"$user->bonus",]);
     }
