@@ -86,30 +86,6 @@ class AuthenticateController extends Controller
 
             $accountname =$input['firstname'] . " " . $input['lastname'];
 
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://openapi.rubiesbank.io/v1/createvirtualaccount",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "{\n    \"virtualaccountname\": \"$accountname\",\n    \"amount\": \"1\",\n    \"amountcontrol\": \"VARIABLEAMOUNT\",\n    \"daysactive\": 10000,\n    \"minutesactive\": 30,\n    \"callbackurl\": \"$basic->baseurl/api/callback1\"\n}",
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: " . $basic->rubies_secretkey,
-                    "Content-Type: application/json"
-                ),
-            ));
-
-            $response = curl_exec($curl);
-            curl_close($curl);
-            $rep = json_decode($response, true);
-
-
             $verification_code = strtoupper(Str::random(6));
             $sms_code = substr(rand(),0,6);
             $email_time = Carbon::parse()->addMinutes(5);
@@ -121,7 +97,7 @@ class AuthenticateController extends Controller
                 'email' => $input['email'],
                 'timezone' => $basic->timezone,
                 'phone' => $input['phone'],
-                'account_number' => $rep['virtualaccount'],
+                'account_number' => 0,
                 'username' => strtolower($input['username']),
                 'refer' => isset($input['referBy']) ? $referUser->id : 0,
                 'email_verify' => $email_verify,
@@ -148,17 +124,18 @@ class AuthenticateController extends Controller
 
             if ($basic->email_verification == 1) {
                 $email_code = strtoupper(Str::random(6));
-                $text = "Your Verification Code Is: <b>$email_code</b>";
-                send_email_verification($user->email, $user->username, 'Email verification', $text);
+                $text = "Your Verification Code is $email_code";
 
                 $user->verification_code = $email_code;
                 $user->email_time = Carbon::parse()->addMinutes(5);
                 $user->save();
+
+                send_email_zoho($user->email, "Email verification", $text);
             }
 
             if ($basic->sms_verification == 1) {
                 $sms_code = substr(rand(),0,6);
-                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
+                $txt = "Your Verification Code is $sms_code";
 
 
                 $user->sms_code = $sms_code;
