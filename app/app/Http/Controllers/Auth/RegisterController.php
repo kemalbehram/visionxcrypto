@@ -117,7 +117,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'timezone' => $basic->timezone,
             'phone' => $data['phone'],
-            'account_number' => strtoupper(Str::random(10)),
+            'account_number' => rand(),
             'username' => strtolower($data['username']),
             'refer' =>  isset($data['referBy']) ?  $referUser->id : 0,
             'email_verify' => $email_verify,

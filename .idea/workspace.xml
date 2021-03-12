@@ -22,6 +22,7 @@
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/RegisterController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,7 +301,9 @@
       <workItem from="1615117711281" duration="401000" />
       <workItem from="1615307906857" duration="3409000" />
       <workItem from="1615315937821" duration="43000" />
-      <workItem from="1615452688614" duration="338000" />
+      <workItem from="1615452688614" duration="954000" />
+      <workItem from="1615481503970" duration="64000" />
+      <workItem from="1615574714581" duration="141000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>

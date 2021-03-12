@@ -97,7 +97,7 @@ class AuthenticateController extends Controller
                 'email' => $input['email'],
                 'timezone' => $basic->timezone,
                 'phone' => $input['phone'],
-                'account_number' => 0,
+                'account_number' => rand(),
                 'username' => strtolower($input['username']),
                 'refer' => isset($input['referBy']) ? $referUser->id : 0,
                 'email_verify' => $email_verify,
