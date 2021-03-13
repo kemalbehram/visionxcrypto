@@ -328,16 +328,16 @@ class HomeController extends Controller
         $response = curl_exec($curl);
         
         curl_close($curl);
-        echo $response;
+        //echo $response;
         $rep = json_decode($response, true);
-        return $rep;
+        //return $rep;
         if ($rep['status'] == 'true') {
 
             $product['user_id'] = Auth::id();
             $product['firstName'] = $rep['data']['first_name'];
-            $product['lastName'] = $rep['data']['last_mame'];
+            $product['lastName'] = $rep['data']['last_name'];
             $product['phoneNumber'] = $rep['data']['mobile'];
-            $product['gender'] = $rep['data']['gender'];
+            $product['gender'] = 0;//$rep['data']['gender'];
             $product['dateOfBirth'] = $rep['data']['dob'];
             $product['base64Image'] = 0;//$rep['base64Image'];
             $product['number'] = $request->bvn;
