@@ -242,9 +242,9 @@
                                                             <select name="bank" id='mybank' onchange='myFunctionbank()'
                                                                     class="form-control select2 custom-select br-md-0">
                                                                 <option disabled selected>Select Bank Name</option>
-                                                                {{--                                                                        @foreach($list as $k=>$data)--}}
-                                                                {{--                                                                            <option  data-name="{{$data['bankname']}}" value="{{$data['bankcode']}}">{{$data['bankname']}}</option>--}}
-                                                                {{--                                                                        @endforeach--}}
+                                                                                                                                      @foreach($list as $k=>$data)
+                                                                                                                                        <option  data-name="{{$data['name']}}" value="{{$data['code']}}">{{$data['name']}}</option>
+                                                                                                                                        @endforeach
                                                             </select>
                                                             <input id="bankname" name="bankname" hidden>
                                                         </div>
