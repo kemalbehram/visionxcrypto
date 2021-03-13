@@ -308,37 +308,38 @@ class HomeController extends Controller
 
 
         $trx = strtoupper(str_random(20));
+        
         $curl = curl_init();
-
+        
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/verifybvn",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "{\n\t\"bvn\":\"$request->bvn\",\n\t\"reference\":\"$trx\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: " . $basic->rubies_secretkey,
-            ),
+          CURLOPT_URL => 'https://api.paystack.co/bank/resolve_bvn/'.$request->bvn,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer '.$basic->paystack_secret
+          ),
         ));
-
+        
         $response = curl_exec($curl);
-
+        
         curl_close($curl);
+        echo $response;
         $rep = json_decode($response, true);
-
-        if ($rep['responsecode'] == 00) {
+        return $rep;
+        if ($rep['status'] == 'true') {
 
             $product['user_id'] = Auth::id();
-            $product['firstName'] = $rep['firstName'];
-            $product['lastName'] = $rep['lastName'];
-            $product['phoneNumber'] = $rep['phoneNumber'];
+            $product['firstName'] = $rep['data']['first_name'];
+            $product['lastName'] = $rep['data']['last_mame'];
+            $product['phoneNumber'] = $rep['data']['mobile'];
             $product['gender'] = $rep['data']['gender'];
-            $product['dateOfBirth'] = $rep['data']['dateOfBirth'];
-            $product['base64Image'] = $rep['base64Image'];
+            $product['dateOfBirth'] = $rep['data']['dob'];
+            $product['base64Image'] = 0;//$rep['base64Image'];
             $product['number'] = $request->bvn;
             Verified::create($product);
 
@@ -346,8 +347,6 @@ class HomeController extends Controller
             $user->bvn_time = Carbon::now();
             $user->balance = $user->balance - $basic->bvn;
             $user->save();
-
-
             return back()->with(['modal' => 'bvn', 'success' => 'Bank Verification Number has been verfied successfully']);
 
         } else {
