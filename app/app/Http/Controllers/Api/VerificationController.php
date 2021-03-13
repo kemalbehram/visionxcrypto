@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Deposit;
+use App\Gateway;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Message;
@@ -48,32 +49,37 @@ class VerificationController extends Controller
         }
 
 
+        $gate = Gateway::whereId(107)->first();
         $basic = GeneralSettings::first();
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/nameenquiry",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n\t\t\"accountnumber\":\"$request->accountno\",\n\t\t\"bankcode\":\"$request->bank_code\"\n}",
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey,
-                "Content-Type: application/json"
-            ),
-        ));
+        $baseUrl = "https://api.paystack.co";
+        $endpoint = "/bank/resolve?account_number=" . $input['accountno'] . "&bank_code=" . $input['bank_code'];
+        $httpVerb = "GET";
+        $contentType = "application/json"; //e.g charset=utf-8
+        $authorization = "$gate->val2"; //gotten from paystack dashboard
 
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $rep=json_decode($response, true);
 
-            if($rep['responsecode'] == 00) {
+        $headers = array(
+            "Content-Type: $contentType",
+            "Authorization: Bearer $authorization"
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $content = json_decode(curl_exec($ch), true);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+
+        curl_close($ch);
+
+            if($content['status']) {
                 $user=Auth::user();
-                $acctname = $rep['accountname'];
+                $acctname = $content['data']['account_name'];
 
                 $user->bank = $request->bank_name;
                 $user->accountname = $acctname;
@@ -86,39 +92,36 @@ class VerificationController extends Controller
             }
 
         $basic = GeneralSettings::first();
-        $trx = strtoupper(str_random(20));
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/verifybvn",
+            CURLOPT_URL => 'https://api.paystack.co/bank/resolve_bvn/'.$request->bvn,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
+            CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n\t\"bvn\":\"$request->bvn\",\n\t\"reference\":\"$trx\"\n}",
+            CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey,
+                'Authorization: Bearer '.$basic->paystack_secret
             ),
         ));
 
         $response = curl_exec($curl);
 
         curl_close($curl);
-        $rep=json_decode($response, true);
+        //echo $response;
+        $rep = json_decode($response, true);
 
-        if($rep['responsecode'] == 00)
+        if($rep['status'])
         {
-
             $product['user_id'] = Auth::id();
-            $product['firstName'] = $rep['firstName'];
-            $product['lastName'] =  $rep['lastName'];
-            $product['phoneNumber'] =  $rep['phoneNumber'];
-            $product['gender'] = $rep['data']['gender'];
-            $product['dateOfBirth'] = $rep['data']['dateOfBirth'];
-            $product['base64Image'] = $rep['base64Image'];
+            $product['firstName'] = $rep['data']['first_name'];
+            $product['lastName'] =  $rep['data']['last_name'];
+            $product['phoneNumber'] =  $rep['data']['mobile'];
+            $product['dateOfBirth'] = $rep['data']['dob'];
             $product['number'] = $request->bvn;
             Verified::create($product);
 
@@ -130,15 +133,15 @@ class VerificationController extends Controller
             $user->dob = $rep['data']['dateOfBirth'];
             $user->save();
 
-            return response()->json(['status' => 1, 'message' => 'Verification successful']);
-
             Message::create([
                 'user_id' => $user->id,
-                'title' => 'BVN Submited',
+                'title' => 'BVN Submitted',
                 'details' =>'Your BVN has been validated successfully.',
                 'admin' => 1,
                 'status' =>  0
             ]);
+
+            return response()->json(['status' => 1, 'message' => 'Verification successful']);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'You Have Entered A Wrong Bank Verification Number']);

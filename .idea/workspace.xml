@@ -21,8 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="Push work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Auth/RegisterController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,7 +301,9 @@
       <workItem from="1615315937821" duration="43000" />
       <workItem from="1615452688614" duration="954000" />
       <workItem from="1615481503970" duration="64000" />
-      <workItem from="1615574714581" duration="141000" />
+      <workItem from="1615574714581" duration="811000" />
+      <workItem from="1615618925913" duration="68000" />
+      <workItem from="1615640510573" duration="424000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -359,12 +359,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>416</line>
+          <line>1073</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>633</line>
+          <line>632</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -394,7 +394,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>43</line>
+          <line>846</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -409,7 +409,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>647</line>
+          <line>646</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="postbank" />
@@ -427,7 +427,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>589</line>
+          <line>588</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="kyc2" />
@@ -454,7 +454,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>2112</line>
+          <line>2111</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="esellcallback" />
