@@ -146,13 +146,16 @@
                               </div>
                             </a>
                             <a href="{{route('blogview',$data->id)}}" class="link_blog">
-                              <h4 class="title_blog">
+                            <h4 class="title_blog">
+                                View Post
+                              </h4>
+                             <!-- <h4 class="title_blog">
                                 As climate warms, Ecuador fights fires with forecasts
                               </h4>
                               <p class="short_desc">
                                 Vitae semper quis lectus nulla at volutpat diam. Sed viverra ipsum
                                 nunc aliquet .
-                              </p>
+                              </p> -->
                             </a>
                           </div>
                         </div>
