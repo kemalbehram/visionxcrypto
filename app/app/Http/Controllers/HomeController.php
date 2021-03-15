@@ -2838,7 +2838,6 @@ class HomeController extends Controller
         $errmsg = curl_error($ch);
         curl_close($ch);
 
-
         return view('user.investyield', $data);
     }
 
@@ -2969,9 +2968,49 @@ class HomeController extends Controller
             $userWallet = UserWallet::where('user_id', Auth::id())->where('id', $request->wallet_type)->first();
         }
 
-
+        $trxx = rand(000000, 999999) . rand(000000, 999999);
         if ($request->wallet_type == 82718271565131) {
             $userWallet = User::find(Auth::id());
+            
+            
+            
+            
+                    $trx = str_random(15);
+                    $akey=$basic->bitcoin_address;
+                    $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => $baseurl,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'amount' => $request->amount, 'name' => $trxx, 'currency' => 'USD', 'expire_time' => '15', 'suceess_url' => url("/")),
+                    ));
+        
+                    $response = curl_exec($curl);
+                    $reply = json_decode($response, true);
+                    curl_close($curl);
+                    //return $reply;
+        
+                     if($reply['flag'] == 0){
+                        return back()->with('danger',$reply['msg']);
+                    }
+        
+                    if(!isset($reply['data']['address'])){
+                        return back()->with('danger','Amount too low');
+                    }
+        
+        
+                    $address = $reply['data']['address'];
+                    $invoiceid = $reply['data']['invoice_id'];
+                    $btcvalue = $reply['data']['total_amount']['BTC'];
+                    
+                    
+                    
 
             $user = User::find(Auth::id());
             $gnl = GeneralSettings::first();
@@ -3012,12 +3051,14 @@ class HomeController extends Controller
             }
             $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
             //end
-
-            $trxx = rand(000000, 999999) . rand(000000, 999999);
+ 
 
             if ($plan->fixed_amount == 0) {
 
                 if ($plan->minimum <= $request->amount && $plan->maximum >= $request->amount) {
+                    $invest['invoice_id'] = $invoiceid;
+                    $invest['btc_value'] = $btcvalue;
+                    $invest['wallet_address'] = $address;
                     $invest['user_id'] = $user->id;
                     $invest['plan_id'] = $plan->id;
                     $invest['amount'] = $request->amount;
@@ -3025,7 +3066,7 @@ class HomeController extends Controller
                     $invest['period'] = $period;
                     $invest['time_name'] = $time_name->name;
                     $invest['hours'] = $plan->times;
-                    $invest['btcvalue'] = $request->amount * $btcrate;
+                   // $invest['btcvalue'] = $request->amount * $btcrate;
                     $invest['next_time'] = Carbon::parse($now)->addHours($plan->times);
                     $invest['status'] = 101;
                     $invest['capital_status'] = $plan->capital_back_status;
@@ -3043,7 +3084,10 @@ class HomeController extends Controller
 
             } else {
                 if ($plan->fixed_amount == $request->amount) {
-
+                    
+                    $invest['invoice_id'] = $invoiceid;
+                    $invest['btc_value'] = $btcvalue;
+                    $invest['wallet_address'] = $address;
                     $data['user_id'] = $user->id;
                     $data['plan_id'] = $plan->id;
                     $data['amount'] = $request->amount;
@@ -3051,12 +3095,14 @@ class HomeController extends Controller
                     $data['period'] = $period;
                     $data['time_name'] = $time_name->name;
                     $data['hours'] = $plan->times;
-                    $invest['btcvalue'] = $request->amount * $btcrate;
+                    //$invest['btcvalue'] = $request->amount * $btcrate;
                     $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
                     $data['status'] = 101;
                     $data['capital_status'] = $plan->capital_back_status;
                     $data['trx'] = $trxx;
                     $a = Invest::create($data);
+                    
+                    
 
 
                     Session::put('Track', $trxx);
@@ -3105,7 +3151,7 @@ class HomeController extends Controller
                 $invest['period'] = $period;
                 $invest['time_name'] = $time_name->name;
                 $invest['hours'] = $plan->times;
-                $invest['btcvalue'] = $request->amount * $btcrate;
+                $invest['btc_value'] = $request->amount * $btcrate;
                 $invest['next_time'] = Carbon::parse($now)->addHours($plan->times);
                 $invest['status'] = 1;
                 $invest['capital_status'] = $plan->capital_back_status;
@@ -3128,7 +3174,7 @@ class HomeController extends Controller
                 $data['period'] = $period;
                 $data['time_name'] = $time_name->name;
                 $data['hours'] = $plan->times;
-                $invest['btcvalue'] = $request->amount * $btcrate;
+                $invest['btc_value'] = $request->amount * $btcrate;
                 $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
                 $data['status'] = 1;
                 $data['capital_status'] = $plan->capital_back_status;
@@ -3188,37 +3234,68 @@ class HomeController extends Controller
 
     public function btcpaynowupload(Request $request)
     {
-        $this->validate($request,
-            [
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-                'trxx' => 'required',
-                'btc' => 'required',
-            ]);
-
+         
         $basic = GeneralSettings::first();
-        $data = Invest::where('status', 101)->where('trx', $request->trx)->first();
+        $data = Invest::where('status', 101)->where('invoice_id', $request->trx)->first();
         $auth = Auth::user();
+        $data->save();
 
-        $data->tnum = $request->trxx;
-        $data->btcwallet = $request->btc;
-        $data->status = 2;
-        if ($request->hasFile('photo')) {
-            $data['image'] = uniqid() . '.jpg';
-            $request->photo->move('uploads/payments', $data['image']);
+        $akey=$basic->bitcoin_address;
+        $baseurl = "https://coinremitter.com/api/v3/BTC/get-invoice";
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $baseurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'invoice_id' => $request->trx),
+        ));
+
+        $response = curl_exec($curl);
+        $reply = json_decode($response, true);
+        curl_close($curl);
+        //return $response;
+
+        if (!isset($reply['data']['status_code'])) {
+            return back()->with("danger", "An error occur. Contact server admin");
+        }
+
+        $status = $reply['data']['status_code'];
+
+        if ($status == 0) {
+            return back()->with("danger", "We have not received your payment. Kindly Scan and make payment");
+        }
+
+         if ($status == 4) {
+         return redirect()->route('newinvest')->with("danger", "Transation has expired. We didnt receive any BTC. Please try again later");
+
         }
 
 
-        Message::create([
-            'user_id' => $auth->id,
-            'title' => 'Investment Plan Created',
-            'details' => 'Your bitcoin investent of USD' . $data->amount . '  with transaction number ' . $data->trx . ' was successful. Please wait while our server verifies your payment. Your investment will be started once payment is confirmed by our server, Thank you for choosing ' . $basic->sitename . '',
-            'admin' => 1,
-            'status' => 0
-        ]);
+        if ($data->status == 1) {
+            return redirect()->route('newinvest')->with("danger", "Payment has been made already");
+        }
 
-        $data->save();
-        return redirect()->route('coinvest')->with("success", "  Your investment plan was successfully sent for confirmation");
 
+        if ($status == 1 || $status == 3) {
+            $basic = GeneralSettings::first();
+            $data->status = 1;
+            $data->save();
+ 
+            Message::create([
+                'user_id' => $data->user_id,
+                'title' => 'Investment Successful',
+                'details' => 'Your cryptocurrency deposit with transaction number ' . $data->trx . '  was successful for your proposed investment. Your investment account has been credited as required, Thank you for choosing ' . $basic->sitename . '',
+                'admin' => 1,
+                'status' => 0
+            ]);
+
+            return redirect()->route('newinvest')->with(['modal' => 'power', "success" => 'Investment with trasaction number: ' . $data->trx . '  was successful.']);
+        }
     }
 
 
