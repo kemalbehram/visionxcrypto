@@ -2760,7 +2760,7 @@ class HomeController extends Controller
         $data['trans'] = Invest::where('user_id', Auth::id())->where('status' ,'<', '2')->latest()->get();
         $data['invcount'] = Invest::where('user_id', Auth::id())->latest()->count();
         $data['invcomplete'] = Invest::where('user_id', Auth::id())->where('status', '!=', 1)->latest()->count();
-        $data['invsum'] = Invest::where('user_id', Auth::id())->sum('amount');
+        $data['invsum'] = Invest::where('status', '!=', '101')->where('user_id', Auth::id())->sum('amount');
         $basic = GeneralSettings::first();
 
         $baseUrl = "https://blockchain.info/";
