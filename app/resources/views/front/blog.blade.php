@@ -65,7 +65,7 @@
                 
             @foreach($blogs as $data)
               <div class="col-md-6 col-lg-4">
-                <div class="grid_blog_avatar bg-snow" data-aos="fade-up" data-aos-delay="0">
+                <div class="grid_blog_avatar bg-snow">
                   <div class="body_blog">
                     <a href="{{route('blogview',$data->id)}}" class="link_blog">
                       <h4 class="title_blog">
