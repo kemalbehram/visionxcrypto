@@ -56,7 +56,7 @@
 													digital assets  put you on a payroll.</span>
 												</div><br>
 												
-												<a href="#" class="btn ripple btn-primary mt-3">COMING SOON</a>
+												<a href="{{route('coinvest')}}" class="btn ripple btn-primary mt-3">Get Started</a>
 											</div>
 											<div class="  ">
 												<img src="{{url('/')}}/assets/assets/img/pngs/coininvest.png" alt="image" class="  ">
