@@ -56,10 +56,10 @@
 										    <div class="form-group mb-0"> <label><b>Select Payment Type</b></label>
 												<div class="input-group">
 												<select class="form-control select "  name="wallet_type">
-												@foreach($wallets as $k=>$data)
+												<!--@foreach($wallets as $k=>$data)
 												<option value="{{$data->id}}"> {{__(str_replace('_',' ',$data->type))}} ${{number_format($data->balance, 2)}}</option>
-												@endforeach
-												 <option value="1982100101281"> Deposit_Wallet {{__($basic->currency_sym)}}{{number_format(Auth::user()->balance, $basic->decimal)}}</option>
+												@endforeach -->
+												 <option value="1982100101281"> Deposit Wallet {{__($basic->currency_sym)}}{{number_format(Auth::user()->balance, $basic->decimal)}}</option>
 												  <option value="82718271565131"> Scan QR Code</option>
 											</select>
 
