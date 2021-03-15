@@ -71,9 +71,9 @@
                       <h4 class="title_blog">
                         {{$data->title}}
                       </h4>
-                      <p class="short_desc">
+                    <!--  <p class="short_desc">
                        {!!substr($data->details, 0, 25)!!}....
-                      </p>
+                      </p> -->
                     </a>
                     <a href="{{route('blogview',$data->id)}}">
                       <div class="person mb-0 media">
