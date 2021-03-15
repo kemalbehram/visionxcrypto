@@ -1352,10 +1352,10 @@
 							<a class="nav-link" href="{{route('my-wallet')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-wallet sidemenu-icon"></i><span class="sidemenu-label">Wallet</span></a>
 						</li>
 						<br>
-						<li class="nav-item">
+						<!--  <li class="nav-item">
 							<a class="nav-link" href="{{route('coinvest')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-chart sidemenu-icon"></i><span class="sidemenu-label">Invest</span></a>
 						</li> 
-						<br>
+						<br> -->
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('vxlock')}}"><span class="shape1"></span><span class="shape2"></span><i class="si si-lock sidemenu-icon"></i><span class="sidemenu-label">VX Vault</span></a>
 						</li>
