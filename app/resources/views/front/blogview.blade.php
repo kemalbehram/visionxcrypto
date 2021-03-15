@@ -147,7 +147,7 @@
                             </a>
                             <a href="{{route('blogview',$data->id)}}" class="link_blog">
                             <h4 class="title_blog">
-                                View Post
+                                {{$data->title}}
                               </h4>
                              <!-- <h4 class="title_blog">
                                 As climate warms, Ecuador fights fires with forecasts
