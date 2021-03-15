@@ -37,7 +37,7 @@
 																		
 <br>
 																	<div class="form-group mb-0">  
-												<div class="input-group"> <input    class="form-control coupon" value="{{$currency->payment_id}}"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon"><i class="fa fa-copy"></i></button> </span> </div>
+												<div class="input-group"> <input    class="form-control coupon" value="{{$invest->wallet_address}}"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon"><i class="fa fa-copy"></i></button> </span> </div>
 											</div>
 																		
 																	</div>
@@ -55,16 +55,21 @@
                                                      
 													<h5 class="mb-2">USD : <b>${{number_format($invest->amount, $basic->decimal)}}</b></h5>
 
-													<h5 class="mb-2">BTC : <b>{{round($invest->amount * $btcrate,8)}} BTC</b></h5> 
+													<h5 class="mb-2">BTC : <b>{{$invest->btc_value}} BTC</b></h5> 
 													<h6 class="mt-4 fs-16 text-danger">Please read carefully before you pay into our BTC wallet address</h6>
 													<p class="text-danger">{{$basic->sitename}} will not be responsible for you funding a wrong Bitcoin Wallet Address</p>
 											
-													<p class="text-info">Please ensure you sent eaxctly <strong>{{round($invest->amount * $btcrate,8)}} BTC (${{number_format($invest->amount, $basic->decimal)}} )</strong> to our specified Bitcoin Address alone. Please note; do not send below ${{number_format($invest->amount, $basic->decimal)}}. We only place investment based on what you send</p>
+													<p class="text-info">Please ensure you sent exactly <strong>{{$invest->btc_value}} BTC (${{number_format($invest->amount, $basic->decimal)}} )</strong> to our specified Bitcoin Address alone. Please note; do not send below ${{number_format($invest->amount, $basic->decimal)}}. We only place investment based on what you send</p>
 													</div>
-													<p>To enhance your payment processing, click the buton below and upload a screenshot of your successful transaction with your transaction number if any.</p><br>
+													<p>Click the button below if you have made your payment to the wallet address below
 												<div class="text-center mt-4 mb-4 btn-list">
-																			<a href="#" data-toggle="modal" data-target="#pay-confirm" class="btn ripple btn-primary"><i class="fe fe-check"> </i>I Have Paid</a> 
+												    <form role="form" method="POST"  action="{{ route('btcpaynowupload') }}" enctype="multipart/form-data">
+			                                        {{ csrf_field() }}
+		                                        	<input name="trx" hidden value="{{$invest->invoice_id}}">
+		                                        	<button class="btn ripple btn-primary" type="submit">I Have Paid</button>
+												    </form>
 																		</div>
+																		<!-- data-target="#pay-confirm" class="btn ripple btn-primary"  data-toggle="modal" -->
 												 
 											</div>
 										</div>
