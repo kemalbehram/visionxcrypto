@@ -2713,7 +2713,7 @@ class HomeController extends Controller
     {
 
         $data['page_title'] = "New Investment";
-        $data['plans'] = Plan::where('status', 1)->latest()->get();
+        $data['plans'] = Plan::where('status', 1)->orderBy('minimum','asc')->get();
 
         return view('user.new-invest', $data);
     }
