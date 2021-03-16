@@ -6,56 +6,65 @@ use App\Advertisment;
 use Illuminate\Support\Str;
 
 
-if (!function_exists('send_email')) {
+function send_bulksmsnigeria($number, $body){
+    $basic = GeneralSettings::first();
 
-    function send_email_sendgrid($user,$subject, $content)
-    {
+    $url="https://www.bulksmsnigeria.com/api/v1/sms/create?";
+    $param="api_token=".$basic->sms_token."&from=VISIONX&to=".$number."&body=".$body;
+    file_get_contents($url.$param);
 
-        $template = Etemplate::first();
+}
 
-        $message = $template->header.$content.$template->footer;
-        $headers = array(
-            'Authorization: Bearer '.$template->sendgrid,
-            'Content-Type: application/json'
-        );
+function send_email_sendgrid($user,$subject, $content)
+{
 
-        $datas = array(
-            "personalizations" => array(
-                array(
-                    "to" => array(
-                        array(
-                            "email" => $user->email,
-                            "name" => $user->username
-                        )
+    $template = Etemplate::first();
+
+    $message = $template->header.$content.$template->footer;
+    $headers = array(
+        'Authorization: Bearer '.$template->sendgrid,
+        'Content-Type: application/json'
+    );
+
+    $datas = array(
+        "personalizations" => array(
+            array(
+                "to" => array(
+                    array(
+                        "email" => $user->email,
+                        "name" => $user->username
                     )
                 )
-            ),
-            "from" => array(
-                "email" => 'no-reply@visionxcrypto.com'
-            ),
-            "subject" => $subject,
-            "content" => array(
-                array(
-                    "type" => "text/html",
-                    "value" => $message
-                )
             )
-        );
+        ),
+        "from" => array(
+            "email" => 'no-reply@visionxcrypto.com'
+        ),
+        "subject" => $subject,
+        "content" => array(
+            array(
+                "type" => "text/html",
+                "value" => $message
+            )
+        )
+    );
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
-        curl_setopt($ch, CURLOPT_URL, "https://api.sendgrid.com/v3/mail/send");
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datas));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($ch);
-        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
-        curl_close($ch);
+    $ch = curl_init();
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
+    curl_setopt($ch, CURLOPT_URL, "https://api.sendgrid.com/v3/mail/send");
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datas));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($ch);
+    $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
+    curl_close($ch);
 
-    }
+}
 
+
+if (!function_exists('send_email')) {
     function send_email_zoho($to,$subject, $message)
     {
 

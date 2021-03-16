@@ -137,32 +137,11 @@ class AuthenticateController extends Controller
                 $sms_code = substr(rand(),0,6);
                 $txt = "Your Verification Code is $sms_code";
 
-
                 $user->sms_code = $sms_code;
                 $user->phone_time = Carbon::parse()->addMinutes(1);
                 $user->save();
 
-
-                $baseUrl = "https://www.bulksmsnigeria.com/";
-                $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
-                $httpVerb = "GET";
-                $contentType = "application/json"; //e.g charset=utf-8
-                $headers = array (
-                    "Content-Type: $contentType",
-
-                );
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-                curl_setopt($ch, CURLOPT_HTTPGET, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                $content = json_decode(curl_exec( $ch ),true);
-                $err     = curl_errno( $ch );
-                $errmsg  = curl_error( $ch );
-                curl_close($ch);
+                send_bulksmsnigeria($user->phone,$txt);
             }
 
             return response()->json(['status' => 1, 'message' => "Account created successfully"]);
@@ -339,26 +318,7 @@ class AuthenticateController extends Controller
                 $user->save();
 
 
-                $baseUrl = "https://www.bulksmsnigeria.com/";
-                $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
-                $httpVerb = "GET";
-                $contentType = "application/json"; //e.g charset=utf-8
-                $headers = array (
-                    "Content-Type: $contentType",
-
-                );
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-                curl_setopt($ch, CURLOPT_HTTPGET, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                $content = json_decode(curl_exec( $ch ),true);
-                $err     = curl_errno( $ch );
-                $errmsg  = curl_error( $ch );
-                curl_close($ch);
+                send_bulksmsnigeria($user->phone, $txt);
             }
 
             $text = "Your Verification Code is $sms_code";
