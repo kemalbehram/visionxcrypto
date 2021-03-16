@@ -155,11 +155,11 @@ class RegisterController extends Controller
 
             $content = "Welcome to Vision-X Crypto. A platform to trade cryptocurrencies with ease and peace of mind. We look forward to seeing more of you.";
             $body = $content;
-            $data = array('name'=>"$user->username");
-            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
-            $m->from(env('MAIL_USERNAME'), 'Visionx');
-            $m->to($user->email, $user->username)->subject('Welcome to Vision-X Crypto');
-            });
+//            $data = array('name'=>"$user->username");
+//            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
+//            $m->from(env('MAIL_USERNAME'), 'Visionx');
+//            $m->to($user->email, $user->username)->subject('Welcome to Vision-X Crypto');
+//            });
 
         if ($basic->email_verification == 1) {
             $email_code = strtoupper(Str::random(6));
