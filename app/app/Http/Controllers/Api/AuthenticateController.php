@@ -130,7 +130,7 @@ class AuthenticateController extends Controller
                 $user->email_time = Carbon::parse()->addMinutes(5);
                 $user->save();
 
-                send_email_zoho($user->email, "Email verification", $text);
+                send_email_sendgrid($user, "Email verification", $text);
             }
 
             if ($basic->sms_verification == 1) {

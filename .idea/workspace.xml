@@ -305,6 +305,9 @@
       <workItem from="1615618925913" duration="68000" />
       <workItem from="1615640510573" duration="1237000" />
       <workItem from="1615726549161" duration="93000" />
+      <workItem from="1615791171932" duration="1515000" />
+      <workItem from="1615796760523" duration="65000" />
+      <workItem from="1615798364203" duration="91000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -360,7 +363,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>1073</line>
+          <line>427</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -395,7 +398,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/resources/views/user/account-verification.blade.php</url>
-          <line>846</line>
+          <line>43</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">

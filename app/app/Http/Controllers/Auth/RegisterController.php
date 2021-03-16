@@ -167,7 +167,7 @@ class RegisterController extends Controller
 
             $content = "Your verification code is $email_code.";
 
-            send_email_zoho($user->email, "Welcome to Vision X", $content );
+            send_email_sendgrid($user, "Welcome to Vision X", $content );
 
             $user->verification_code = $email_code;
             $user->email_time = Carbon::parse()->addMinutes(5);
