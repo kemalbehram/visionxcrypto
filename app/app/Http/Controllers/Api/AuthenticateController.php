@@ -327,9 +327,10 @@ class AuthenticateController extends Controller
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
             }
 
+            $sms_code = substr(rand(),0,6);
+
             $basic = GeneralSettings::first();
             if ($basic->sms_verification == 1) {
-                $sms_code = substr(rand(),0,6);
                 $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
 
 
@@ -359,6 +360,9 @@ class AuthenticateController extends Controller
                 $errmsg  = curl_error( $ch );
                 curl_close($ch);
             }
+
+            $text = "Your Verification Code is $sms_code";
+            send_email_sendgrid($user, "Email verification", $text);
 
             return response()->json(['status' => 1, 'message' => 'Code resent successfully']);
 
