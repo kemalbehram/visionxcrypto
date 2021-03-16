@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Etemplate;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -156,11 +155,11 @@ class RegisterController extends Controller
 
             $content = "Welcome to Vision-X Crypto. A platform to trade cryptocurrencies with ease and peace of mind. We look forward to seeing more of you.";
             $body = $content;
-//            $data = array('name'=>"$user->username");
-//            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
-//            $m->from(env('MAIL_USERNAME'), 'Visionx');
-//            $m->to($user->email, $user->username)->subject('Welcome to Vision-X Crypto');
-//            });
+            $data = array('name'=>"$user->username");
+            Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {
+            $m->from(env('MAIL_USERNAME'), 'Visionx');
+            $m->to($user->email, $user->username)->subject('Welcome to Vision-X Crypto');
+            });
 
         if ($basic->email_verification == 1) {
             $email_code = strtoupper(Str::random(6));
@@ -169,49 +168,6 @@ class RegisterController extends Controller
             $content = "Your verification code is $email_code.";
 
             send_email_sendgrid($user, "Welcome to Vision X", $content );
-
-            $template = Etemplate::first();
-
-            $message = $template->header.$text.$template->footer;
-            $headers = array(
-                'Authorization: Bearer '.$template->sendgrid,
-                'Content-Type: application/json'
-            );
-
-            $datas = array(
-                "personalizations" => array(
-                    array(
-                        "to" => array(
-                            array(
-                                "email" => $user->email,
-                                "name" => $user->username
-                            )
-                        )
-                    )
-                ),
-                "from" => array(
-                    "email" => 'no-reply@visionxcrypto.com'
-                ),
-                "subject" => "Email verification",
-                "content" => array(
-                    array(
-                        "type" => "text/html",
-                        "value" => $message
-                    )
-                )
-            );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
-            curl_setopt($ch, CURLOPT_URL, "https://api.sendgrid.com/v3/mail/send");
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datas));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $response = curl_exec($ch);
-            $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
-            curl_close($ch);
 
             $user->verification_code = $email_code;
             $user->email_time = Carbon::parse()->addMinutes(5);
