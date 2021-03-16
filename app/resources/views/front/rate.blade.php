@@ -3,7 +3,8 @@
  <!-- Stat main -->
       <main data-spy="scroll" data-target="#navbar-example2" data-offset="0">
         <!-- Start banner_about -->
-        <section class="pt_banner_inner banner_bg_pricing">
+        <!-- Start tb_features_pricing -->
+         <section class="pt_banner_inner banner_bg_pricging">
           <div class="container">
             <div class="row justify-content-center text-center">
               <div class="col-md-10 col-lg-6">
@@ -14,21 +15,6 @@
                   <p data-aos="fade-up" data-aos-delay="100">
                     Make mouth watering gain by trading your crypto assets with us
                   </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- End banner_about -->
-        
-        <!-- Start tb_features_pricing -->
-        <section class="tb_features_pricing padding-t-12">
-          <div class="container">
-            <div class="row justify-content-center text-center">
-              <div class="col-lg-5 margin-b-10">
-                <div class="title_sections_inne">
-                  <h2>Features</h2>
-                  <p>Non blandit massa enim nec. </p>
                 </div>
               </div>
             </div>
@@ -46,12 +32,12 @@
                       </tr>
                     </thead>
                     <tbody>
-                         @foreach($currency as $key => $data)
+                      @foreach($currency as $key => $data)
                       <tr>
                         <td><span>{{$data->name}}</span></td>
                         <td><span>{{$data->symbol}}</span></td>
-                        <td><span>₦{{number_format($data->buy, $basic->decimal)}} <span>/ USD</span></span></td>
-                        <td><span>₦{{number_format($data->sell, $basic->decimal)}} <span>/ USD</span></span></td>
+                        <td><span>₦{{number_format($data->buy, $basic->decimal)}} <small>/ USD</small></span></td>
+                        <td><span>₦{{number_format($data->sell, $basic->decimal)}} <small>/ USD</small></span></td>
                       </tr>
                       @endforeach
                      
@@ -64,94 +50,8 @@
             </div>
           </div>
         </section>
-        <!-- End. tb_features_pricing -->
-
-
-        <!-- Start p_pricing_list -->
-        <section class="p_pricing_list">
-          <div class="container">
-            
-
-            <div class="tab-content content_pricing" id="pills-tabContent">
-              <div class="tab-pane show active" id="pills-month" role="tabpanel" aria-labelledby="pills-month-tab">
-
-                <div class="row no-gutters">
-                   
-                  <div class="col-lg-12 my-auto">
-                    <div class="group_price_table checkbox-item">
-
-                      <div class="fadein">
-                        @foreach($currency as $key => $data)
-                        <!-- item -->
-                        <div class="item_price item-select">
-                          <div class="part_one">
-                            <span class="check_select"></span>
-                            <h3>{{$data->name}} <span class="offer">{{$data->symbol}}</span></h3>
-                          </div>
-                          <div class="part_two">
-                           We Buy At
-                             
-                          </div>
-                          <div class="part_three">
-                          
-                            <h4>₦{{number_format($data->buy, $basic->decimal)}} <span>/ USD</span></h4>
-                          </div>
-                        </div>
-                        <!-- item -->
-                        @endforeach
-                         
-
-                       
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="pills-annually" role="tabpanel" aria-labelledby="pills-annually-tab">
-
-                <div class="row no-gutters">
-                   
-                  <div class="col-lg-12 my-auto">
-                    <div class="group_price_table checkbox-item">
-                      <div class="fadein">
-
-                        @foreach($currency as $key => $data)
-                        <!-- item -->
-                        <div class="item_price item-select">
-                          <div class="part_one">
-                            <span class="check_select"></span>
-                            <h3>{{$data->name}} <span class="offer">{{$data->symbol}}</span></h3>
-                          </div>
-                           <div class="part_two">
-                           We Sell At
-                             
-                          </div>
-                          <div class="part_two">
-                            
-                            <h4>₦{{number_format($data->sell, $basic->decimal)}} <span>/ USD</span></h4>
-                          </div>
-                        </div>
-                        <!-- item -->
-                        @endforeach
-
-                       
-
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
-
-          </div>
-        </section>
-        <!-- End. p_pricing_list -->
- 
- 
+        <!-- End banner_about -->
+          
         <!-- Start creative_box_contact -->
         <section class="creative_box_contact padding-t-12">
           <div class="container">
