@@ -135,7 +135,7 @@ class AuthenticateController extends Controller
 
             if ($basic->sms_verification == 1) {
                 $sms_code = substr(rand(),0,6);
-                $txt = "Your Verification Code is $sms_code";
+                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
 
                 $user->sms_code = $sms_code;
                 $user->phone_time = Carbon::parse()->addMinutes(1);
