@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Etemplate;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Message;
