@@ -129,8 +129,8 @@ class VerificationController extends Controller
             $user->bvn_time = Carbon::now();
             $user->fname = $product['firstName'];
             $user->lname = $product['lastName'];
-            $user->gender = $product['data']['gender'];
-            $user->dob = $product['data']['dateOfBirth'];
+            $user->gender = "unknown";
+            $user->dob = $product['dateOfBirth'];
             $user->save();
 
             Message::create([
