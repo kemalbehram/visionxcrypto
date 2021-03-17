@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Etemplate;
 use App\GeneralSettings;
 use App\Http\Controllers\Controller;
 use App\Message;
-use App\Notifications\UsersNotification;
 use App\User;
 use App\UserLogin;
 use App\UserWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -275,23 +272,13 @@ class AuthenticateController extends Controller
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
             }
 
-            $sms_code = substr(rand(),0,6);
+            $code = substr(rand(), 0, 6);
 
-            $basic = GeneralSettings::first();
-            if ($basic->sms_verification == 1) {
-                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
-
-
-                $user->sms_code = $sms_code;
-                $user->phone_time = Carbon::parse()->addMinutes(1);
-                $user->save();
-
-
-                send_bulksmsnigeria($user->phone, $txt);
-            }
-
-            $text = "Your Verification Code is $sms_code";
+            $text = "Your Verification Code is $code";
             send_email_sendgrid($user, "Email verification", $text);
+
+            $txt = "Your%20phone%20verification%20code%20is:%20$code";
+            send_bulksmsnigeria($user->phone, $txt);
 
             return response()->json(['status' => 1, 'message' => 'Code resent successfully']);
 
@@ -316,38 +303,13 @@ class AuthenticateController extends Controller
                 return response()->json(['status' => 0, 'message' => 'User does not exist']);
             }
 
-            $basic = GeneralSettings::first();
-            if ($basic->sms_verification == 1) {
-                $sms_code = substr(rand(),0,6);
-                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
+            $code = substr(rand(), 0, 6);
 
+            $text = "Your Verification Code is $code";
+            send_email_sendgrid($user, "Email verification", $text);
 
-                $user->sms_code = $sms_code;
-                $user->phone_time = Carbon::parse()->addMinutes(1);
-                $user->save();
-
-
-                $baseUrl = "https://www.bulksmsnigeria.com/";
-                $endpoint = "api/v1/sms/create?api_token=".$basic->sms_token."&from=VISIONX&to=".$user->phone."&body=".$txt."";
-                $httpVerb = "GET";
-                $contentType = "application/json"; //e.g charset=utf-8
-                $headers = array (
-                    "Content-Type: $contentType",
-
-                );
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_URL, $baseUrl.$endpoint);
-                curl_setopt($ch, CURLOPT_HTTPGET, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                $content = json_decode(curl_exec( $ch ),true);
-                $err     = curl_errno( $ch );
-                $errmsg  = curl_error( $ch );
-                curl_close($ch);
-            }
+            $txt = "Your%20phone%20verification%20code%20is:%20$code";
+            send_bulksmsnigeria($user->phone, $txt);
 
             return response()->json(['status' => 1, 'message' => 'Verification sent successfully']);
 
