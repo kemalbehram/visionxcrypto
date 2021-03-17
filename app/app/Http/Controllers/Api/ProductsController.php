@@ -121,9 +121,12 @@ class ProductsController extends Controller
 
         $data=json_decode($response, true);
 
+        $banks=[];
+
         foreach ($data['data'] as $bs){
-            $banks['bankname']=$bs->name;
-            $banks['bankcode']=$bs->code;
+            $bank['bankname']=$bs['name'];
+            $bank['bankcode']=$bs['code'];
+            $banks[]=$bank;
         }
 
         return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'data'=>['banklist' => $banks ]]);
