@@ -70,25 +70,14 @@ class AuthenticateController extends Controller
 
             $basic = GeneralSettings::first();
 
-            if ($basic->email_verification == 1) {
-                $email_verify = 0;
-            } else {
-                $email_verify = 1;
-            }
+            $email_verify = 0;
+            $phone_verify = 0;
 
-            if ($basic->sms_verification == 1) {
-                $phone_verify = 0;
-            } else {
-                $phone_verify = 1;
-            }
             if (isset($input['referBy'])) {
                 $referUser = User::where('username', $input['referBy'])->first();
             }
 
-            $accountname =$input['firstname'] . " " . $input['lastname'];
-
-            $verification_code = strtoupper(Str::random(6));
-            $sms_code = substr(rand(),0,6);
+            $verification_code = substr(rand(),0,6);
             $email_time = Carbon::parse()->addMinutes(5);
             $phone_time = Carbon::parse()->addMinutes(5);
 
@@ -103,7 +92,7 @@ class AuthenticateController extends Controller
                 'refer' => isset($input['referBy']) ? $referUser->id : 0,
                 'email_verify' => $email_verify,
                 'verification_code' => $verification_code,
-                'sms_code' => $sms_code,
+                'sms_code' => $verification_code,
                 'email_time' => $email_time,
                 'phone_verify' => $phone_verify,
                 'phone_time' => $phone_time,
@@ -116,34 +105,12 @@ class AuthenticateController extends Controller
                 'type' => 'interest_wallet',
             ]);
 
-            $basic = GeneralSettings::first();
+            $text = "Your Verification Code is $verification_code";
+            send_email_sendgrid($user, "Email verification", $text);
 
-            $code = strtoupper(Str::random(6));
-            $user->phone_time = Carbon::now();
-            $user->sms_code = $code;
-            $user->save();
+            $txt = "Your%20phone%20verification%20code%20is:%20$verification_code";
+            send_bulksmsnigeria($user->phone,$txt);
 
-            if ($basic->email_verification == 1) {
-                $email_code = strtoupper(Str::random(6));
-                $text = "Your Verification Code is $email_code";
-
-                $user->verification_code = $email_code;
-                $user->email_time = Carbon::parse()->addMinutes(5);
-                $user->save();
-
-                send_email_sendgrid($user, "Email verification", $text);
-            }
-
-            if ($basic->sms_verification == 1) {
-                $sms_code = substr(rand(),0,6);
-                $txt = "Your%20phone%20verification%20code%20is:%20$sms_code";
-
-                $user->sms_code = $sms_code;
-                $user->phone_time = Carbon::parse()->addMinutes(1);
-                $user->save();
-
-                send_bulksmsnigeria($user->phone,$txt);
-            }
 
             return response()->json(['status' => 1, 'message' => "Account created successfully"]);
 
@@ -283,6 +250,7 @@ class AuthenticateController extends Controller
             }
 
             $user->phone_verify = 1;
+            $user->email_verify = 1;
             $user->save();
             return response()->json(['status' => 1, 'message' => 'Verified successfully']);
 
