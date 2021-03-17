@@ -98,29 +98,35 @@ class ProductsController extends Controller
 //        }
 
         $basic = GeneralSettings::first();
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/banklist",
+            CURLOPT_URL => "https://api.paystack.co/bank",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n    \"request\": \"banklist\"\n}",
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey,
-                "Content-Type: application/json"
+                "Authorization: Bearer ".$basic->paystack_secret,
+                "Cache-Control: no-cache",
             ),
         ));
 
         $response = curl_exec($curl);
+        $err = curl_error($curl);
         curl_close($curl);
+
         $data=json_decode($response, true);
 
-        return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'data'=>$data]);
+        foreach ($data['data'] as $bs){
+            $banks['bankname']=$bs->name;
+            $banks['bankcode']=$bs->code;
+        }
+
+        return response()->json(['status' => 1, 'message' => 'Banks fetched successfully', 'data'=>['banklist' => $banks ]]);
     }
 
     public function myBank()
