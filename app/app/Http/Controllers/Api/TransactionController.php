@@ -1058,7 +1058,7 @@ class TransactionController extends Controller
         $trx = rand(000000, 999999) . rand(000000, 999999);
 
         $charge = $basic->transcharge;
-        $usd = $request->usd * $currency->sell;
+        $usd = $request->usd * $currency->buy;
         $topay = $usd + $charge;
         $get = $request->usd/$currency->price;
 
@@ -1113,7 +1113,7 @@ class TransactionController extends Controller
 
 
         $charge = $basic->transcharge;
-        $usd = $request->usd * $currency->buy;
+        $usd = $request->usd * $currency->sell;
         $topay = $usd + $charge;
 
 

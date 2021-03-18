@@ -308,9 +308,9 @@ class HomeController extends Controller
 
 
         $trx = strtoupper(str_random(20));
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
           CURLOPT_URL => 'https://api.paystack.co/bank/resolve_bvn/'.$request->bvn,
           CURLOPT_RETURNTRANSFER => true,
@@ -324,9 +324,9 @@ class HomeController extends Controller
             'Authorization: Bearer '.$basic->paystack_secret
           ),
         ));
-        
+
         $response = curl_exec($curl);
-        
+
         curl_close($curl);
         //echo $response;
         $rep = json_decode($response, true);
@@ -1529,22 +1529,19 @@ class HomeController extends Controller
             'coin' => 'required',
             'payment' => 'required',
         ]);
-        
-        
-
 
         $auth = Auth::user();
         $basic = GeneralSettings::first();
         $currency = Currency::whereId($request->coin)->first();
         $trx = rand(000000, 999999) . rand(000000, 999999);
-        
+
          if($currency->symbol=="BTC" || $currency->symbol=="ETH"){
          if($currency->symbol=="BTC"){
                 $akey=$basic->bitcoin_address;
             }else{
                 $akey=$basic->etherum_address;
             }
- 
+
         $baseurl = "https://coinremitter.com/api/v3/".$currency->symbol."/validate-address";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -1562,7 +1559,6 @@ class HomeController extends Controller
 		$response = curl_exec($curl);
 		$reply = json_decode($response,true);
 		curl_close($curl);
-		return $response;
 
 		if (!isset($reply['msg'])){
 		 return back()->with("alert", "API Error");
@@ -2971,10 +2967,10 @@ class HomeController extends Controller
         $trxx = rand(000000, 999999) . rand(000000, 999999);
         if ($request->wallet_type == 82718271565131) {
             $userWallet = User::find(Auth::id());
-            
-            
-            
-            
+
+
+
+
                     $trx = str_random(15);
                     $akey=$basic->bitcoin_address;
                     $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
@@ -2990,27 +2986,27 @@ class HomeController extends Controller
                         CURLOPT_CUSTOMREQUEST => 'POST',
                         CURLOPT_POSTFIELDS => array('api_key' => $akey, 'password' => 'visionxcrypto', 'amount' => $request->amount, 'name' => $trxx, 'currency' => 'USD', 'expire_time' => '15', 'suceess_url' => url("/")),
                     ));
-        
+
                     $response = curl_exec($curl);
                     $reply = json_decode($response, true);
                     curl_close($curl);
                     //return $reply;
-        
+
                      if($reply['flag'] == 0){
                         return back()->with('danger',$reply['msg']);
                     }
-        
+
                     if(!isset($reply['data']['address'])){
                         return back()->with('danger','Amount too low');
                     }
-        
-        
+
+
                     $address = $reply['data']['address'];
                     $invoiceid = $reply['data']['invoice_id'];
                     $btcvalue = $reply['data']['total_amount']['BTC'];
-                    
-                    
-                    
+
+
+
 
             $user = User::find(Auth::id());
             $gnl = GeneralSettings::first();
@@ -3051,7 +3047,7 @@ class HomeController extends Controller
             }
             $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
             //end
- 
+
 
             if ($plan->fixed_amount == 0) {
 
@@ -3084,7 +3080,7 @@ class HomeController extends Controller
 
             } else {
                 if ($plan->fixed_amount == $request->amount) {
-                    
+
                     $invest['invoice_id'] = $invoiceid;
                     $invest['btc_value'] = $btcvalue;
                     $invest['wallet_address'] = $address;
@@ -3101,8 +3097,8 @@ class HomeController extends Controller
                     $data['capital_status'] = $plan->capital_back_status;
                     $data['trx'] = $trxx;
                     $a = Invest::create($data);
-                    
-                    
+
+
 
 
                     Session::put('Track', $trxx);
@@ -3234,7 +3230,7 @@ class HomeController extends Controller
 
     public function btcpaynowupload(Request $request)
     {
-         
+
         $basic = GeneralSettings::first();
         $data = Invest::where('status', 101)->where('invoice_id', $request->trx)->first();
         $auth = Auth::user();
@@ -3285,7 +3281,7 @@ class HomeController extends Controller
             $basic = GeneralSettings::first();
             $data->status = 1;
             $data->save();
- 
+
             Message::create([
                 'user_id' => $data->user_id,
                 'title' => 'Investment Successful',
