@@ -1071,11 +1071,12 @@ class TransactionController extends Controller
         $buy['getamo'] = $get;
         $buy['user_id'] = Auth::id();
         $buy['type'] = 1;
+        $buy['method'] = 1;
         $buy['wallet'] = $request->wallet;
-        $buy['rate'] = $currency->sell;
+        $buy['rate'] = $currency->buy;
         $buy['bank'] = $request->bank;
         $buy['remark'] = $request->comment;
-        $buy['status'] = 0;
+        $buy['status'] = 1;
         $buy['trx'] = $trx;
         Trx::create($buy);
 
@@ -1124,12 +1125,13 @@ class TransactionController extends Controller
         $buy['price'] = $currency->price;
         $buy['user_id'] = Auth::id();
         $buy['type'] = 2;
+        $buy['method'] = 2;
         $buy['bank'] = 0;
         $buy['bankname'] = "VisionX";
         $buy['accountname'] = $auth->username;
         $buy['accountnumber'] = $auth->account_number;
-        $buy['rate'] = $currency->buy;
-        $buy['status'] = 0;
+        $buy['rate'] = $currency->sell;
+        $buy['status'] = 2;
         $buy['trx'] = $trx;
 
         Trx::create($buy);
