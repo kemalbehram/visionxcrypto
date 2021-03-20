@@ -31,7 +31,7 @@
                   </div>
                   <div class="app_smartphone margin-t-15">
                     <div class="btn--app mb-3 mb-lg-0">
-                      <a class="media" href="#" target="_blank">
+                      <a class="media" href="https://apps.apple.com/us/app/vision-x-crypto/id1551668403" target="_blank">
                         <div class="icon">
                           <i class="tio apple"></i>
                         </div>
@@ -44,7 +44,7 @@
                       </a>
                     </div>
                     <div class="btn--app">
-                      <a class="media" href="#" target="_blank">
+                      <a class="media" href="https://play.google.com/store/apps/details?id=com.visionx_crpto" target="_blank">
                         <div class="icon">
                           <i class="tio google_play"></i>
                         </div>
