@@ -337,7 +337,7 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $basic->electricityfee + $request->amount;
 
-        if ($total > $user->balance) {
+        if ($total > $user->balance && $total > 0) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -409,7 +409,7 @@ class TransactionController extends Controller
 
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
-        if ($total > $user->balance) {
+        if ($total > $user->balance && $total > 0) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -485,7 +485,7 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
 
-        if ($total > $user->balance) {
+        if ($total > $user->balance && $total > 0) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -542,13 +542,17 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $request->amount;
 
-        if ($total > $user->balance) {
+        if ($total > $user->balance && $total > 0) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
         $amount = $request->amount;
         $number = $request->number;
         $trx = strtoupper(str_random(20));
+
+        if($user->account_number == $number){
+            return response()->json(['status' => 0, 'message' => 'You can not transfer to yourself']);
+        }
 
         $r=User::where('account_number', '=',$number)->first();
 
