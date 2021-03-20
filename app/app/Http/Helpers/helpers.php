@@ -138,26 +138,7 @@ if (!function_exists('send_sms')) {
             $appi = $temp->smsapi;
             $appi = str_replace("{{number}}", $to, $appi);
             $appi = str_replace("{{message}}", $sendtext, $appi);
-
-            echo "
-           <script>
-            fetch('https://textbelt.com/text', {
-              method: 'post',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                phone: '+2348031975397',
-                message: 'message',
-                key: '8e97cc883658dbca568c54babfc4b2156012a3d2ePeu2obKqlpo5uMnQUmQCjhKV',
-              }),
-            }).then(response => {
-              return response.json();
-            }).then(data => {
-              console.log(data);
-            });
-            </script>
-
-            ";
-        }
+         }
     }
 }
 
