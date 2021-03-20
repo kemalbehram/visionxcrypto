@@ -50,7 +50,7 @@
 																</div>
 																<div class="form-group col-xl-6 col-lg-6 col-md-12 mb-0">
 																<label class="text-white-50">Our Rate</label>
-																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->buy, $basic->decimal)}}">
+																	<input type="text" readonly  class="form-control mb-4 mb-lg-0" id="text7" value="$1.00 = {{$basic->currency_sym}}{{number_format($data->currency->sell, $basic->decimal)}}">
 
 																</div>
 																<div class="col-xl-12 col-lg-12 col-md-12 my-3 text-left">

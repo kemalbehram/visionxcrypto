@@ -13,7 +13,7 @@
 							<div>
 								<h2 class="main-content-title tx-24 mg-b-5">Crypto buy/sell</h2>
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+									<li class="breadcrumb-item"><a href="">Dashboard</a></li>
 									<li class="breadcrumb-item active" aria-current="page">Crypto buy/sell</li>
 								</ol>
 							</div>
@@ -36,7 +36,7 @@
 										</div>
 										<div class="d-flex mt-3 mb-3">
 											<div class="">
-												<p class="tx-16 text-muted mb-2">Our buy rate</p>
+												<p class="tx-16 text-muted mb-2">Our sell rate</p>
 												<h3 id="buy">0.00<span class="text-success tx-15 ml-2">NGN</span></h3>
 											</div>
 
@@ -62,7 +62,7 @@
 														<optgroup label="Coins">
 														<option selected disabled>Select Coin</option>
 														@foreach($currency as $gate)
-															<option value="{{$gate->id}}" data-buy="{{$gate->buy}}"  data-bname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
+															<option value="{{$gate->id}}" data-buy="{{$gate->sell}}"  data-bname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
 														@endforeach
 														</optgroup>
 													</select>
@@ -111,7 +111,7 @@
 										</div>
 										<div class="d-flex mt-3 mb-3">
 											<div class="">
-												<p class="tx-16 text-muted mb-2">Our sell rate</p>
+												<p class="tx-16 text-muted mb-2">Our buy rate</p>
 												<h3 id="sell">0.00<span class="text-success tx-15 ml-2">NGN</span></h3>
 											</div>
 										</div>
@@ -134,7 +134,7 @@
 														<optgroup label="Coins">
 														<option selected disabled>Select Coin</option>
 														@foreach($currency as $gate)
-															<option value="{{$gate->id}}" data-sell="{{$gate->sell}}"  data-sname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
+															<option value="{{$gate->id}}" data-sell="{{$gate->buy}}"  data-sname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
 														@endforeach
 														</optgroup>
 													</select>
