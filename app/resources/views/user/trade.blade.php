@@ -62,7 +62,7 @@
 														<optgroup label="Coins">
 														<option selected disabled>Select Coin</option>
 														@foreach($currency as $gate)
-															<option value="{{$gate->id}}" data-buy="{{$gate->buy}}"  data-bname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
+															<option value="{{$gate->id}}" data-buy="{{$gate->sell}}"  data-bname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
 														@endforeach
 														</optgroup>
 													</select>
@@ -134,7 +134,7 @@
 														<optgroup label="Coins">
 														<option selected disabled>Select Coin</option>
 														@foreach($currency as $gate)
-															<option value="{{$gate->id}}" data-sell="{{$gate->sell}}"  data-sname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
+															<option value="{{$gate->id}}" data-sell="{{$gate->buy}}"  data-sname="{{$gate->name}}" data-icon="cf cf-{{$gate->icon}} cryptoicon bg-primary-transparent text-primary">{{$gate->symbol}}</option>
 														@endforeach
 														</optgroup>
 													</select>
