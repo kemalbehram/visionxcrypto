@@ -1577,9 +1577,9 @@ class HomeController extends Controller
 
 
             $charge = $basic->transcharge;
-            $usd = $request->usd * $currency->buy;
-            $topay = $usd + $charge;
-            $get = $request->usd / $currency->price;
+            $usd = $request->usd * $currency->sell;
+            $topay = $usd;
+            $get = $request->usd;
 
             $buy['currency_id'] = $currency->id;
             $buy['amount'] = $request->usd;
@@ -1628,9 +1628,9 @@ class HomeController extends Controller
             }
 
             $charge = $basic->transcharge;
-            $usd = $request->usd * $currency->buy;
-            $topay = $usd + $charge;
-            $get = $request->usd / $currency->price;
+            $usd = $request->usd * $currency->sell;
+            $topay = $usd;
+            $get = $request->usd;
 
             $buy['currency_id'] = $currency->id;
             $buy['amount'] = $request->usd;
@@ -1869,7 +1869,7 @@ class HomeController extends Controller
 
         $charge = $basic->transcharge;
         $usd = $request->usd * $currency->buy;
-        $topay = $usd + $charge;
+        $topay = $usd;
 
 
         $buy['currency_id'] = $currency->id;
