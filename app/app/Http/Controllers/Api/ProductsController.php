@@ -168,9 +168,9 @@ class ProductsController extends Controller
         }
 
         if($type=="sell"){
-            $rate=$cur->sell;
-        }else{
             $rate=$cur->buy;
+        }else{
+            $rate=$cur->sell;
         }
 
         return response()->json(['status' => 1, 'message' => 'Rates fetched successfully', 'rate'=>$rate*1]);
