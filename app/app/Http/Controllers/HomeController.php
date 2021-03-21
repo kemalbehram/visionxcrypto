@@ -1147,6 +1147,10 @@ class HomeController extends Controller
 
     public function updatetransfer(Request $request)
     {
+         $this->validate($request, [
+            'amount' => 'required|numeric|min:10'
+        ]);
+       
         $basic = GeneralSettings::first();
         if ($request->wallet == 0) {
             $user = Auth::user();
@@ -1160,9 +1164,13 @@ class HomeController extends Controller
             return back()->with('danger', 'You Cant Transfer An Amount Greater Than Your Current Balance.');
         }
 
-        $count = User::whereUsername($request->username)->count();
-        if ($count < 1) {
+        $count = User::whereUsername($request->username)->first();
+        if (!$count) {
             return back()->with('danger', 'There is no username with such username on ' . $basic->sitename . ' Please re-check and try again.');
+        }
+
+        if ($count->username = $user->username) {
+            return back()->with('danger', 'You cant self service your wallet');
         }
 
         if ($count > 0) {
