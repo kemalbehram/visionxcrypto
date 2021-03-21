@@ -75,11 +75,11 @@ function myFunction() {
 
  var sellcharge = amount * sell /100;
  var buycharge = amount * buy /100;
- var paybuy = 1*amount-buycharge;
- var paysell = 1*amount+sellcharge;
+ var paybuy = amount *buy;
+ var paysell = amount*sell;
  var rate = parseFloat(1*amount/price).toFixed(8);
 
- document.getElementById("unit").innerHTML = "What you get: " + rate + cur;
+ //document.getElementById("unit").innerHTML = "What you get: " + rate + cur;
 
  document.getElementById("buy").innerHTML = "We buy at: USD " + paybuy;
  document.getElementById("sell").innerHTML = "We sell at: USD " + paysell;
@@ -105,7 +105,7 @@ function myFunction() {
 
 <p id="buy"></p>
 <p id="sell"></p>
-<p id="unit"></p>
+<!--<p id="unit"></p> -->
 
 
 </div></section>
