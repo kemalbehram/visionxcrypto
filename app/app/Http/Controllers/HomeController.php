@@ -1169,7 +1169,7 @@ class HomeController extends Controller
             return back()->with('danger', 'There is no username with such username on ' . $basic->sitename . ' Please re-check and try again.');
         }
 
-        if ($count->username = $user->username) {
+        if ($count->username == $user->username) {
             return back()->with('danger', 'You cant self service your wallet');
         }
 
