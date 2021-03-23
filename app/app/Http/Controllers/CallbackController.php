@@ -24,8 +24,8 @@ class CallbackController extends Controller
         $trx = strtoupper(str_random(20));
 
         if ($u) {
-            $u->balance += $total;
-            $u->save();
+            //$u->balance += $total;
+            //$u->save();
 
 
              $depo['user_id'] = $u->id;
