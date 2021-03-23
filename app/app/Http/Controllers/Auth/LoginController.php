@@ -65,36 +65,38 @@ class LoginController extends Controller
         if($user_device !=$user->web_device){
             $basic = GeneralSettings::first();
             $code = strtoupper(Str::random(6));
-            $baseUrl = "https://www.bulksmsnigeria.com/";
-            $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=VISIONX&to=" . $user->phone . "&body=" . $code . "";
-            $httpVerb = "GET";
-            $contentType = "application/json"; //e.g charset=utf-8
-            $headers = array(
-                "Content-Type: $contentType",
 
-            );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-            $content = json_decode(curl_exec($ch), true);
-            $err = curl_errno($ch);
-            $errmsg = curl_error($ch);
-            curl_close($ch);
+            send_smsTermi($user->phone,$code);
+//            $baseUrl = "https://www.bulksmsnigeria.com/";
+//            $endpoint = "api/v1/sms/create?api_token=" . $basic->sms_token . "&from=VISIONX&to=" . $user->phone . "&body=" . $code . "";
+//            $httpVerb = "GET";
+//            $contentType = "application/json"; //e.g charset=utf-8
+//            $headers = array(
+//                "Content-Type: $contentType",
+//
+//            );
+//
+//            $ch = curl_init();
+//            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//            curl_setopt($ch, CURLOPT_URL, $baseUrl . $endpoint);
+//            curl_setopt($ch, CURLOPT_HTTPGET, true);
+//            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//
+//            $content = json_decode(curl_exec($ch), true);
+//            $err = curl_errno($ch);
+//            $errmsg = curl_error($ch);
+//            curl_close($ch);
 
           $content = "Sorry your account was just accessed from an unknown device\n " .$user_device. ".\n\n, <b><br>Your Verification Code Is $code. \n\n</b><br>If not you, kindly reset your account password.";
           $template = Etemplate::first();
-          
+
           $message = $template->header.$content.$template->footer;
            $headers = array(
             'Authorization: Bearer '.$template->sendgrid,
             'Content-Type: application/json'
         );
-        
+
         $datas = array(
             "personalizations" => array(
                 array(
@@ -117,7 +119,7 @@ class LoginController extends Controller
                 )
             )
         );
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
         curl_setopt($ch, CURLOPT_URL, "https://api.sendgrid.com/v3/mail/send");
@@ -130,7 +132,7 @@ class LoginController extends Controller
         $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
         curl_close($ch);
         //return $response;
-        
+
           // $body = $content;
           //    $data = array('name'=>"$user->username");
         //    Mail::send('mail', ['user' => $user, 'body' => $body], function ($m) use ($user, $body) {

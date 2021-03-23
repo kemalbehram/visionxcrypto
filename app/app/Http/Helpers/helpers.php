@@ -15,6 +15,41 @@ function send_bulksmsnigeria($number, $body){
 
 }
 
+function send_smsTermi($number, $code){
+    $body="Your Vision-X Crypto confirmation code is ".$code.". Valid for 1hour, One-time use only.";
+    $basic = GeneralSettings::first();
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://termii.com/api/sms/send',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => '      {
+       "to": "'.$number.'",
+       "from": "N-Alert",
+       "sms": "'.$body.'",
+       "type": "plain",
+       "channel": "dnd",
+       "api_key": "'.$basic->sms_termi_token.'"
+   }',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Cookie: termii-sms=iizYGwU6UJvPbs7Pw49595Aa157h8zzc5ZMbJs2l'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+
+}
+
 function send_email_sendgrid($user,$subject, $content)
 {
 

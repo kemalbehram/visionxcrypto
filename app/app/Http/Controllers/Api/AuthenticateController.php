@@ -106,7 +106,8 @@ class AuthenticateController extends Controller
             send_email_sendgrid($user, "Email verification", $text);
 
             $txt = "Your%20phone%20verification%20code%20is:%20$verification_code";
-            send_bulksmsnigeria($user->phone,$txt);
+//            send_bulksmsnigeria($user->phone,$txt);
+            send_smsTermi($user->phone,$verification_code);
 
 
             return response()->json(['status' => 1, 'message' => "Account created successfully"]);
@@ -278,7 +279,8 @@ class AuthenticateController extends Controller
             send_email_sendgrid($user, "Email verification", $text);
 
             $txt = "Your%20phone%20verification%20code%20is:%20$code";
-            send_bulksmsnigeria($user->phone, $txt);
+//            send_bulksmsnigeria($user->phone, $txt);
+            send_smsTermi($user->phone,$code);
 
             return response()->json(['status' => 1, 'message' => 'Code resent successfully']);
 
@@ -309,7 +311,8 @@ class AuthenticateController extends Controller
             send_email_sendgrid($user, "Email verification", $text);
 
             $txt = "Your%20phone%20verification%20code%20is:%20$code";
-            send_bulksmsnigeria($user->phone, $txt);
+//            send_bulksmsnigeria($user->phone, $txt);
+            send_smsTermi($user->phone,$code);
 
             return response()->json(['status' => 1, 'message' => 'Verification sent successfully']);
 
