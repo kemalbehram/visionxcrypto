@@ -409,7 +409,12 @@ class TransactionController extends Controller
 
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
-        if ($total > $user->balance && $total > 0) {
+
+        if ($total < 0) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        if ($total > $user->balance) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -485,7 +490,11 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
 
-        if ($total > $user->balance && $total > 0) {
+        if ($total < 0) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        if ($total > $user->balance) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -542,7 +551,11 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $request->amount;
 
-        if ($total > $user->balance && $total > 0) {
+        if ($total < 0) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        if ($total > $user->balance) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
