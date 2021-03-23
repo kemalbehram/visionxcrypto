@@ -53,7 +53,7 @@ class TransactionController extends Controller
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
-        $trx = strtoupper(str_random(20));
+        $trx = "app_".strtoupper(str_random(20));
         $basic = GeneralSettings::first();
 
         if(strtolower($request->network)=="mtn"){
@@ -120,7 +120,7 @@ class TransactionController extends Controller
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
 
-        $trx = strtoupper(str_random(20));
+        $trx = "app_".strtoupper(str_random(20));
         $basic = GeneralSettings::first();
 
         if ($request->amount > $user->balance) {
@@ -221,7 +221,7 @@ class TransactionController extends Controller
         $total = $request->amount + $basic->decoderfee;
 
         if ($statusResult == "ORDER_RECEIVED" || $statusResult == "ORDER_COMPLETED") {
-            $trx = strtoupper(str_random(20));
+            $trx = "app_".strtoupper(str_random(20));
 
             $product['user_id'] = Auth::id();
             $product['gateway'] = $request->decoder;
@@ -297,7 +297,7 @@ class TransactionController extends Controller
         $w['phone'] = $request->phone;
         $trr = Sms::create($w);
 
-        $trx = strtoupper(str_random(20));
+        $trx = "app_".strtoupper(str_random(20));
         $product['user_id'] = Auth::id();
         $product['gateway'] ="SMS";
         $product['method'] = $request->package;
@@ -342,7 +342,7 @@ class TransactionController extends Controller
         }
 
         $basic = GeneralSettings::first();
-        $trx = strtoupper(str_random(6));
+        $trx = "app_".strtoupper(str_random(6));
 
         if(strtolower($request->type)=="prepaid"){
             $type='01';
@@ -418,7 +418,7 @@ class TransactionController extends Controller
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
-        $trx = strtoupper(str_random(20));
+        $trx = "app_".strtoupper(str_random(20));
 
         $curl = curl_init();
 
@@ -502,7 +502,7 @@ class TransactionController extends Controller
         $name = $request->accountname;
         $amount = $request->amount;
         $number = $request->accountnumber;
-        $trx = strtoupper(str_random(20));
+        $trx = "app_".strtoupper(str_random(20));
 
 
 
@@ -561,7 +561,7 @@ class TransactionController extends Controller
 
         $amount = $request->amount;
         $number = $request->number;
-        $trx = strtoupper(str_random(20));
+        $trx = "app_".strtoupper(str_random(20));
 
         if($user->account_number == $number){
             return response()->json(['status' => 0, 'message' => 'You can not transfer to yourself']);
@@ -675,7 +675,7 @@ class TransactionController extends Controller
         $res=json_decode($response, true);
 
         if($res['status']=="success") {
-            $trx = strtoupper(str_random(20));
+            $trx = "app_".strtoupper(str_random(20));
 
             $product['user_id'] = Auth::id();
             $product['gateway'] = "Virtual card";
@@ -851,7 +851,7 @@ class TransactionController extends Controller
         $res=json_decode($response, true);
 
         if($res['status']=="success") {
-            $trx = strtoupper(str_random(20));
+            $trx = "app_".strtoupper(str_random(20));
 
             $product['user_id'] = Auth::id();
             $product['gateway'] = "Fund Virtual card";
@@ -935,7 +935,7 @@ class TransactionController extends Controller
 
         if($res['status']=="success") {
 
-            $trx = strtoupper(str_random(20));
+            $trx = "app_".strtoupper(str_random(20));
 
             $product['user_id'] = Auth::id();
             $product['gateway'] = "Virtual card withdrawal";
@@ -1028,9 +1028,6 @@ class TransactionController extends Controller
         $period = ($plan->lifetime_status == 1) ? '-1' : $plan->repeat_time;
         //end
 
-
-        $trxx = rand(000000, 999999) . rand(000000, 999999);
-
         $data['user_id'] = $user->id;
         $data['plan_id'] = $plan->id;
         $data['amount'] = $plan->fixed_amount;
@@ -1042,7 +1039,7 @@ class TransactionController extends Controller
         $data['next_time'] = Carbon::parse($now)->addHours($plan->times);
         $data['status'] = 1;
         $data['capital_status'] = $plan->capital_back_status;
-        $data['trx'] = rand(000000, 999999) . rand(000000, 999999);
+        $data['trx'] = "app_".rand(000000, 999999) . rand(000000, 999999);
         $a = Invest::create($data);
 
         $user->balance-=$plan->fixed_amount;
@@ -1072,7 +1069,7 @@ class TransactionController extends Controller
         $auth = Auth::user();
         $basic = GeneralSettings::first();
         $currency = Currency::find($input['currencyid']);
-        $trx = rand(000000, 999999) . rand(000000, 999999);
+        $trx = "11".rand(000000, 999999) . rand(000000, 999999);
 
         $charge = $basic->transcharge;
         $usd = $request->usd * $currency->buy;
@@ -1127,7 +1124,7 @@ class TransactionController extends Controller
         $auth = Auth::user();
         $basic = GeneralSettings::first();
         $currency = Currency::find($input['currencyid']);
-        $trx = rand(000000, 999999) . rand(000000, 999999);
+        $trx = "11".rand(000000, 999999) . rand(000000, 999999);
 
 
         $charge = $basic->transcharge;
@@ -1217,7 +1214,7 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $akey=$basic->bitcoin_address;
         $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
-        $trx = rand(000000, 999999) . rand(000000, 999999);
+        $trx = "11".rand(000000, 999999) . rand(000000, 999999);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $baseurl,
