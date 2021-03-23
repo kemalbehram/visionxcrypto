@@ -389,16 +389,16 @@ class ProductController extends Controller
     {
 	   $user = Auth::user();
 	   $basic = GeneralSettings::first();
-	  // $request->validate([
+	  $request->validate([
       //      'bank' => 'required',
        //     'number' => 'required',
-     //       'amount' => 'required',
+            'amount' => 'required|integer|min:100',
 //
-      //  ], [
+       ], [
       //      'bank.required' => 'Please select bank name',
-     //       'amount.required' => 'Please enter amount to transfer',
+            'amount.required' => 'Please enter amount to transfer',
      //       'number.required' => 'Please enter account number',
-    //    ]);
+        ]);
 
             $total = $basic->transcharge + $request->amount;
 		   if ($total > $user->balance) {
@@ -657,7 +657,7 @@ class ProductController extends Controller
 	if ($user->balance >= $total )
 	{
 	$product['user_id'] = Auth::id();
-    $product['gateway'] = $bank;
+    $product['gateway'] = "Entry Via User To Bank Transfer";//$bank;
     $product['method'] = $name;
     $product['account_number'] = $number;
     $product['type'] = 5;
