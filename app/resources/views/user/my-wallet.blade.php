@@ -93,7 +93,7 @@
 												</div>
 												<div class="input-group my-4">
 													<span class="input-group-addon-left bg-light">{{$basic->currency_sym}}</span>
-													<input name="amount"  required type="text" placeholder="{{$basic->currency_sym}} 0.00" class="form-control input-lg">
+													<input name="amount"  required type="number" placeholder="{{$basic->currency_sym}} 0.00" class="form-control input-lg">
 												</div>
 
 												<div class="input-group my-4">
