@@ -624,11 +624,11 @@ class HomeController extends Controller
         $docm['number'] = $request->number;
         $docm['status'] = 0;
         if ($request->hasFile('photo')) {
-            $docm['image1'] = uniqid().'.'.$request->photo->extension(); 
+            $docm['image1'] = uniqid().'.'.$request->photo->extension();
             $request->photo->move('kyc', $docm['image1']);
         }
         if ($request->hasFile('photo2')) {
-            $docm['image2'] = uniqid().'.'.$request->photo2->extension(); 
+            $docm['image2'] = uniqid().'.'.$request->photo2->extension();
             $request->photo2->move('kyc', $docm['image2']);
         }
 
@@ -1150,7 +1150,7 @@ class HomeController extends Controller
          $this->validate($request, [
             'amount' => 'required|numeric|min:10'
         ]);
-       
+
         $basic = GeneralSettings::first();
         if ($request->wallet == 0) {
             $user = Auth::user();
@@ -1162,6 +1162,10 @@ class HomeController extends Controller
         $basic = GeneralSettings::first();
         if ($request->amount > $user->balance) {
             return back()->with('danger', 'You Cant Transfer An Amount Greater Than Your Current Balance.');
+        }
+
+        if ($request->amount > 500000) {
+            return back()->with('danger', 'Amount exceeded. Kindly reduce amount try again');
         }
 
         $count = User::whereUsername($request->username)->first();

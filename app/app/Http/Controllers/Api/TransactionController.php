@@ -337,7 +337,11 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $basic->electricityfee + $request->amount;
 
-        if ($total > $user->balance && $total > 0) {
+        if ($total < 0) {
+            return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
+        }
+
+        if ($total > $user->balance) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
@@ -418,6 +422,10 @@ class TransactionController extends Controller
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
 
+        if ($total > 500000) {
+            return response()->json(['status' => 0, 'message' => 'Amount exceeded. Kindly reduce amount try again']);
+        }
+
         $trx = "app_".strtoupper(str_random(20));
 
         $curl = curl_init();
@@ -490,6 +498,10 @@ class TransactionController extends Controller
         $basic = GeneralSettings::first();
         $total = $basic->transcharge + $request->amount;
 
+        if ($total > 500000) {
+            return response()->json(['status' => 0, 'message' => 'Amount exceeded. Kindly reduce amount try again']);
+        }
+
         if ($total < 0) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);
         }
@@ -550,6 +562,10 @@ class TransactionController extends Controller
 
         $basic = GeneralSettings::first();
         $total = $request->amount;
+
+        if ($total > 500000) {
+            return response()->json(['status' => 0, 'message' => 'Amount exceeded. Kindly reduce amount try again']);
+        }
 
         if ($total < 0) {
             return response()->json(['status' => 2, 'message' => 'Insufficient wallet balance. Please deposit more fund and try again']);

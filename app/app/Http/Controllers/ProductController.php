@@ -400,7 +400,13 @@ class ProductController extends Controller
      //       'number.required' => 'Please enter account number',
         ]);
 
-            $total = $basic->transcharge + $request->amount;
+
+        if ($request->amount > 500000) {
+            return back()->with('danger', 'Amount exceeded. Kindly reduce amount try again');
+        }
+
+
+        $total = $basic->transcharge + $request->amount;
 		   if ($total > $user->balance) {
              return back()->with("danger", "Insufficient wallet balance. Please deposit more fund and try again");
            }
@@ -698,13 +704,13 @@ class ProductController extends Controller
 
      public function validatedecoder(Request $request)
     {
-        
+
          $auth = Auth::user();
         if ($auth->verified != 2) {
             return back()->withAlert('Please yiur need verify your account before buying cable tv bouquet');
         }
-        
-        
+
+
          $user = Auth::user();
 	     $request->validate([
             'decodernumber' => 'required',
@@ -958,7 +964,7 @@ class ProductController extends Controller
 
 	public function validatemeter(Request $request)
 		{
-		    
+
 		      $auth = Auth::user();
         if ($auth->verified != 2) {
             return back()->withAlert('Please you need to verify your account before paying utility bills');

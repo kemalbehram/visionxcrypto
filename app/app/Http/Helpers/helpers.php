@@ -19,6 +19,7 @@ function send_smsTermi($number, $code){
     $body="Your Vision-X Crypto confirmation code is ".$code.". Valid for 1hour, One-time use only.";
     $basic = GeneralSettings::first();
 
+
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
