@@ -606,7 +606,7 @@ class HomeController extends Controller
     }
 
 
-    public function kyc2(Request $request)
+     public function kyc2(Request $request)
     {
 
         $this->validate($request,
@@ -614,8 +614,8 @@ class HomeController extends Controller
                 'type' => 'required',
                 'date' => 'required',
                 'number' => 'required',
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-                'photo2' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,pdf',
+                'photo2' => 'required|image|mimes:jpeg,png,jpg,gif,svg,pdf',
             ]);
 
         $docm['user_id'] = Auth::id();
@@ -624,11 +624,11 @@ class HomeController extends Controller
         $docm['number'] = $request->number;
         $docm['status'] = 0;
         if ($request->hasFile('photo')) {
-            $docm['image1'] = uniqid() . '.jpg';
+            $docm['image1'] = uniqid().'.'.$request->photo->extension(); 
             $request->photo->move('kyc', $docm['image1']);
         }
         if ($request->hasFile('photo2')) {
-            $docm['image2'] = uniqid() . '.jpg';
+            $docm['image2'] = uniqid().'.'.$request->photo2->extension(); 
             $request->photo2->move('kyc', $docm['image2']);
         }
 
