@@ -19,6 +19,7 @@ function send_smsTermi($number, $code){
     $body="Your Vision-X Crypto confirmation code is ".$code.". Valid for 1hour, One-time use only.";
     $basic = GeneralSettings::first();
 
+    $phone=str_replace_first("0", "234", $number);
 
     $curl = curl_init();
 
@@ -32,7 +33,7 @@ function send_smsTermi($number, $code){
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS => '      {
-       "to": "'.$number.'",
+       "to": "'.$phone.'",
        "from": "N-Alert",
        "sms": "'.$body.'",
        "type": "plain",
