@@ -1,6 +1,6 @@
 @extends('include.front')
-@section('content') 
-               
+@section('content')
+
       <!-- Stat main -->
       <main data-spy="scroll" data-target="#navbar-example2" data-offset="0">
         <!-- Start banner_cotact_one -->
@@ -26,6 +26,20 @@
                         </a>
                       </div>
 
+                        <div class="link_item" data-aos="fade-up" data-aos-delay="200">
+                        <a href="tel:+234 9079 907 750">
+                          <i class="tio call"></i>
+                          +234 9079 907 750
+                        </a>
+                      </div>
+
+                        <div class="link_item" data-aos="fade-up" data-aos-delay="200">
+                        <a href="tel:+234 9155 308 033">
+                          <i class="tio call"></i>
+                          +234 9155 308 033
+                        </a>
+                      </div>
+
                       <div class="link_item selecr_mark" data-aos="fade-up" data-aos-delay="300">
                         <a href="mailto:support@visionxcrypto.com">
                           <i class="tio email"></i>
@@ -39,7 +53,7 @@
                           MJ’s Plaza, Besides Lawfab Hotels, Osubi/Eku Expressway, Osubi-Warri, Delta State.
                         </p>
                       </div>
-					  
+
 					  <div class="link_item" data-aos="fade-up" data-aos-delay="400">
                         <p class="d-flex">
                           <i class="tio poi"></i>
@@ -66,7 +80,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-4 ml-md-auto my-auto"> 
+              <div class="col-lg-4 ml-md-auto my-auto">
                     <form class="row form_contact_two" action="{{route('contact.submit')}}" method="post">
 {!! csrf_field() !!}
                 <div class="row">
@@ -79,7 +93,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                    <div class="col-6">
                     <div class="form-group">
                       <label>Phone Number</label>
@@ -104,7 +118,7 @@
                     <div class="form-group">
                       <label>Subject</label>
                       <div class="input_group">
-                        <input type="text" name="subjec" class="form-control" placeholder="Message Subject"> 
+                        <input type="text" name="subjec" class="form-control" placeholder="Message Subject">
                         <i class="tio account_square_outlined"></i>
                       </div>
 
