@@ -123,21 +123,21 @@ class ValidateController extends Controller
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
         }
 
+        $basic = GeneralSettings::first();
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://openapi.rubiesbank.io/v1/nameenquiry",
+            CURLOPT_URL => "https://api.paystack.co/bank/resolve?account_number=".$request->accountno."&bank_code=".$request->bankcode,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n\t\t\"accountnumber\":\"$request->accountno\",\n\t\t\"bankcode\":\"$request->bankcode\"\n}",
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->rubies_secretkey,
+                "Authorization: ".$basic->paystack_secret,
             ),
         ));
 
@@ -148,15 +148,12 @@ class ValidateController extends Controller
 
         $basic = GeneralSettings::first();
 
-        if($rep['responsecode'] == 00)
+        if($rep['status'])
         {
-            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$rep['accountname'], 'charges'=>$basic->transcharge*1]);
-        }
-        elseif($rep['responsecode'] == 11){
-            return response()->json(['status' => 0, 'message' => 'Sorry, Account Number Not Valid.']);
+            return response()->json(['status' => 1, 'message' => 'Account validated successfully', 'name'=>$rep['data']['account_name'], 'charges'=>$basic->transcharge*1]);
         }
         else{
-            return response()->json(['status' => 0, 'message' => 'Sorry, We cannot process this transfer at the moment, please try again later.']);
+            return response()->json(['status' => 0, 'message' => 'Sorry, Account Number Not Valid.']);
         }
 
     }
