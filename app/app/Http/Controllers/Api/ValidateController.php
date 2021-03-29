@@ -137,7 +137,7 @@ class ValidateController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "Authorization: ".$basic->paystack_secret,
+                "Authorization: Bearer ".$basic->paystack_secret,
             ),
         ));
 
