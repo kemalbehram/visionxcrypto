@@ -868,13 +868,15 @@ class HomeController extends Controller
             return redirect()->route('user.deposit.preview');
 
 
-        }
-
+        }   
+            
+            $currency = Currency::whereId(5)->first();
           if ($request->gateway == "bitcoin") {
             $trx = str_random(15);
-            $usdamo = ($request->amount + 0) / $basic->rate;
+            
+            $usdamo = $request->amount * $currency->buy;
             $usdcharge = ($basic->depocharge + 0) / $basic->rate;
-            $usdconv = $usdamo + $usdcharge;
+            $usdconv = $usdamo;
             $usd = number_format($usdconv,2);
             $akey=$basic->bitcoin_address;
             $baseurl = "https://coinremitter.com/api/v3/BTC/create-invoice";
@@ -2943,8 +2945,11 @@ class HomeController extends Controller
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $localrate = json_decode(curl_exec($ch), true);
-        $payamount = $localrate * $request->amount;
+        $currency = Currency::whereId(5)->first();
+        $payamount = $currency->buy * $request->amount;
+        
+        //$localrate = json_decode(curl_exec($ch), true);
+        //$payamount = $localrate * $request->amount;
 
         $plan = Plan::where('id', $request->plan_id)->where('status', 1)->first();
         if (!$plan) {
