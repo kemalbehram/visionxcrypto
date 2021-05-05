@@ -136,8 +136,11 @@ class AuthenticateController extends Controller
         if ($validator->passes()) {
 
             if (!Auth::attempt(['email' => request('email'), 'password' => request('password')]) && !Auth::attempt(['username' => request('email'), 'password' => request('password')])) {
-                return response()->json(['status' => 0, 'message' => "Invalid credentials. Try again with valid credentials"]);
+                if (!Auth::attempt(['phone' => request('email'), 'password' => request('password')]) && !Auth::attempt(['username' => request('email'), 'password' => request('password')])) {
+                    return response()->json(['status' => 0, 'message' => "Invalid credentials. Try again with valid credentials"]);
+                }
             }
+
 
             $user = Auth::user();
             $token = Str::random(60);

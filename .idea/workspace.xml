@@ -21,7 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="10054fa6-a234-474b-a303-cffc2c61da03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/OthersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/OthersController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/Http/Controllers/Api/AuthenticateController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -329,7 +329,11 @@
       <workItem from="1617653639485" duration="474000" />
       <workItem from="1617659755212" duration="272000" />
       <workItem from="1617660722191" duration="712000" />
-      <workItem from="1617744031944" duration="2126000" />
+      <workItem from="1617744031944" duration="3106000" />
+      <workItem from="1619107806312" duration="791000" />
+      <workItem from="1619111118045" duration="728000" />
+      <workItem from="1620215846368" duration="1921000" />
+      <workItem from="1620222054737" duration="1223000" />
     </task>
     <task id="LOCAL-00001" summary="Push work">
       <created>1608040528391</created>
@@ -480,7 +484,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/app/Http/Controllers/HomeController.php</url>
-          <line>2119</line>
+          <line>2121</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\HomeController" />
             <option name="methodName" value="esellcallback" />
