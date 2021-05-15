@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ValidateController;
 use App\Http\Controllers\Api\VerificationController;
+use App\Http\Controllers\Api\WalletController;
 use Illuminate\Http\Request;
 
 /*
@@ -111,6 +112,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('topup', [OthersController::class, 'topup'])->name('topup');
     Route::post('verifytopup', [VerificationController::class, 'topup_verify'])->name('topup_verify');
 
+    Route::post('createaddress', [WalletController::class, 'createwallet'])->name('createwallet');
+
+    Route::get('receivecoin/{type}', [WalletController::class, 'receivecoin'])->name('receivecoin');
+
+    Route::get('fetchwallets', [WalletController::class, 'fetchwallets'])->name('fetchwallets');
 
 
 });

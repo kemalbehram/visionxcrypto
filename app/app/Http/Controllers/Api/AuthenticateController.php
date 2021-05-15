@@ -99,6 +99,12 @@ class AuthenticateController extends Controller
             UserWallet::create([
                 'user_id' => $user->id,
                 'balance' => 0,
+                'type' => 'NGN',
+            ]);
+
+            UserWallet::create([
+                'user_id' => $user->id,
+                'balance' => 0,
                 'type' => 'interest_wallet',
             ]);
 
@@ -386,15 +392,17 @@ class AuthenticateController extends Controller
 
             $user->withdrawpass = $input['newpin'];
             $user->save();
-            return response()->json(['status' => 1, 'message' => 'Pin set successfully']);
 
             Message::create([
                 'user_id' => $user->id,
                 'title' => 'Pin Changed',
-                'details' =>'New Pin set successfully',
+                'details' => 'New Pin set successfully',
                 'admin' => 1,
-                'status' =>  0
+                'status' => 0
             ]);
+
+            return response()->json(['status' => 1, 'message' => 'Pin set successfully']);
+
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Incomplete request', 'error' => $validator->errors()]);
