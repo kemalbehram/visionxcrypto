@@ -96,18 +96,6 @@ class AuthenticateController extends Controller
                 'password' => Hash::make($input['password']),
             ]);
 
-            UserWallet::create([
-                'user_id' => $user->id,
-                'balance' => 0,
-                'type' => 'NGN',
-            ]);
-
-            UserWallet::create([
-                'user_id' => $user->id,
-                'balance' => 0,
-                'type' => 'interest_wallet',
-            ]);
-
             $text = "Your Verification Code is $verification_code";
             send_email_sendgrid($user, "Email verification", $text);
 
@@ -219,15 +207,29 @@ class AuthenticateController extends Controller
 
             $basic = GeneralSettings::first();
 
-            if($user->locked==1){
+            if ($user->locked == 1) {
                 return response()->json(['status' => 0, 'message' => 'Account has been locked for maximum pin attempt. Kindly contact support']);
             }
 
             $hour = date('H');
             $dayTerm = ($hour > 17) ? "Evening" : (($hour > 12) ? "Afternoon" : "Morning");
-            $greet= "Good " . $dayTerm;
+            $greet = "Good " . $dayTerm;
 
-            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance, 2), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone'=>$user->phone, 'email'=>$user->email, 'account_number'=>$user->account_number, 'pin'=>$user->withdrawpass, 'verified'=>$user->verified, 'notification'=>$noti, 'greet'=>$greet]);
+            $wallets = ["NGN", "BTC", "ETH", "USDT", "BNB", "DASH", "LTC"];
+
+            foreach ($wallets as $wallet) {
+                $w = UserWallet::where([["type", $wallet], ["user_id", $user->id]])->first();
+
+                if ($w == null) {
+                    UserWallet::create([
+                        'user_id' => $user->id,
+                        'balance' => 0,
+                        'type' => $wallet,
+                    ]);
+                }
+            }
+
+            return response()->json(['status' => 1, 'message' => "User authenticated successfully", 'token' => $token, 'balance' => round($user->balance, 2), 'first_name' => $user->fname, 'last_name' => $user->lname, 'user_name' => $user->username, 'image' => $user->image, 'phone' => $user->phone, 'email' => $user->email, 'account_number' => $user->account_number, 'pin' => $user->withdrawpass, 'verified' => $user->verified, 'notification' => $noti, 'greet' => $greet]);
 
         } else {
             return response()->json(['status' => 0, 'message' => 'Unable to login with errors', 'error' => $validator->errors()]);

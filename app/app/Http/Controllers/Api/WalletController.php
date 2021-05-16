@@ -13,7 +13,6 @@ class WalletController extends Controller
 {
     function createwallet(Request $request)
     {
-
         try {
 
             $type = $request->type;
